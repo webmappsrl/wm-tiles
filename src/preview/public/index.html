@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>wm-tiles — preview OpenLayers</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@7.1.0/ol.css">
+<style>
+  html, body { margin: 0; height: 100%; font: 13px/1.4 -apple-system, system-ui, sans-serif; }
+  body { display: flex; flex-direction: column; overflow: hidden; }
+  #bar { flex: 0 0 auto; display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
+         padding: 7px 12px; background: #1d2a23; color: #e2ece5; }
+  #bar label { display: inline-flex; gap: 5px; align-items: center; }
+  #bar select { font: inherit; padding: 2px 4px; border-radius: 4px;
+                border: 1px solid #3d5147; background: #263a30; color: #e2ece5; }
+  #groups { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+  /* le voci sono raggruppate per categoria solo per leggibilita': lo
+     spegnimento resta per singolo layer */
+  #groups .cat { display: flex; gap: 3px; flex-wrap: wrap; padding: 0 5px;
+                 border-left: 1px solid #3d5147; }
+  #groups .cat:first-child { border-left: none; }
+  #groups label { font-size: 10.5px; padding: 1px 5px; }
+  #groups label { background: #263a30; padding: 2px 7px; border-radius: 10px;
+                  cursor: pointer; user-select: none; font-size: 12px; }
+  #groups label.off { opacity: .4; text-decoration: line-through; }
+  #gridlabel { background: #d61f69; padding: 2px 8px; border-radius: 10px;
+               cursor: pointer; user-select: none; font-size: 12px; }
+  #gridlabel.off { background: #263a30; opacity: .55; }
+  #gridz { font-variant-numeric: tabular-nums; opacity: .85; }
+  #inspectlabel { background: #2b6cb0; padding: 2px 8px; border-radius: 10px;
+                  cursor: pointer; user-select: none; font-size: 12px; }
+  #inspectlabel.off { background: #263a30; opacity: .55; }
+  /* Il rapporto dell'ispezione: sta sopra la mappa e si copia con un tasto,
+     cosi' una segnalazione si incolla senza doverla riscrivere. */
+  #inspectbox { position: absolute; z-index: 6; top: 8px; right: 8px; width: 380px;
+                max-height: 60%; overflow: auto; display: none;
+                background: rgba(20,28,24,.95); color: #dfe8e2; border-radius: 6px;
+                border: 1px solid #3d5147; }
+  #inspectbox header { display: flex; gap: 6px; align-items: center; justify-content: space-between;
+                       padding: 5px 8px; border-bottom: 1px solid #3d5147; font-size: 11px; }
+  #inspectbox pre { margin: 0; padding: 8px; font-family: ui-monospace, monospace;
+                    font-size: 11px; line-height: 1.45; white-space: pre-wrap; }
+  #inspectbox button { font: inherit; font-size: 11px; padding: 2px 8px; border-radius: 4px;
+                       border: 1px solid #3d5147; background: #2b6cb0; color: #fff; cursor: pointer; }
+  #inspectbox button.ghost { background: #263a30; }
+  #meta { margin-left: auto; opacity: .75; font-size: 12px; font-variant-numeric: tabular-nums; }
+  #stack { opacity: .7; font-size: 11px; }
+  #panes { flex: 1 1 auto; min-height: 0; display: flex; }
+  body.single-left .pane:nth-child(2), body.single-left #bar { display: none; }
+  body.single-right .pane:nth-child(1), body.single-right #bar { display: none; }
+  .pane { flex: 1; position: relative; }
+  .pane + .pane { border-left: 2px solid #1d2a23; }
+  /* Con la griglia accesa i titoli coprirebbero le sigle della prima fila di
+     tile, che sono quelle a cui serve piu' spesso fare riferimento. */
+  body.grid .pane h2 { top: auto; bottom: 8px; }
+  .pane h2 { position: absolute; z-index: 2; top: 8px; left: 8px; margin: 0;
+             font-size: 11px; font-weight: 600; background: rgba(29,42,35,.85);
+             color: #fff; padding: 3px 8px; border-radius: 4px; }
+  .map { position: absolute; inset: 0; background: #fcf8e9; }
+  /* L'ombreggiatura e' un layer WebGL a se': OpenLayers gli da' un canvas
+     proprio, e la composizione in multiply — quella del riferimento — si
+     ottiene qui. In `prerender` non si puo': il contesto e' WebGL, non 2D. */
+  /* Il modo di composizione dell'ombreggiatura cambia per fascia di zoom:
+     `multiply` scurisce soltanto, `overlay` scurisce le zone scure e
+     schiarisce quelle chiare — che e' come il riferimento compone la
+     pendenza da z14. */
+  /* `!important` NON e' pigrizia: `ol.css` (caricato due volte, e la seconda
+     con document.write DOPO questo blocco) porta un selettore piu' specifico
+     del nostro, e senza `!important` il computed resta `normal`. Il canvas
+     aveva la classe giusta e la regola era nel CSSOM, quindi tutto sembrava a
+     posto: l'ombreggiatura si e' composta in modo NORMALE invece che in
+     multiply, e le opacita' erano state tarate per compensare. */
+  /**
+   * Una sfumatura minima sull'ombreggiatura, prima della composizione.
+   *
+   * E' cio' che il riferimento ottiene con `raster-scaling: lanczos` su un
+   * hillshade gia' calcolato: il filtro leviga il RISULTATO invece di
+   * inseguire il gradiente. Qui spalma l'errore residuo del DEM — a 30 m
+   * ingrandito piu' volte ne resta sempre — senza toccare la forma del
+   * rilievo, che va lasciata com'e' (correla 0,998 con gdaldem).
+   * Mezzo pixel: sopra si perde il dettaglio dei crinali.
+   */
+  /* `!important` per la stessa ragione del blend: ol.css e' piu' specifico. */
+  .wm-hillshade, .wm-blend-overlay { filter: blur(0.5px) !important; }
+  .wm-blend-multiply { mix-blend-mode: multiply !important; }
+  .wm-blend-overlay { mix-blend-mode: overlay !important; }
+  .wm-blend-soft-light { mix-blend-mode: soft-light !important; }
+  #err { position: absolute; z-index: 5; bottom: 8px; left: 8px; right: 8px; max-height: 34%;
+         overflow: auto; background: #7a2018; color: #fff; padding: 6px 9px; border-radius: 4px;
+         font-family: ui-monospace, monospace; font-size: 11px; white-space: pre-wrap; display: none; }
+</style>
+</head>
+<body>
+  <div id="bar">
+    <strong>OpenLayers</strong>
+    <span id="stack"></span>
+    <label>area <select id="area"></select></label>
+    <label>set <select id="set"></select></label>
+    <span id="groups"></span>
+    <label id="gridlabel" class="off" title="Griglia delle tile XYZ su entrambi i pannelli (tasto g)">
+      <input type="checkbox" id="grid"> griglia XYZ <span id="gridz"></span>
+    </label>
+    <label class="sw">
+      <input type="checkbox" id="ombra" checked> ombreggiatura
+    </label>
+    <label class="sw">
+      <input type="checkbox" id="pendenza" checked> pendenza
+    </label>
+    <label class="sw">
+      <input type="checkbox" id="copertura"> area dati
+    </label>
+    <label id="inspectlabel" class="off" title="Evidenzia gli elementi sotto il mouse; al clic mostra layer, attributi e colori a confronto (tasto i)">
+      <input type="checkbox" id="inspect"> ispeziona
+    </label>
+    <span id="meta"></span>
+  </div>
+  <div id="panes">
+    <div class="pane">
+      <h2>vettoriale — locale (OpenLayers + ol-mapbox-style)</h2>
+      <div class="map" id="left"></div>
+      <div id="inspectbox">
+        <header>
+          <span>ispezione</span>
+          <span>
+            <button id="inspectcopy">copia</button>
+            <button id="inspectclose" class="ghost">chiudi</button>
+          </span>
+        </header>
+        <pre></pre>
+      </div>
+      <div id="err"></div>
+    </div>
+    <div class="pane">
+      <h2>TGEN — riferimento raster</h2>
+      <div class="map" id="right"></div>
+    </div>
+  </div>
+<script>
+// Versioni parametrizzabili: ?ol=7.1.0&olms=10.4.0 — servono a stabilire quale
+// combinazione map-core puo' adottare (l'attuale e' ol 7.1.0).
+(() => {
+  const q = new URLSearchParams(location.search);
+  // Combinazione verificata: e' la sola fra quelle provate in cui
+  // ol-mapbox-style applica correttamente il paint del layer hillshade.
+  //   ol 7.1.0 + olms 10.4.0 -> ombra troppo scura (paint ignorato)
+  //   ol 7.1.0 / 10.6.1 + olms 13.4.3 -> hillshade non disegnato
+  //   ol 7.3.0 + olms 11.0.0 -> corretto (2 punti di luminosita' dal riferimento)
+  const olv = q.get('ol') || '7.3.0';
+  const olmsv = q.get('olms') || '11.0.0';
+  document.write(`<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@${olv}/ol.css">`);
+  document.write(`<script src="https://cdn.jsdelivr.net/npm/ol@${olv}/dist/ol.js"><\/script>`);
+  document.write(`<script src="https://cdn.jsdelivr.net/npm/ol-mapbox-style@${olmsv}/dist/olms.js"><\/script>`);
+  window.__versions = {ol: olv, olms: olmsv};
+})();
+</script>
+<script type="module" src="preview.js"></script>
+</body>
+</html>

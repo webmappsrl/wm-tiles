@@ -1,0 +1,274 @@
+{
+  "version": 1,
+  "groups": [
+    {
+      "id": "landcover",
+      "label": {
+        "it": "Uso del suolo",
+        "en": "Land cover"
+      },
+      "layers": [
+        "landcover",
+        "clc"
+      ],
+      "class": "public",
+      "attributes": [
+        "coduso"
+      ],
+      "minzoom": 8,
+      "maxzoom": 14
+    },
+    {
+      "id": "base",
+      "label": {
+        "it": "Sfondo",
+        "en": "Base"
+      },
+      "layers": [
+        "water",
+        "waterway",
+        "landcover",
+        "landuse",
+        "park",
+        "boundary",
+        "water_name"
+      ],
+      "class": "public",
+      "attributes": [
+        "class",
+        "subclass",
+        "name"
+      ],
+      "minzoom": 0,
+      "maxzoom": 14
+    },
+    {
+      "id": "roads",
+      "label": {
+        "it": "Strade e sentieri",
+        "en": "Roads and paths"
+      },
+      "layers": [
+        "transportation",
+        "transportation_name",
+        "aeroway",
+        "roadslz"
+      ],
+      "class": "public",
+      "attributes": [
+        "class",
+        "subclass",
+        "name",
+        "surface",
+        "brunnel"
+      ],
+      "minzoom": 4,
+      "maxzoom": 14
+    },
+    {
+      "id": "buildings",
+      "label": {
+        "it": "Edifici",
+        "en": "Buildings"
+      },
+      "layers": [
+        "building",
+        "housenumber"
+      ],
+      "class": "public",
+      "attributes": [
+        "render_height"
+      ],
+      "minzoom": 13,
+      "maxzoom": 14
+    },
+    {
+      "id": "places",
+      "label": {
+        "it": "Localita",
+        "en": "Places"
+      },
+      "layers": [
+        "place"
+      ],
+      "class": "public",
+      "attributes": [
+        "class",
+        "name",
+        "rank"
+      ],
+      "minzoom": 0,
+      "maxzoom": 14
+    },
+    {
+      "id": "poi",
+      "label": {
+        "it": "Punti di interesse",
+        "en": "Points of interest"
+      },
+      "layers": [
+        "poi"
+      ],
+      "class": "public",
+      "attributes": [
+        "class",
+        "subclass",
+        "name",
+        "rank"
+      ],
+      "minzoom": 12,
+      "maxzoom": 14
+    },
+    {
+      "id": "contours",
+      "label": {
+        "it": "Curve di livello",
+        "en": "Contour lines"
+      },
+      "layers": [
+        "contour"
+      ],
+      "class": "public",
+      "attributes": [
+        "elevation",
+        "index"
+      ],
+      "minzoom": 11,
+      "maxzoom": 14
+    },
+    {
+      "id": "peaks",
+      "label": {
+        "it": "Cime e quote",
+        "en": "Peaks and elevations"
+      },
+      "layers": [
+        "mountain_peak"
+      ],
+      "class": "public",
+      "attributes": [
+        "name",
+        "ele",
+        "class"
+      ],
+      "minzoom": 7,
+      "maxzoom": 14
+    },
+    {
+      "id": "hiking",
+      "label": {
+        "it": "Percorsi escursionistici",
+        "en": "Hiking routes"
+      },
+      "layers": [
+        "hiking"
+      ],
+      "class": "public",
+      "attributes": [
+        "ref",
+        "name",
+        "network",
+        "osmc_symbol",
+        "operator"
+      ],
+      "minzoom": 10,
+      "maxzoom": 14
+    },
+    {
+      "id": "toponimi",
+      "label": {
+        "it": "Toponimi di valli e catene",
+        "en": "Valley and ridge names"
+      },
+      "layers": [
+        "toponimi"
+      ],
+      "class": "public",
+      "attributes": [
+        "topo",
+        "codice"
+      ],
+      "minzoom": 9,
+      "maxzoom": 14
+    },
+    {
+      "id": "rifugi",
+      "label": {
+        "it": "Rifugi e bivacchi",
+        "en": "Mountain huts and bivouacs"
+      },
+      "layers": [
+        "rifugi"
+      ],
+      "class": "public",
+      "attributes": [
+        "name",
+        "tourism",
+        "elevation"
+      ],
+      "minzoom": 10,
+      "maxzoom": 14
+    },
+    {
+      "id": "osmpoi",
+      "label": {
+        "it": "Passi, sorgenti e grotte",
+        "en": "Saddles, springs and caves"
+      },
+      "layers": [
+        "osmpoi"
+      ],
+      "class": "public",
+      "attributes": [
+        "name",
+        "kind",
+        "ele"
+      ],
+      "minzoom": 11,
+      "maxzoom": 14
+    }
+  ],
+  "defaultSet": [
+    "landcover",
+    "base",
+    "roads",
+    "buildings",
+    "places",
+    "poi",
+    "contours",
+    "peaks",
+    "hiking",
+    "toponimi",
+    "rifugi",
+    "osmpoi"
+  ],
+  "previewAreas": [
+    {
+      "id": "validazione",
+      "label": "Validazione (Sillano-Pradarena)",
+      "center": [
+        10.35,
+        44.25
+      ],
+      "zoom": 13
+    },
+    {
+      "id": "pisa",
+      "label": "Pisa",
+      "center": [
+        10.4017,
+        43.7228
+      ],
+      "zoom": 14
+    },
+    {
+      "id": "montepisano",
+      "label": "Monte Pisano (Monte Serra)",
+      "center": [
+        10.5533,
+        43.7581
+      ],
+      "zoom": 13
+    }
+  ]
+}

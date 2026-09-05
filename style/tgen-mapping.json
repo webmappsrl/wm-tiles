@@ -1,0 +1,221 @@
+{
+  "nota": "Corrispondenza fra i nostri layer di stile e i selettori del riferimento. E' la sola parte che non si estrae a macchina: Mapnik interroga PostGIS e costruisce campi propri (feature = 'highway_motorway', code_12), noi leggiamo MVT con schema OpenMapTiles (class = 'motorway'). Va tenuta a mano, ma una volta sola e in un posto solo. `tgen: null` = layer senza corrispondente nel riferimento (asset presenti su TGen ma non attivi in produzione, come toponimi e rifugi): la loro visibilita' resta quella che abbiamo scelto.",
+  "layers": {
+    "background": {
+      "tgen": "(globale)"
+    },
+    "landcover-osm": {
+      "tgen": [
+        "landcover-low-zoom",
+        "landcover"
+      ]
+    },
+    "landcover-fill": {
+      "tgen": [
+        "usoemilia",
+        "usotoscana"
+      ]
+    },
+    "clc-fill": {
+      "tgen": "clc",
+      "campo": {
+        "code_12": "code"
+      }
+    },
+    "landuse-park": {
+      "tgen": "landuse-overlay"
+    },
+    "contour": {
+      "tgen": [
+        "contourlines_lr",
+        "contourlines_mr",
+        "contourlines_hr"
+      ]
+    },
+    "contour-label": {
+      "tgen": [
+        "cl_hr_labels",
+        "cl_hr_subd_labels"
+      ]
+    },
+    "water": {
+      "tgen": [
+        "water_polygons",
+        "water-areas"
+      ]
+    },
+    "building": {
+      "tgen": "buildings"
+    },
+    "park-band-a": {
+      "tgen": "nature-reserve-boundaries"
+    },
+    "park-band-b": {
+      "tgen": "nature-reserve-boundaries"
+    },
+    "park-label": {
+      "tgen": null,
+      "nota": "visibile da z10 come nei PNG serviti (le etichette dei siti Natura 2000 ci sono a z10). Nessun selettore del CartoCSS corrisponde: nature-reserve-text parte da z13, text-poly ha regole solo da z15."
+    },
+    "road-casing-minor": {
+      "tgen": "roads-casing"
+    },
+    "road-casing-secondary": {
+      "tgen": "roads-casing"
+    },
+    "road-casing-major": {
+      "tgen": [
+        "roads-low-zoom",
+        "roads-casing"
+      ]
+    },
+    "road-fill-minor": {
+      "tgen": "roads-fill"
+    },
+    "road-fill-secondary": {
+      "tgen": "roads-fill"
+    },
+    "road-fill-major": {
+      "tgen": [
+        "roads-low-zoom",
+        "roads-fill"
+      ]
+    },
+    "road-fill-trunk": {
+      "tgen": [
+        "roads-low-zoom",
+        "roads-fill"
+      ]
+    },
+    "road-fill-motorway": {
+      "tgen": [
+        "roads-low-zoom",
+        "roads-fill"
+      ]
+    },
+    "track": {
+      "tgen": "roads-fill"
+    },
+    "path": {
+      "tgen": "roads-fill"
+    },
+    "hiking-line": {
+      "tgen": "hiking_trails"
+    },
+    "hiking-ref": {
+      "tgen": "hiking_trails_labels"
+    },
+    "boundary": {
+      "tgen": [
+        "admin-low-zoom",
+        "admin-mid-zoom",
+        "admin-high-zoom"
+      ]
+    },
+    "road-label": {
+      "tgen": "roads-text-name"
+    },
+    "road-ref": {
+      "tgen": null,
+      "nota": "scudi da z11: nel CartoCSS scaricato i due blocchi #roads-text-ref sono COMMENTATI (righe 2555-2715) ma la produzione li disegna, quindi la soglia viene dai PNG"
+    },
+    "waterway-label": {
+      "tgen": "water-lines-text"
+    },
+    "water-name": {
+      "tgen": null,
+      "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss"
+    },
+    "place-city": {
+      "tgen": [
+        "capital-names",
+        "placenames-medium"
+      ]
+    },
+    "place-village": {
+      "tgen": "placenames-small"
+    },
+    "place-minor": {
+      "tgen": "placenames-small"
+    },
+    "mountain-peak-icon": {
+      "tgen": null,
+      "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss"
+    },
+    "mountain-peak-label": {
+      "tgen": null,
+      "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss"
+    },
+    "poi-icon": {
+      "tgen": null,
+      "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss"
+    },
+    "osmpoi-icon": {
+      "tgen": null
+    },
+    "osmpoi-label": {
+      "tgen": null
+    },
+    "rifugi-icon": {
+      "tgen": null
+    },
+    "rifugi-label": {
+      "tgen": null
+    },
+    "toponimi": {
+      "tgen": null
+    },
+    "waterway-river": {
+      "tgen": null,
+      "nota": "water.mss: river/canal, larghezze 0,7 a z8 fino a 6 a z15"
+    },
+    "waterway-stream": {
+      "tgen": null,
+      "nota": "water.mss: stream/ditch/drain da z13, larghezza fissa 2"
+    },
+    "(ombreggiatura)": {
+      "tgen": [
+        "hs100m",
+        "hs25m",
+        "hs10m"
+      ],
+      "nota": "non e' un layer dello stile: calcolata dal client su WebGLTile, parametri in metadata['wm:hillshade']"
+    },
+    "road-lowzoom-track": {
+      "tgen": null,
+      "nota": "archivio roadslz: strade dei livelli bassi, che lo schema OpenMapTiles non porta"
+    },
+    "road-lowzoom-casing": {
+      "tgen": null,
+      "nota": "archivio roadslz: strade dei livelli bassi, che lo schema OpenMapTiles non porta"
+    },
+    "road-lowzoom-major": {
+      "tgen": null,
+      "nota": "archivio roadslz: strade dei livelli bassi"
+    },
+    "road-lowzoom-minor": {
+      "tgen": null,
+      "nota": "archivio roadslz: strade dei livelli bassi"
+    },
+    "boundary-halo": {
+      "tgen": [
+        "admin-low-zoom",
+        "admin-mid-zoom",
+        "admin-high-zoom"
+      ],
+      "nota": "l'alone bianco che il riferimento disegna sotto i confini maggiori (background/line-color: white)"
+    },
+    "aerialway-line": {
+      "tgen": "aerialways",
+      "nota": "impianti di risalita, da z12 come nel project.mml"
+    },
+    "aerialway-dash": {
+      "tgen": "aerialways",
+      "nota": "impianti di risalita, da z12 come nel project.mml"
+    },
+    "water-outline": {
+      "tgen": null,
+      "nota": "bordo degli specchi d'acqua (@acquebordo #a3c4e9): ol-mapbox-style non applica fill-outline-color, serve un layer di linea"
+    }
+  }
+}

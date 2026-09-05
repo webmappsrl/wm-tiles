@@ -1,0 +1,581 @@
+# Notes — Server cartografico Webmapp (wm-tiles)
+
+Nessun ticket Orchestrator: feature tracciata solo in questa cartella.
+
+## Deviazioni dal piano
+
+Nessuna: l'implementazione non e' iniziata.
+
+## Bug trovati
+
+Nessuno durante la pianificazione. Due problemi **pre-esistenti** rilevati nel
+codice esistente mentre si esplorava il contesto, entrambi **fuori scope** e da
+tracciare separatamente:
+
+- `wm-package/src/Enums/AppTiles.php` — la chiave API MapTiler della basemap
+  `satellite` e' in chiaro nel sorgente.
+- `wm-package/src/Enums/AppTiles.php` — la basemap `mute` punta a
+  `http://tiles.webmapp.it/blankmap/...` non cifrato: bloccato come mixed
+  content da qualunque webapp servita in HTTPS.
+
+## Decisioni
+
+- **2026-09-04 — Nome del repo: `wm-tiles`, non `osmvectors`.** Il formato
+  (vettoriale o raster) e' un tipo di output, non l'identita' del servizio: il
+  server produce entrambi dallo stesso stile. Il nome segue anche la convenzione
+  `wm-*` degli altri repo in `~/.config/webmapp/repos.json`. La cartella di
+  lavoro iniziale `~/Documents/osmvectors` e' stata rinominata.
+- **2026-09-04 — Le PNG attuali contengono il rilievo.** Verificato scaricando
+  tiles reali da `api.webmapp.it/tiles` a z9, z12 e z14: si vedono hillshade e
+  curve di livello, stile della famiglia OpenTopoMap/OpenMapSurfer. Il rilievo
+  non e' in OSM, quindi il DEM (Tinitaly 10 m, INGV) e' entrato nello scope del
+  primo ciclo invece di essere rinviato: senza, la nuova basemap sarebbe una
+  regressione visibile.
+- **2026-09-04 — z0-z14, con il limite sul raster accettato.** L'overzoom non
+  aggiunge informazione: a z15-z16 il dettaglio resta quello di z14. Sul
+  vettoriale l'effetto e' contenuto, sul PNG no — il raster a z16 sara' meno
+  dettagliato dell'attuale. Accettato su indicazione del developer: "il png e' di
+  secondo ordine, possiamo fermarci a z14".
+- **2026-09-04 — Il filtro dei livelli e' lato server, non lato client.** Un
+  client che riceve un livello e non lo disegna lo possiede comunque, ed e'
+  estraibile: il filtro lato client non e' un filtro. Da qui i tre stadi
+  capacita' / abilitazione / visibilita'.
+- **2026-09-04 — Scope del primo ciclo ridotto al backend piu' la pagina di
+  preview.** Il connettore map-core e le modifiche a `wm-package`/Nova sono
+  rinviate: i gruppi di livelli vanno validati guardando la preview prima di
+  congelarne il modello dati su N shard, che e' il punto meno reversibile della
+  feature.
+- **2026-09-04 — Il clone locale `~/Documents/map-core` e' stantio** (ottobre
+  2023, branch `develop`, senza `localForage.ts`). La fonte di verita' e' il
+  submodule montato in `wm-webapp/src/app/shared/map-core` o in `wm-app`. La
+  prima stesura dell'overview attribuiva file al repo sbagliato per questo
+  motivo; corretta dopo verifica. Il lavoro del ciclo successivo si innestera' su
+  `develop`.
+- **2026-09-04 — Documentazione accentrata in `wm-tiles`.** Nessun `overview.md`
+  in map-core o wm-package, su decisione del developer, benche' parte del codice
+  dei cicli successivi viva la'.
+
+## Follow-up
+
+- Aggiungere `wm-tiles` a `~/.config/webmapp/repos.json` (non ancora fatto).
+- Valutare una riga di rimando nel `CLAUDE.md` di `map-core` e `wm-package`
+  quando quei repo verranno toccati, dato che la documentazione e' accentrata qui.
+- Separare i sentieri dal layer tecnico `transportation` richiede uno schema
+  planetiler custom: fuori dal primo ciclo. Fino ad allora il gruppo "Strade e
+  sentieri" e' unico e non separabile commercialmente.
+- Ticket separato per i due problemi pre-esistenti di `AppTiles.php`.
+
+## Da compilare durante l'esecuzione
+
+- Costo misurato del filtro sul protobuf (Task 6, step 6).
+- Dimensione e durata del build Italia (Task 14, step 8).
+- Esito dello spike sul rendering nativo MapLibre (Task 13, step 1).
+- Differenze visive accettate rispetto alle PNG attuali (Task 12, step 6).
+- Alert configurati e stack di monitoraggio usato (Task 16, step 6).
+- Se la procedura di purge e' stata provata almeno una volta (Task 16, step 5).
+
+## Validazione z10 (04/09/2026)
+
+Scoperte che valgono per tutti gli zoom e per la pipeline nazionale.
+
+**L'ordine di sovrapposizione delle superfici e' in `project.mml`, non nei
+`.mss`.** Il layer `clc` sta al posto 26, dopo `landcover` (4) e dopo i 12 uso
+suolo regionali (19-25): **Corine sta SOPRA i boschi OSM**, non sotto. Avevo
+l'ordine invertito e i boschi OSM coprivano Corine: la luminosita' andava a
++14,5 invece di -2,9. Con l'ordine giusto i boschi OSM riempiono solo i buchi
+di Corine, che e' il comportamento del riferimento.
+
+**I colori cambiano per fascia di zoom, e non solo le larghezze.**
+`landuse_residential` ha quattro colori (`@built-up-lowzoom` z8-10,
+`@built-up-z11`, `@built-up-z12`, `@residential` z13+). Tararne uno su una
+tile sola porta fuori strada. In `webmapp.mss` tutti e quattro sono
+sovrascritti con `@fondogiallo`, quindi nel nostro stile l'urbano e' crema a
+ogni zoom.
+
+**Il grigio delle citta' nel riferimento non e' un poligono.** A Prato il PNG
+mostra #ccccca compatto: non e' ne' Corine (che da' `@fondogiallo`) ne'
+`landuse=residential` (idem), e' il **reticolo di strade minori** che a z10 si
+fonde in una massa grigia. Avevo dato il grigio alle classi Corine 1xx: era
+sbagliato, annullato. Un colore misurato dice il risultato, ma per attribuirlo
+al layer giusto serve il `.mss`.
+
+**Sotto z12 il riferimento cambia modello stradale**: non casing+fill ma un
+alone (`::halo`) `#8e8b84` di larghezza `fill + 2` sotto il fill. E le classi
+hanno colori distinti che il `.mss` non fa emergere subito — misurati sui
+pixel dei PNG serviti: `motorway` **#dd7a61**, `trunk`/`primary`/`secondary`
+**#e7c87d**. Il locale disegnava primary e secondary in `#ffffff`, invisibile
+sul fondo crema: e' la ragione per cui a z10 la rete stradale sembrava
+assente. Le larghezze erano meno della meta' di quelle di TGen (0,89 contro
+1,9 a z10).
+
+**La rete stradale a z10-z11 e' strutturalmente piu' povera nel vettoriale.**
+Sulla stessa area l'archivio contiene 8 primary + 1 secondary a z10, e 28
+secondary + 76 tertiary + 214 minor a z12: e' lo schema OpenMapTiles che
+filtra per zoom, mentre Mapnik rende dal database completo. Non si corregge
+con lo stile: va deciso se personalizzare i minzoom di planetiler.
+
+**Buco a z13 nell'uso suolo**: `clc-fill` copriva fino a z12 (maxzoom escluso)
+e `landcover-fill` partiva da z14 (minzoom escluso). Nessuna fonte a z13.
+
+**Il pre-schiarimento additivo desatura.** `c + (255-c)*f` alza i canali bassi
+piu' degli alti: sui verdi il risultato era Δr +2, Δg -3,5, Δb +5,8 — un
+grigio-verde slavato al posto del verde pieno del riferimento. Sostituito con
+i valori esatti della tabella `#clc` di `webmapp.mss`; la differenza di
+luminosita' va compensata regolando l'intensita' dell'ombreggiatura calcolata,
+non slavando i colori.
+
+**Metodo.** Agli zoom piccoli il viewport e' piu' largo del bbox generato
+(a z10 ~1,07° di vista contro 0,9° di dati): il fondo vuoto entra nella media
+e le misure non dicono nulla. `measure.mjs` accetta ora una finestra di
+ritaglio e `tile-diff.mjs` dichiara da se' se una tile e' dentro l'area.
+Sulla stessa vista: Δlum +5,4 su tutto il viewport, +1,7 sulla parte coperta.
+
+## Lo stile passa a un profilo per zoom generato dal CartoCSS (04/09/2026)
+
+Su indicazione del committente: *"secondo me devi creare per ogni lvl di zoom
+un set di parametri che identificano lo stile per quello zoom e non solo lo
+stile ma anche cosa deve essere visualizzato e se lo ritieni opportuno anche
+l'ordine"*, e poi *"se tgen e' organizzato cosi non possiamo copiare quella
+parte?"*.
+
+Aveva ragione su entrambe. Estraevo a mano valori che sono gia' scritti nei
+`.mss`, e la trascrizione ha prodotto errori: il grigio urbano attribuito a
+Corine (che invece da' `@fondogiallo`) e le curve di livello date a z10-z12.
+
+Ora: `parse-cartocss.mjs` estrae la tabella layer x zoom, `build-zoom-profile`
+ne ricava visibilita' e ordine, `build-style` genera lo stile. Corretti 34
+scostamenti di visibilita' rispetto al riferimento, fra cui `track` e `path`
+da z10 (la rete fitta del riferimento a z10 sono piste e sentieri, non strade
+secondarie), le curve solo da z12, le etichette dei parchi solo da z13.
+
+**Su CartoCSS come linguaggio del nostro stile**: valutato e scartato. Il
+compilatore verso lo Style Spec non esiste e andrebbe mantenuto; costrutti
+come `::halo`, `comp-op: multiply`, `polygon-gamma`, `way_pixels` non hanno
+equivalente; CartoCSS ha solo soglie discrete mentre con MVT il client sta
+anche a z13,4 e `interpolate` e' continuo; e nessuno strumento della catena
+vettoriale lo parla, incluso il validatore. Se lo stile lo mantenesse il
+cartografo la scelta andrebbe ridiscussa con lui.
+
+Linea di base misurata dopo il passaggio (punto 10.72,44.21):
+z10 -2,6 | z11 +0,6 | z12 +4,1 | z13 -4,6 | z14 -14,0 | z15 -10,6 | z16 -11,8.
+La fascia z14-z16 e' troppo scura di 11-14 punti e con contrasto basso: e' il
+prossimo intervento, ed e' ora un solo set di parametri da correggere.
+
+## Validazione per livello — stato del ciclo (05/09/2026)
+
+Ciclo richiesto: un livello per volta, si passa al successivo solo quando il
+livello e' fedele. **Livello corrente: z10, chiuso.** Prossimo: z11.
+
+Misure z10 (quattro tile dentro il bbox): Δlum fra -2,3 e +0,3, Δcontrasto fra
+-3,4 e +2,4.
+
+Corretto a z10:
+- **Ombreggiatura calcolata su GPU** (`ol/layer/WebGLTile`) al posto del layer
+  `hillshade` dello Style Spec, che in OpenLayers non e' regolabile. Composta
+  in `multiply` con `mix-blend-mode` sul canvas del layer: `prerender` non
+  funziona, un layer WebGL riceve un contesto WebGL. Parametri per fascia in
+  `metadata['wm:hillshade']`, quindi disponibili anche a map-core.
+- **Azimut del sole**: la formula usa `atan2(-dzdy, dzdx)`, angolo matematico
+  (0 = Est, antiorario), mentre 315 e' un azimut geografico (0 = Nord,
+  orario). Passandolo diretto la luce arrivava da Sud-Est e **le vette
+  sembravano valli**. Conversione: `angolo = 90 - azimut`.
+- **Precisione nello shader**: la differenza di quota si calcola canale per
+  canale, non costruendo due quote intorno a 65000 per poi sottrarle — a quel
+  valore gli shader WebGL1 quantizzano e compare un tratteggio.
+- **Saturazione della palette Corine x1,3**: dove disegnavamo #c0c8b0 il
+  riferimento ha #b8d0a8, stessa luminosita' e saturazione maggiore di 16. I
+  colori del CartoCSS sono esatti ma le tiles in produzione furono rese con una
+  versione precedente dello stile. Vince il PNG. Divario di saturazione da
+  4,2 a 0,2.
+- **Ombra z8-10**: opacity 0,30 e gamma 1,4. La gamma approfondisce le ombre
+  senza toccare le zone illuminate (elevare a potenza lascia 1 invariato);
+  l'opacita' compensa la luminosita' che la gamma abbassa. I valori nominali
+  del riferimento (0,2) non si applicano: la' l'ombra e' un raster
+  pre-calcolato con esagerazione 1,4 su DEM a 100 m.
+- **Strade dei livelli bassi** (`pipeline/build-roads-lowzoom.sh`, archivio
+  `roadslz` z8-11): lo schema OpenMapTiles a z10 porta 9 strade sull'area, il
+  riferimento ne disegna circa 300. Estratte dal PBF con GDAL e tilate con
+  tippecanoe. Attenzione al colore: a z10 le tertiary sono BIANCHE con alone
+  grigio, l'arancione e' delle sole primary — colorarle di arancione riempie
+  la mappa di una rete che il riferimento non ha.
+- **Curve di livello**: `comp-op: multiply` tradotto esattamente (moltiplicare
+  per un grigio k equivale a nero con alpha 1 - k/255), larghezze e alpha
+  tarate sui pixel di linea (da 1999 a 5610 contro 4208-10235 del
+  riferimento), e **il filtro delle etichette di quota conteneva `["zoom"]`
+  dentro un `["all", ...]`**, che ol-mapbox-style non valuta: le quote non
+  venivano scritte affatto.
+- **DEM a 2 m** invece di 4: a z16 il ricampionamento `near` duplicava 103
+  colonne su 255 e la pendenza calcolata su colonne duplicate disegnava righe
+  verticali. Ora 0 su 255. Il maxzoom della sorgente e' **letto dalle cartelle**
+  su disco, perche' tenerlo a mano lo aveva lasciato a 14 dopo la
+  rigenerazione a z16.
+- **tileSize: 256 su tutte le sorgenti vettoriali**: OpenLayers costruisce le
+  sorgenti vector su una griglia da 512 px e a vista z13 chiedeva le tile z12
+  — un livello di dettaglio in meno del riferimento, senza alcun errore. Vale
+  anche per map-core.
+
+Aperto a z10, non risolto: nel verde si vedono ancora **strisce diagonali**
+nell'ombreggiatura. Il DEM a 2 m e la correzione di precisione non le hanno
+eliminate; il sospetto ora e' l'aliasing in rimpicciolimento, perche' a z15 il
+DEM a 2 m e' piu' fine dello schermo e la sorgente usa `interpolate: false`.
+
+Aperto per z13: le curve sono ogni 50 m, il riferimento usa `cl_mr_subd` piu'
+fitta. Serve rigenerare l'archivio a 25 m per quella fascia, oppure importare
+`cl_mr_subd` e `cl_lr_subd` da TGen (due `COPY ... TO STDOUT` da approvare).
+
+### z11 chiuso (05/09/2026)
+
+Quattro tile: Δlum fra -0,6 e +4,1, Δcontrasto fra -5,2 e +0,8. Corretto:
+
+- **Ombra z11-12**: `opacity 0,38` e `gamma 1,4`. Il riferimento tiene una
+  sola fascia z11-13 (#hs25m, opacity 0,18) ma da noi i tre livelli divergono:
+  con la stessa opacita' z11 risultava chiaro di 5 punti e z13 in pari, quindi
+  **z13 ha un set proprio** (`hs25m-z13`, opacity 0,30) — a z13 le curve
+  incise scuriscono gia' la mappa. Il profilo consente un set per livello, ed
+  e' la ragione per cui e' organizzato cosi'.
+- **Saturazione Corine portata a x1,625** complessivi (x1,3 poi x1,25): il
+  divario di saturazione passa da 4,7 a 1,2 e migliora anche z10 (Δb da +0,8
+  a -1,5). Tarata su tile di z10 e z11 insieme, per non sistemare un livello
+  rompendo l'altro.
+- **Etichette delle aree protette**: `symbol-placement: line` su un layer di
+  POLIGONI dispone il testo lungo il perimetro e a z11 non trovava spazio —
+  non comparivano affatto. Nel riferimento sono centrate nell'area e
+  incolonnate: `point` con `text-max-width`.
+- **Confini amministrativi**: il riferimento li compone con `opacity 0,5` e
+  `comp-op: darken`; a piena opacita' il tratteggio viola dominava la mappa.
+  E sotto z12 mostra fino al livello 4 (regioni, province), non al 6.
+- **Rifugi**: sono un asset nostro, il riferimento non li ha (la tabella
+  esiste su TGen ma non e' in produzione). A z11 quattro etichette a 9,5 px
+  dominavano una mappa che nel riferimento e' pulita: a z11 restano le sole
+  icone, le etichette entrano da z12 e piu' piccole.
+
+Aperto a z11: mancano gli **scudi stradali** (SS12, SS 12 dir), che il
+riferimento disegna. Servono i 660 SVG di `data/tgen-style/symbols/shields/`
+nello sprite.
+
+### z12 — in corso
+
+Luminosita' in pari (Δlum +1,0), **contrasto -7,6** non ancora risolto.
+Fatto in questo giro:
+
+- **Confini amministrativi**: il riferimento compone con `comp-op: darken`,
+  che su fondo verde porta #c699d1 a (186,153,173) — esattamente il #b799b6
+  misurato sui PNG. Lo Style Spec non ha `darken`, quindi si usa il tono
+  risultante a opacita' piena, con l'alone bianco sotto (i valori del
+  CartoCSS: alone 3, linea 3). Il tono ora coincide cifra per cifra; i pixel
+  di confine passano da 301 a 543 contro i 3508 del riferimento — il resto
+  del divario e' che la nostra tile contiene solo `admin_level` 4 e 8 mentre
+  il riferimento legge dal database completo.
+- **Impianti di risalita** (`aerialway-line` + `aerialway-dash`, da z12):
+  mancavano del tutto. Il riferimento li disegna come linea grigia #808080 con
+  sopra un tratteggio nero largo 3-4.
+- **Toponimi minori** meno diradati (padding 2 e 1, testo piu' piccolo a z12):
+  la tile contiene 4 village e 29 hamlet, il riferimento ne mostra circa otto
+  e noi due. OpenLayers dirada piu' di Mapnik.
+
+Verificato e scartato: `admin_level` e' un numero, non una stringa (il filtro
+era corretto); la vista e' centrata sulla tile giusta e richiede esattamente
+quella tile (nessuno sfasamento, nonostante i toponimi diversi fra i due lati
+— dipende solo da quali il diradamento sceglie).
+
+**Dove sta il contrasto mancante**: i percentili dicono che i toni scuri sono
+allineati (12760 pixel di linea contro 14420, mediana identica) ma il **primo
+percentile del riferimento sta a 74 contro i nostri 131**. Il riferimento ha
+elementi quasi neri che non abbiamo ancora identificato: nell'immagine sono
+linee scure con simboli in alto a destra. Da verificare `power-line`
+(elettrodotti, minzoom 14 nel .mml) e le frecce di direzione.
+
+### z12 chiuso per quanto lo stile puo' fare (05/09/2026)
+
+Δlum +0,3 — ottimo. Δcontrasto **-6,3** (da -7,6), residuo non azzerabile.
+
+Corretto in questo giro:
+- **Cime tre volte piu' piccole del riferimento**: 12 pixel ciascuna contro 39.
+  Il triangolo dentro l'SVG e' piccolo rispetto al riquadro dell'icona, quindi
+  `icon-size` va oltre 1 (1,5 a z11, 1,9 a z14). Le cime sono l'elemento piu'
+  scuro della mappa in montagna e pesano sul contrasto piu' di quanto la loro
+  area suggerisca: il primo percentile di luminosita' passa da 131 a 108
+  (riferimento 74).
+- Impianti di risalita e confini, vedi sopra.
+
+**Perche' il contrasto non si azzera**, misurato e non supposto:
+1. il confine che attraversa la tile nel riferimento non e' nei nostri dati
+   (la tile ha solo `admin_level` 4 e 8, il riferimento legge dal database);
+2. il riferimento mostra circa otto toponimi dove noi due, perche' OpenLayers
+   dirada piu' di Mapnik (i dati ci sono tutti: 4 village + 29 hamlet);
+3. la **varianza locale**: l'area sommitale ha lo stesso colore medio nei due
+   lati (188,9 contro 188,6) ma il riferimento alterna bianco e verde piu'
+   nettamente. E' `polygon-gamma: 0.5` sul layer clc, che rende i bordi dei
+   poligoni meno sfumati; lo Style Spec non ha un equivalente.
+
+Le prime due sono limiti di dati e di renderer, la terza non e' riproducibile.
+Con lo stile si e' arrivati dove si poteva: si passa a z13.
+
+### z13 — in corso
+
+Δlum +0,5 / +1,6 (ottimo), Δcontrasto -7,6 / -5,3.
+
+**Le curve NON sono la causa**: i pixel di linea sono 8013 contro 8407 del
+riferimento, quindi allineati — la densita' a 50 m contro le 25 m di
+`cl_mr_subd` incide meno di quanto sembrasse a occhio.
+
+Il divario e' agli estremi della scala dei toni:
+- **primo percentile 151 contro 106**: mancano elementi molto scuri. Nel
+  riferimento sono le cime (#5c491d, 129 px) e le **icone di alloggio**
+  (#734a08, 100 px) — gli `alpine_hut` di OSM, che noi disegniamo in #8b4a20;
+- **95esimo percentile 227 contro 235**: le nostre zone chiare lo sono meno.
+  Il tono chiaro dominante del riferimento e' #e8efdc.
+
+### z13 chiuso per quanto lo stile puo' fare
+
+Δlum +0,5 / +1,6. Δcontrasto -7,6 / -5,3, residuo.
+
+Corretto: **colori delle icone allineati alle variabili del riferimento** —
+`natural` da #6b4f2a a @landform-color **#5c491d** (cime, passi) e `shelter`
+da #8b4a20 a @accommodation-icon **#734a08** (rifugi). Lo sprite va
+rigenerato dopo la modifica (`node pipeline/build-sprite.mjs`).
+
+Il primo percentile resta 151 contro 106 perche' il 1% della tile sono 655
+pixel e le icone ne coprono circa 300: il resto, nel riferimento, sono
+**pixel di testo** (#888986, #93896b fra i toni piu' frequenti). E' lo stesso
+limite di z12 — OpenLayers dirada le etichette piu' di Mapnik — e non si
+governa dallo stile: `declutter` e' una proprieta' del layer che
+ol-mapbox-style imposta da se'.
+
+### z14 — in corso
+
+Δlum -2,8 / -8,4, e soprattutto **Δb -11,7 / -18,7**: a z14 il pattern si
+inverte rispetto ai livelli bassi. Il riferimento ha verdi molto piu' tenui
+(saturazione 16-18 contro i 41 di z10-12) mentre la palette `regionale` non e'
+mai stata tarata e porta ancora i valori del CartoCSS: il locale risulta
+**troppo saturo**, il contrario del problema di z10.
+
+La taratura con `tools/tune-palette.mjs` sul set `regionale` ha dato pero'
+quattro misure identiche per quattro fattori diversi. La catena funziona —
+scrivendo #ff00ff nel set, il colore arriva nello stile generato — quindi il
+difetto e' nello strumento, non nel generatore. Da verificare la funzione di
+saturazione su colori a bassa saturazione come #becbae, e il fatto che nella
+tile di prova `bosco` copre solo il 4% mentre dominano `ricsport` (35%) e
+`pascolo` (26%).
+
+### Le due soglie di zoom non sono simmetriche (05/09/2026)
+
+Verificato interrogando i layer OpenLayers a z14: **`minzoom` e' una soglia
+ESCLUSA** (un layer con minzoom 12 si vede da z13) ma **`maxzoom` e' INCLUSA**
+(un layer con maxzoom 14 si vede ancora a z14). Il generatore le trattava
+entrambe come escluse ed emetteva `zmax + 1`.
+
+Conseguenza: `clc-fill` restava visibile a z14 e, stando sopra
+`landcover-fill`, lo copriva. A z14 e oltre l'uso suolo regionale non veniva
+disegnato affatto e la mappa mostrava ancora Corine — senza alcun errore, e
+con la taratura della palette `regionale` che non produceva alcun effetto
+(quattro fattori diversi, quattro misure identiche).
+
+Corretto in `pipeline/build-style.mjs`: `maxzoom = zmax`. A z14 la
+luminosita' passa da -2,8 a -1,1 e il divario di blu da **-11,7 a -2,7**.
+
+Diagnosi sbagliate scartate lungo la strada, per memoria: la funzione di
+saturazione dello strumento (corretta, verificata a mano), le geometrie della
+tile (9 poligoni validi, extent 4096), la copertura (108%), il filtro sul
+`coduso`. E un errore nel test stesso: cercavo il magenta di prova con una
+soglia troppo stretta, senza tenere conto che il `multiply` dell'ombra lo
+scurisce fino a (178,0,178).
+
+### Glifi delle cime: tarare sul conteggio dei pixel e' stato un errore
+
+Segnalato dal committente: a z13 i triangoli erano molto piu' grandi del
+riferimento. Avevo eguagliato il NUMERO TOTALE di pixel scuri, ma il
+riferimento ha 12 cime nella tile e noi ne disegniamo 8: cosi' si compensa il
+numero mancante ingrandendo i simboli. Conta la dimensione della singola
+icona — nel riferimento il triangolo e' circa 6-7 px a z13. `icon-size`
+riportato a 0,85 a z11 e 1,0 a z13.
+
+### z14 — tarato, ma l'archivio OSM e' incompleto
+
+Palette `regionale` **desaturata x0,85** (divario di saturazione azzerato) e
+ombra `hs10m` a `opacity 0,20`, `gamma 1,0` — alzare la gamma qui non recupera
+contrasto e affonda la luminosita'. Con il maxzoom corretto, Δlum passa da
+-2,8/-8,4 a **+2,4 / -4,1 / +0,5** su tre tile.
+
+**Problema aperto, di dati**: nel bbox, a z14, l'archivio `osm.pmtiles` ha 70
+tile presenti e **40 assenti** su un campione di 110. Le mancanti sono in
+quota: la tile di Pian Cavallaro (14/8679/5944) non esiste affatto, e li' il
+riferimento disegna impianti di risalita, sentieri e strade mentre noi
+mostriamo solo uso suolo e curve, che vengono da archivi diversi.
+
+Da capire se planetiler scarti le tile prive di feature "principali" o se
+l'estratto sia stato ritagliato male: `centro.osm.pbf` copre la zona e il
+bbox dichiarato nella provenienza e' corretto.
+
+Nota di metodo: il primo campione dava 94 assenti su 104, ma partiva da
+x=8552 che e' longitudine 7,93 — fuori dal bbox. Il range z14 corretto per
+10,0-10,9 / 43,9-44,5 e' x 8647-8688, y 5925-5963.
+
+## L'estratto OSM copre meta' area: manca l'Emilia-Romagna (05/09/2026)
+
+Le 40 tile z14 mancanti non sono un difetto di planetiler. Mappando la
+presenza delle tile per latitudine emerge un confine netto che segue il
+**crinale appenninico**:
+
+    lat 44,504  #....#........
+    lat 44,410  ##.#..........
+    lat 44,316  ######........
+    lat 44,222  ########.....#
+    lat 44,174  ##############   <- da qui in giu' tutto presente
+    lat 43,937  ##############
+
+`centro-latest.osm.pbf` di Geofabrik copre Toscana, Umbria, Marche, Lazio,
+Abruzzo e Molise: **non l'Emilia-Romagna**, che sta in `nord-est`. Meta'
+dell'area demo — tutto il versante emiliano, compresi Pian Cavallaro, il
+Cimone e i loro impianti, sentieri e strade — non ha dati OSM.
+
+Conseguenze su tutto il lavoro fatto finora: le misure sulle tile a nord del
+crinale confrontano una mappa incompleta con una completa, e alcune differenze
+attribuite allo stile potrebbero essere solo questo. Le tile usate per le
+tarature (10/541/371, 10/542/371, 12/2169/1486, 13/4339/2972) stanno pero'
+in gran parte a sud, quindi le tarature di colore restano valide.
+
+**Per l'Italia**: l'estratto va scelto per area geografica, non per regione
+amministrativa. Un bbox a cavallo di due estratti Geofabrik ne richiede due,
+oppure si parte da `europe-latest` con `osmium extract`, che era gia' la
+strada individuata per il rendering nazionale.
+
+## Criterio di valutazione: lo stile, non il contenuto (05/09/2026)
+
+Indicazione del committente: *"l'importante e' che non ti fissi sul contenuto
+ma sullo stile del contenuto, questo perche' le tiles png non sono aggiornate
+quindi e' ragionevole che siano un po' differenti nel contenuto"*.
+
+Le tiles di riferimento sono ferme (dieci giorni di rendering, aggiornamento
+OSM spento), quindi il contenuto diverge per costruzione. Si confronta **come**
+sono disegnati gli elementi presenti in entrambi, non **quanti** ce ne sono.
+
+Va riclassificato quanto concluso finora: il Δcontrasto residuo di z12, z13 e
+z14 era stato attribuito al diradamento delle etichette e ai dati mancanti, ma
+e' in buona parte contenuto diverso — **non un difetto da correggere**. Restano
+validi i confronti per elemento: colore dell'autostrada, tono del confine
+(darken), traduzione del `multiply` delle curve, dimensione del singolo
+triangolo di cima, palette per fascia di zoom.
+
+Restano validi anche i difetti STRUTTURALI trovati, che non dipendono dal
+contenuto: `tileSize` 512 (un livello di dettaglio in meno), `maxzoom`
+inclusivo (uso suolo regionale nascosto da z14), estratto OSM che copre meta'
+area, azimut del sole invertito, precisione dello shader.
+
+## Scudi stradali (05/09/2026)
+
+Tre difetti sovrapposti, sciolti uno alla volta su segnalazione del
+committente:
+
+1. **`icon-text-fit` e' ignorato da ol-mapbox-style.** Le icone allungabili
+   dello Style Spec (`content` + `stretchX`/`stretchY`) sarebbero la via
+   elegante — una sola icona per tipo che si adatta al testo — ma il riquadro
+   restava della dimensione base e la sigla sbordava. Verificato cambiando
+   `icon-text-fit-padding` da 4 a 8 senza che un solo pixel cambiasse.
+   Si generano quindi riquadri di larghezza fissa per numero di caratteri
+   (5 tipi x 6 lunghezze, da 21 a 52 px) e lo stile sceglie con
+   `length(ref)`, come il riferimento fa con i suoi 660 SVG.
+2. **`symbol-placement: line` deforma la sigla**: dispone i caratteri lungo la
+   geometria, e su una strada tortuosa "SP12" si spezzava e ruotava seguendo
+   le curve. Serve `line-center`, che tiene il simbolo come blocco unico.
+   Effetto collaterale: uno scudo per tratto invece di uno ogni 760 px.
+3. La soglia di zoom: gli scudi partivano da z13 mentre il riferimento li
+   mostra gia' a z11-z12.
+
+Colori dagli SVG del riferimento, distinti per tipo: motorway #eacec6,
+trunk #eed9c9, primary #efe4ce, secondary #eeefd7, tertiary #f1f1f1. Nel
+CartoCSS scaricato **entrambi i blocchi `#roads-text-ref` sono commentati**
+(righe 2555-2715) ma la produzione li disegna: la soglia viene dai PNG.
+
+### Il contrasto agli zoom alti resta aperto (05/09/2026)
+
+z15 -7,5 e z16 -12,2 di contrasto, con la luminosita' in pari. Misurato:
+
+- **non e' l'ombreggiatura per intensita'**: alzando l'opacita' il contrasto
+  migliora (da -9,6 a -5,8) ma la luminosita' affonda (da -5 a -19). Il nostro
+  `multiply` puo' solo scurire;
+- **non e' la componente di pendenza da sola**: aggiunta al calcolo su GPU,
+  con valori da 0,3 a 0,9, non sposta il contrasto e scurisce soltanto;
+- **e' l'escursione dei toni**: il confronto posizionale mostra che dove noi
+  abbiamo un tono intermedio il riferimento ha SIA zone piu' chiare (Δ -25)
+  SIA zone piu' scure (Δ +37). I percentili concordano: 25esimo +20, 95esimo
+  -11.
+
+La spiegazione e' che il riferimento compone la pendenza in `comp-op:
+overlay`, che scurisce sotto la meta' e schiarisce sopra — cosa che il
+multiply non fa. Il tentativo di usare `mix-blend-mode: overlay` sul canvas
+del layer non ha funzionato: la classe non viene applicata a runtime
+(`getRenderer().getCanvas()` non espone l'elemento atteso). Va ripreso
+costruendo il layer gia' con la classe giusta per fascia, o con due layer
+sovrapposti — uno in multiply per la luce e uno in overlay per la pendenza.
+
+I sentieri escursionistici sono stati intanto rigenerati sull'area completa
+(`pipeline/build-hiking-full.sh`, l'archivio passa da 2,3 a 5,0 MB): a z16 il
+sentiero CAI 449 mancava del tutto perche' l'archivio veniva dal PBF che
+copriva meta' area.
+
+## Confronto per elemento: lo strumento che mancava (05/09/2026)
+
+`tools/element-diff.mjs` confronta il TONO dominante di ogni categoria di
+elemento (verde, curve, strade chiare, strade gialle, sentieri, confini,
+acque) fra i due lati, su piu' livelli. Il numero di pixel e' solo contesto:
+uno scarto di tono su pochi pixel resta un difetto di stile, una differenza
+di quantita' a parita' di tono no — ed e' il criterio indicato dal
+committente.
+
+Ha subito trovato quello che le medie non vedevano. Il **sentiero CAI** aveva
+lo stesso numero di pixel del riferimento (658 contro 633) ma tono sbagliato
+di 50 punti: il riferimento lo compone in `multiply` con opacita' 0,6, noi
+con lo stesso colore ma senza. Corretto calcolando il colore equivalente sul
+fondo verde tipico (#ab2c20 invece di #e5372f): lo scarto scende a 15.
+
+Risultato piu' importante, pero', e' la mappa di cosa combacia e cosa no:
+
+| elemento | z10-z12 | z13-z16 |
+|---|---|---|
+| acque interne | Δ 44-48 | **Δ 0-1** |
+| strade chiare | Δ 8-24 | Δ 1-17 |
+| strade gialle | Δ 0-65 | — |
+| verde vegetazione | Δ 3-7 | Δ 20-41 |
+| curve di livello | Δ 18-49 | Δ 0-20 |
+
+**Gli elementi che non ricevono l'ombreggiatura combaciano quasi
+perfettamente** (le acque interne a z13+ sono Δ 0 0 1), quelli che la
+ricevono no. E il verde peggiora salendo di zoom, fino a +41 a z16: e'
+coerente con il fatto che il riferimento ha piu' escursione di toni, non un
+colore base diverso.
+
+Ipotesi provate e scartate sulle acque a z10-z12: non e' il mare (la tile ha
+solo `lake` e `river`) e non e' il bordo mancante (aggiunto `water-outline`
+perche' `fill-outline-color` non e' applicato da ol-mapbox-style, ma la
+misura non si e' spostata). Resta da capire.
+
+### Il verde: non e' il colore base, e' che manca la gradazione (05/09/2026)
+
+Misura conclusiva. Il tono verde dominante e' **identico con e senza
+ombreggiatura** (189,201,161 in entrambi i casi, a z13 e a z16): l'ombra non
+incide sulle aree pianeggianti, che sono quelle che dominano.
+
+Distribuzione dei toni di verde a z13, quantizzata a 10:
+
+    locale:      rgb(190,200,160) x24764   <- un tono su tutto
+                 rgb(200,220,180) x4581
+                 rgb(180,190,150) x2067
+    riferimento: rgb(170,180,150) x7492    <- quattro toni comparabili
+                 rgb(190,200,170) x7400
+                 rgb(160,170,150) x5815
+                 rgb(180,190,170) x3095
+
+Il nostro dominante copre cinque volte il secondo; il riferimento distribuisce
+l'area su quattro toni. **Non e' il colore base** — il loro rgb(190,200,170)
+e' il secondo piu' frequente e dista 10 dal nostro solo sul blu — e' che noi
+disegniamo una tinta piatta dove loro hanno una gradazione.
+
+Spiega anche il resto: la luminosita' media e' in pari perche' il nostro tono
+unico sta al centro della loro gamma, e il contrasto e' basso perche' non
+abbiamo la gamma. Le tre ipotesi provate sull'ombreggiatura (intensita',
+componente di pendenza, composizione in overlay) cercavano di ricavare quella
+gradazione dall'ombra: non potevano funzionare.
+
+Da verificare: `polygon-gamma: 0.5` sui poligoni Corine, e se il riferimento
+sovrapponga piu' fonti di uso suolo semi-trasparenti.

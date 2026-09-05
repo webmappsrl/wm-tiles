@@ -1,0 +1,10 @@
+import {chromium} from 'playwright';
+const b = await chromium.launch({args:['--use-gl=angle','--enable-unsafe-swiftshader']});
+const p = await (await b.newContext({viewport:{width:1400,height:400}})).newPage();
+const errs=[]; p.on('pageerror',e=>errs.push(e.message));
+await p.goto('http://localhost:8080/preview/?area=appennino&zoom=14',{waitUntil:'networkidle',timeout:40000});
+await p.waitForTimeout(3500);
+const groups = await p.$$eval('#groups label', els => els.map(e => e.textContent.trim()));
+console.log('  interruttori:', groups.join(' · ') || 'NESSUNO');
+if (errs.length) console.log('  errori: '+errs.slice(0,3).join(' | '));
+await b.close();

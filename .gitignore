@@ -1,0 +1,6 @@
+node_modules/
+data/
+# I glifi sono ~100 MB di artefatti scaricabili: li rigenera pipeline/get-glyphs.sh
+style/glyphs/
+.env
+*.log

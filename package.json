@@ -1,0 +1,36 @@
+{
+  "name": "wm-tiles",
+  "version": "0.1.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "validate": "node pipeline/validate-style.mjs style/webmapp.json",
+    "test:watch": "vitest",
+    "style": "node pipeline/build-style.mjs",
+    "profile": "node pipeline/build-zoom-profile.mjs",
+    "cartocss": "node pipeline/parse-cartocss.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "module",
+  "dependencies": {
+    "@mapbox/vector-tile": "^3.0.0",
+    "@maplibre/maplibre-gl-style-spec": "^26.4.1",
+    "express": "^5.2.1",
+    "pbf": "^5.1.2",
+    "pmtiles": "^4.5.0",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.1",
+    "supertest": "^7.2.2",
+    "vitest": "^3.2.7"
+  }
+}
