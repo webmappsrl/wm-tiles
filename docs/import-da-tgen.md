@@ -81,6 +81,14 @@ Tutto ciò che segue la lettura avviene **in locale**: TGen vede solo una
 
 ## Le query
 
+> **Attenzione: nel repo ci sono solo le query dell'uso suolo**
+> (`usotoscana-bbox.sql`, `usoemilia-bbox.sql`). Gli archivi di **Corine,
+> toponimi e rifugi** furono importati con query scritte al momento e non
+> salvate: esistono i dati, non la procedura per rifarli. Le tabelle si
+> ritrovano in `data/tgen-style/project.mml` — `clc` usa
+> `clc12_version_18_5`. **Chi rifà una di queste importazioni salvi la query
+> qui**, altrimenti la lacuna si ripresenta.
+
 Stanno in `pipeline/sql/`. Ognuna fa tre cose:
 
 1. **normalizza le colonne**: ogni regione ha nomi propri (`lv3_13`,

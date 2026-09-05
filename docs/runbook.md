@@ -26,6 +26,79 @@ archivi e la mappa è vuota. È il comportamento atteso, non un guasto.
 
 ---
 
+## Ripopolare da zero, dopo un clone
+
+`data/` sta fuori da git: un clone appena fatto non ha dati e la mappa è
+vuota. Con accesso a TGen si rimette in piedi tutto.
+
+**Prerequisiti**: Docker, Node ≥ 18, `osmium`, `tippecanoe`, `pmtiles`, `jq`.
+Su macOS: `brew install osmium-tool tippecanoe pmtiles jq`.
+
+```mermaid
+flowchart TB
+  a["1. fonti pubbliche<br/><i>get-sources.sh</i>"] --> b["2. dati da TGen<br/><i>ssh, sola lettura</i>"]
+  b --> c["3. generare gli archivi<br/><i>la sequenza qui sotto</i>"]
+  c --> d["4. avviare e verificare"]
+```
+
+### 1. Le fonti pubbliche
+
+```bash
+bash pipeline/get-sources.sh 10.0 43.62 10.9 44.5
+```
+
+Scarica, saltando ciò che c'è già:
+
+| cosa | da dove |
+|---|---|
+| estratti OSM | `download.geofabrik.de/europe/italy/` — `centro` e `nord-est` |
+| DEM Copernicus GLO-30 | `copernicus-dem-30m.s3.amazonaws.com` |
+| ESA WorldCover 2021 | `esa-worldcover.s3.eu-central-1.amazonaws.com` |
+| glifi dei font | `github.com/openmaptiles/fonts` release v2.0 |
+
+Le sorgenti ausiliarie di planetiler (Natural Earth, water polygons,
+lake centerlines) le scarica planetiler stesso al primo giro.
+
+### 2. I dati che vivono su TGen
+
+Servono l'accesso a `ssh tgen` e il rispetto della **sola lettura** — vedi
+[`import-da-tgen.md`](import-da-tgen.md) per la regola completa.
+
+**Uso suolo regionale.** Le query ci sono, basta adattare l'envelope:
+
+```bash
+ssh tgen "psql -d general -Atf -" < pipeline/sql/usotoscana-bbox.sql   > data/usotoscana.geojsonl
+tippecanoe -o /tmp/lc.mbtiles -l landcover -Z8 -z14   --drop-densest-as-needed --simplification=4 --force -q data/usotoscana.geojsonl
+pmtiles convert /tmp/lc.mbtiles data/archives/$V/landcover.pmtiles
+```
+
+Per un'altra regione serve una query nuova: i nomi reali delle tabelle e la
+traduzione delle colonne in `coduso` stanno nelle espressioni `CASE` di
+`data/tgen-style/project.mml`.
+
+> **Le query per Corine, toponimi e rifugi non sono nel repo.** Quegli
+> archivi furono importati con query scritte al momento e non salvate — gli
+> archivi esistono ma la procedura per rifarli va ricostruita. Le tabelle si
+> trovano nel `project.mml`: `clc` (`clc12_version_18_5`) per il Corine, e i
+> layer dei toponimi e dei rifugi per gli altri due. **Chi rifà una di queste
+> importazioni salvi la query in `pipeline/sql/`.**
+
+Nel frattempo, per un'area dentro il riquadro già coperto, si copiano
+dall'archivio esistente: `clc`, `toponimi` e `rifugi` hanno un riquadro quasi
+nazionale.
+
+### 3-4. Generare e avviare
+
+La sequenza è quella della sezione seguente. Poi:
+
+```bash
+node src/server.js &
+curl -s localhost:8080/version | jq .provenance
+open http://localhost:8080/preview/
+```
+
+---
+
 ## Rigenerare i dati di un'area
 
 ```mermaid

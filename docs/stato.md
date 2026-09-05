@@ -73,5 +73,8 @@ prima di impegnare una notte di elaborazione.
   `tools/` misurano ma nessuno gira in automatico e nessuno fallisce da solo
   se una regressione rientra: è così che due difetti gravi dell'ombreggiatura
   sono rimasti invisibili per giorni
+- **Mancano le query di importazione** per Corine, toponimi e rifugi: gli
+  archivi ci sono, la procedura per rifarli no. Chi ne rifà una salvi la query
+  in `pipeline/sql/`
 - **Le aree chiare**: TGen mostra rocce e praterie d'alta quota dove noi
   mettiamo verde, visibile a z10 e z12. Non è chiaro se sia dato o stile
