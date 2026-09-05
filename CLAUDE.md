@@ -49,6 +49,24 @@ lavoro.
 4. Nessun commit senza conferma esplicita. Nessun ticket Orchestrator, nessuna
    stima.
 
+## Come lavorare qui
+
+**In `/loop` dinamico non schedulare attese.** La cadenza lunga di quel comando
+serve a chi aspetta un evento esterno — una build, un deploy, una coda remota.
+Qui gira tutto in locale, il collo di bottiglia sono gli screenshot Playwright,
+e si puo' incatenare un giro dopo l'altro: una pausa lascia la macchina ferma
+mentre c'e' lavoro pronto. Fermarsi solo per mostrare un risultato o per una
+decisione che spetta all'utente.
+
+**Le modifiche automatiche ai file JS vanno mirate.** Due volte in un giorno una
+sostituzione con espressione regolare ha colpito il punto sbagliato: una ha
+inserito una virgola dentro un getter rompendo l'intero script della preview,
+l'altra e' fallita in silenzio lasciando una funzione mai definita. Se
+un'ancora non si trova, il comando deve fallire rumorosamente.
+
+**Lo stato del lavoro e le decisioni aperte stanno in `docs/stato.md`**, non
+nella memoria di sessione: cosi' li vede il team e sopravvivono alla sessione.
+
 ## Comandi
 
 ```bash

@@ -23,6 +23,7 @@ flowchart LR
 | [**runbook.md**](runbook.md) | chi deve far girare il sistema o rigenerare dati |
 | [**integrazione.md**](integrazione.md) | chi integra webapp, app o `map-core` |
 | [**import-da-tgen.md**](import-da-tgen.md) | chi deve leggere dati da TGen |
+| [**stato.md**](stato.md) | **da dove riprendere**: stato, task aperti, decisioni in attesa |
 
 `CLAUDE.md`, nella radice del repo, raccoglie i vincoli del committente e le
 trappole verificate sul campo: è pensato per chi (o cosa) scrive codice, non
