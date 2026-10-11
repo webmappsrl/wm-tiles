@@ -70,7 +70,10 @@ lavoro.
 (Pisa, Caltanissetta): copie da TGen limitate alla cella, generazione,
 confronto. Cio' che riguarda l'Italia intera — la copia completa da TGen, la
 generazione nazionale — si lancia sul server dedicato, mai sul Mac: richiede
-ore e decine di GB.
+ore e decine di GB. Il server e' `ssh wm-tiles` (Hetzner Cloud): repo in
+`/srv/wm-tiles`, dati sul Volume in `/data/wm-tiles`, preparato da
+`infra/prepara-server.sh`. Il repo su GitHub e' pubblico: chiavi e
+credenziali non entrano mai nei file.
 
 **Emulare TGen e' un algoritmo, non una serie di domande** (regola
 dell'utente, 10 ottobre 2026). TGen e i suoi PNG sono la specifica: cio' che

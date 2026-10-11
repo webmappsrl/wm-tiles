@@ -26,6 +26,37 @@ archivi e la mappa è vuota. È il comportamento atteso, non un guasto.
 
 ---
 
+## Preparare un server
+
+Il server di produzione è una macchina Hetzner Cloud (`ssh wm-tiles`): Ubuntu
+26.04, 8 vCPU dedicate, 32 GB di RAM, un Volume da 500 GB per i dati. Si
+prepara con uno script solo, che si può rilanciare:
+
+```bash
+ssh wm-tiles 'bash -s' < infra/prepara-server.sh
+```
+
+Installa Docker, Node, aws CLI e gli strumenti che le pipeline chiamano sul
+sistema (osmium, tippecanoe 2.79 compilato dai sorgenti, pmtiles), aggiunge
+8 GB di swap, lascia SSH solo con chiave e apre nel firewall le sole porte
+22, 80 e 443. Il repo sta in `/srv/wm-tiles`, e il suo `data/` punta al Volume
+(`/data/wm-tiles`).
+
+Tre cose da sapere:
+
+- **Il Volume è un disco di rete, più lento di quello locale**: ci stanno i
+  dati che restano (archivi, PNG, copia da TGen, DEM); i lavori temporanei e
+  pesanti si fanno sul disco locale. I backup di Hetzner non coprono il Volume:
+  la copia da TGen va salvata anche altrove.
+- **Docker scavalca il firewall** per le porte che un container pubblica: un
+  servizio in container (GraphHopper) si pubblica su `127.0.0.1` e si espone
+  dal reverse proxy.
+- **maplibre-native gira solo nel container** (`render-png-docker.sh`): il
+  binario precompilato vuole le librerie di Ubuntu 22.04, e `aggiorna-png.sh`
+  ci passa da solo.
+
+---
+
 ## Ripopolare da zero, dopo un clone
 
 `data/` sta fuori da git: un clone appena fatto non ha dati e la mappa è
