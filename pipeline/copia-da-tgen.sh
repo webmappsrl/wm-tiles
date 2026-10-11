@@ -37,7 +37,8 @@ query() {
   sed "s/$ITALIA_ENV/$ENV/" "$1"
 }
 TINITALY_DIR="/mnt/sdb1/mapdata/dem/it_original"
-TINITALY_FILE=194
+# 193 GeoTIFF; con mosaic.vrt la cartella ne conta 194 (copiati l'11 ottobre 2026)
+TINITALY_FILE=193
 TINITALY_GB=16
 
 test -f "$SQL/manifest.tsv" || { echo "!! manca $SQL/manifest.tsv: lancia prima tgen-layer-sql.py" >&2; exit 1; }
@@ -128,7 +129,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# 3. TINITALY, il DEM a 10 m di tutta Italia (194 file, 16 GB).
+# 3. TINITALY, il DEM a 10 m di tutta Italia (193 GeoTIFF e un .vrt, 16 GB).
 # ---------------------------------------------------------------------------
 log "== 3. TINITALY"
 N=$(conta_tif)

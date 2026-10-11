@@ -53,7 +53,7 @@ Le decisioni che aspettano una risposta sono segnate **[decisione]**.
 | ☐ | **[decisione] Fino a che livello si conservano le quote del DEM** | proposta z14 (~8 GB) invece di z16 (~130 GB): i PNG arrivano comunque a z16. Da verificare sull'area di prova che a z16 non cambi nulla |
 | ☐ | **Copiare da TGen i dati per tutta l'Italia** (Task 14) | in sola lettura, una volta: uso suolo delle 12 regioni e `land_cover_hr`, Corine, i 9 strati IGM, ghiacciai del Piemonte, toponimi, rifugi, i sorgenti dello stile; il DEM se conviene. Salvare ogni query in `pipeline/sql/` |
 | ☐ | **Strati IGM e ghiacciai nello stile locale** | TGen li disegna da z14 (vedi sotto), il locale no |
-| ☐ | **Copia completa da TGen, una volta — sul server nuovo** | script pronto: `pipeline/copia-da-tgen.sh <dest>` senza riquadro. Le 27 query (28 layer) le genera `pipeline/tgen-layer-sql.py` dal `project.mml`; più inventario `grid_1x1` e TINITALY. Circa 7-8 ore. Sul Mac ci sono già 4 strati IGM nazionali (2,4 GB) |
+| ✅ | **Copia completa da TGen, una volta — sul server nuovo** | fatta l'11 ottobre 2026 in 45 minuti, da TGen al server direttamente: i 27 layer (8,4 GB compressi), l'inventario `grid_1x1` (61.200 celle) e TINITALY (193 GeoTIFF e un `.vrt`, 16 GB), in `/data/wm-tiles/tgen-copia/italia`. Il server ha usato una chiave sua, valida solo dal suo indirizzo, e una regola in uscita sulla porta 22 verso TGen: entrambe da togliere ora che la copia è finita. **Va salvata anche fuori dal server**: i backup Hetzner non coprono il Volume |
 | ◐ | **Copia delle celle di prova, sul Mac** | `pipeline/copia-da-tgen.sh <dest> W,S,E,N`: stesse query limitate alla cella, solo i file di TINITALY che la toccano |
 | ☐ | **Generazione guidata dall'inventario** | dato un elenco di celle, la pipeline produce tutto; celle e livelli li legge da `grid_1x1` (anche z17–z18 dove TGen li ha); si ferma solo davanti a un layer del `.mml` che non sa mappare |
 | ☐ | **Confronto automatico con TGen** | controllo interno a campione per cella e livello, come un test: stile si corregge, contenuto e buchi di TGen si ignorano |
@@ -158,8 +158,14 @@ di TGen vengono da DEM a 100, 25 e 10 m (`/root/mapdata/hs/{100m,25m,10m}`): se
 quello a 10 m copre l'Italia, copiarlo risolve la decisione sul DEM senza
 scaricare TINITALY.
 
-La copia passa dal Mac che esegue i comandi (`ssh tgen … | ssh <server> …`):
-così su TGen non si aggiunge nessun accesso.
+La copia dell'11 ottobre 2026 non è passata dal Mac, come previsto, ma è
+andata da TGen al server direttamente, più veloce. Per farlo, su TGen si è
+aggiunta una chiave del server, valida solo dal suo indirizzo e senza tunnel
+né sessioni interattive, e sul firewall Hetzner del server una regola in
+uscita sulla porta 22 verso TGen. Entrambe vanno tolte a copia finita.
+Attenzione: il firewall standard dei server Webmapp apre la 22 in uscita solo
+verso pochi indirizzi, quindi da un server nuovo TGen non risponde finché non
+si aggiunge la regola.
 
 **Inventario del 10 ottobre 2026** (sola lettura):
 
