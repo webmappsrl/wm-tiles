@@ -310,64 +310,121 @@ meno curve di livello, la montagna di più.
 
 ## Tile PNG su S3 e CloudFront
 
-Le tile PNG si servono da **`tiles.webmapp.it`**: un bucket S3 privato che
-legge solo CloudFront. Le app passano dal vecchio indirizzo
-(`api.webmapp.it/tiles/{z}/{x}/{y}.png`) al nuovo
-(`https://tiles.webmapp.it/{z}/{x}/{y}.png`) quando le si configura: non c'è
-redirect. Tutto sta in [`infra/tiles-png.yaml`](../infra/tiles-png.yaml), con
-le ragioni di ogni scelta.
+**Fatto l'11 ottobre 2026.** Le tile PNG stanno nel bucket S3 privato
+`wm-tiles-png`, che legge solo CloudFront, nell'account AWS degli shard
+(061490227874), regione `eu-central-1`. Tutto e' in
+[`infra/tiles-png.yaml`](../infra/tiles-png.yaml), stack `wm-tiles-png`, con
+le ragioni di ogni scelta. I nomi delle risorse AWS sono in inglese.
 
-**Regione `eu-central-1`** (Francoforte): vicina al server di wm-tiles, che
-carica le tile, e non va attivata a parte come Milano. Per chi guarda la mappa
-la regione non conta, risponde CloudFront.
+| cosa | valore |
+|---|---|
+| dominio | `tiles.maphub.it` (certificato ACM in us-east-1, gia' emesso) |
+| distribuzione CloudFront | `E1AR48NAFQPA3F`, oggi su `d2ktl89gliikkx.cloudfront.net` |
+| bucket | `wm-tiles-png` |
+| chi consegna | utente IAM `wm-tiles-delivery`, policy `wm-tiles-png-delivery` |
+| la sua chiave | solo sul server wm-tiles, `/root/.aws/credentials`, profilo `wm-tiles-delivery` |
+| chi amministra | profilo `wm-admin` sul Mac (utente `wm-admin-cli`), solo per cambiare lo stack |
 
-```bash
-# 1. certificato: CloudFront lo legge solo da us-east-1. La validazione chiede
-#    un record CNAME sul DNS di webmapp.it (dnsitalia.net)
-aws acm request-certificate --region us-east-1 --domain-name tiles.webmapp.it --validation-method DNS
-aws acm describe-certificate --region us-east-1 --certificate-arn <arn> \
-  --query 'Certificate.DomainValidationOptions[0].ResourceRecord'
+**Un solo dominio per tutte le tile.** CloudFront smista per percorso:
+`/png/*` va al bucket, tutto il resto (tile vettoriali, `style.json`,
+manifest, DEM) al server wm-tiles con il nome tecnico
+`origine.tiles.maphub.it`, che le app non vedono mai.
 
-# 2. bucket, distribuzione, permessi (a certificato emesso)
-aws cloudformation deploy --region eu-central-1 --stack-name wm-tiles-png \
-  --template-file infra/tiles-png.yaml --capabilities CAPABILITY_NAMED_IAM \
-  --parameter-overrides NomeBucket=<nome-unico> CertificatoArn=<arn>
-aws cloudformation describe-stacks --region eu-central-1 --stack-name wm-tiles-png \
-  --query 'Stacks[0].Outputs'
-# 3. sul DNS: CNAME tiles.webmapp.it -> DominioCloudFront (dagli output)
+**Le cartelle dei PNG** hanno gia' il prefisso `png/` nella chiave, quindi il
+percorso arriva a S3 cosi' com'e':
 
-# 4. la chiave di chi consegna: si crea qui e vive SOLO sul server di wm-tiles
-aws iam create-access-key --user-name wm-tiles-consegna
-
-# 5. migrazione, una volta, dal server di oggi (da li' solo letture)
-aws configure set default.s3.max_concurrent_requests 64
-bash pipeline/migra-tiles-s3.sh root@46.101.124.52:/root/api.webmapp.it/tiles \
-  data/tiles-api s3://<nome-unico>
-
-# 6. verifica, poi si cambia l'indirizzo nelle app
-curl -sI https://tiles.webmapp.it/14/8669/5973.png   # 200, image/png, CORS
-curl -sI https://tiles.webmapp.it/18/1/1.png          # 404
+```
+png/default/{z}/{x}/{y}.png           tutte le app (l'unica prodotta oggi)
+png/{shard}/default/{z}/{x}/{y}.png   tutte le app di uno shard
+png/{shard}/{app}/{z}/{x}/{y}.png     una app sola
 ```
 
-Da lì le consegne vanno sul bucket: `aggiorna-png.sh` con destinazione
-`s3://<nome-unico>` e `WM_CLOUDFRONT_ID=<IdDistribuzione>`. Ogni consegna
-carica le sole tile cambiate, le invalida in CloudFront e lascia nella
-cartella delle copie elenco e ora; per tornare indietro,
-`pipeline/ripristina-png-s3.sh` riporta quelle tile alla versione precedente,
-che il versioning del bucket conserva per 60 giorni.
+`default` e' un nome riservato. Quale cartella usa un'app lo dice lo shard
+nella configurazione che le passa: CloudFront non ripiega da solo su
+`default`, perche' una tile che manca davvero (fuori dall'Italia) diventerebbe
+in silenzio una tile di un'altra cartella. Ogni cartella e' un'Italia intera da
+rendere: due app con la stessa personalizzazione ne condividono una.
 
-**Cosa garantisce la configurazione**, e perché:
+Nessuna versione dei dati nel percorso dei PNG, a differenza delle tile
+vettoriali: si sovrascrive e si torna indietro con il versioning del bucket.
+
+**Le tile di `api.webmapp.it` non si migrano** (decisione dell'utente): nel
+bucket vanno solo i PNG prodotti da wm-tiles. `migra-tiles-s3.sh` resta per
+il caso in cui servisse.
+
+### Consegna
+
+Dal server, con il profilo di consegna:
+
+```bash
+AWS_PROFILE=wm-tiles-delivery WM_CLOUDFRONT_ID=E1AR48NAFQPA3F \
+  bash pipeline/consegna-png.sh <cartella-png> s3://wm-tiles-png/png/default <registro>
+```
+
+Ogni consegna carica le tile, invalida in CloudFront quelle cambiate e lascia
+nel registro elenco e ora; per tornare indietro,
+`pipeline/ripristina-png-s3.sh` riporta quelle tile alla versione precedente,
+che il versioning conserva per 60 giorni.
+
+### `tiles.maphub.it` su CloudFront
+
+**Fatto l'11 ottobre 2026.** Sul DNS di maphub.it (dnsitalia.net):
+
+| record | tipo | valore |
+|---|---|---|
+| `tiles` | CNAME | `d2ktl89gliikkx.cloudfront.net.` |
+| `origine.tiles` | A | `116.202.26.149` (il server) |
+| `_c0afe18c67178c1b4c548f1a224530a6.tiles` | CNAME | validazione ACM: resta, serve ai rinnovi |
+
+Sul server: `origine.tiles.maphub.it` sta nello stesso blocco del Caddyfile di
+`tiles.maphub.it` (copia di prima in `/etc/caddy/Caddyfile.prima-cloudfront`),
+e l'unit `wm-tiles` ha `PUBLIC_URL=https://tiles.maphub.it` in
+`/etc/systemd/system/wm-tiles.service.d/public-url.conf`: CloudFront chiede
+all'origine con `Host: origine.tiles.maphub.it`, e senza la variabile
+`style.json` manderebbe i client direttamente al server, scavalcando la cache.
+
+Per tornare indietro: il record `tiles` ridiventa A verso `116.202.26.149`.
+
+Ancora da fare: togliere `tiles.maphub.it` dal blocco di Caddy. Non riceve
+piu' traffico e il suo certificato non si rinnova piu' (la sfida HTTP-01
+arriva a CloudFront): Caddy ritenterebbe all'infinito.
+
+Un 404 resta nella cache di CloudFront cinque minuti: dopo aver aggiunto
+qualcosa che prima mancava (glifi, DEM), si invalida
+(`aws cloudfront create-invalidation --distribution-id E1AR48NAFQPA3F --paths '/glyphs/*'`).
+
+### Ricostruire da zero
+
+```bash
+# certificato: CloudFront lo legge solo da us-east-1; la validazione chiede un
+# CNAME sul DNS di maphub.it (dnsitalia.net), da lasciare per i rinnovi
+aws acm request-certificate --profile wm-admin --region us-east-1 \
+  --domain-name tiles.maphub.it --validation-method DNS
+aws cloudformation deploy --profile wm-admin --region eu-central-1 \
+  --stack-name wm-tiles-png --template-file infra/tiles-png.yaml \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --parameter-overrides NomeBucket=wm-tiles-png CertificatoArn=<arn>
+# la chiave di consegna va dritta sul server, senza passare da schermo o file
+aws iam create-access-key --profile wm-admin --user-name wm-tiles-delivery --output json \
+  | ssh wm-tiles '<scrive il profilo wm-tiles-delivery in /root/.aws/credentials>'
+# verifica
+curl -sI https://tiles.maphub.it/png/default/14/8669/5973.png   # 200, image/png, CORS
+curl -sI https://tiles.maphub.it/png/default/18/1/1.png          # 404
+```
+
+**Cosa garantisce la configurazione**, e perche':
 
 - **niente bucket pubblico**: legge solo questa distribuzione (Origin Access
   Control);
-- **chi consegna non può cancellare**: solo scrittura e invalidazione, come la
-  consegna di oggi, che non cancella mai (sul server ci sono anche tile estere
-  che wm-tiles non rifà);
+- **chi consegna non puo' cancellare**: solo scrittura e invalidazione
+  (verificato: `aws s3 rm` dal server risponde AccessDenied);
 - **una tile mancante risponde 404**, come oggi, e il 404 resta in cache
   cinque minuti;
 - **cache**: il browser tiene una tile 7 giorni, come oggi; CloudFront un anno,
-  perché ogni consegna invalida ciò che cambia. Le prime 1.000 invalidazioni al
+  perche' ogni consegna invalida cio' che cambia. Le prime 1.000 invalidazioni al
   mese sono gratuite, e sopra le 1.000 tile se ne fa una sola su tutto;
+  le risposte del server seguono le sue intestazioni (`immutable` le tile
+  vettoriali, `no-cache` stile e manifest);
 - **CORS aperto** (`Access-Control-Allow-Origin: *`), come oggi: OpenLayers
   carica le tile in modo da poterne leggere i pixel;
 - **il bucket sopravvive allo stack**: cancellare lo stack non cancella le tile.

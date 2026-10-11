@@ -1,7 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
-  Tile PNG di wm-tiles: bucket S3 privato servito da CloudFront su un dominio
-  dedicato (tiles.webmapp.it). Procedura completa in docs/runbook.md,
+  Tile di wm-tiles su un solo dominio (tiles.maphub.it) servito da CloudFront:
+  /png/* da un bucket S3 privato, tutto il resto (tile vettoriali, stile,
+  manifest, DEM) dal server wm-tiles. Procedura completa in docs/runbook.md,
   "Tile PNG su S3 e CloudFront".
 
 Parameters:
@@ -10,7 +11,12 @@ Parameters:
     Description: nome del bucket, unico in tutto S3
   Dominio:
     Type: String
-    Default: tiles.webmapp.it
+    Default: tiles.maphub.it
+  # Il nome con cui CloudFront raggiunge il server: le app non lo vedono mai.
+  # Deve puntare al server e avere un certificato valido (Caddy, Let's Encrypt).
+  OrigineServer:
+    Type: String
+    Default: origine.tiles.maphub.it
   CertificatoArn:
     Type: String
     Description: certificato ACM del dominio, creato in us-east-1 (CloudFront li legge solo da li')
@@ -18,9 +24,10 @@ Parameters:
     Type: Number
     Default: 60
     Description: per quanti giorni si conserva la versione precedente di una tile sovrascritta
+  # nomi delle risorse AWS in inglese, come chiesto dall'utente
   UtenteConsegna:
     Type: String
-    Default: wm-tiles-consegna
+    Default: wm-tiles-delivery
 
 Resources:
   # Privato: lo legge solo CloudFront. Il versioning conserva la versione
@@ -105,12 +112,34 @@ Resources:
           AccessControlMaxAgeSec: 86400
           OriginOverride: true
 
+  # Il server dice da se' quanto tenere ogni risposta: le tile vettoriali hanno
+  # la versione nel percorso e sono `immutable` per un anno, mentre style.json,
+  # manifest e version sono `no-cache`. DefaultTTL 0: cio' che non lo dichiara
+  # non resta in cache. Le query string entrano nella chiave (style.json?set=).
+  PoliticaCacheServer:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Name: !Sub '${AWS::StackName}-server'
+        MinTTL: 0
+        DefaultTTL: 0
+        MaxTTL: 31536000
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: true
+          EnableAcceptEncodingBrotli: true
+          CookiesConfig:
+            CookieBehavior: none
+          HeadersConfig:
+            HeaderBehavior: none
+          QueryStringsConfig:
+            QueryStringBehavior: all
+
   Distribuzione:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
         Enabled: true
-        Comment: tile PNG di wm-tiles
+        Comment: tile di wm-tiles (PNG da S3, il resto dal server)
         Aliases: [!Ref Dominio]
         HttpVersion: http2and3
         # Europa e Nord America: le app sono italiane, e costa meno
@@ -119,21 +148,38 @@ Resources:
           AcmCertificateArn: !Ref CertificatoArn
           SslSupportMethod: sni-only
           MinimumProtocolVersion: TLSv1.2_2021
+        # Nel bucket le chiavi hanno gia' il prefisso png/: png/default/...,
+        # png/<shard>/default/..., png/<shard>/<app>/... Il percorso arriva a S3
+        # cosi' com'e', senza riscritture.
         Origins:
-          - Id: tile
+          - Id: png
             DomainName: !GetAtt Bucket.RegionalDomainName
             OriginAccessControlId: !GetAtt AccessoOrigine.Id
             S3OriginConfig:
               OriginAccessIdentity: ''
+          - Id: server
+            DomainName: !Ref OrigineServer
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols: [TLSv1.2]
+        CacheBehaviors:
+          - PathPattern: png/*
+            TargetOriginId: png
+            ViewerProtocolPolicy: redirect-to-https
+            AllowedMethods: [GET, HEAD, OPTIONS]
+            CachedMethods: [GET, HEAD, OPTIONS]
+            CachePolicyId: !Ref PoliticaCache
+            ResponseHeadersPolicyId: !Ref Intestazioni
+            # i PNG sono gia' compressi
+            Compress: false
         DefaultCacheBehavior:
-          TargetOriginId: tile
+          TargetOriginId: server
           ViewerProtocolPolicy: redirect-to-https
           AllowedMethods: [GET, HEAD, OPTIONS]
           CachedMethods: [GET, HEAD, OPTIONS]
-          CachePolicyId: !Ref PoliticaCache
+          CachePolicyId: !Ref PoliticaCacheServer
           ResponseHeadersPolicyId: !Ref Intestazioni
-          # i PNG sono gia' compressi
-          Compress: false
+          Compress: true
         # Una tile che manca risponde 404 come oggi (serve s3:ListBucket, sotto),
         # e il 404 resta in cache poco: un buco riempito da una consegna si vede subito.
         CustomErrorResponses:
@@ -175,7 +221,8 @@ Resources:
   PermessiConsegna:
     Type: AWS::IAM::ManagedPolicy
     Properties:
-      Description: consegna delle tile PNG di wm-tiles
+      ManagedPolicyName: !Sub '${AWS::StackName}-delivery'
+      Description: delivery of wm-tiles PNG tiles
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -204,5 +251,5 @@ Outputs:
     Description: per consegna-png-s3.sh e le invalidazioni
     Value: !Ref Distribuzione
   DominioCloudFront:
-    Description: il CNAME di tiles.webmapp.it punta qui
+    Description: il CNAME del dominio punta qui
     Value: !GetAtt Distribuzione.DomainName

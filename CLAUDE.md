@@ -324,7 +324,7 @@ modifica fino a z16: 70 tile cambiate diventavano 101.119 PNG, ora 183.
 server di `api.webmapp.it` ci sono anche tile estere e livelli che non
 rifacciamo. Prima di sovrascrivere, `consegna-png.sh` salva le versioni
 attuali delle tile cambiate; per tornare indietro si riconsegna quella
-cartella. Su S3 (`tiles.webmapp.it`, `infra/tiles-png.yaml`) la copia la fa il
+cartella. Su S3 (`tiles.maphub.it/png/`, `infra/tiles-png.yaml`) la copia la fa il
 versioning del bucket, e il divieto di cancellare sta anche nei permessi di
 chi consegna. **`aggiorna-osm.sh` legge da dove ripartire dall'intestazione del
 PBF** (`osmosis_replication_*`) e ve la riscrive: non c'e' un registro a parte
