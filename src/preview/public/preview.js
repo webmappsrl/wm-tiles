@@ -115,13 +115,58 @@ const right = new ol.Map({
  */
 const telefono = matchMedia('(max-width: 720px), (pointer: coarse)').matches;
 
+/**
+ * `?render=vector` ridisegna i layer vettoriali a ogni frame invece di tenere
+ * un canvas per tile (`hybrid`, il default di ol-mapbox-style). Misurato a
+ * densita' 3 con la CPU rallentata 4 volte: canvas da 3 GB a 165 MB, e la
+ * panoramica piu' fluida (p90 da 60 a 29 ms); a densita' 1 `hybrid` resta
+ * piu' fluido. Serve a provare sul telefono, alla densita' vera, la modalita'
+ * che le app potrebbero adottare: per questo non c'e' il limite di sopra.
+ */
+const renderVector = params0.get('render') === 'vector';
+
 const left = new ol.Map({
   target: 'left',
   view, // vista condivisa: le due mappe sono sincronizzate per costruzione
-  ...(telefono ? {pixelRatio: 1} : {}),
+  ...(telefono && !renderVector ? {pixelRatio: 1} : {}),
   controls: [new ol.control.Zoom()],
   layers: [],
 });
+
+/**
+ * ol-mapbox-style 11 non lascia scegliere la modalita' da `apply()`: ogni
+ * layer `hybrid` che arriva si sostituisce con una copia `vector`. La
+ * sostituzione aspetta la fine dell'evento `add`, per non modificare la
+ * collezione mentre la si notifica.
+ *
+ * La copia deve SEGUIRE l'originale, non fotografarlo: quando il layer arriva
+ * non ha ancora sorgente, risoluzioni, `zIndex` ne' lo stile definitivo, che
+ * ol-mapbox-style assegna dopo. Copiato all'arrivo, la mappa restava vuota.
+ * Lo stile si ricopia a ogni `change`, che e' anche il segnale con cui
+ * ol-mapbox-style chiede di ridisegnare quando arriva un'icona.
+ */
+if (renderVector) {
+  const layers = left.getLayers();
+  layers.on('add', e => {
+    const l = e.element;
+    if (l.getRenderMode?.() !== 'hybrid') return;
+    queueMicrotask(() => {
+      const i = layers.getArray().indexOf(l);
+      if (i < 0) return;
+      const copia = new ol.layer.VectorTile({
+        renderMode: 'vector',
+        source: l.getSource(),
+        style: l.getStyle(),
+        declutter: l.getDeclutter(),
+        className: l.getClassName(),
+        properties: l.getProperties(),
+      });
+      l.on('propertychange', ev => { if (ev.key !== 'map') copia.set(ev.key, l.get(ev.key)); });
+      l.on('change', () => copia.setStyle(l.getStyle()));
+      layers.setAt(i, copia);
+    });
+  });
+}
 
 /**
  * Griglia XYZ su entrambi i pannelli. `?grid=14` forza il livello — utile per
@@ -289,7 +334,7 @@ async function applyStyle() {
     copertura.attach();
     insp.riattacca();
 
-    el('meta').textContent = `${built.length} layer OL`;
+    el('meta').textContent = `${built.length} layer OL${renderVector ? ' · vector' : ''}`;
   } catch (e) {
     showError('olms.apply: ' + (e?.message ?? e));
   }
