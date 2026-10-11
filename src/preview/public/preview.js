@@ -103,9 +103,22 @@ const right = new ol.Map({
 });
 
 /** Locale: lo stile applicato da ol-mapbox-style, come fara' map-core. */
+/**
+ * Sui telefoni la mappa locale disegna a densita' 1.
+ *
+ * ol-mapbox-style ne fa 59 layer `hybrid`, e ognuno tiene un canvas per tile:
+ * a densita' 3 sono quasi 2 GB dopo una quindicina di spostamenti (216 MB a
+ * densita' 1), oltre il tetto che Safari su iPhone concede ai canvas. La
+ * pagina veniva chiusa mentre ci si muoveva ("impossibile aprire questa
+ * pagina"), senza errori. I PNG del pannello di destra sono comunque a
+ * densita' 1, quindi il confronto non ci perde.
+ */
+const telefono = matchMedia('(max-width: 720px), (pointer: coarse)').matches;
+
 const left = new ol.Map({
   target: 'left',
   view, // vista condivisa: le due mappe sono sincronizzate per costruzione
+  ...(telefono ? {pixelRatio: 1} : {}),
   controls: [new ol.control.Zoom()],
   layers: [],
 });
