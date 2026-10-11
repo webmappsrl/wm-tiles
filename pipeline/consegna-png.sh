@@ -10,14 +10,21 @@ set -euo pipefail
 # riconsegna quella cartella con questo stesso script. Le tile che prima non
 # esistevano restano anche dopo il ritorno indietro (non si cancella mai).
 #
-# La destinazione e' una cartella locale (le prove sul Mac) oppure
-# host:percorso (produzione; serve rsync >= 3.1 da entrambe le parti).
+# La destinazione e' una cartella locale (le prove sul Mac), host:percorso
+# (serve rsync >= 3.1 da entrambe le parti) oppure s3://bucket[/prefisso]: in
+# quel caso consegna consegna-png-s3.sh, con l'id della distribuzione
+# CloudFront in WM_CLOUDFRONT_ID, e la copia di sicurezza la fa il versioning
+# del bucket (nella cartella delle copie restano elenco e ora, per il ripristino).
 #
 # Uso: pipeline/consegna-png.sh <cartella-png> <destinazione> <cartella-copie>
 SRC="${1:?cartella dei PNG da consegnare}"
 DEST="${2:?destinazione: cartella locale oppure host:percorso}"
 COPIE="${3:?cartella delle copie di sicurezza}"
 test -d "$SRC" || { echo "!! $SRC non esiste" >&2; exit 1; }
+case "$DEST" in
+  s3://*) exec bash "$(dirname "$0")/consegna-png-s3.sh" "$SRC" "$DEST" \
+    "${WM_CLOUDFRONT_ID:?per una destinazione S3 serve WM_CLOUDFRONT_ID (id della distribuzione CloudFront)}" "$COPIE" ;;
+esac
 
 STAMP=$(date '+%Y%m%d-%H%M%S')
 COPIA="$COPIE/$STAMP"

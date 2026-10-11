@@ -1,0 +1,208 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  Tile PNG di wm-tiles: bucket S3 privato servito da CloudFront su un dominio
+  dedicato (tiles.webmapp.it). Procedura completa in docs/runbook.md,
+  "Tile PNG su S3 e CloudFront".
+
+Parameters:
+  NomeBucket:
+    Type: String
+    Description: nome del bucket, unico in tutto S3
+  Dominio:
+    Type: String
+    Default: tiles.webmapp.it
+  CertificatoArn:
+    Type: String
+    Description: certificato ACM del dominio, creato in us-east-1 (CloudFront li legge solo da li')
+  GiorniVersioniVecchie:
+    Type: Number
+    Default: 60
+    Description: per quanti giorni si conserva la versione precedente di una tile sovrascritta
+  UtenteConsegna:
+    Type: String
+    Default: wm-tiles-consegna
+
+Resources:
+  # Privato: lo legge solo CloudFront. Il versioning conserva la versione
+  # precedente di ogni tile sovrascritta, ed e' quello che permette di tornare
+  # indietro dopo una consegna (pipeline/ripristina-png-s3.sh).
+  Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: !Ref NomeBucket
+      VersioningConfiguration:
+        Status: Enabled
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      LifecycleConfiguration:
+        Rules:
+          - Id: versioni-precedenti
+            Status: Enabled
+            NoncurrentVersionExpiration:
+              NoncurrentDays: !Ref GiorniVersioniVecchie
+          - Id: caricamenti-interrotti
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 7
+
+  AccessoOrigine:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub '${AWS::StackName}-oac'
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  # Le tile cambiano allo stesso indirizzo: niente `immutable`. Il tempo lo
+  # dettano le intestazioni messe al caricamento (s-maxage per CloudFront,
+  # max-age per i browser); ogni consegna invalida le tile che ha cambiato.
+  PoliticaCache:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Name: !Sub '${AWS::StackName}-tile'
+        MinTTL: 0
+        DefaultTTL: 86400
+        MaxTTL: 31536000
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: false
+          EnableAcceptEncodingBrotli: false
+          CookiesConfig:
+            CookieBehavior: none
+          HeadersConfig:
+            HeaderBehavior: none
+          QueryStringsConfig:
+            QueryStringBehavior: none
+
+  # CORS aperto come oggi su api.webmapp.it: OpenLayers carica le tile con
+  # crossOrigin, e senza l'intestazione il canvas non si legge.
+  Intestazioni:
+    Type: AWS::CloudFront::ResponseHeadersPolicy
+    Properties:
+      ResponseHeadersPolicyConfig:
+        Name: !Sub '${AWS::StackName}-cors'
+        CorsConfig:
+          AccessControlAllowCredentials: false
+          AccessControlAllowHeaders:
+            Items: ['*']
+          AccessControlAllowMethods:
+            Items: [GET, HEAD, OPTIONS]
+          AccessControlAllowOrigins:
+            Items: ['*']
+          AccessControlMaxAgeSec: 86400
+          OriginOverride: true
+
+  Distribuzione:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: tile PNG di wm-tiles
+        Aliases: [!Ref Dominio]
+        HttpVersion: http2and3
+        # Europa e Nord America: le app sono italiane, e costa meno
+        PriceClass: PriceClass_100
+        ViewerCertificate:
+          AcmCertificateArn: !Ref CertificatoArn
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
+        Origins:
+          - Id: tile
+            DomainName: !GetAtt Bucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt AccessoOrigine.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+        DefaultCacheBehavior:
+          TargetOriginId: tile
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: [GET, HEAD, OPTIONS]
+          CachedMethods: [GET, HEAD, OPTIONS]
+          CachePolicyId: !Ref PoliticaCache
+          ResponseHeadersPolicyId: !Ref Intestazioni
+          # i PNG sono gia' compressi
+          Compress: false
+        # Una tile che manca risponde 404 come oggi (serve s3:ListBucket, sotto),
+        # e il 404 resta in cache poco: un buco riempito da una consegna si vede subito.
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ErrorCachingMinTTL: 300
+          - ErrorCode: 403
+            ErrorCachingMinTTL: 60
+
+  PoliticaBucket:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref Bucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: SoloQuestaDistribuzioneLegge
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub '${Bucket.Arn}/*'
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribuzione}'
+          # senza, S3 risponde 403 invece di 404 a una tile che non esiste
+          - Sid: SoloQuestaDistribuzioneElenca
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:ListBucket
+            Resource: !GetAtt Bucket.Arn
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribuzione}'
+
+  # Chi consegna puo' scrivere e invalidare, MAI cancellare: come consegna-png.sh,
+  # la consegna aggiunge e sovrascrive soltanto (sul bucket restano anche le tile
+  # estere e i livelli che wm-tiles non rifa'). Lettura delle versioni per il ripristino.
+  PermessiConsegna:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: consegna delle tile PNG di wm-tiles
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: [s3:PutObject, s3:GetObject, s3:GetObjectVersion]
+            Resource: !Sub '${Bucket.Arn}/*'
+          - Effect: Allow
+            Action: [s3:ListBucket, s3:ListBucketVersions]
+            Resource: !GetAtt Bucket.Arn
+          - Effect: Allow
+            Action: [cloudfront:CreateInvalidation, cloudfront:GetInvalidation]
+            Resource: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribuzione}'
+
+  # Senza chiavi: la chiave d'accesso si crea a mano (docs/runbook.md) e vive
+  # solo sul server di wm-tiles.
+  Consegna:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref UtenteConsegna
+      ManagedPolicyArns: [!Ref PermessiConsegna]
+
+Outputs:
+  Bucket:
+    Value: !Ref Bucket
+  IdDistribuzione:
+    Description: per consegna-png-s3.sh e le invalidazioni
+    Value: !Ref Distribuzione
+  DominioCloudFront:
+    Description: il CNAME di tiles.webmapp.it punta qui
+    Value: !GetAtt Distribuzione.DomainName

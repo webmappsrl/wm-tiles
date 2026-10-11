@@ -21,6 +21,8 @@ set -euo pipefail
 #
 # Uso: pipeline/aggiorna-png.sh <destinazione> <cartella-copie> [--bbox W,S,E,N] \
 #        <nome>:<W,S,E,N>:<pbf> [...]
+# La destinazione puo' essere una cartella, host:percorso o s3://bucket (con
+# WM_CLOUDFRONT_ID): vedi consegna-png.sh.
 DEST="${1:?destinazione dei PNG: cartella o host:percorso}"
 COPIE="${2:?cartella delle copie di sicurezza}"
 shift 2

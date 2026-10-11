@@ -277,6 +277,72 @@ meno curve di livello, la montagna di più.
 
 ---
 
+## Tile PNG su S3 e CloudFront
+
+Le tile PNG si servono da **`tiles.webmapp.it`**: un bucket S3 privato che
+legge solo CloudFront. Le app passano dal vecchio indirizzo
+(`api.webmapp.it/tiles/{z}/{x}/{y}.png`) al nuovo
+(`https://tiles.webmapp.it/{z}/{x}/{y}.png`) quando le si configura: non c'è
+redirect. Tutto sta in [`infra/tiles-png.yaml`](../infra/tiles-png.yaml), con
+le ragioni di ogni scelta.
+
+**Regione `eu-central-1`** (Francoforte): vicina al server di wm-tiles, che
+carica le tile, e non va attivata a parte come Milano. Per chi guarda la mappa
+la regione non conta, risponde CloudFront.
+
+```bash
+# 1. certificato: CloudFront lo legge solo da us-east-1. La validazione chiede
+#    un record CNAME sul DNS di webmapp.it (dnsitalia.net)
+aws acm request-certificate --region us-east-1 --domain-name tiles.webmapp.it --validation-method DNS
+aws acm describe-certificate --region us-east-1 --certificate-arn <arn> \
+  --query 'Certificate.DomainValidationOptions[0].ResourceRecord'
+
+# 2. bucket, distribuzione, permessi (a certificato emesso)
+aws cloudformation deploy --region eu-central-1 --stack-name wm-tiles-png \
+  --template-file infra/tiles-png.yaml --capabilities CAPABILITY_NAMED_IAM \
+  --parameter-overrides NomeBucket=<nome-unico> CertificatoArn=<arn>
+aws cloudformation describe-stacks --region eu-central-1 --stack-name wm-tiles-png \
+  --query 'Stacks[0].Outputs'
+# 3. sul DNS: CNAME tiles.webmapp.it -> DominioCloudFront (dagli output)
+
+# 4. la chiave di chi consegna: si crea qui e vive SOLO sul server di wm-tiles
+aws iam create-access-key --user-name wm-tiles-consegna
+
+# 5. migrazione, una volta, dal server di oggi (da li' solo letture)
+aws configure set default.s3.max_concurrent_requests 64
+bash pipeline/migra-tiles-s3.sh root@46.101.124.52:/root/api.webmapp.it/tiles \
+  data/tiles-api s3://<nome-unico>
+
+# 6. verifica, poi si cambia l'indirizzo nelle app
+curl -sI https://tiles.webmapp.it/14/8669/5973.png   # 200, image/png, CORS
+curl -sI https://tiles.webmapp.it/18/1/1.png          # 404
+```
+
+Da lì le consegne vanno sul bucket: `aggiorna-png.sh` con destinazione
+`s3://<nome-unico>` e `WM_CLOUDFRONT_ID=<IdDistribuzione>`. Ogni consegna
+carica le sole tile cambiate, le invalida in CloudFront e lascia nella
+cartella delle copie elenco e ora; per tornare indietro,
+`pipeline/ripristina-png-s3.sh` riporta quelle tile alla versione precedente,
+che il versioning del bucket conserva per 60 giorni.
+
+**Cosa garantisce la configurazione**, e perché:
+
+- **niente bucket pubblico**: legge solo questa distribuzione (Origin Access
+  Control);
+- **chi consegna non può cancellare**: solo scrittura e invalidazione, come la
+  consegna di oggi, che non cancella mai (sul server ci sono anche tile estere
+  che wm-tiles non rifà);
+- **una tile mancante risponde 404**, come oggi, e il 404 resta in cache
+  cinque minuti;
+- **cache**: il browser tiene una tile 7 giorni, come oggi; CloudFront un anno,
+  perché ogni consegna invalida ciò che cambia. Le prime 1.000 invalidazioni al
+  mese sono gratuite, e sopra le 1.000 tile se ne fa una sola su tutto;
+- **CORS aperto** (`Access-Control-Allow-Origin: *`), come oggi: OpenLayers
+  carica le tile in modo da poterne leggere i pixel;
+- **il bucket sopravvive allo stack**: cancellare lo stack non cancella le tile.
+
+---
+
 ## Riferimenti
 
 - come funziona: [`wm-tiles.md`](wm-tiles.md)

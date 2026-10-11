@@ -46,6 +46,7 @@ Le decisioni che aspettano una risposta sono segnate **[decisione]**.
 | ✅ | **Regola fondante: si copia lo stile dei PNG e di TGen, non il contenuto** | vale a ogni livello, anche dove i PNG sono del 2018: lo stile tarato finora resta. L'aggiornamento riguarda i dati, che wm-tiles rigenera comunque |
 | ◐ | **Capire la consegna di oggi** | trovata: script in `/root/wm-mapserver` su TGen, poi `rsync` verso il server di `api.webmapp.it`. Da leggere lo script principale (`generate_map_tiles.sh`) |
 | ✅ | **Deciso: wm-tiles non gira su TGen, ma su un server nuovo dedicato** | TGen resta in sola lettura |
+| ☐ | **Tile PNG su S3 e CloudFront** (`tiles.webmapp.it`) | pronti `infra/tiles-png.yaml`, `consegna-png-s3.sh`, `ripristina-png-s3.sh`, `migra-tiles-s3.sh` e la procedura in `runbook.md`. Mancano l'account AWS, il certificato, il CNAME sul DNS, la migrazione delle tile di oggi; poi le app cambiano indirizzo |
 | ☐ | **Preparare il server** | 8 core, 32 GB di RAM, 500 GB–1 TB di SSD, sistema recente con Docker; poi repo, dati e runbook |
 | ✅ | **Deciso: il DEM a 10 m di TGen** | da trovare in `/mnt/sdb1/mapdata/dem`; dopo il cambio, ricontrollare le tarature dell'ombra su tutta la scala |
 | ✅ | **Deciso: si genera quello che ha generato TGen, solo per l'Italia** | livelli z0–z16. Le zone estere generate da TGen non interessano: sul server restano come sono, e la consegna non deve cancellarle |

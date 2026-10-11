@@ -291,6 +291,8 @@ bash pipeline/aggiorna-png.sh <dest|host:percorso> <copie> [--bbox W,S,E,N] <nom
 bash pipeline/aggiorna-osm.sh in.osm.pbf out.osm.pbf     # modifiche Geofabrik mancanti
 bash pipeline/build-celle.sh --solo-osm <versione> <celle...>  # solo archivi OSM
 bash pipeline/consegna-png.sh <png> <dest> <copie>       # rsync senza --delete, con copia di sicurezza
+WM_CLOUDFRONT_ID=<id> bash pipeline/consegna-png.sh <png> s3://<bucket> <registro>  # su S3 + CloudFront
+bash pipeline/ripristina-png-s3.sh <registro>/<ora> s3://<bucket> <id>   # torna alla versione di prima
 # quali PNG rifare fra due versioni degli archivi (elenco su stdout)
 node pipeline/diff-versioni.mjs data/archives/<vecchia> data/archives/<nuova> > tile.txt
 # rendere un elenco, o un'area intera; serve il server acceso
@@ -319,7 +321,9 @@ modifica fino a z16: 70 tile cambiate diventavano 101.119 PNG, ora 183.
 server di `api.webmapp.it` ci sono anche tile estere e livelli che non
 rifacciamo. Prima di sovrascrivere, `consegna-png.sh` salva le versioni
 attuali delle tile cambiate; per tornare indietro si riconsegna quella
-cartella. **`aggiorna-osm.sh` legge da dove ripartire dall'intestazione del
+cartella. Su S3 (`tiles.webmapp.it`, `infra/tiles-png.yaml`) la copia la fa il
+versioning del bucket, e il divieto di cancellare sta anche nei permessi di
+chi consegna. **`aggiorna-osm.sh` legge da dove ripartire dall'intestazione del
 PBF** (`osmosis_replication_*`) e ve la riscrive: non c'e' un registro a parte
 da tenere allineato.
 
