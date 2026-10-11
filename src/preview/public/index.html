@@ -92,13 +92,38 @@
   #err { position: absolute; z-index: 5; bottom: 8px; left: 8px; right: 8px; max-height: 34%;
          overflow: auto; background: #7a2018; color: #fff; padding: 6px 9px; border-radius: 4px;
          font-family: ui-monospace, monospace; font-size: 11px; white-space: pre-wrap; display: none; }
+  /* I controlli si richiudono, e aperti non superano il 40% dell'altezza:
+     con tutti i layer elencati la barra arrivava a 480 px e alla mappa ne
+     restavano 220. Chiusi resta visibile solo cio' che ha la classe `sempre`. */
+  #bar { max-height: 40vh; overflow-y: auto; }
+  #bartoggle { font: inherit; padding: 2px 9px; border-radius: 4px;
+               border: 1px solid #3d5147; background: #263a30; color: #e2ece5; cursor: pointer; }
+  body.bar-chiusa #bar > :not(#bartoggle):not(.sempre) { display: none; }
+  /* Schermi stretti: pannelli uno sopra l'altro. La soglia sta sotto i
+     780 px del viewport piu' stretto con cui gli strumenti di misura
+     fotografano i DUE pannelli; con ?single= il pannello resta uno solo. */
+  #inspectbox { max-width: calc(100% - 16px); box-sizing: border-box; }
+  /* Il titolo parte a destra dei pulsanti di zoom, che prima copriva. */
+  .pane h2 { left: 40px; max-width: calc(100% - 64px);
+             overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  @media (max-width: 720px) {
+    #bar { gap: 8px 10px; padding: 6px 8px; }
+    #bar > strong, #stack { display: none; }
+    #meta { margin-left: 0; width: 100%; }
+    #panes { flex-direction: column; }
+    .pane { min-height: 0; }
+    .pane + .pane { border-left: none; border-top: 2px solid #1d2a23; }
+    .pane h2 { font-size: 10px; padding: 2px 6px; }
+    #inspectbox { left: 8px; right: 8px; width: auto; max-height: 75%; }
+  }
 </style>
 </head>
 <body>
   <div id="bar">
+    <button id="bartoggle" type="button" title="Mostra o nascondi i controlli">controlli</button>
     <strong>OpenLayers</strong>
     <span id="stack"></span>
-    <label>area <select id="area"></select></label>
+    <label class="sempre">area <select id="area"></select></label>
     <label>set <select id="set"></select></label>
     <label title="Cosa mostra il pannello di destra: il riferimento di TGen o i PNG resi da wm-tiles">destra
       <select id="destra"><option value="tgen">TGen</option><option value="png">PNG locali</option></select></label>
@@ -118,7 +143,7 @@
     <label id="inspectlabel" class="off" title="Evidenzia gli elementi sotto il mouse; al clic mostra layer, attributi e colori a confronto (tasto i)">
       <input type="checkbox" id="inspect"> ispeziona
     </label>
-    <span id="meta"></span>
+    <span id="meta" class="sempre"></span>
   </div>
   <div id="panes">
     <div class="pane">

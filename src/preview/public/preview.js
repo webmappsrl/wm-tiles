@@ -34,6 +34,16 @@ el('stack').textContent = `ol ${window.__versions?.ol ?? '?'} · ol-mapbox-style
 const single = params0.get('single');
 if (single) document.body.classList.add(`single-${single}`);
 
+// Sugli schermi stretti i controlli partono chiusi: aperti occuperebbero
+// quasi meta' dell'altezza utile.
+const chiudiBarra = chiusa => {
+  document.body.classList.toggle('bar-chiusa', chiusa);
+  el('bartoggle').setAttribute('aria-expanded', String(!chiusa));
+};
+chiudiBarra(matchMedia('(max-width: 720px)').matches);
+el('bartoggle').addEventListener('click', () =>
+  chiudiBarra(!document.body.classList.contains('bar-chiusa')));
+
 const cfg = await (await fetch('/preview/config.json')).json();
 const params = params0;
 const state = {set: params.get('set') || cfg.defaultSet};
