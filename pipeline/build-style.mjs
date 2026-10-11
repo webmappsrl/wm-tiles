@@ -124,20 +124,30 @@ for (const id of prof.order) {
   /**
    * Palette delle superfici, per fascia.
    *
-   * I due layer di uso suolo si dividono la scala (Corine fino a z13, dati
-   * regionali da z14), quindi ciascuno prende il set del proprio intervallo e
-   * non serve alcuna espressione sullo zoom. La palette e' indicizzata per
-   * chiave semantica (`bosco`, `pascolo`): il riferimento tiene toni molto
-   * piu' tenui da z14, e cosi' si corregge una voce invece di 44 valori.
+   * La palette e' indicizzata per chiave semantica (`bosco`, `pascolo`): il
+   * riferimento tiene toni molto piu' tenui da z14, e cosi' si corregge una
+   * voce invece di 44 valori.
+   *
+   * Un layer puo' attraversare piu' set: Corine copre z7-z13, ma i PNG di
+   * TGen fino a z12 sono del 2018 e quelli di z13 del 2025, resi con due
+   * versioni diverse dello stile — a z13 il bosco va schiarito, a z11-z12
+   * scurito. In quel caso il colore diventa uno `step` sullo zoom, un `match`
+   * per set. Scritto con le soglie nominali e passato a `scalaZoom`, come
+   * tutto il resto.
    */
-  const setName = prof.levels[String(zmin)].surfaces;
-  const pal = prof.surfaceSets[setName];
-  if (pal && (id === 'clc-fill' || id === 'landcover-fill')) {
+  const fasceSup = [];
+  for (let z = zmin; z <= zmax; z++) {
+    const s = prof.levels[String(z)].surfaces;
+    if (!fasceSup.length || fasceSup.at(-1)[1] !== s) fasceSup.push([z, s]);
+  }
+  const m = l.paint?.['fill-color'];
+  if ((id === 'clc-fill' || id === 'landcover-fill') && Array.isArray(m) && m[0] === 'match') {
     const chiave = id === 'clc-fill'
       ? code => prof.clcSemantica[code]           // 111 -> fondogiallo
       : code => code;                             // coduso e' gia' semantico
-    const m = l.paint?.['fill-color'];
-    if (Array.isArray(m) && m[0] === 'match') {
+    const conPalette = setName => {
+      const pal = prof.surfaceSets[setName];
+      if (!pal) throw new Error(`${id}: set di superfici '${setName}' inesistente`);
       const nuovo = [...m];
       let sostituiti = 0;
       for (let k = 2; k < nuovo.length - 1; k += 2) {
@@ -146,7 +156,6 @@ for (const id of prof.order) {
       }
       const fallback = pal[chiave(String(m.at(-1)))] ?? pal.verdeneutro;
       if (fallback) nuovo[nuovo.length - 1] = fallback;
-      out.paint = {...l.paint, 'fill-color': nuovo};
       if (!sostituiti) avvisi.push(`${id}: palette '${setName}' non ha coperto nessuna voce`);
 
       // Una classe assente dalla palette conserva in silenzio il colore che
@@ -157,6 +166,37 @@ for (const id of prof.order) {
         if (!pal[chiave(m[k])]) scoperte.push(m[k]);
       if (scoperte.length)
         avvisi.push(`${id}: classi non nella palette '${setName}': ${scoperte.join(', ')}`);
+      return nuovo;
+    };
+    out.paint = {...out.paint, 'fill-color': fasceSup.length > 1
+      ? scalaZoom(['step', ['zoom'], conPalette(fasceSup[0][1]),
+          ...fasceSup.slice(1).flatMap(([z, s]) => [z, conPalette(s)])])
+      : conPalette(fasceSup[0][1])};
+  }
+
+  /**
+   * Gli altri layer citano la palette per nome: `"pal:bosco"` diventa il
+   * colore di `bosco` nel set del livello. Serve a `landcover-osm`, che in
+   * TGen usa le stesse variabili del Corine (`@forest: @bosco`) e con una
+   * palette sua copiata a mano si era disallineato.
+   */
+  const citaPalette = nodo => JSON.stringify(nodo ?? null).includes('"pal:');
+  if (citaPalette(out.paint)) {
+    const risolvi = (nodo, setName) => {
+      if (typeof nodo === 'string' && nodo.startsWith('pal:')) {
+        const c = prof.surfaceSets[setName]?.[nodo.slice(4)];
+        if (!c) throw new Error(`${id}: '${nodo}' non e' nel set di superfici '${setName}'`);
+        return c;
+      }
+      if (Array.isArray(nodo)) return nodo.map(n => risolvi(n, setName));
+      return nodo;
+    };
+    for (const [prop, v] of Object.entries(out.paint)) {
+      if (!citaPalette(v)) continue;
+      out.paint[prop] = fasceSup.length > 1
+        ? scalaZoom(['step', ['zoom'], risolvi(v, fasceSup[0][1]),
+            ...fasceSup.slice(1).flatMap(([z, s]) => [z, risolvi(v, s)])])
+        : risolvi(v, fasceSup[0][1]);
     }
   }
 
@@ -209,6 +249,16 @@ for (const id of prof.order) {
     avvisi.push(`${id}: visibile a tratti ${iv.map(([a, b]) => `z${a}-${b}`).join(', ')} → ${iv.length} layer`);
 }
 
+/**
+ * Niente ["zoom"] nei filtri. ol-mapbox-style li valuta con lo stesso livello di
+ * scarto delle espressioni, ma `scalaZoom` corregge solo `paint` e `layout`: un
+ * filtro `[">=", ["zoom"], 16]` scatta a z17, cioe' mai fino a z16 (era il caso
+ * delle grotte e dei nomi delle localita'). Le soglie per livello si mettono nel
+ * profilo, o nel dato con `tippecanoe.minzoom`.
+ */
+const conZoom = layers.filter(l => JSON.stringify(l.filter ?? null).includes('["zoom"]'));
+if (conZoom.length) throw new Error(`filtri con ["zoom"]: ${conZoom.map(l => l.id).join(', ')}`);
+
 const style = {...base, layers};
 delete style.sources_comment;
 
@@ -221,6 +271,12 @@ for (let z = Z0; z <= Z1; z++) {
   const ultimo = fasce.at(-1);
   if (ultimo && ultimo.set === nome) ultimo.zmax = z;
   else fasce.push({set: nome, zmin: z, zmax: z, ...prof.shadeSets[nome]});
+}
+// I livelli sotto il profilo (z0-z6) hanno un set loro: senza, l'ombra li
+// tratterebbe come la fascia piu' vicina, che per TGen e' un'altra sorgente.
+if (prof.shadeSotto) {
+  if (!prof.shadeSets[prof.shadeSotto]) throw new Error(`shadeSotto: set '${prof.shadeSotto}' inesistente`);
+  fasce.unshift({set: prof.shadeSotto, zmin: 0, zmax: Z0 - 1, ...prof.shadeSets[prof.shadeSotto]});
 }
 style.metadata = {...(base.metadata ?? {}), 'wm:hillshade': {
   source: 'terrain',

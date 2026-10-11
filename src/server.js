@@ -27,8 +27,9 @@ const ATTRIBUTION = '© OpenMapTiles © OpenStreetMap contributors (ODbL)';
 const ATTRIBUTION_DEM = '© DLR/ESA — Copernicus DEM GLO-30 | DTM 5m Regione Emilia-Romagna';
 const ATTRIBUTION_LC = '© ESA WorldCover 2021';
 const ATTRIBUTION_WM = '© Webmapp';
+const ATTRIBUTION_IGM = '© IGM — DBSN';
 const LEGACY_TILE_URL = 'https://api.webmapp.it/tiles/{z}/{x}/{y}.png';
-const ARCHIVES = ['osm', 'hillshade', 'contours', 'hiking', 'toponimi', 'rifugi', 'landcover', 'osmpoi', 'clc', 'roadslz'];
+export const ARCHIVES = ['osm', 'hillshade', 'contours', 'hiking', 'toponimi', 'rifugi', 'landcover', 'osmpoi', 'clc', 'roadslz', 'igm', 'power', 'parchi', 'extra'];
 
 function log(level, msg, fields = {}) {
   const line = JSON.stringify({ts: new Date().toISOString(), level, msg, ...fields});
@@ -145,6 +146,48 @@ function buildStyle(manifest, resolved, version, base) {
       maxzoom: 14,
       attribution: ATTRIBUTION,
     },
+    // Parchi nazionali e riserve naturali selezionati come TGen
+    // (boundary=national_park OR leisure=nature_reserve), da z8.
+    parchi: {
+      type: 'vector',
+      tileSize: 256,
+      tiles: [`${base}/t/${version}/${resolved.setId}/parchi/{z}/{x}/{y}.pbf`],
+      minzoom: 4,
+      maxzoom: 14,
+      attribution: ATTRIBUTION,
+    },
+    // Cio' che TGen disegna e OpenMapTiles non porta: dighe, frangiflutti, aree
+    // stradali, filari, barriere, marine, nomi di ferrovie, edifici e ponti...
+    // da z10 a z16 secondo il gruppo (pipeline/build-extra.sh).
+    extra: {
+      type: 'vector',
+      tileSize: 256,
+      tiles: [`${base}/t/${version}/${resolved.setId}/extra/{z}/{x}/{y}.pbf`],
+      minzoom: 10,
+      maxzoom: 14,
+      attribution: ATTRIBUTION,
+    },
+    // Linee elettriche, tralicci e pali: OpenMapTiles non li porta, TGen li
+    // disegna da z14 (power.mss).
+    power: {
+      type: 'vector',
+      tileSize: 256,
+      tiles: [`${base}/t/${version}/${resolved.setId}/power/{z}/{x}/{y}.pbf`],
+      minzoom: 14,
+      maxzoom: 14,
+      attribution: ATTRIBUTION,
+    },
+    // Edifici dell'IGM (DBSN): TGen li disegna da z14 con la stessa regola
+    // degli edifici OSM (`#buildings, #igm_edifc, #igm_edi_min` in
+    // buildings.mss), sopra di essi.
+    igm: {
+      type: 'vector',
+      tileSize: 256,
+      tiles: [`${base}/t/${version}/${resolved.setId}/igm/{z}/{x}/{y}.pbf`],
+      minzoom: 14,
+      maxzoom: 14,
+      attribution: ATTRIBUTION_IGM,
+    },
     toponimi: {
       type: 'vector',
       tileSize: 256,
@@ -210,7 +253,8 @@ function buildStyle(manifest, resolved, version, base) {
       tileSize: 256,
       tiles: [`${base}/t/${version}/${resolved.setId}/roadslz/{z}/{x}/{y}.pbf`],
       minzoom: 8,
-      maxzoom: 11,
+      // le strade arrivano a z11, i cartellini a z12: a z12 le tile hanno solo quelli
+      maxzoom: 12,
       attribution: ATTRIBUTION,
     },
     contours: {
@@ -418,9 +462,17 @@ export function createApp() {
       sets: [...sets.entries()].map(([setId, groups]) => ({setId, groups})),
       areas: manifest.previewAreas ?? [],
       legacyTileUrl: LEGACY_TILE_URL,
+      pngTileUrl: '/png/{z}/{x}/{y}.png',
       styleUrl: '/style.json',
     });
   });
+
+  // I PNG prodotti da pipeline/render-png.mjs, per vederli nella preview al
+  // posto del riferimento. `no-cache`: si rigenerano sotto lo stesso percorso,
+  // e una copia vecchia nel browser farebbe credere che il render non cambi.
+  app.use('/png', express.static(join(ROOT, 'data/png'), {
+    setHeaders: r => r.set('Cache-Control', 'no-cache'),
+  }));
 
   app.use('/preview', express.static(join(HERE, 'preview/public'), {etag: true, maxAge: 0, cacheControl: true, setHeaders: r => r.set('Cache-Control', 'no-cache, must-revalidate')}));
 

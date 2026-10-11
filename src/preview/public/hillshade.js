@@ -304,9 +304,18 @@ export function hillshadeGpu(ol, sourceDef, fasce) {
     return tg.getResolution(z);
   };
 
+  /**
+   * La fascia del livello; fuori dalle fasce, la piu' vicina. Prima si cadeva
+   * sempre sull'ULTIMA, quella pensata per z17+: sotto z8 la mappa prendeva
+   * l'ombra di z16 (composizione normale a 0,3), un velo grigio al posto del
+   * `multiply` di TGen, senza errori.
+   */
+  const fasciaDi = z => fasce.find(x => z >= x.zmin && z <= x.zmax)
+    ?? (fasce.length && z < fasce[0].zmin ? fasce[0] : fasce.at(-1)) ?? primo;
+
   const aggiornaOpacita = zoom => {
     const z = Math.round(zoom);
-    const f = fasce.find(x => z >= x.zmin && z <= x.zmax) ?? fasce.at(-1) ?? primo;
+    const f = fasciaDi(z);
     if (layer.getOpacity() !== f.opacity) layer.setOpacity(f.opacity);
     const vert = f.vert ?? 1;
     const gamma = f.gamma ?? 1;
@@ -320,17 +329,32 @@ export function hillshadeGpu(ol, sourceDef, fasce) {
       layer.set('wm-passo', passoDem);
       layer.updateStyleVariables({vert, gamma, slope, passoDem});
     }
-    const blend = f.blend ?? 'multiply';
-    if (layer.get('wm-blend') !== blend) {
-      layer.set('wm-blend', blend);
-      const el = layer.getRenderer?.()?.getCanvas?.() ?? null;
-      const target = el?.parentElement ?? el;
-      if (target) {
-        target.classList.remove('wm-blend-multiply', 'wm-blend-overlay', 'wm-blend-soft-light');
-        target.classList.add(`wm-blend-${blend}`);
-      }
-    }
+    layer.set('wm-blend', f.blend ?? 'multiply');
+    allineaBlend();
   };
+
+  /**
+   * La classe di composizione va sul canvas del layer, che esiste solo dopo il
+   * primo disegno. Quando la vista nasce gia' al livello giusto (?c=, gli
+   * scatti di misura e di rendering) la prima chiamata non trova il canvas:
+   * prima si segnava la composizione come applicata e non si riprovava piu',
+   * e da z14 l'ombra restava in `multiply` invece che `normal` senza alcun
+   * errore. Ora la classe si riallinea dopo ogni disegno finche' non coincide.
+   */
+  const allineaBlend = () => {
+    const blend = layer.get('wm-blend') ?? 'multiply';
+    // In OpenLayers 7 la classe del layer sta sul canvas WebGL stesso, che si
+    // raggiunge dall'helper del renderer: `getRenderer().getCanvas()` non
+    // esiste, e cercarlo faceva fallire il cambio in silenzio. Il cambio di
+    // composizione fra livelli non ha mai funzionato finche' tutti i set
+    // erano `multiply`, e nessuno se n'era accorto.
+    const r = layer.getRenderer?.();
+    const target = r?.helper?.getCanvas?.() ?? null;
+    if (!target || target.classList.contains(`wm-blend-${blend}`)) return;
+    target.classList.remove('wm-blend-multiply', 'wm-blend-overlay', 'wm-blend-soft-light', 'wm-blend-normal');
+    target.classList.add(`wm-blend-${blend}`);
+  };
+  layer.on('postrender', allineaBlend);
 
   /**
    * Secondo layer, per la sola pendenza, composto in `overlay`.
@@ -353,7 +377,7 @@ export function hillshadeGpu(ol, sourceDef, fasce) {
 
   const aggiornaPendenza = zoom => {
     const z = Math.round(zoom);
-    const f = fasce.find(x => z >= x.zmin && z <= x.zmax) ?? fasce.at(-1) ?? primo;
+    const f = fasciaDi(z);
     const slope = f.slope ?? 0;
     const passoDem = passoDelDem(zoom);
     pendenzaLayer.setOpacity(slope > 0 ? 1 : 0);

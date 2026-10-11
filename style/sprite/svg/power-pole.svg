@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Palo della luce: in power.mss di TGen e' symbols/square.svg con
+     marker-fill #928f8f e marker-width 3. -->
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="3" height="3">
+  <rect width="3" height="3" fill="#928f8f" />
+</svg>

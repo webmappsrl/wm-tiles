@@ -62,8 +62,20 @@ const tileBox = {
 let coverage = '';
 try {
   const v = await (await fetch(`${BASE}/version`)).json();
-  const m = /bbox\s*([\d.-]+),([\d.-]+),([\d.-]+),([\d.-]+)/.exec(v.provenance?.scope ?? '');
-  if (m) {
+  // Con piu' celle il riquadro complessivo comprende anche il vuoto fra
+  // l'una e l'altra: si controlla cella per cella. Una tile a cavallo del
+  // bordo di una cella, misurata come se fosse coperta, risultava piu'
+  // chiara di 14 punti per l'assenza di dati, non per lo stile.
+  const celle = v.provenance?.celle ?? [];
+  const m = celle.length ? null : /bbox\s*([\d.-]+),([\d.-]+),([\d.-]+),([\d.-]+)/.exec(v.provenance?.scope ?? '');
+  if (celle.length) {
+    const dentro = c => tileBox.w >= c.bbox[0] && tileBox.e <= c.bbox[2] && tileBox.s >= c.bbox[1] && tileBox.n <= c.bbox[3];
+    const tocca = c => tileBox.e > c.bbox[0] && tileBox.w < c.bbox[2] && tileBox.n > c.bbox[1] && tileBox.s < c.bbox[3];
+    const piena = celle.find(dentro), parz = celle.find(tocca);
+    coverage = piena ? `dentro la cella ${piena.nome}`
+      : parz ? `PARZIALE — la tile esce dalla cella ${parz.nome} (${parz.bbox.join(',')})`
+      : `FUORI dalle celle generate (${celle.map(c => c.nome).join(', ')}): le differenze non sono misurabili`;
+  } else if (m) {
     const [W, S, E, N] = m.slice(1).map(Number);
     const inside = tileBox.w >= W && tileBox.e <= E && tileBox.s >= S && tileBox.n <= N;
     const overlaps = tileBox.e > W && tileBox.w < E && tileBox.n > S && tileBox.s < N;
@@ -135,11 +147,22 @@ if (erroreStile) console.log(`  ⚠ ERRORE NELLO STILE: ${erroreStile}`);
 // `normal` perche' ol.css ha un selettore piu' specifico. E' successo, e per
 // giorni l'ombra si e' composta normalmente mentre le tarature compensavano.
 const blend = await p.evaluate(() => {
-  const el = document.querySelector('.wm-blend-multiply, .wm-blend-overlay');
-  if (!el) return 'nessun layer di ombreggiatura';
-  const atteso = el.className.includes('overlay') ? 'overlay' : 'multiply';
-  const reso = getComputedStyle(el).mixBlendMode;
-  return reso === atteso ? '' : `atteso ${atteso}, reso ${reso}`;
+  const el = [...document.querySelectorAll('[class*="wm-blend-"]')];
+  if (!el.length) return 'nessun layer di ombreggiatura';
+  const sbagliati = el.map(e => {
+    const atteso = /wm-blend-([a-z-]+)/.exec(e.className)[1];
+    const reso = getComputedStyle(e).mixBlendMode;
+    return reso === atteso ? '' : `atteso ${atteso}, reso ${reso}`;
+  }).filter(Boolean);
+  // La classe stessa deve essere quella che il motore vuole per il livello:
+  // se il cambio non e' arrivato al canvas, classe e calcolato coincidono
+  // comunque e il controllo sopra non lo vede.
+  const voluta = window.__wm?.shade?.layer?.get('wm-blend');
+  const hs = document.querySelector('.wm-hillshade');
+  if (voluta && hs && !hs.classList.contains(`wm-blend-${voluta}`)) {
+    sbagliati.push(`voluta ${voluta}, classe ${hs.className}`);
+  }
+  return sbagliati.join('; ');
 });
 if (blend) console.log(`  ⚠ COMPOSIZIONE DELL'OMBRA: ${blend}`);
 

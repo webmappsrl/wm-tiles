@@ -59,22 +59,37 @@ const view = new ol.View({
   constrainResolution: false,
 });
 
-/** Riferimento: le tile raster attuali. */
+/**
+ * Pannello di destra: il riferimento di TGen oppure, con `?destra=png`, i PNG
+ * resi da `pipeline/render-png.mjs`. Cosi' i PNG si giudicano accanto al
+ * vettoriale da cui vengono, e passando da uno all'altro col riferimento.
+ * Dove un PNG non e' stato reso il pannello resta vuoto: non e' un difetto.
+ */
+const sorgentiDestra = {
+  tgen: {titolo: 'TGEN — riferimento raster', url: cfg.legacyTileUrl},
+  png: {titolo: 'PNG locali — resi da wm-tiles', url: cfg.pngTileUrl},
+};
+const rasterDestra = new ol.layer.Tile();
+function mostraDestra(chi) {
+  const s = sorgentiDestra[chi] ?? sorgentiDestra.tgen;
+  rasterDestra.setSource(new ol.source.XYZ({
+    url: s.url,
+    maxZoom: 16,
+    minZoom: 7,
+    crossOrigin: 'anonymous',
+    attributions: '© OpenStreetMap contributors',
+  }));
+  el('titolodestra').textContent = s.titolo;
+  el('destra').value = sorgentiDestra[chi] ? chi : 'tgen';
+}
+mostraDestra(params0.get('destra') ?? 'tgen');
+el('destra').onchange = e => mostraDestra(e.target.value);
+
 const right = new ol.Map({
   target: 'right',
   view,
   controls: [new ol.control.ScaleLine({units: 'metric'})],
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.XYZ({
-        url: cfg.legacyTileUrl,
-        maxZoom: 16,
-        minZoom: 7,
-        crossOrigin: 'anonymous',
-        attributions: '© OpenStreetMap contributors',
-      }),
-    }),
-  ],
+  layers: [rasterDestra],
 });
 
 /** Locale: lo stile applicato da ol-mapbox-style, come fara' map-core. */

@@ -35,12 +35,15 @@ for (const z of LIVELLI) {
       err: document.getElementById('err')?.textContent?.trim().slice(0, 120) ?? '',
       layer: [...new Set(vis)].sort(),
       ombra,
+      // la composizione voluta dal motore per questo livello (normale da z14,
+      // come #hs10m di TGen): il controllo valeva solo finche' era multiply
+      voluta: window.__wm?.shade?.layer?.get('wm-blend') ?? 'multiply',
     };
   });
   await p.close();
   if (z === LIVELLI[0]) base = st.layer;
   const persi = base.filter(x => !st.layer.includes(x));
-  const ok = !st.err && persi.length === 0 && st.ombra.includes('multiply');
+  const ok = !st.err && persi.length === 0 && st.ombra.includes(st.voluta);
   if (!ok) esito = 1;
   console.log(`  z${z}: ${st.layer.length} layer, ombra [${st.ombra.join(', ') || 'ASSENTE'}]` +
     (persi.length ? `  ⚠ persi: ${persi.join(', ')}` : '') +

@@ -18,9 +18,15 @@ docker run --rm -v "$PWD":/w -v "$WORK":/out \
   -sql @/w/pipeline/osmpoi.sql
 echo "   $(wc -l < "$WORK/poi.geojsonl") punti"
 
-# `kind` si compone qui: OGRSQL non ha COALESCE
+# `kind` si compone qui: OGRSQL non ha COALESCE.
+# Le uscite: TGen va a capo a ogni `;` del nome (`text-wrap-character`), che lo
+# Style Spec non ha; il ritorno a capo si scrive qui nel dato.
 jq -c '.properties |= (
-   {name: .name, kind: (.t_natural // .t_tourism // .t_amenity // (if .t_pass == "yes" then "mountain_pass" else null end)), ele: .ele}
+   {name: .name, ref: (if .highway == "motorway_junction" then .ref else null end),
+    kind: (.t_natural // .t_tourism // .t_amenity // (if .t_pass == "yes" then "mountain_pass" else null end)
+           // (if .highway == "motorway_junction" then "motorway_junction" else null end)),
+    ele: .ele}
+   | if .kind == "motorway_junction" and .name != null then .name |= gsub("\\s*;\\s*"; "\n") else . end
    | with_entries(select(.value != null))
  )' "$WORK/poi.geojsonl" > "$WORK/poi2.geojsonl"
 mv "$WORK/poi2.geojsonl" "$WORK/poi.geojsonl"

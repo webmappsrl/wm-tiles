@@ -45,6 +45,17 @@ for (const [id, m] of Object.entries(mapping)) {
   const attuale = new Set();
   for (let z = Z0; z <= Z1; z++) if (nostro(z).has(id)) attuale.add(z);
 
+  // `livelli`: soglie decise sui PNG dove divergono dal CartoCSS (i PNG del
+  // 2018 fino a z12). Senza, rigenerare il profilo le riportava al .mss in
+  // silenzio: piste e sentieri tornavano a z10.
+  // le voci fra parentesi non sono layer dello stile (l'ombreggiatura e' calcolata dal client)
+  if (id.startsWith('(')) { nuovaVis.set(id, attuale); righe.push({id, fonte: 'non e\' un layer', attuale, nuova: attuale}); continue; }
+  if (Array.isArray(m.livelli)) {
+    const [da, a] = m.livelli;
+    const s = new Set();
+    for (let z = Math.max(da, Z0); z <= Math.min(a, Z1); z++) s.add(z);
+    nuovaVis.set(id, s); righe.push({id, fonte: 'livelli (PNG)', attuale, nuova: s}); continue;
+  }
   if (m.tgen === null) { nuovaVis.set(id, attuale); righe.push({id, fonte: 'nostro', attuale, nuova: attuale}); continue; }
   const sels = Array.isArray(m.tgen) ? m.tgen : [m.tgen];
   const tg = new Set();
@@ -57,9 +68,16 @@ for (const [id, m] of Object.entries(mapping)) {
 /** Ordine di disegno dal riferimento, per i layer che vi corrispondono. */
 const ordineTgen = id => {
   const m = mapping[id];
-  if (!m || m.tgen === null) return null;
-  const sels = Array.isArray(m.tgen) ? m.tgen : [m.tgen];
-  const ords = sels.map(s => cc.layer[s]?.ordine).filter(o => o !== null && o !== undefined);
+  if (!m) return null;
+  // `ordine`: per un layer senza selettore, il layer del .mml di cui prende la
+  // posizione (le etichette dei POI stanno in amenity-points anche se le loro
+  // regole non hanno id)
+  if (m.tgen === null && !m.ordine) return null;
+  const sels = m.tgen === null ? [m.ordine] : Array.isArray(m.tgen) ? m.tgen : [m.tgen];
+  // un layer del .mml senza regole attive (roads-text-ref ha i blocchi commentati)
+  // non ha `ordine` in cc.layer: vale la sua posizione nel .mml
+  const posMml = s => cc.layer[s]?.ordine ?? (i => (i >= 0 ? i : null))(cc.ordineMml.findIndex(o => o.id === s));
+  const ords = sels.map(posMml).filter(o => o !== null && o !== undefined);
   return ords.length ? Math.min(...ords) : null;
 };
 
@@ -85,9 +103,23 @@ for (let z = Z0; z <= Z1; z++) {
 // l'ordine segue il riferimento dove esiste, e conserva la posizione
 // relativa attuale per i layer che non gli corrispondono
 const pos = new Map(prof.order.map((id, i) => [id, i]));
+/**
+ * Le etichette vanno in fondo e in ordine INVERSO rispetto al .mml.
+ *
+ * Mapnik piazza le etichette nell'ordine dei layer e scarta quelle che urtano
+ * le gia' piazzate: vince chi viene PRIMA (in TGen i nomi dei paesi battono
+ * quelli delle vie). OpenLayers fa il contrario: ol-mapbox-style da' a ogni
+ * layer di stile uno zIndex pari alla sua posizione, e nel declutter vince lo
+ * zIndex piu' alto, cioe' chi viene DOPO. Con l'ordine del .mml, a z13 i nomi
+ * delle vie cancellavano quelli dei paesi.
+ */
+const simboli = new Set(JSON.parse(readFileSync('style/base-layers.json', 'utf8'))
+  .layers.filter(l => l.type === 'symbol').map(l => l.id));
 prof.order = [...prof.order].sort((a, b) => {
+  const sa = simboli.has(a), sb = simboli.has(b);
+  if (sa !== sb) return sa ? 1 : -1;
   const oa = ordineTgen(a), ob = ordineTgen(b);
-  if (oa !== null && ob !== null && oa !== ob) return oa - ob;
+  if (oa !== null && ob !== null && oa !== ob) return sa ? ob - oa : oa - ob;
   return pos.get(a) - pos.get(b);
 });
 prof.fonteVisibilita = Object.fromEntries(righe.map(r => [r.id, r.fonte]));

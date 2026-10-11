@@ -31,7 +31,26 @@
         "landuse",
         "park",
         "boundary",
-        "water_name"
+        "water_name",
+        "power_line",
+        "power_point",
+        "parchi",
+        "boschi",
+        "acque",
+        "barriere",
+        "aree_strade",
+        "filari",
+        "ferrovie",
+        "edifici",
+        "recinzioni",
+        "punti",
+        "marine",
+        "turismo",
+        "guidovie",
+        "ponti",
+        "piazze",
+        "linee_nome",
+        "guadi"
       ],
       "class": "public",
       "attributes": [
@@ -73,7 +92,8 @@
       },
       "layers": [
         "building",
-        "housenumber"
+        "housenumber",
+        "igm_edifici"
       ],
       "class": "public",
       "attributes": [
@@ -89,7 +109,8 @@
         "en": "Places"
       },
       "layers": [
-        "place"
+        "place",
+        "citta"
       ],
       "class": "public",
       "attributes": [
@@ -107,7 +128,8 @@
         "en": "Points of interest"
       },
       "layers": [
-        "poi"
+        "poi",
+        "aerodrome_label"
       ],
       "class": "public",
       "attributes": [
@@ -244,6 +266,24 @@
   ],
   "previewAreas": [
     {
+      "id": "pisa",
+      "label": "Pisa (cella di prova)",
+      "center": [
+        10.4017,
+        43.7228
+      ],
+      "zoom": 14
+    },
+    {
+      "id": "caltanissetta",
+      "label": "Caltanissetta (cella di prova)",
+      "center": [
+        14.0628,
+        37.49
+      ],
+      "zoom": 13
+    },
+    {
       "id": "validazione",
       "label": "Validazione (Sillano-Pradarena)",
       "center": [
@@ -251,15 +291,6 @@
         44.25
       ],
       "zoom": 13
-    },
-    {
-      "id": "pisa",
-      "label": "Pisa",
-      "center": [
-        10.4017,
-        43.7228
-      ],
-      "zoom": 14
     },
     {
       "id": "montepisano",

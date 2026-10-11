@@ -9,10 +9,17 @@ messaggi di log di questo repo sono in italiano: mantieni quella lingua.
 
 ## Cos'e' wm-tiles
 
-Server di tiles **vettoriali** derivate da OpenStreetMap, destinato a
-sostituire le tiles raster PNG servite oggi da
-`https://api.webmapp.it/tiles/{z}/{x}/{y}.png`. Il consumatore finale sono la
-webapp e la app mobile Webmapp, tramite `map-core`.
+Server di tiles derivate da OpenStreetMap che sostituisce TGen, la cui
+produzione e' oggi fatta a mano. wm-tiles produce **due uscite dalla stessa
+sorgente**: le tile vettoriali e i PNG ricavati da quelle con lo stesso stile.
+
+1. **Prima i PNG**: aggiornano quelli gia' prodotti da TGen e serviti da
+   `https://api.webmapp.it/tiles/{z}/{x}/{y}.png`. Il frontend resta com'e'.
+2. **Poi i vettoriali**, quando il frontend (webapp e app mobile, tramite
+   `map-core`) sara' aggiornato per leggerli.
+
+Il vettoriale non e' un'alternativa al PNG ma la sua sorgente: un solo stile,
+nessuna seconda resa da tenere allineata.
 
 **L'obiettivo dichiarato dal committente e' la verosimiglianza al PNG
 attuale**: il prototipo si valuta confrontandolo con il raster di riferimento,
@@ -31,7 +38,11 @@ scrivere logica che assuma il bbox demo.
 Sono decisioni del committente, non preferenze tecniche. Violarle invalida il
 lavoro.
 
-1. **TGen e' sola lettura.** I dati cartografici migliori (uso suolo
+1. **TGen e' sola lettura.** La regola, posta dall'utente per la fase di
+   prototipo, e' stata confermata il 10 ottobre 2026: wm-tiles non girera' su
+   TGen (sistema fuori supporto) ma su una macchina separata, e da TGen si
+   copiano una volta i dati che servono (vedi `docs/stato.md`). I dati
+   cartografici migliori (uso suolo
    regionale, curve di livello, toponimi, rifugi) vivono su TGen
    (`ssh tgen`, 95.216.11.110), un server **di produzione**. Sono ammessi
    solo `SELECT`, `COPY ... TO STDOUT` e `tar cf -` su stdout. Nessuna
@@ -45,11 +56,34 @@ lavoro.
    mappa) da cui il rilievo viene calcolato sulla GPU.
 3. **Il frontend e' OpenLayers.** MapLibre non sara' mai usato in produzione:
    ogni soluzione lato client va verificata in OpenLayers. Vedi
-   "Trappole di ol-mapbox-style".
+   "Trappole di ol-mapbox-style". Il vincolo riguarda il frontend, perche' le
+   app disegnano le mappe con OpenLayers (chiarito dall'utente l'11 ottobre
+   2026): il motore che produce i PNG lato server e' una scelta tecnica, oggi
+   maplibre-native (vedi "I PNG li disegna maplibre-native").
 4. Nessun commit senza conferma esplicita. Nessun ticket Orchestrator, nessuna
    stima.
 
 ## Come lavorare qui
+
+**Sul Mac solo le prove dei casi d'uso, tutta l'Italia sul server nuovo**
+(regola dell'utente, 10 ottobre 2026). Qui si lavora sulle celle di prova
+(Pisa, Caltanissetta): copie da TGen limitate alla cella, generazione,
+confronto. Cio' che riguarda l'Italia intera — la copia completa da TGen, la
+generazione nazionale — si lancia sul server dedicato, mai sul Mac: richiede
+ore e decine di GB.
+
+**Emulare TGen e' un algoritmo, non una serie di domande** (regola
+dell'utente, 10 ottobre 2026). TGen e i suoi PNG sono la specifica: cio' che
+dichiarano si legge e si replica, senza chiedere all'utente e senza report da
+fargli leggere. Le fonti sono quattro e si leggono, non si esplorano:
+`project.mml` (quali dati, a quali livelli), i `.mss` e i PNG (lo stile),
+l'inventario `general.grid_1x1` (quali celle e quali livelli generare). Una
+differenza fra locale e riferimento si classifica con la regola fondante:
+stile, e si corregge; contenuto o dato mancante a TGen, e si ignora. Il
+confronto automatico con TGen e' un controllo interno, come un test. Il
+codice si ferma, e rumorosamente, solo quando incontra qualcosa che non sa
+mappare (un layer del `.mml` senza corrispondenza): e' l'unico caso in cui
+serve una persona.
 
 **In `/loop` dinamico non schedulare attese.** La cadenza lunga di quel comando
 serve a chi aspetta un evento esterno — una build, un deploy, una coda remota.
@@ -95,6 +129,8 @@ node tools/ref-palette.mjs 10.72,44.21    # colore dominante per livello, due la
 node tools/layer-contrib.mjs 10/541/371   # quanto contrasto aggiunge ogni layer
 node tools/shade-grid-test.mjs 13 14 15 16  # l'ombreggiatura non deve fare reticolo
 node tools/oltre-z16.mjs 16 17 18 19      # oltre il riferimento non deve sparire nulla
+node tools/colore-per-classe.mjs mediana osm transportation "p.class === 'primary'" 12/2207/1587  # colore di TGen per classe
+node tools/tgen-copertura.mjs            # layer di TGen senza alcun layer locale (esce 1 se ce ne sono)
 ```
 
 `layer-contrib.mjs` spegne un layer per volta e rimisura: dice DOVE nasce uno
@@ -160,7 +196,8 @@ resti composta: il rischio li' non e' un colore diverso, e' un `maxzoom` di
 troppo che spegne un layer dove nessuno se ne accorge.
 
 
-`https://api.webmapp.it/tiles` risponde **404 da z17 in su**. Un client che
+`https://api.webmapp.it/tiles` risponde **404 da z17 in su** quasi ovunque (in
+alcune celle toscane esistono z18 del 2018, residui di vecchi lavori). Un client che
 zooma oltre mostra la tile z16 ingrandita, quindi in quel pannello i toponimi
 sembrano piu' grandi e le icone enormi: e' sfocatura, non stile. Inseguirla
 peggiora una resa vettoriale che a z18 e' gia' corretta e nitida.
@@ -168,6 +205,12 @@ peggiora una resa vettoriale che a z18 e' gia' corretta e nitida.
 li'.
 
 ### Si confronta lo STILE, non il contenuto
+
+**E' la regola fondante del progetto.** Si copia lo stile comandato dai PNG e
+da TGen, a qualunque anno risalga — anche se fosse del 2012 — e non il
+contenuto, che nel frattempo puo' essere cambiato: un'autostrada con un
+percorso diverso, un sentiero nuovo. L'eta' di un PNG non e' mai un motivo per
+allontanarsene nello stile.
 
 **Le tiles PNG di riferimento sono ferme.** Il rendering dell'Italia ha
 richiesto circa dieci giorni e l'aggiornamento continuo da OSM e' spento:
@@ -188,12 +231,47 @@ errore tipico e' eguagliare un CONTEGGIO di pixel: se il riferimento ha dodici
 cime e noi otto, pareggiare i pixel totali significa ingrandire i simboli
 oltre misura.
 
-**Quando il CartoCSS e il PNG divergono, vince il PNG.** Le tile di
-riferimento sono piu' vecchie dei `.mss` che abbiamo scaricato, e lo stile e'
-cambiato nel frattempo. Esempio: `road-colors-generated.mss` dichiara
-`@secondary-fill: #ffffff`, ma nel riferimento le provinciali sono gialle —
-`rgb(231,200,125)` a z11, cioe' `#e7c87d` esatto. L'obiettivo dichiarato e' la
-verosimiglianza al PNG, quindi si segue il PNG e si annota perche'.
+**I buchi di TGen sono contenuto, non stile.** TGen genera a mano, una cella e
+un livello per volta: z0–z12 sono del 2018, z13–z16 di settembre 2025 in
+Italia; da z14 il rilievo c'e' solo dove un lavoro l'ha costruito e l'uso
+suolo solo dove esiste la tabella regionale (Valle d'Aosta e Abruzzo restano
+bianchi). Sono dati mancanti, non scelte di stile: non si imitano. Il limite di
+Corine a z13 invece e' scritto nello stile e si imita. Un caso che inganna:
+sull'Etna, a z13, TGen non disegna il grande poligono Corine 333 (che pure e'
+nella sua tabella e nella nostra copia) e lascia vedere l'uso suolo OSM che
+sta sotto, colate in bianco e boschi; misurata per classe, la 333 risultava
+"bianca" invece che `@pascolo`. Un poligono che Mapnik non disegna e'
+contenuto: la classe si tara sulle altre tile.
+
+**Quando il CartoCSS e il PNG divergono, vince il PNG** — a ogni livello,
+anche dove il PNG e' del 2018. Esempio: `road-colors-generated.mss` dichiara
+`@primary-fill: #ffffff`, ma nel PNG a z12 le strade primarie sono arancio
+chiaro, `rgb(242,217,162)`: si segue il PNG e si annota perche'.
+
+**I PNG hanno due stili, con il confine fra z12 e z13.** z0–z12 sono stati
+resi nel 2018 con uno stile che non esiste piu': li' la specifica sono i PNG,
+e si misurano. z13–z16 sono di settembre 2025 e oltre, resi con
+`data/tgen-style/project.xml` del 23 febbraio 2025 — l'XML compilato che
+Mapnik legge davvero: li' e' la specifica esatta, colore per colore (lo stile
+`clc` di quel file da' i valori di `webmapp.mss` senza alcuna correzione). Fra
+i due stili cambia molto, e a volte si inverte: l'acqua e' `#acd4ea` fino a
+z12 e `#dce7f7` da z13; i confini comunali sono verdi a z12 e lilla da z13,
+le bande dei parchi il contrario; i boschi del 2018 erano tre verdi distinti,
+oggi quasi uno. Una taratura che attraversa z12/z13 con un solo valore e'
+sbagliata da una parte o dall'altra: il colore diventa uno `step` a 13, e le
+superfici hanno due set (`corine-2018` per z7–z12, `corine` per z13).
+
+**Prima di misurare un colore della fascia z13–z16, cercalo in
+`project.xml`.** `grep` sul nome del layer (`<Style name="clc">`) da' il
+valore esatto e le soglie in scale denominator; misurare serve solo dove l'XML
+non arriva (2018) o per il rilievo, che e' un raster.
+
+**Campiona per classe e su molte tile, mai su una strada sola.** Una prima
+misura aveva concluso "le provinciali sono gialle a z11" e colorato di giallo
+tutte le secondarie: quella provinciale nel 2018 era classificata primaria. Su
+93 tile delle due celle le secondarie a z11 risultano grigie e sottili, le
+primarie gialle `#e7c87d`. Lo strumento giusto rasterizza le NOSTRE geometrie
+di una classe come maschera e legge i pixel del PNG sotto di essa.
 
 Le due metriche globali: **delta luminosita' media** e **delta deviazione
 standard**, che misura il contrasto — cioe' in pratica quanto si legge il
@@ -203,6 +281,47 @@ Cancella sempre gli screenshot prima di un giro: uno screenshot residuo di una
 versione precedente dello strumento e' stato letto come misura vera piu' di
 una volta. E ritaglia i pannelli dai loro `boundingBox` — includere la barra
 dei controlli sposta le misure anche del riferimento.
+
+### PNG e aggiornamento incrementale
+
+```bash
+# il ciclo completo: OSM aggiornato -> archivi OSM -> confronto -> PNG cambiati -> consegna
+bash pipeline/aggiorna-png.sh <dest|host:percorso> <copie> [--bbox W,S,E,N] <nome>:<W,S,E,N>:<pbf> ...
+# i pezzi, uno per uno
+bash pipeline/aggiorna-osm.sh in.osm.pbf out.osm.pbf     # modifiche Geofabrik mancanti
+bash pipeline/build-celle.sh --solo-osm <versione> <celle...>  # solo archivi OSM
+bash pipeline/consegna-png.sh <png> <dest> <copie>       # rsync senza --delete, con copia di sicurezza
+# quali PNG rifare fra due versioni degli archivi (elenco su stdout)
+node pipeline/diff-versioni.mjs data/archives/<vecchia> data/archives/<nuova> > tile.txt
+# rendere un elenco, o un'area intera; serve il server acceso
+node pipeline/render-png.mjs --tiles tile.txt --out data/png
+node pipeline/render-png.mjs --bbox W,S,E,N --zoom 8-16 --out data/png
+bash pipeline/render-png-docker.sh --bbox W,S,E,N --zoom 8-16 --out data/png  # Linux: stesse opzioni
+# l'ombra dei PNG deve coincidere con quella delle app (esce 1 se divergono)
+node tools/ombra-native-vs-ol.mjs
+# PNG resi a confronto con TGen, per livello, con foglio di provini
+node tools/png-vs-tgen.mjs tile.txt nativo=data/png [ol=data/png-ol] --foglio provini.png
+```
+
+Il confronto vale perche' **planetiler e' deterministico**: a parita' di PBF
+le tile sono identiche byte per byte, quindi un byte diverso e' un dato
+diverso. `render-png.mjs` rende con maplibre-native lo `style.json` del
+server, cioe' la versione CORRENTE: prima si pubblica, poi si confronta e si
+rende. Il confronto non vede i cambi di
+stile, sprite o DEM: in quei casi si rifa' tutto con `--bbox`.
+
+**Una tile cambiata conta solo dove lo stile disegna il suo archivio**
+(`src/raster/visibilita.js`, dai livelli di `zoom-profile.json`). Senza quel
+limite le strade dei livelli bassi, disegnate fino a z11, propagavano ogni
+modifica fino a z16: 70 tile cambiate diventavano 101.119 PNG, ora 183.
+
+**La consegna non cancella mai**, come `generate_map_tiles.sh` di TGen: sul
+server di `api.webmapp.it` ci sono anche tile estere e livelli che non
+rifacciamo. Prima di sovrascrivere, `consegna-png.sh` salva le versioni
+attuali delle tile cambiate; per tornare indietro si riconsegna quella
+cartella. **`aggiorna-osm.sh` legge da dove ripartire dall'intestazione del
+PBF** (`osmosis_replication_*`) e ve la riscrive: non c'e' un registro a parte
+da tenere allineato.
 
 ### Pipeline dei dati
 
@@ -266,6 +385,12 @@ REGIONALE invece segue il bbox dell'importazione: per un'area nuova va
 riletto da TGen, in sola lettura (`pipeline/sql/usotoscana-bbox*.sql`, cambia
 solo l'envelope in EPSG:3857).
 
+- `build-celle.sh <versione> <nome>:<W,S,E,N>:<pbf> ...` — genera le celle di
+  prova: OSM, dati di TGen (dalle copie), curve, TINITALY fino a z16; pubblica
+  una versione nuova e scambia DEM e curve, lasciando da parte i precedenti
+- `copia-da-tgen.sh dest` — copia da TGen, in sola lettura, i layer non OSM
+  del `project.mml` (query generate da `tgen-layer-sql.py`), l'inventario
+  `grid_1x1` e TINITALY; vedi `docs/import-da-tgen.md`
 - `build-dem-mosaic.sh W S E N out` — mosaico multi-DEM -> `dem3857.tif`
 - `build-terrain.sh out [zmin] [zmax] [passo]` — tile Terrarium
 - `build-terrain-zoom.sh out zmin zmax [W S E N]` — come sopra, ma il passo lo
@@ -371,7 +496,28 @@ npm run validate
   corrispondenza fra i nostri layer e i selettori del riferimento. Mapnik
   interroga PostGIS e costruisce campi propri
   (`feature = 'highway_motorway'`, `code_12`), noi leggiamo MVT con schema
-  OpenMapTiles (`class = 'motorway'`).
+  OpenMapTiles (`class = 'motorway'`). Due campi in piu': **`livelli`**
+  (`[da, a]`) fissa la visibilita' dove i PNG del 2018 smentiscono il `.mss`
+  di oggi, e `npm run profile` la rispetta — senza, rigenerare il profilo
+  cancellava in silenzio 28 eccezioni, fra cui piste e sentieri a z10-z12;
+  **`ordine`** da' a un layer senza selettore la posizione di un layer del
+  `.mml`, che per le etichette e' la priorita'. `node
+  pipeline/build-zoom-profile.mjs` senza `--scrivi` deve dire "0
+  scostamenti": se ne trova, una soglia sta solo nel profilo.
+
+`pipeline/parse-cartocss.mjs` **non legge i selettori di classe** (`.stations`,
+`.text`, `.text-low-zoom`, `.country`, `.state`, `.barriers`): le stazioni, i
+nomi di regioni e nazioni, le barriere risultavano "senza regole" e
+`tools/tgen-copertura.mjs` non li segnalava. Per quei layer si legge il `.mss`
+a mano: `grep -n "^\." data/tgen-style/*.mss` li elenca.
+
+**Le soglie di TGen spesso dipendono dal dato, non dal livello**: `way_pixels`
+(superficie in pixel) per parchi, boschi, acque, edifici, ponti, regioni; il
+punteggio di popolazione per le citta'. Si scrivono nel dato (`zpx`,
+`tippecanoe.minzoom/maxzoom`, `pipeline/parchi-soglia.py`) e, quando decidono
+anche la precedenza fra etichette, nell'ordine delle feature nella tile: a
+parita' di layer OpenLayers premia la feature che viene prima, e TGen ordina
+per punteggio (`--preserve-input-order` in tippecanoe).
 
 `pipeline/parse-cartocss.mjs` legge i `.mss` **elencati da `project.mml`, nel
 suo ordine** — non la cartella: esistono varianti alternative dello stesso
@@ -398,10 +544,58 @@ Dove `.mss` e PNG divergono **vince il PNG**, che e' l'obiettivo dichiarato:
 `tools/ref-palette.mjs` campiona il colore dominante del riferimento e del
 locale per ogni livello.
 
-Mapnik compone l'ombreggiatura in `multiply`, cosa che OpenLayers non
-riproduce. La compensazione e' **additiva** — `c' = c + (255-c)*f` — perche' la
+Mapnik compone l'ombreggiatura in `multiply` fino a z13 e in modo NORMALE da
+z14 (`#hs10m` ha solo `raster-opacity: 0.3`, senza comp-op): da z14 i versanti
+al sole schiariscono, cosa che `multiply` non puo' fare. Il `multiply`
+OpenLayers non lo riproduce da solo. La compensazione e' **additiva** — `c' = c + (255-c)*f` — perche' la
 compensazione moltiplicativa satura a bianco i toni gia' chiari e cancella le
 distinzioni fra le classi agricole.
+
+## I PNG li disegna maplibre-native
+
+**Le app disegnano con OpenLayers, i PNG con maplibre-native, dallo stesso
+`style.json`** (decisione dell'11 ottobre 2026, in `notes.md`). Senza GPU
+maplibre-native e' circa 60 volte piu' veloce di OpenLayers in Chromium —
+64 tile z14 in 4,7 s contro 349 — e non ha le corse del browser. Il prezzo,
+accettato dall'utente: qualche etichetta disposta diversamente da come la
+disporra' un'app col vettoriale. **Si tara sempre lo stile, e lo si tara su
+OpenLayers**: e' quello che vedranno le app; i PNG lo seguono da soli.
+
+`src/raster/stile-nativo.js` adatta lo stile in automatico. Ogni regola
+viene da un difetto trovato, e senza nessun errore:
+
+- **maplibre-native carica le tile vettoriali un livello piu' in basso.** Le
+  considera da 512 px (lo Style Spec accetta `tileSize` solo per i raster):
+  disegnando a zoom N-1 per avere la scala di una tile zN, carica le tile
+  N-1, e parchi, scudi e citta' che entrano nel dato a zN comparivano un
+  livello dopo. Si disegna a zoom N con **pixel ratio 0,5**: stessa scala,
+  tile giuste. Di conseguenza le grandezze in pixel raddoppiano — compresi
+  i default, una linea senza `line-width` usciva larga mezzo pixel — e le
+  soglie di zoom salgono di uno, perche' OpenLayers valuta lo stile a N-1.
+- **Il contorno sfumato dei poligoni** (`fill-antialias`) disegna attorno a
+  ogni poligono un bordo di un pixel del suo colore: i poligoni dell'uso suolo
+  piu' piccoli di un pixel restavano visibili come anelli bianchi. Spento
+  sulle superfici.
+- **Il testo lungo le linee**: OpenLayers lo ripete ogni `symbol-spacing x
+  2`, maplibre-native ogni `symbol-spacing`. Il valore raddoppia.
+
+**L'ombreggiatura dei PNG e' una seconda implementazione delle stesse
+formule**: maplibre-native non ha un layer equivalente, quindi la calcola
+`src/raster/ombra.js` sulla CPU, con i parametri di
+`metadata['wm:hillshade']`, e la compone come il browser — sopra le
+superfici, sotto le curve di livello. Una modifica a `hillshade.js` va
+riportata li': `node tools/ombra-native-vs-ol.mjs` rende le sole superfici
+con i due renderer ed esce 1 se l'ombra diverge (oggi meno di 1,1 livelli di
+grigio su 255). `pipeline/render-png-ol.mjs`, il renderer OpenLayers, resta
+per questo e per vedere un PNG come lo vedra' un'app.
+
+**Il binario precompilato vuole le librerie con cui e' costruito.**
+maplibre-native 6.2.0 (fissata: la 6.4 vuole Node 20, sul Mac c'e' il 18) e'
+compilata su Ubuntu 22.04 e cerca ICU 70: su un sistema piu' recente non si
+carica. Sui server Linux si usa `pipeline/render-png-docker.sh`, che fissa
+l'immagine, e `aggiorna-png.sh` ci ricade da solo se il modulo non si carica.
+Il container parte con `--init`: senza, `xvfb-run` e' il processo 1 e resta
+fermo per sempre in attesa di Xvfb, senza errori.
 
 ## Trappole di ol-mapbox-style
 
@@ -418,6 +612,41 @@ Verificate sul campo, ognuna e' costata un ciclo di debug:
   Icona ed etichetta vanno su due layer distinti (`*-icon` / `*-label`).
 - **Layer di stile consecutivi con la stessa source finiscono in un solo
   layer OpenLayers**, quindi `?only=` non riesce a separarli.
+- **Un'icona su una LINEA compare solo se la linea occupa piu' di 150 pixel.**
+  `stylefunction.js` di ol-mapbox-style 11 ha la soglia scritta nel codice
+  ("FIXME Do not hard-code a size of 150"); sotto, niente icona e niente
+  testo, senza errori. I cartellini di OpenMapTiles funzionano perche'
+  planetiler unisce i tratti con lo stesso nome; le vie OSM grezze alle scale
+  basse sono lunghe pochi pixel. Per i cartellini dei livelli bassi si
+  calcolano in anticipo i PUNTI (`pipeline/punti-cartellini.py`: il centro di
+  ogni via, a 250 pixel dagli altri con lo stesso numero a ogni livello, come
+  `shield-min-distance`, con il livello d'ingresso in `tippecanoe.minzoom`). Per capirlo e' servito
+  interrogare la funzione di stile nella pagina
+  (`layer.getStyle()(feature, resolution)` su `getFeaturesInExtent`): una
+  prova su un tratto lungo funziona e su uno corto no, e porta fuori strada.
+- **La priorita' delle etichette e' rovesciata rispetto a Mapnik.** Mapnik
+  piazza le etichette nell'ordine dei layer e scarta quelle che urtano le gia'
+  piazzate: vince chi viene PRIMA. ol-mapbox-style da' a ogni layer di stile
+  uno `zIndex` pari alla sua posizione e il declutter di OpenLayers premia lo
+  `zIndex` piu' alto: vince chi viene DOPO. Con l'ordine del `.mml`, a z13 i
+  nomi delle vie cancellavano quelli dei paesi. `build-zoom-profile.mjs` mette
+  quindi i layer `symbol` in fondo e in ordine inverso al `.mml` (campo
+  `ordine` del mapping per quelli senza selettore). Conseguenza da ricordare:
+  un'icona con `icon-allow-overlap` ma senza `icon-ignore-placement` e' un
+  ostacolo, e se sta sopra il proprio nome lo cancella (le cime a z14).
+- **`symbol-spacing` vale il doppio.** ol-mapbox-style ripete il testo lungo
+  una linea ogni `symbol-spacing x 2` pixel (`text.setRepeat(symbolSpacing *
+  2)`): per il `text-spacing` di Mapnik il valore va dimezzato. Con 300 i nomi
+  delle strade si ripetevano ogni 600 px invece di 300.
+- **Lungo le linee OpenLayers non cerca posto.** Prova le posizioni a
+  intervallo fisso e scarta quelle troppo curve; Mapnik sposta l'etichetta
+  (`text-label-position-tolerance`). I numeri dei sentieri su tracciati
+  tortuosi a volte mancano: e' un limite del motore, non dello stile.
+- **Niente `["zoom"]` nei filtri.** ol-mapbox-style li valuta con lo stesso
+  livello di scarto delle espressioni, ma `scalaZoom` corregge solo `paint` e
+  `layout`: `[">=", ["zoom"], 16]` scattava a z17, cioe' mai. `build-style`
+  ora si ferma se ne trova uno; le soglie vanno nel profilo o nel dato
+  (`tippecanoe.minzoom`).
 - **Lo Style Spec ammette una sola sottoespressione `interpolate`/`step` su
   zoom per espressione**: `["case", c, ["interpolate"...], ["interpolate"...]]`
   fa rifiutare lo stile intero. Invertire l'annidamento.
@@ -446,14 +675,28 @@ Casi trovati, tutti segnalati dall'utente guardando la preview:
   'nature_reserve')`: solo quelle due classi.
 - **`park-label`** etichettava i siti `conservation` (19 su 29 nella tile z10),
   che TGen non nomina mai.
+- **Bande ed etichette dei parchi senza soglia di superficie.** TGen le
+  disegna solo se `way_pixels > 3000`, e l'etichetta cresce sopra 12.000 e
+  48.000 pixel. La superficie in pixel quadruplica a ogni livello, quindi ogni
+  area ha un primo livello `zpx` e le due soglie dell'etichetta cadono a
+  `zpx+1` e `zpx+2`: `pipeline/parchi-soglia.py` lo scrive nel dato
+  (`tippecanoe.minzoom` e la proprieta' `zpx`). Il dato e' la strada giusta
+  perche' la preview chiede le tile allo stesso zoom della vista: lo
+  sfasamento di un livello riguarda solo le espressioni dello stile.
 
 Prima di dare un colore a un layer, cercare nel `.mss` il selettore che lo
 governa e replicarne il filtro. Il colore giusto sull'insieme sbagliato di
 geometrie resta un difetto.
 
+Il caso opposto costa altrettanto: **un selettore di TGen senza alcun layer
+locale.** Le ferrovie (`railway_rail` dentro `roads-fill`, da z8) e le uscite
+autostradali (`#junctions`, da z11) mancavano del tutto, e nessuna misura per
+elemento poteva accorgersene: si confronta solo cio' che esiste da entrambe le
+parti. Si trovano guardando le tile affiancate, non le medie.
+
 ## Ogni livello di zoom ha il suo set di ombreggiatura
 
-`shadeSets` tiene `hs-z8` … `hs-z16`, uno per livello, non fasce condivise: le
+`shadeSets` tiene `hs-z7` … `hs-z16`, uno per livello, piu' `hs-z0-6` per i livelli sotto il profilo (`shadeSotto`), non fasce condivise: le
 opacita' che ne risultano non seguono una curva liscia (0,21 · 0,39 · 0,36 ·
 0,26 · 0,32 · 0,28 · 0,34) e nessuna fascia potrebbe rappresentarle. Con le
 fasce, tarare z12 spostava z11.
@@ -510,6 +753,17 @@ node tools/ombra-scala.mjs        # un punto fisso, tutti gli zoom
 node tools/avvio-check.mjs        # l'avvio non deve "lampeggiare"
 ```
 
+```bash
+node tools/taratura-ombra.mjs gamma 1,0.85,0.7 14/8668/5972 14/8686/5995   # un parametro, molti valori
+```
+
+`taratura-ombra.mjs` carica la tile una volta e cambia il parametro nella
+pagina: sedici misure in 36 secondi invece di un quarto d'ora, e coincide con
+`zoom-diff` (stessi valori al decimo). Serve a scegliere; la verifica finale
+resta `zoom-diff` su tutta la scala. Attenzione a `vert`: agisce anche sul
+layer della pendenza, che lo strumento aggiorna insieme a quello della luce —
+aggiornarne uno solo sottostimava lo scurimento.
+
 `ombra-vs-gdal.mjs` e' il metro oggettivo — gdaldem applica Horn sul dato in
 float, senza texture: il suo hillshade e' la risposta giusta per definizione.
 **Azzera `vert`, `gamma` e `slope` prima di misurare**, altrimenti confronta
@@ -562,6 +816,21 @@ compensano il difetto invece di rivelarlo.
   L'ordine si governa con `zIndex`, senza mai rimuovere.
 - **`filter: blur()` sullo stesso canvas**: stessa storia del blend, stesso
   `ol.css`, stesso `!important`. Terza volta nello stesso punto.
+- **Il cambio di composizione fra livelli non e' mai arrivato al canvas.**
+  `hillshade.js` cercava `getRenderer().getCanvas()`, che in OpenLayers 7 non
+  esiste: la classe del layer sta sul canvas WebGL dell'helper
+  (`getRenderer().helper.getCanvas()`). In piu' segnava la composizione come
+  applicata anche quando non trovava il canvas, e non riprovava. Finche' tutti
+  i set erano `multiply` non se n'e' accorto nessuno; con `normal` da z14 la
+  mappa restava in `multiply` e risultava piu' scura di 13 punti. Ora la classe
+  si riallinea dopo ogni disegno, e `tile-diff.mjs` e `render-png-ol.mjs`
+  confrontano la classe con la composizione VOLUTA dal motore, non solo con
+  il calcolato: classe e calcolato coincidevano anche quando erano sbagliati.
+- **L'ombra di z16 sotto z8.** Un livello senza fascia ricadeva sull'ULTIMA
+  fascia, pensata per z17 e oltre: z7 (che nel profilo non aveva set) e z0–z6
+  prendevano la composizione normale a 0,3 di z16, un velo grigio al posto del
+  `multiply` di TGen. Ora sotto la prima fascia vale la prima, z7 ha `hs-z7` e
+  z0–z6 `hs-z0-6` (`shadeSotto` nel profilo).
 
 Regola pratica: quando un parametro non ha l'effetto atteso, **verificare che
 sia arrivato a destinazione** prima di cambiarne il valore. Contare i pixel di
@@ -609,8 +878,11 @@ Altre due cose da sapere: **i sentieri numerati richiedono le relazioni
 `route=hiking`**, che OpenMapTiles non estrae — vanno prese a parte con il
 driver OSM di GDAL. E `names_along_lines` e `rifugi_bivacchi` esistono su TGen
 ma **non sono in produzione** (nessun riferimento nei `.mml`/`.mss`): sono
-asset pronti e mai attivati, quindi il locale puo' mostrare cose che il
-riferimento non ha.
+asset pronti e mai attivati. Nello stile i layer che li leggono (`toponimi`,
+`rifugi-icon`, `rifugi-label`) restano quindi **spenti di serie**
+(`visibility: none`): un'app vettoriale puo' accenderli, un PNG no. I rifugi
+che TGen disegna davvero vengono da OSM (`hut-icon`, `hut-label`,
+`shelter-icon`, sorgente `osmpoi`).
 
 **Le curve di livello servite sono `contours-tgen.pmtiles`**, con i campi
 `quota` e `type` (`cp*` direttrice, `cs*` secondaria: `cp50/cs50` a z13,
@@ -622,19 +894,24 @@ arriva a **z15**: la sorgente deve dichiarare `maxzoom: 15`, con 14 le curve a
 z15 vengono da tile sovraingrandite e risultano meno fitte del riferimento.
 
 **Una sola palette per le superfici.** I colori stanno in
-`zoom-profile.json > surfaceSets`, e `landcover-osm` li legge da li'. Quando
-aveva una sua palette copiata a mano si e' disallineata: le zone umide OSM
-usavano `@zumide` (l'azzurrino dei codici CLC 411-423) mentre in
-`landcover.mss` `wetland_marsh` va su `@grass`, `wetland_swamp` su `@forest`,
-`wetland_bog` su `@heath` — tutti verdi.
+`zoom-profile.json > surfaceSets`, uno per fascia (`corine-2018` z7–z12,
+`corine` z13, `regionale` da z14). `clc-fill` e `landcover-fill` li prendono
+per codice; gli altri layer li citano per nome, `"pal:bosco"`, e
+`build-style.mjs` li risolve livello per livello (uno `step` se il layer
+attraversa piu' set). `landcover-osm` per mesi ha avuto invece una palette sua
+copiata a mano, benche' questo file dicesse il contrario: le zone umide usavano
+`@zumide` mentre in `landcover.mss` `wetland_marsh` va su `@grass`, e mancavano
+rocce e ghiaioni (`@bare_ground: @bianco`) e sabbia. Ora segue `landcover.mss`
+sottoclasse per sottoclasse.
 
-**La palette Corine sono i valori di `webmapp.mss` con rosso -5 e blu -14, e
-nient'altro.** Le correzioni empiriche precedenti (saturazione x0,81, blu -15,
-rotazione di tinta) erano state tarate su un solo tono — il verde del bosco a
-z10 — mentre l'ombreggiatura non veniva disegnata affatto: applicate a tutta
-la palette rendevano acidi i toni chiari (il pascolo usciva `#e4f9cb` invece
-di `#ecf3e0`). Ripartendo dai valori dichiarati il canale verde e' risultato
-gia' corretto a -1/-2. **Non tarare una palette intera su un tono solo.**
+**Le palette Corine si misurano classe per classe, sui pixel.**
+`tools/colore-per-classe.mjs mediana clc clc "p.code === '313'" --locale
+<png>` confronta la mediana di TGen e quella locale sotto la stessa maschera,
+cosi' l'ombra pesa uguale sui due lati. Su 96 tile del 2018 gli scarti
+cambiano segno da una classe all'altra (oliveti e bosco misto da scurire,
+conifere e pascolo da schiarire): nessuna correzione unica li sistema. Una
+correzione unica (rosso -5 e blu -14, poi -2 e -5) aveva funzionato solo in
+media. **Non tarare una palette intera su un tono solo, ne' su una media.**
 
 Per l'estratto OSM nazionale usa `europe-latest.osm.pbf` +
 `osmium extract -b 4.39,35.37,22.11,48.06`: `italy-latest` e' tagliato al

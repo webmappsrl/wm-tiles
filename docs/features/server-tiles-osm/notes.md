@@ -4,7 +4,41 @@ Nessun ticket Orchestrator: feature tracciata solo in questa cartella.
 
 ## Deviazioni dal piano
 
-Nessuna: l'implementazione non e' iniziata.
+- **2026-10-11 — Renderer PNG con maplibre-native, come prevedeva il piano
+  (Task 13); sostituisce la decisione del giorno prima.** Lo spike mai fatto,
+  rifatto con lo stile gia' tarato: stesse tile, stesso `style.json`,
+  maplibre-native contro OpenLayers in Chromium. Misure sulle celle di prova:
+  - velocita', 64 tile z14: OpenLayers 61 s con GPU e 349 s senza;
+    maplibre-native 3 s con GPU e 4,7 s su Linux senza GPU (Mesa llvmpipe in
+    Docker). Senza GPU circa 60 volte piu' veloce: per circa due milioni di
+    tile qualche ora su 8 core invece di settimane;
+  - fedelta' a TGen, 35 tile z10-z16 in cinque luoghi: scarto medio di
+    luminosita' 2,0 OpenLayers e 2,2 maplibre-native, di contrasto 1,2 e 2,0.
+    L'ombreggiatura isolata coincide (meno di 1,1 livelli di grigio su 255);
+    il resto viene dalle etichette, che ogni motore dispone a modo suo.
+  L'utente ha accettato che i PNG differiscano da cio' che le app mostreranno
+  col vettoriale (OpenLayers) nella disposizione di qualche etichetta. Lo
+  stile resta uno: `src/raster/stile-nativo.js` lo adatta in automatico (zoom
+  pieno con pixel ratio 0,5 perche' maplibre-native carichi le tile del
+  livello giusto, grandezze raddoppiate, soglie alzate di uno, passo del testo
+  lungo le linee, niente contorno sfumato sulle superfici), e l'ombra la
+  calcola `src/raster/ombra.js` con le formule e i parametri della preview.
+  Il renderer OpenLayers resta come `render-png-ol.mjs` per i confronti.
+- **2026-10-10 — Renderer PNG con OpenLayers headless, non maplibre-native
+  (Task 13). Superata dalla voce precedente.** La somiglianza al riferimento e' stata tarata su OpenLayers:
+  ombreggiatura calcolata in WebGL, compensazione additiva del multiply,
+  sfasamento di zoom di ol-mapbox-style. Un renderer nativo disegna in modo
+  diverso e richiederebbe di ritarare tutto. `pipeline/render-png.mjs` apre la
+  preview in Chromium headless, disegna metatile 4x4 con 128 px di margine e
+  ritaglia. La velocita' non e' un criterio: i PNG si rigenerano ogni qualche
+  mese. Non c'e' (ancora) la rotta `/t/.../raster/...` del piano: i PNG si
+  producono in batch in una cartella `z/x/y.png`.
+- **2026-10-10 — Aggiornamento incrementale invece dell'API on-demand.** Il
+  Task 15 del piano (API autenticata che rigenera un bbox) resta valido ma non
+  e' stato fatto. Si e' fatto prima il confronto fra versioni
+  (`pipeline/diff-versioni.mjs`), che dice quali PNG rifare dopo un
+  aggiornamento: e' cio' che serve alla prima consegna, i PNG che sostituiscono
+  quelli di TGen.
 
 ## Bug trovati
 
@@ -19,6 +53,89 @@ tracciare separatamente:
   content da qualunque webapp servita in HTTPS.
 
 ## Decisioni
+
+- **2026-10-10 — Emulare TGen e' un algoritmo.** Parole dell'utente: "di base
+  dobbiamo emulare TGen e i vecchi PNG, quindi se cambia qualcosa la cambiamo
+  anche noi: diventa algoritmo, niente domande e nemmeno report". Livelli e
+  celle li decide l'inventario `grid_1x1`, i dati il `project.mml`, lo stile
+  i `.mss` e i PNG. Il metodo per scoperte successive, una lettura e una
+  domanda per volta, non scala sull'Italia ed e' abbandonato.
+
+- **2026-10-10 — Aree di prova: Toscana (Pisa) e Sicilia (Caltanissetta).**
+  Decisione dell'utente. Si usano le celle di un grado di TGen che le
+  contengono (10-11 E, 43-44 N; 14-15 E, 37-38 N). Pisa e' stata rigenerata
+  da TGen a febbraio 2026 con i dati completi; Caltanissetta solo nel giro di
+  settembre 2025, con rilievo e un uso suolo piu' chiaro (probabilmente
+  `land_cover_hr`). Una prima lettura l'aveva data per senza rilievo e con
+  lo sfondo bianco: era una tile di citta', dove lo sfondo quasi non si vede.
+
+- **2026-10-10 — Si genera quello che ha generato TGen, solo per l'Italia.**
+  Decisione dell'utente: i livelli (z0-z16) li fissa cio' che TGen ha
+  prodotto, non una scelta tecnica. TGen ha generato anche zone estere, a
+  macchia e in anni diversi (Parigi 2018, Lubiana 2019, Corsica e Zurigo
+  2022): "fuori Italia non ci interessa". Sul server di `api.webmapp.it` quelle
+  tile restano come sono, quindi la consegna non deve mai cancellare.
+- **2026-10-10 — DEM: quello a 10 m di TGen.** Decisione dell'utente: nel
+  primo ciclo i dati si copiano tutti da TGen, e il 10 m ha piu' risoluzione
+  del Copernicus a 30 m: e' TINITALY, che TGen ha in
+  `dem/it_original/tinitaly`. Da z14 TGen usa un'ombreggiatura ad alta
+  risoluzione (`hs10m`, pixel di 5 m, solo sull'area dei lavori recenti); a z16
+  nell'area di prova la differenza col 30 m e' evidente (creste e fossi
+  spariscono). Fino a che livello conservare le quote (z14 o z16) resta da
+  decidere, dopo una verifica sull'area di prova. OpenStreetMap resta da
+  Geofabrik: quello di TGen e' fermo a febbraio 2026 e in un altro schema
+  (osm2pgsql, non OpenMapTiles).
+
+- **2026-10-10 — Un server nuovo e dedicato per wm-tiles.** Scartato un
+  server Webmapp esistente: il rendering tiene la CPU occupata per ore e
+  planetiler chiede molta memoria, e su una macchina che serve app in
+  produzione le rallenterebbe. Requisiti: 8 core, 32 GB di RAM,
+  500 GB–1 TB di SSD, sistema recente con Docker, nessuna GPU.
+
+- **2026-10-10 — wm-tiles non gira su TGen.** Valutato e scartato: TGen ha
+  risorse sufficienti ed e' ferma, ma il sistema e' fuori supporto (Debian 9
+  dal 2022, PostgreSQL 9.6 dal 2021), Node 18+ e Chromium non ci girano, e
+  Docker dai repository si ferma alla 19.03. wm-tiles deve sostituire TGen:
+  installarlo li' vorrebbe dire spostarlo di nuovo quando TGen andra'
+  aggiornata o spenta, e nella fase 2 servire tile alle app da un sistema
+  senza aggiornamenti di sicurezza. Da TGen servono solo dati statici, che si
+  copiano una volta in sola lettura. Resta da scegliere se macchina nuova o
+  un server Webmapp esistente.
+
+- **2026-10-10 — Regola fondante: si copia lo stile, non il contenuto.**
+  Parole dell'utente: "lo stile puo' essere anche del 2012: quello che faremo
+  e' copiare lo stile e non il contenuto, che in questi anni puo' essere
+  cambiato. Per esempio un'autostrada magari fa un percorso diverso, ma lo
+  stile e' quello comandato dai PNG e da TGen". Annulla la decisione qui
+  sotto, che era una mia lettura sbagliata di "un aggiornamento e' dovuto":
+  l'utente intendeva il contenuto, non lo stile. Resta valida la decisione
+  originale di imitare i PNG anche a z7-z12. Resta valido anche il principio
+  sui buchi da z14 (rilievo e uso suolo mancanti): sono contenuto, non stile,
+  e non si imitano.
+- **2026-10-10 — [ANNULLATA] A z0-z12 si segue lo stile attuale di TGen, non
+  i PNG del 2018.** Sostituiva la decisione qui sotto. Regola dell'utente: si emula
+  cio' che lo stile dichiara, non cio' che manca perche' un giro manuale non
+  e' stato fatto o rifatto. Secondo l'utente z0-z12 non sono stati rigenerati
+  perche' cambiano poco e i clienti chiedono aree circoscritte, quindi chi
+  lanciava i lavori a mano li saltava; sono vecchi di quasi dieci anni e un
+  aggiornamento e' dovuto. Il riferimento visivo diventa la z13 attuale
+  (settembre 2025), disegnata con lo stile attuale e con gli stessi colori di
+  Corine. Per lo stesso principio non si emulano i buchi da z14: il rilievo
+  assente dove il lavoro non l'ha costruito e il bianco dove manca la tabella
+  regionale. Si emula invece il limite di Corine a z13, che e' scritto nello
+  stile.
+- **2026-10-10 — [VALIDA] A z7-z12 si imitano i PNG serviti, anche se del
+  2018.** Le
+  tile di `api.webmapp.it` hanno due date: z0-z12 del 2018, z13-z16 di
+  settembre 2025 in Italia (febbraio 2026 nell'area di prova): sono stati
+  rigenerati solo i livelli alti.
+  Lo stile attuale di TGen (`.mss`) a z7-z12 produrrebbe un'altra resa, che
+  pero' non esiste da nessuna parte: non ci sarebbe un PNG con cui
+  confrontarsi. Decisione dell'utente: "come primo ciclo emuliamo quello che
+  esiste come design". Resta aperto chiedere a chi cura TGen se z7-z12 siano
+  rimasti al 2018 per scelta o per risparmiare tempo di rendering; se per
+  tempo, in un ciclo successivo si ritarano z7-z12 sui `.mss` senza toccare
+  il resto.
 
 - **2026-09-04 — Nome del repo: `wm-tiles`, non `osmvectors`.** Il formato
   (vettoriale o raster) e' un tipo di output, non l'identita' del servizio: il
@@ -69,7 +186,8 @@ tracciare separatamente:
 
 - Costo misurato del filtro sul protobuf (Task 6, step 6).
 - Dimensione e durata del build Italia (Task 14, step 8).
-- Esito dello spike sul rendering nativo MapLibre (Task 13, step 1).
+- ~~Esito dello spike sul rendering nativo MapLibre (Task 13, step 1).~~ Fatto
+  l'11 ottobre 2026: vedi la prima voce delle deviazioni.
 - Differenze visive accettate rispetto alle PNG attuali (Task 12, step 6).
 - Alert configurati e stack di monitoraggio usato (Task 16, step 6).
 - Se la procedura di purge e' stata provata almeno una volta (Task 16, step 5).
@@ -579,3 +697,81 @@ gradazione dall'ombra: non potevano funzionare.
 
 Da verificare: `polygon-gamma: 0.5` sui poligoni Corine, e se il riferimento
 sovrapponga piu' fonti di uso suolo semi-trasparenti.
+
+## I PNG di TGen hanno due stili (10/10/2026)
+
+**Deviazione dal metodo seguito finora.** Le tarature fino a ieri trattavano
+il riferimento come uno stile solo. Non lo e': z0-z12 sono stati resi nel 2018
+con uno stile che non esiste piu', z13-z16 da settembre 2025 con
+`project.xml` del 23 febbraio 2025, l'XML compilato che Mapnik legge. Fra i
+due cambia quasi tutto quello che ha un colore: acqua (`#acd4ea` contro
+`#dce7f7`), confini (verdi contro lilla), bande dei parchi (viola contro
+verdi), uscite autostradali (`#960000` contro grigio), i tre boschi del Corine
+(distinti nel 2018, quasi uguali oggi), piste e sentieri (assenti fino a z12
+nel 2018). Ogni correzione unica tarata su una media dei due stili sbagliava da
+una parte e dall'altra.
+
+**Decisioni prese, in applicazione della regola fondante:**
+
+- z13-z16: si copia `project.xml` (colori, soglie in scale denominator,
+  larghezze). E' la specifica esatta, e misurare li' serve solo per il rilievo.
+- z0-z12: la specifica sono i PNG del 2018, misurati per classe con
+  `tools/colore-per-classe.mjs` su molte tile. Dove una regola del `.mss`
+  di oggi disegna qualcosa che nel 2018 non c'era (piste e sentieri a
+  z10-z12), vince il PNG.
+- Le soglie decise sui PNG vanno nel campo `livelli` di
+  `style/tgen-mapping.json`: prima stavano solo nel profilo, e rigenerarlo
+  le cancellava (28 eccezioni perse in silenzio).
+
+**Errori trovati strada facendo, tutti invisibili alle medie:**
+
+- Le larghezze delle strade erano di un livello indietro: scritte gia'
+  compensate a mano e poi spostate di nuovo da `build-style`. A z13
+  l'autostrada era 2,5 px invece di 5.
+- Le etichette avevano la priorita' rovesciata (vedi CLAUDE.md): a z13 i
+  nomi delle vie cancellavano quelli dei paesi.
+- Sotto z8 l'ombreggiatura usava il set di z16.
+- `landcover-osm` aveva una palette sua, benche' la documentazione dicesse
+  il contrario.
+- Ferrovie, uscite autostradali e aeroporti mancavano del tutto; gli
+  aeroporti erano nell'archivio, ma nessun gruppo del manifest li portava e il
+  filtro li scartava.
+
+## Secondo giro: copertura dei layer di TGen (11/10/2026)
+
+**Metodo.** Invece di cercare le differenze a occhio, `tools/tgen-copertura.mjs`
+elenca i layer del `.mml` che disegnano qualcosa fino a z16 e che nessun layer
+locale cita (campi `tgen` o `copre` del mapping). Erano 33; ne restano 11
+minori. E' il controllo che la regola "emulare e' un algoritmo" presupponeva e
+che non esisteva.
+
+**Decisione.** Cio' che OpenMapTiles non porta (dighe, frangiflutti, aree
+pedonali, filari, nomi di ferrovie ed edifici) va in un archivio a parte,
+`extra`, estratto dal PBF con le condizioni del `.mml`
+(`pipeline/build-extra.sh`), come gia' `power` e `parchi`.
+
+**Tre comportamenti del motore, tutti silenziosi:** `symbol-spacing` vale il
+doppio in ol-mapbox-style; i confronti con `["zoom"]` nei filtri scattano un
+livello dopo (`build-style` ora li rifiuta); `parse-cartocss` non legge i
+selettori di classe (`.stations`, `.text`). E un limite che resta: lungo le
+linee OpenLayers non cerca una posizione libera come Mapnik, quindi alcuni
+numeri dei sentieri su tracciati tortuosi non compaiono.
+
+## Terzo giro: anche i layer che il controllo non vedeva (11/10/2026)
+
+`tgen-copertura` ora non trova layer scoperti, ma il parser del CartoCSS non
+legge i selettori di classe: nomi di regioni e nazioni (`.state`, `.country`) e
+barriere (`.barriers`) risultavano "senza regole" e non comparivano
+nell'elenco. Sono stati aggiunti leggendo il `.mss` a mano.
+
+**Scoperta.** Nei PNG del 2018 `@admin-boundaries` valeva `#55933b`, il verde
+che oggi e' dei parchi: confini, nomi delle nazioni e delle regioni tornano
+esattamente con le formule del `.mss` (darken, desaturate) applicate a quel
+verde. Era la stessa inversione gia' vista fra confini e bande dei parchi.
+
+**Decisione.** Le citta' non si prendono piu' da OpenMapTiles ma dal PBF, con il
+punteggio di `placenames-medium` (popolazione, doppia per i capoluoghi di
+regione): decide il livello d'ingresso e, ordinando le feature, la precedenza
+fra nomi vicini. La finestra dei nomi di regioni e nazioni viene per ora da una
+tabella di superfici; sul server va calcolata dai poligoni OSM, che includono le
+acque territoriali.

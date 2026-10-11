@@ -43,7 +43,7 @@ const CATEGORY = {
 };
 
 /** Icone che definiscono i propri colori e non vanno ricolorate. */
-const KEEP_COLORS = new Set(['hiking-shield']);
+const KEEP_COLORS = new Set(['hiking-shield', 'power-tower', 'power-tower-small', 'power-pole', 'aerodrome', 'station', 'spring', 'saddle', 'cave', 'level-crossing', 'level-crossing2', 'cross', 'bus-stop', 'ford', 'place-4', 'place-4-z7', 'place-6', 'place-6-z7', 'alpine-hut-cai', 'wilderness-hut-cai', 'tgen-shelter']);
 
 const PADDING = 2;
 

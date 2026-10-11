@@ -22,6 +22,7 @@
   "type": "module",
   "dependencies": {
     "@mapbox/vector-tile": "^3.0.0",
+    "@maplibre/maplibre-gl-native": "6.2.0",
     "@maplibre/maplibre-gl-style-spec": "^26.4.1",
     "express": "^5.2.1",
     "pbf": "^5.1.2",

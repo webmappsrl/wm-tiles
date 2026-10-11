@@ -7,7 +7,7 @@ const VERSION_RE = /^\d{8}-\d{4}$/;
 export const DEM_VERSION = 'dem';
 
 /** Sorgente PMTiles su filesystem locale: range-request tradotte in letture posizionali. */
-class FileSource {
+export class FileSource {
   constructor(path) {
     this.path = path;
   }

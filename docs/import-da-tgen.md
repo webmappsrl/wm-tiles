@@ -31,6 +31,25 @@ ssh tgen "psql -d general -Atf -" < pipeline/sql/usotoscana-bbox.sql \
 
 ---
 
+## La copia completa
+
+Da ottobre 2026 non si importa piu' un layer alla volta: si copia tutto in
+una volta, con un algoritmo, perche' quali dati servono lo dice il
+`project.mml` di TGen.
+
+```bash
+# le query: una per layer PostGIS non OSM del project.mml, generate
+python3 pipeline/tgen-layer-sql.py data/tgen-style/project.mml pipeline/sql/tgen
+# la copia: layer, inventario grid_1x1, TINITALY; riprende se interrotta
+bash pipeline/copia-da-tgen.sh data/tgen-copia
+```
+
+Le query riusano la sottoquery di ogni layer cosi' com'e' nel `.mml`, con le
+CASE che normalizzano le colonne in `coduso`: esce esattamente cio' che
+Mapnik riceve. Lo script stampa ogni comando SSH prima di eseguirlo,
+controlla lo spazio prima di copiare e verifica che ogni file sia GeoJSON
+valido. Il resto di questa pagina descrive il metodo precedente, a mano.
+
 ## Cosa si importa, e cosa no
 
 ```mermaid

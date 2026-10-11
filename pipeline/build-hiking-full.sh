@@ -2,6 +2,9 @@
 set -euo pipefail
 # Percorsi escursionistici numerati: dal PBF all'archivio PMTiles.
 #
+# `cai_scale` serve allo stile come in hiking_trails.mss: E ed EE tratteggiati,
+# EEA a puntini, gli altri continui.
+#
 # `build-hiking.sh` si ferma al GeoJSONSeq e usa ogr2ogr, che in locale non
 # c'e': gira nel container GDAL. Qui la catena e' completa.
 #
@@ -19,7 +22,8 @@ docker run --rm --platform linux/arm64 -v "$PWD":/w -v "$WORK":/out \
                hstore_get_value(other_tags, 'ref')         AS ref,
                hstore_get_value(other_tags, 'network')     AS network,
                hstore_get_value(other_tags, 'osmc:symbol') AS osmc_symbol,
-               hstore_get_value(other_tags, 'operator')    AS operator
+               hstore_get_value(other_tags, 'operator')    AS operator,
+               hstore_get_value(other_tags, 'cai_scale')   AS cai_scale
         FROM multilinestrings
         WHERE type = 'route'
           AND hstore_get_value(other_tags, 'route') = 'hiking'"

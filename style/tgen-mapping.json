@@ -2,18 +2,48 @@
   "nota": "Corrispondenza fra i nostri layer di stile e i selettori del riferimento. E' la sola parte che non si estrae a macchina: Mapnik interroga PostGIS e costruisce campi propri (feature = 'highway_motorway', code_12), noi leggiamo MVT con schema OpenMapTiles (class = 'motorway'). Va tenuta a mano, ma una volta sola e in un posto solo. `tgen: null` = layer senza corrispondente nel riferimento (asset presenti su TGen ma non attivi in produzione, come toponimi e rifugi): la loro visibilita' resta quella che abbiamo scelto.",
   "layers": {
     "background": {
-      "tgen": "(globale)"
+      "tgen": "(globale)",
+      "copre": [
+        "world",
+        "coast-poly"
+      ],
+      "livelli": [
+        0,
+        16
+      ]
     },
     "landcover-osm": {
       "tgen": [
         "landcover-low-zoom",
         "landcover"
-      ]
+      ],
+      "copre": [
+        "landcover-area-symbols"
+      ],
+      "notaCopre": "landcover-area-symbols (retini di sabbia, zone umide, boschi, aree militari) sta sotto Corine e l'uso suolo regionale nel .mml: in Italia non si vede quasi mai, e non si disegna."
     },
     "landcover-fill": {
       "tgen": [
+        "igm_dbsn_bosco",
+        "igm_dbsn_f_nter",
+        "igm_dbsn_sc_dis",
+        "igm_dbsn_ps_inc",
+        "igm_dbsn_cl_agr",
+        "igm_dbsn_cv_aes",
+        "igm_dbsn_cv_dis",
+        "usobz",
+        "usofriuli",
+        "usotn",
+        "usoveneto",
+        "usolomb",
+        "usoliguria",
         "usoemilia",
-        "usotoscana"
+        "usotoscana",
+        "usosardegna",
+        "usocalabria",
+        "usopiemonte",
+        "ghiacciai_piemonte",
+        "land_cover_hr"
       ]
     },
     "clc-fill": {
@@ -42,10 +72,24 @@
       "tgen": [
         "water_polygons",
         "water-areas"
-      ]
+      ],
+      "copre": [
+        "icesheet-poly",
+        "icesheet-outlines"
+      ],
+      "notaCopre": "icesheet-*: le calotte di Groenlandia e Antartide (shapefile), fuori dall'Italia."
     },
     "building": {
-      "tgen": "buildings"
+      "tgen": [
+        "buildings",
+        "buildings-major"
+      ]
+    },
+    "building-igm": {
+      "tgen": [
+        "igm_edifc",
+        "igm_edi_min"
+      ]
     },
     "park-band-a": {
       "tgen": "nature-reserve-boundaries"
@@ -55,7 +99,11 @@
     },
     "park-label": {
       "tgen": null,
-      "nota": "visibile da z10 come nei PNG serviti (le etichette dei siti Natura 2000 ci sono a z10). Nessun selettore del CartoCSS corrisponde: nature-reserve-text parte da z13, text-poly ha regole solo da z15."
+      "nota": "z10-z12 dai PNG del 2018: nome in #8f8491 (@admin-boundaries_txt), corsivo 10 px, a capo largo, con la stessa soglia way_pixels > 3000 (Migliarino-San Rossore compare a z10, i Monti Livornesi a z11). Da z13 nature-reserve-text del .mml: #4b7c37, 10/12/15 px secondo la superficie, a capo a 3 em. La soglia e' nel dato (pipeline/parchi-soglia.py).",
+      "ordine": "nature-reserve-text",
+      "copre": [
+        "nature-reserve-text"
+      ]
     },
     "road-casing-minor": {
       "tgen": "roads-casing"
@@ -67,19 +115,42 @@
       "tgen": [
         "roads-low-zoom",
         "roads-casing"
+      ],
+      "livelli": [
+        6,
+        16
+      ],
+      "notaLivelli": "Fino a z11 e' l'alone bianco al 40% dei livelli bassi (roads.mss, @lowzoom-halo-width), da z12 il bordo scuro.",
+      "copre": [
+        "bridges"
       ]
     },
     "road-fill-minor": {
-      "tgen": "roads-fill"
+      "tgen": "roads-fill",
+      "livelli": [
+        12,
+        16
+      ],
+      "notaLivelli": "Fino a z11 le strade minori vengono da roadslz (road-lowzoom-*), OpenMapTiles non le porta."
     },
     "road-fill-secondary": {
-      "tgen": "roads-fill"
+      "tgen": "roads-fill",
+      "livelli": [
+        12,
+        16
+      ],
+      "notaLivelli": "Fino a z11 le secondarie vengono da roadslz, grigie come nei PNG del 2018."
     },
     "road-fill-major": {
       "tgen": [
         "roads-low-zoom",
         "roads-fill"
-      ]
+      ],
+      "livelli": [
+        8,
+        16
+      ],
+      "notaLivelli": "roads.mss: highway_primary da z8 (roads-low-zoom copre z6-z9, ma la regola delle primarie parte da 8)."
     },
     "road-fill-trunk": {
       "tgen": [
@@ -93,11 +164,30 @@
         "roads-fill"
       ]
     },
+    "track-casing": {
+      "tgen": "roads-fill",
+      "nota": "bordo bianco al 40% delle carrarecce, #roads-fill[zoom >= 15] in roads.mss",
+      "livelli": [
+        15,
+        16
+      ],
+      "notaLivelli": "Il bordo bianco delle piste e' da z15 (roads.mss)."
+    },
     "track": {
-      "tgen": "roads-fill"
+      "tgen": "roads-fill",
+      "livelli": [
+        13,
+        16
+      ],
+      "notaLivelli": "Nei PNG del 2018 (z10-z12) le piste non ci sono: la mediana sotto la maschera e' il colore del fondo. Il .mss di oggi le disegna da z10."
     },
     "path": {
-      "tgen": "roads-fill"
+      "tgen": "roads-fill",
+      "livelli": [
+        13,
+        16
+      ],
+      "notaLivelli": "Come track: assenti nei PNG del 2018 fino a z12."
     },
     "hiking-line": {
       "tgen": "hiking_trails"
@@ -105,79 +195,176 @@
     "hiking-ref": {
       "tgen": "hiking_trails_labels"
     },
+    "power-tower": {
+      "tgen": "power-towers"
+    },
+    "power-pole": {
+      "tgen": "power-poles"
+    },
     "boundary": {
-      "tgen": [
+      "tgen": null,
+      "ordine": "admin-low-zoom",
+      "livelli": [
+        4,
+        16
+      ],
+      "copre": [
         "admin-low-zoom",
         "admin-mid-zoom",
         "admin-high-zoom"
-      ]
+      ],
+      "nota": "admin.mss: larghezze, tratteggi (in pixel, qui divisi per la larghezza) e opacita' per livello amministrativo; lilla in darken da z13, verde nei PNG del 2018."
+    },
+    "boundary-comuni": {
+      "tgen": "admin-high-zoom",
+      "nota": "admin_level 7-8: da z12 in admin.mss (layer admin-mid-zoom e admin-high-zoom)",
+      "livelli": [
+        12,
+        16
+      ],
+      "notaLivelli": "A z12 i confini comunali ci sono, verdi, nei PNG del 2018."
     },
     "road-label": {
-      "tgen": "roads-text-name"
+      "tgen": "roads-text-name",
+      "livelli": [
+        13,
+        16
+      ],
+      "nota": "Statali e provinciali (motorway, trunk, primary, secondary) da z13: 8/9/10 px, nero, alone del riempimento."
     },
     "road-ref": {
       "tgen": null,
-      "nota": "scudi da z11: nel CartoCSS scaricato i due blocchi #roads-text-ref sono COMMENTATI (righe 2555-2715) ma la produzione li disegna, quindi la soglia viene dai PNG"
+      "nota": "scudi da z11: nel CartoCSS scaricato i due blocchi #roads-text-ref sono COMMENTATI (righe 2555-2715) ma la produzione li disegna, quindi la soglia viene dai PNG",
+      "ordine": "roads-text-ref",
+      "livelli": [
+        13,
+        16
+      ],
+      "notaLivelli": "Da z13 come roads-text-ref del .mml; fino a z12 i cartellini sono quelli di roadslz (road-ref-lz-*, roads-text-ref-low-zoom). Visibili insieme davano doppioni (SS1 tre volte in una tile a z11)."
+    },
+    "road-ref-lz-motorway": {
+      "tgen": "roads-text-ref-low-zoom",
+      "nota": "cartellini z10-z12 (roads.mss riga 2556): autostrade da z10, superstrade e primarie da z11, secondarie da z12"
+    },
+    "road-ref-lz-primary": {
+      "tgen": "roads-text-ref-low-zoom",
+      "nota": "cartellini z10-z12 (roads.mss riga 2556): autostrade da z10, superstrade e primarie da z11, secondarie da z12"
+    },
+    "road-ref-lz-secondary": {
+      "tgen": "roads-text-ref-low-zoom",
+      "nota": "cartellini z10-z12 (roads.mss riga 2556): autostrade da z10, superstrade e primarie da z11, secondarie da z12"
     },
     "waterway-label": {
       "tgen": "water-lines-text"
     },
     "water-name": {
       "tgen": null,
-      "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss"
+      "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss",
+      "ordine": "text-poly",
+      "copre": [
+        "text-poly"
+      ]
     },
     "place-city": {
-      "tgen": [
-        "capital-names",
-        "placenames-medium"
-      ]
+      "tgen": "capital-names",
+      "nota": "Solo la capitale (capital=2): le altre citta' e i paesi sono city-dot, city-dot-label e city-label."
     },
     "place-village": {
       "tgen": "placenames-small"
     },
     "place-minor": {
-      "tgen": "placenames-small"
+      "tgen": null,
+      "nota": "placenames.mss, #placenames-small::hamlet (hamlet, locality, neighbourhood, isolated_dwelling, farm): da z15 (10 px #222), 12 px #777 da z16. Soglie lette a mano: il selettore del .mml copre anche i paesi da z12.",
+      "ordine": "placenames-small"
     },
     "mountain-peak-icon": {
       "tgen": null,
-      "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss"
+      "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss",
+      "ordine": "amenity-points"
     },
     "mountain-peak-label": {
       "tgen": null,
-      "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss"
+      "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss",
+      "ordine": "text-point",
+      "copre": [
+        "text-point"
+      ]
     },
     "poi-icon": {
       "tgen": null,
-      "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss"
+      "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss",
+      "ordine": "amenity-points",
+      "livelli": [
+        16,
+        16
+      ],
+      "notaLivelli": "amenity-points.mss: luoghi di culto, panorami, picnic, campeggi, ricoveri, sorgenti da z16; ristoranti, bar, informazioni, fontanelle, alberghi da z17 (mai fino a z16); i parcheggi solo se piu' grandi di 900 pixel, quindi in pratica da z16. Le fermate dell'autobus TGen le disegna come quadratini blu, non come icona: escluse."
     },
     "osmpoi-icon": {
-      "tgen": null
+      "tgen": null,
+      "ordine": "amenity-points",
+      "livelli": [
+        14,
+        16
+      ],
+      "copre": [
+        "springs"
+      ],
+      "nota": "water-features.mss #springs e amenity-points.mss natural_saddle: da z14."
     },
     "osmpoi-label": {
-      "tgen": null
+      "tgen": null,
+      "ordine": "text-point",
+      "livelli": [
+        15,
+        16
+      ],
+      "nota": "amenity-points.mss: nomi di selle e grotte da z15, @landform-color.",
+      "copre": [
+        "text-point"
+      ]
     },
     "rifugi-icon": {
-      "tgen": null
+      "tgen": null,
+      "ordine": "amenity-points",
+      "nota": "Spento di serie (11 ottobre 2026): la tabella rifugi_bivacchi di TGen non e' in produzione (nessun riferimento in project.mml, project.xml, .mss); TGen disegna i rifugi di OSM (hut-icon, hut-label). Resta nello stile per l'app vettoriale."
     },
     "rifugi-label": {
-      "tgen": null
+      "tgen": null,
+      "ordine": "text-point",
+      "copre": [
+        "text-point"
+      ],
+      "nota": "Spento di serie (11 ottobre 2026): la tabella rifugi_bivacchi di TGen non e' in produzione (nessun riferimento in project.mml, project.xml, .mss); TGen disegna i rifugi di OSM (hut-icon, hut-label). Resta nello stile per l'app vettoriale."
     },
     "toponimi": {
-      "tgen": null
+      "tgen": null,
+      "ordine": "cl_hr_subd_labels",
+      "nota": "Spento di serie (visibility none), decisione dell'11 ottobre 2026: TGen non disegna la tabella names_along_lines (nessun riferimento in project.mml, project.xml, .mss) e nei suoi PNG questi nomi non compaiono a nessun livello. Resta nello stile perche' l'app vettoriale possa accenderlo; i dati vanno prima ripuliti (maiuscole, nomi vuoti) e coprono l'Italia a macchia di leopardo."
     },
     "waterway-river": {
       "tgen": null,
-      "nota": "water.mss: river/canal, larghezze 0,7 a z8 fino a 6 a z15"
+      "nota": "water.mss: river/canal, larghezze 0,7 a z8 fino a 6 a z15",
+      "copre": [
+        "water-lines-low-zoom",
+        "water-lines"
+      ]
     },
     "waterway-stream": {
       "tgen": null,
       "nota": "water.mss: stream/ditch/drain da z13, larghezza fissa 2"
     },
+    "waterway-stream-intermittent": {
+      "tgen": null,
+      "nota": "water.mss: stream/ditch/drain da z13, larghezza fissa 2"
+    },
     "(ombreggiatura)": {
       "tgen": [
+        "hsworld",
         "hs100m",
         "hs25m",
-        "hs10m"
+        "hs10m",
+        "slope10m"
       ],
       "nota": "non e' un layer dello stile: calcolata dal client su WebGLTile, parametri in metadata['wm:hillshade']"
     },
@@ -197,14 +384,6 @@
       "tgen": null,
       "nota": "archivio roadslz: strade dei livelli bassi"
     },
-    "boundary-halo": {
-      "tgen": [
-        "admin-low-zoom",
-        "admin-mid-zoom",
-        "admin-high-zoom"
-      ],
-      "nota": "l'alone bianco che il riferimento disegna sotto i confini maggiori (background/line-color: white)"
-    },
     "aerialway-line": {
       "tgen": "aerialways",
       "nota": "impianti di risalita, da z12 come nel project.mml"
@@ -213,9 +392,777 @@
       "tgen": "aerialways",
       "nota": "impianti di risalita, da z12 come nel project.mml"
     },
+    "power-line": {
+      "tgen": "power-line"
+    },
+    "power-minorline": {
+      "tgen": "power-minorline"
+    },
     "water-outline": {
       "tgen": null,
       "nota": "bordo degli specchi d'acqua (@acquebordo #a3c4e9): ol-mapbox-style non applica fill-outline-color, serve un layer di linea"
+    },
+    "railway-lz": {
+      "tgen": null,
+      "nota": "roads.mss [feature = 'railway_rail'] e seguenti, dentro roads-fill/roads-low-zoom/tunnels: il selettore del layer Mapnik copre tutte le strade, quindi le soglie sono lette a mano dalle condizioni sulle ferrovie (z8 la linea grigia, z13 il binario bianco e nero, z12 i tram)."
+    },
+    "railway-lz-tunnel": {
+      "tgen": null,
+      "nota": "roads.mss [feature = 'railway_rail'] e seguenti, dentro roads-fill/roads-low-zoom/tunnels: il selettore del layer Mapnik copre tutte le strade, quindi le soglie sono lette a mano dalle condizioni sulle ferrovie (z8 la linea grigia, z13 il binario bianco e nero, z12 i tram)."
+    },
+    "railway-tunnel": {
+      "tgen": null,
+      "nota": "roads.mss [feature = 'railway_rail'] e seguenti, dentro roads-fill/roads-low-zoom/tunnels: il selettore del layer Mapnik copre tutte le strade, quindi le soglie sono lette a mano dalle condizioni sulle ferrovie (z8 la linea grigia, z13 il binario bianco e nero, z12 i tram)."
+    },
+    "railway-spur-dark": {
+      "tgen": null,
+      "nota": "roads.mss [feature = 'railway_rail'] e seguenti, dentro roads-fill/roads-low-zoom/tunnels: il selettore del layer Mapnik copre tutte le strade, quindi le soglie sono lette a mano dalle condizioni sulle ferrovie (z8 la linea grigia, z13 il binario bianco e nero, z12 i tram)."
+    },
+    "railway-dark": {
+      "tgen": null,
+      "nota": "roads.mss [feature = 'railway_rail'] e seguenti, dentro roads-fill/roads-low-zoom/tunnels: il selettore del layer Mapnik copre tutte le strade, quindi le soglie sono lette a mano dalle condizioni sulle ferrovie (z8 la linea grigia, z13 il binario bianco e nero, z12 i tram)."
+    },
+    "railway-spur-light": {
+      "tgen": null,
+      "nota": "roads.mss [feature = 'railway_rail'] e seguenti, dentro roads-fill/roads-low-zoom/tunnels: il selettore del layer Mapnik copre tutte le strade, quindi le soglie sono lette a mano dalle condizioni sulle ferrovie (z8 la linea grigia, z13 il binario bianco e nero, z12 i tram)."
+    },
+    "railway-light": {
+      "tgen": null,
+      "nota": "roads.mss [feature = 'railway_rail'] e seguenti, dentro roads-fill/roads-low-zoom/tunnels: il selettore del layer Mapnik copre tutte le strade, quindi le soglie sono lette a mano dalle condizioni sulle ferrovie (z8 la linea grigia, z13 il binario bianco e nero, z12 i tram)."
+    },
+    "railway-narrow": {
+      "tgen": null,
+      "nota": "roads.mss [feature = 'railway_rail'] e seguenti, dentro roads-fill/roads-low-zoom/tunnels: il selettore del layer Mapnik copre tutte le strade, quindi le soglie sono lette a mano dalle condizioni sulle ferrovie (z8 la linea grigia, z13 il binario bianco e nero, z12 i tram)."
+    },
+    "railway-tram": {
+      "tgen": null,
+      "nota": "roads.mss [feature = 'railway_rail'] e seguenti, dentro roads-fill/roads-low-zoom/tunnels: il selettore del layer Mapnik copre tutte le strade, quindi le soglie sono lette a mano dalle condizioni sulle ferrovie (z8 la linea grigia, z13 il binario bianco e nero, z12 i tram)."
+    },
+    "junction-label": {
+      "tgen": "junctions"
+    },
+    "place-quarter": {
+      "tgen": null,
+      "nota": "placenames.mss, #placenames-small::quarter: da z14 (11 px #222, 12 px #777 da z15, 14 px da z16). Il selettore del .mml (placenames-small) copre anche i paesi da z12: le soglie sono lette a mano dalle condizioni su place.",
+      "ordine": "placenames-small"
+    },
+    "aerodrome-icon-z10": {
+      "tgen": null,
+      "ordine": "amenity-points",
+      "livelli": [
+        10,
+        10
+      ],
+      "nota": "amenity-points.mss, aeroway_aerodrome: z10 con icao e iata e non privati, z11-z13 tutti; icona aerodrome.12.svg in @airtransport, nome corsivo 10 px in darken(@airtransport, 15%) a 10 px sotto."
+    },
+    "aerodrome-label-z10": {
+      "tgen": null,
+      "ordine": "amenity-points",
+      "livelli": [
+        10,
+        10
+      ],
+      "nota": "amenity-points.mss, aeroway_aerodrome: z10 con icao e iata e non privati, z11-z13 tutti; icona aerodrome.12.svg in @airtransport, nome corsivo 10 px in darken(@airtransport, 15%) a 10 px sotto."
+    },
+    "aerodrome-icon": {
+      "tgen": null,
+      "ordine": "amenity-points",
+      "livelli": [
+        11,
+        13
+      ],
+      "nota": "amenity-points.mss, aeroway_aerodrome: z10 con icao e iata e non privati, z11-z13 tutti; icona aerodrome.12.svg in @airtransport, nome corsivo 10 px in darken(@airtransport, 15%) a 10 px sotto."
+    },
+    "aerodrome-label": {
+      "tgen": null,
+      "ordine": "amenity-points",
+      "livelli": [
+        11,
+        13
+      ],
+      "nota": "amenity-points.mss, aeroway_aerodrome: z10 con icao e iata e non privati, z11-z13 tutti; icona aerodrome.12.svg in @airtransport, nome corsivo 10 px in darken(@airtransport, 15%) a 10 px sotto."
+    },
+    "ferry": {
+      "tgen": "ferry-routes"
+    },
+    "ferry-label": {
+      "tgen": "ferry-routes-text"
+    },
+    "wood-label": {
+      "tgen": null,
+      "ordine": "text-poly",
+      "livelli": [
+        8,
+        16
+      ],
+      "nota": "text-poly del .mml, regole in amenity-points.mss (natural_wood, landuse_forest): da z8 con way_pixels > 3000, @forest-text #46673b (lo stesso verde nei PNG del 2018). Il dato e' il layer boschi dell'archivio parchi, con la soglia di parchi-soglia.py.",
+      "copre": [
+        "text-poly"
+      ]
+    },
+    "lake-label": {
+      "tgen": null,
+      "ordine": "text-poly",
+      "livelli": [
+        8,
+        16
+      ],
+      "nota": "water.mss, .text: natural_water, natural_bay, landuse_reservoir, landuse_basin con way_pixels > 3000, 10/12/15/19 px secondo la superficie, @txt_acque #679bce corsivo, orizzontale. Dato: layer acque dell'archivio parchi (parchi-soglia.py).",
+      "copre": [
+        "text-poly"
+      ]
+    },
+    "road-casing-major-tunnel": {
+      "tgen": null,
+      "ordine": "tunnels",
+      "livelli": [
+        12,
+        16
+      ],
+      "copre": [
+        "tunnels"
+      ],
+      "nota": "roads.mss, #tunnels: lo stesso bordo di roads-casing tratteggiato 4,2 (pixel, qui diviso per la larghezza del bordo di ogni livello)."
+    },
+    "road-casing-secondary-tunnel": {
+      "tgen": null,
+      "ordine": "tunnels",
+      "livelli": [
+        12,
+        16
+      ],
+      "copre": [
+        "tunnels"
+      ],
+      "nota": "roads.mss, #tunnels: lo stesso bordo di roads-casing tratteggiato 4,2 (pixel, qui diviso per la larghezza del bordo di ogni livello)."
+    },
+    "road-casing-minor-tunnel": {
+      "tgen": null,
+      "ordine": "tunnels",
+      "livelli": [
+        12,
+        16
+      ],
+      "copre": [
+        "tunnels"
+      ],
+      "nota": "roads.mss, #tunnels: lo stesso bordo di roads-casing tratteggiato 4,2 (pixel, qui diviso per la larghezza del bordo di ogni livello)."
+    },
+    "road-label-tertiary": {
+      "tgen": null,
+      "ordine": "roads-text-name",
+      "livelli": [
+        14,
+        16
+      ],
+      "nota": "roads.mss: tertiary da z14, 9 px."
+    },
+    "road-label-minor": {
+      "tgen": null,
+      "ordine": "roads-text-name",
+      "livelli": [
+        15,
+        16
+      ],
+      "nota": "roads.mss: residential, unclassified, road, living_street, pedestrian da z15, 8/9 px."
+    },
+    "road-label-service": {
+      "tgen": null,
+      "ordine": "roads-text-name",
+      "livelli": [
+        16,
+        16
+      ],
+      "nota": "roads.mss: service da z16, 9 px."
+    },
+    "road-label-track": {
+      "tgen": null,
+      "ordine": "paths-text-name",
+      "livelli": [
+        15,
+        16
+      ],
+      "copre": [
+        "paths-text-name"
+      ],
+      "nota": "roads.mss, #paths-text-name: track da z15, #222, 8/9 px, alone @standard-halo-fill."
+    },
+    "road-label-path": {
+      "tgen": null,
+      "ordine": "paths-text-name",
+      "livelli": [
+        16,
+        16
+      ],
+      "nota": "roads.mss, #paths-text-name: path, footway, cycleway, bridleway, steps da z16, #222, 9 px."
+    },
+    "hiking-line-t": {
+      "tgen": "hiking_trails"
+    },
+    "hiking-line-eea": {
+      "tgen": "hiking_trails"
+    },
+    "waterway-label-stream": {
+      "tgen": null,
+      "ordine": "water-lines-text",
+      "livelli": [
+        15,
+        16
+      ],
+      "nota": "water.mss, #water-lines-text: stream da z15, 10 px, text-spacing 600, text-dy 8."
+    },
+    "aeroway-taxiway": {
+      "tgen": "aeroways"
+    },
+    "aeroway-runway": {
+      "tgen": "aeroways"
+    },
+    "station-label-halt": {
+      "tgen": null,
+      "ordine": "stations",
+      "livelli": [
+        15,
+        16
+      ],
+      "copre": [
+        "stations"
+      ],
+      "nota": "stations.mss (selettore di classe .stations, che parse-cartocss non legge): stazioni da z12 (4/6/9 px), fermate da z13 (4/6 px), nomi in grassetto da z14 (stazioni) e z15 (fermate)."
+    },
+    "station-label": {
+      "tgen": null,
+      "ordine": "stations",
+      "livelli": [
+        14,
+        16
+      ],
+      "copre": [
+        "stations"
+      ],
+      "nota": "stations.mss (selettore di classe .stations, che parse-cartocss non legge): stazioni da z12 (4/6/9 px), fermate da z13 (4/6 px), nomi in grassetto da z14 (stazioni) e z15 (fermate)."
+    },
+    "station-icon-halt": {
+      "tgen": null,
+      "ordine": "stations",
+      "livelli": [
+        13,
+        16
+      ],
+      "copre": [
+        "stations"
+      ],
+      "nota": "stations.mss (selettore di classe .stations, che parse-cartocss non legge): stazioni da z12 (4/6/9 px), fermate da z13 (4/6 px), nomi in grassetto da z14 (stazioni) e z15 (fermate)."
+    },
+    "station-icon": {
+      "tgen": null,
+      "ordine": "stations",
+      "livelli": [
+        12,
+        16
+      ],
+      "copre": [
+        "stations"
+      ],
+      "nota": "stations.mss (selettore di classe .stations, che parse-cartocss non legge): stazioni da z12 (4/6/9 px), fermate da z13 (4/6 px), nomi in grassetto da z14 (stazioni) e z15 (fermate)."
+    },
+    "pier-poly": {
+      "tgen": "piers-poly"
+    },
+    "pier-line": {
+      "tgen": "piers-line"
+    },
+    "boundary-l2": {
+      "tgen": null,
+      "ordine": "admin-low-zoom",
+      "livelli": [
+        1,
+        16
+      ],
+      "copre": [
+        "admin-low-zoom",
+        "admin-mid-zoom",
+        "admin-high-zoom",
+        "necountries"
+      ],
+      "nota": "admin.mss: larghezze, tratteggi (in pixel, qui divisi per la larghezza) e opacita' per livello amministrativo; lilla in darken da z13, verde nei PNG del 2018."
+    },
+    "boundary-l6": {
+      "tgen": null,
+      "ordine": "admin-low-zoom",
+      "livelli": [
+        11,
+        16
+      ],
+      "copre": [
+        "admin-low-zoom",
+        "admin-mid-zoom",
+        "admin-high-zoom"
+      ],
+      "nota": "admin.mss: larghezze, tratteggi (in pixel, qui divisi per la larghezza) e opacita' per livello amministrativo; lilla in darken da z13, verde nei PNG del 2018."
+    },
+    "boundary-l10": {
+      "tgen": null,
+      "ordine": "admin-low-zoom",
+      "livelli": [
+        13,
+        16
+      ],
+      "copre": [
+        "admin-low-zoom",
+        "admin-mid-zoom",
+        "admin-high-zoom"
+      ],
+      "nota": "admin.mss: larghezze, tratteggi (in pixel, qui divisi per la larghezza) e opacita' per livello amministrativo; lilla in darken da z13, verde nei PNG del 2018."
+    },
+    "osmpoi-icon-cave": {
+      "tgen": null,
+      "ordine": "amenity-points",
+      "livelli": [
+        16,
+        16
+      ],
+      "nota": "amenity-points.mss natural_cave_entrance: icona da z16."
+    },
+    "osmpoi-label-spring": {
+      "tgen": null,
+      "ordine": "text-point",
+      "livelli": [
+        16,
+        16
+      ],
+      "nota": "amenity-points.mss natural_spring: nome da z16, @water-text."
+    },
+    "bridge-area": {
+      "tgen": "bridge"
+    },
+    "barrier-dam-fill": {
+      "tgen": null,
+      "ordine": "water-barriers-poly",
+      "livelli": [
+        13,
+        16
+      ],
+      "copre": [
+        "water-barriers-poly"
+      ]
+    },
+    "barrier-dam": {
+      "tgen": null,
+      "ordine": "water-barriers-line",
+      "livelli": [
+        13,
+        16
+      ],
+      "copre": [
+        "water-barriers-line"
+      ]
+    },
+    "barrier-weir": {
+      "tgen": null,
+      "ordine": "water-barriers-line",
+      "livelli": [
+        13,
+        16
+      ],
+      "copre": [
+        "water-barriers-line"
+      ]
+    },
+    "breakwater-fill": {
+      "tgen": null,
+      "ordine": "piers-poly",
+      "livelli": [
+        12,
+        16
+      ],
+      "copre": [
+        "piers-poly"
+      ]
+    },
+    "breakwater": {
+      "tgen": null,
+      "ordine": "piers-line",
+      "livelli": [
+        12,
+        16
+      ],
+      "copre": [
+        "piers-line"
+      ]
+    },
+    "road-area-casing": {
+      "tgen": null,
+      "ordine": "highway-area-casing",
+      "livelli": [
+        14,
+        16
+      ],
+      "copre": [
+        "highway-area-casing"
+      ]
+    },
+    "road-area-fill": {
+      "tgen": null,
+      "ordine": "highway-area-fill",
+      "livelli": [
+        14,
+        16
+      ],
+      "copre": [
+        "highway-area-fill"
+      ]
+    },
+    "road-area-platform": {
+      "tgen": null,
+      "ordine": "highway-area-fill",
+      "livelli": [
+        16,
+        16
+      ],
+      "copre": [
+        "highway-area-fill"
+      ]
+    },
+    "tree-row": {
+      "tgen": null,
+      "ordine": "trees",
+      "livelli": [
+        16,
+        16
+      ],
+      "copre": [
+        "trees"
+      ]
+    },
+    "railway-label": {
+      "tgen": null,
+      "ordine": "railways-text-name",
+      "livelli": [
+        14,
+        16
+      ],
+      "copre": [
+        "railways-text-name"
+      ]
+    },
+    "building-label": {
+      "tgen": null,
+      "ordine": "building-text",
+      "livelli": [
+        14,
+        16
+      ],
+      "copre": [
+        "building-text"
+      ]
+    },
+    "state-label": {
+      "tgen": "state-names",
+      "livelli": [
+        5,
+        16
+      ],
+      "nota": "placenames.mss .state: regioni con 3000 < way_pixels < 196000 da z5; la superficie viene da una tabella (OpenMapTiles porta solo il punto). Visibile da z7 nel profilo, quindi anche sotto: la finestra la fa il testo vuoto."
+    },
+    "country-label": {
+      "tgen": "country-names",
+      "livelli": [
+        3,
+        16
+      ],
+      "nota": "placenames.mss .country: nazioni con 1000 < way_pixels < 360000 da z3; superficie da tabella."
+    },
+    "barrier-line": {
+      "tgen": null,
+      "ordine": "line-barriers",
+      "livelli": [
+        16,
+        16
+      ],
+      "copre": [
+        "line-barriers"
+      ]
+    },
+    "barrier-embankment": {
+      "tgen": null,
+      "ordine": "line-barriers",
+      "livelli": [
+        14,
+        16
+      ],
+      "copre": [
+        "line-barriers"
+      ]
+    },
+    "barrier-hedge": {
+      "tgen": null,
+      "ordine": "area-barriers",
+      "livelli": [
+        16,
+        16
+      ],
+      "copre": [
+        "line-barriers",
+        "area-barriers"
+      ]
+    },
+    "barrier-citywall": {
+      "tgen": null,
+      "ordine": "line-barriers",
+      "livelli": [
+        15,
+        16
+      ],
+      "copre": [
+        "line-barriers"
+      ]
+    },
+    "tourism-band-b": {
+      "tgen": null,
+      "ordine": "tourism-boundary",
+      "livelli": [
+        10,
+        16
+      ],
+      "copre": [
+        "tourism-boundary"
+      ]
+    },
+    "tourism-band-a": {
+      "tgen": null,
+      "ordine": "tourism-boundary",
+      "livelli": [
+        10,
+        16
+      ],
+      "copre": [
+        "tourism-boundary"
+      ]
+    },
+    "marina-band-b": {
+      "tgen": null,
+      "ordine": "marinas-area",
+      "livelli": [
+        14,
+        16
+      ],
+      "copre": [
+        "marinas-area"
+      ]
+    },
+    "marina-band-a": {
+      "tgen": null,
+      "ordine": "marinas-area",
+      "livelli": [
+        14,
+        16
+      ],
+      "copre": [
+        "marinas-area"
+      ]
+    },
+    "turning-circle": {
+      "tgen": null,
+      "ordine": "turning-circle-fill",
+      "livelli": [
+        15,
+        16
+      ],
+      "copre": [
+        "turning-circle-casing",
+        "turning-circle-fill"
+      ]
+    },
+    "guideway": {
+      "tgen": null,
+      "ordine": "guideways",
+      "livelli": [
+        11,
+        16
+      ],
+      "copre": [
+        "guideways"
+      ]
+    },
+    "guideway-dash": {
+      "tgen": null,
+      "ordine": "guideways",
+      "livelli": [
+        13,
+        16
+      ],
+      "copre": [
+        "guideways"
+      ]
+    },
+    "level-crossing": {
+      "tgen": null,
+      "ordine": "amenity-low-priority",
+      "livelli": [
+        14,
+        16
+      ],
+      "copre": [
+        "amenity-low-priority",
+        "amenity-low-priority-poly"
+      ]
+    },
+    "rail-crossing": {
+      "tgen": null,
+      "ordine": "amenity-low-priority",
+      "livelli": [
+        15,
+        16
+      ],
+      "copre": [
+        "amenity-low-priority"
+      ]
+    },
+    "cross-icon": {
+      "tgen": null,
+      "ordine": "amenity-low-priority",
+      "livelli": [
+        16,
+        16
+      ],
+      "copre": [
+        "amenity-low-priority"
+      ]
+    },
+    "bus-stop-icon": {
+      "tgen": null,
+      "ordine": "amenity-points",
+      "livelli": [
+        16,
+        16
+      ],
+      "copre": [
+        "amenity-points"
+      ]
+    },
+    "bridge-label": {
+      "tgen": null,
+      "ordine": "bridge-text",
+      "livelli": [
+        12,
+        16
+      ],
+      "copre": [
+        "bridge-text"
+      ]
+    },
+    "plaza-label": {
+      "tgen": null,
+      "ordine": "roads-area-text-name",
+      "livelli": [
+        15,
+        16
+      ],
+      "copre": [
+        "roads-area-text-name"
+      ]
+    },
+    "cliff-label": {
+      "tgen": null,
+      "ordine": "text-line",
+      "livelli": [
+        15,
+        16
+      ],
+      "copre": [
+        "text-line"
+      ]
+    },
+    "dam-label": {
+      "tgen": null,
+      "ordine": "text-line",
+      "livelli": [
+        15,
+        16
+      ],
+      "copre": [
+        "text-line"
+      ]
+    },
+    "ford-icon": {
+      "tgen": null,
+      "ordine": "amenity-line",
+      "livelli": [
+        16,
+        16
+      ],
+      "copre": [
+        "amenity-line"
+      ]
+    },
+    "city-dot": {
+      "tgen": null,
+      "ordine": "placenames-medium",
+      "livelli": [
+        4,
+        7
+      ],
+      "copre": [
+        "placenames-medium"
+      ],
+      "nota": "placenames.mss #placenames-medium: il livello d'ingresso di ogni citta' e' nel dato (tippecanoe.minzoom dal punteggio, build-parchi.sh). Visibile da z7 nel profilo vuol dire anche z4-z6."
+    },
+    "city-dot-label": {
+      "tgen": null,
+      "ordine": "placenames-medium",
+      "livelli": [
+        4,
+        7
+      ],
+      "copre": [
+        "placenames-medium"
+      ],
+      "nota": "placenames.mss #placenames-medium: il livello d'ingresso di ogni citta' e' nel dato (tippecanoe.minzoom dal punteggio, build-parchi.sh). Visibile da z7 nel profilo vuol dire anche z4-z6."
+    },
+    "city-label": {
+      "tgen": null,
+      "ordine": "placenames-medium",
+      "livelli": [
+        8,
+        16
+      ],
+      "copre": [
+        "placenames-medium"
+      ],
+      "nota": "placenames.mss #placenames-medium: il livello d'ingresso di ogni citta' e' nel dato (tippecanoe.minzoom dal punteggio, build-parchi.sh). Visibile da z7 nel profilo vuol dire anche z4-z6."
+    },
+    "hut-icon": {
+      "tgen": null,
+      "ordine": "amenity-points",
+      "livelli": [
+        13,
+        16
+      ],
+      "copre": [
+        "amenity-points"
+      ]
+    },
+    "hut-label": {
+      "tgen": null,
+      "ordine": "amenity-points",
+      "livelli": [
+        14,
+        16
+      ],
+      "copre": [
+        "amenity-points"
+      ]
+    },
+    "shelter-icon": {
+      "tgen": null,
+      "ordine": "amenity-points",
+      "livelli": [
+        16,
+        16
+      ],
+      "copre": [
+        "amenity-points"
+      ]
     }
   }
 }

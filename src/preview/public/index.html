@@ -85,6 +85,10 @@
   .wm-blend-multiply { mix-blend-mode: multiply !important; }
   .wm-blend-overlay { mix-blend-mode: overlay !important; }
   .wm-blend-soft-light { mix-blend-mode: soft-light !important; }
+  /* Da z14 il riferimento compone l'ombra in modo NORMALE: `#hs10m` ha solo
+     `raster-opacity: 0.3`, senza comp-op. I versanti al sole schiariscono,
+     cosa che `multiply` non puo' fare. */
+  .wm-blend-normal { mix-blend-mode: normal !important; }
   #err { position: absolute; z-index: 5; bottom: 8px; left: 8px; right: 8px; max-height: 34%;
          overflow: auto; background: #7a2018; color: #fff; padding: 6px 9px; border-radius: 4px;
          font-family: ui-monospace, monospace; font-size: 11px; white-space: pre-wrap; display: none; }
@@ -96,6 +100,8 @@
     <span id="stack"></span>
     <label>area <select id="area"></select></label>
     <label>set <select id="set"></select></label>
+    <label title="Cosa mostra il pannello di destra: il riferimento di TGen o i PNG resi da wm-tiles">destra
+      <select id="destra"><option value="tgen">TGen</option><option value="png">PNG locali</option></select></label>
     <span id="groups"></span>
     <label id="gridlabel" class="off" title="Griglia delle tile XYZ su entrambi i pannelli (tasto g)">
       <input type="checkbox" id="grid"> griglia XYZ <span id="gridz"></span>
@@ -131,7 +137,7 @@
       <div id="err"></div>
     </div>
     <div class="pane">
-      <h2>TGEN — riferimento raster</h2>
+      <h2 id="titolodestra">TGEN — riferimento raster</h2>
       <div class="map" id="right"></div>
     </div>
   </div>
