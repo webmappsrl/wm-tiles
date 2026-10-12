@@ -345,8 +345,8 @@
     "data": "2026-10-12"
   },
   "z11:residuo:#b0d0f0": {
-    "verdetto": "mancanza",
-    "motivo": "TGen disegna tutti i waterway=river da z8 a z11 (water-lines-low-zoom in project.mml); OpenMapTiles ai livelli bassi ne porta pochi (11/1084/748: un fiume, 12/2168/1497: nessuno). Vanno estratti dal PBF come le strade di roadslz",
+    "verdetto": "contenuto",
+    "motivo": "i corsi d'acqua che TGen disegna e il locale no oggi in OSM sono stream, non river (Fiume Pietrarossa, Fiume Margherito in 11/1106/794; Torrente Sterza in 11/1084/748): nel 2018 erano river. I river di oggi il locale li disegna gia' (verificato su 11/1085/748: c'erano anche prima di estrarre i fiumi dal PBF). Correzione del verdetto 'mancanza' del mattino",
     "giro": "prova3",
     "misure": {
       "diffusione": 0.23333333333333334,
@@ -356,8 +356,8 @@
     "data": "2026-10-12"
   },
   "z12:residuo:#b0d0f0": {
-    "verdetto": "mancanza",
-    "motivo": "TGen disegna tutti i waterway=river da z8 a z11 (water-lines-low-zoom in project.mml); OpenMapTiles ai livelli bassi ne porta pochi (11/1084/748: un fiume, 12/2168/1497: nessuno). Vanno estratti dal PBF come le strade di roadslz",
+    "verdetto": "contenuto",
+    "motivo": "i corsi d'acqua che TGen disegna e il locale no oggi in OSM sono stream, non river (Fiume Pietrarossa, Fiume Margherito in 11/1106/794; Torrente Sterza in 11/1084/748): nel 2018 erano river. I river di oggi il locale li disegna gia' (verificato su 11/1085/748: c'erano anche prima di estrarre i fiumi dal PBF). Correzione del verdetto 'mancanza' del mattino",
     "giro": "prova3",
     "misure": {
       "diffusione": 0.16666666666666666,
