@@ -19,7 +19,14 @@ set -euo pipefail
 # data/ (sul Volume). Ogni passo salta cio' che ha gia' prodotto: dopo
 # un'interruzione si rilancia lo stesso comando.
 #
-# Uso: pipeline/build-italia.sh <versione> [estratto.osm.pbf]
+# Con --solo-osm e' un aggiornamento: si rifanno solo gli archivi di
+# OpenStreetMap; dati di TGen, toponimi e rifugi si copiano dalla versione
+# precedente, e DEM e curve restano quelli pubblicati (non cambiano). Ore
+# invece di una giornata.
+#
+# Uso: pipeline/build-italia.sh [--solo-osm] <versione> [estratto.osm.pbf]
+SOLO_OSM=""
+if [ "${1:-}" = "--solo-osm" ]; then SOLO_OSM=1; shift; fi
 V="${1:?versione, es. 20261011-1500}"
 PBF="${2:-data/sources/italia.osm.pbf}"
 echo "$V" | grep -Eq '^[0-9]{8}-[0-9]{4}$' || { echo "!! versione non valida: $V" >&2; exit 2; }
@@ -66,6 +73,37 @@ passo "$STAGE/osmpoi.pmtiles" bash pipeline/build-osmpoi.sh "$PBF" $OW $OS $OE $
 passo "$STAGE/power.pmtiles" bash pipeline/build-power.sh "$PBF" $OW $OS $OE $ON "$STAGE/power.pmtiles"
 passo "$STAGE/extra.pmtiles" bash pipeline/build-extra.sh "$PBF" $OW $OS $OE $ON "$STAGE/extra.pmtiles"
 passo "$STAGE/parchi.pmtiles" bash pipeline/build-parchi.sh "$PBF" $OW $OS $OE $ON "$STAGE/parchi.pmtiles"
+
+# ---------------------------------------------------------------------------
+# --solo-osm: il resto dalla versione precedente, e si pubblica
+# ---------------------------------------------------------------------------
+if [ -n "$SOLO_OSM" ]; then
+  PREC="$(ls -d data/archives/2*/ 2>/dev/null | grep -v "/$V/" | sort | tail -1 || true)"
+  [ -n "$PREC" ] || { echo "!! --solo-osm: nessuna versione precedente in data/archives" >&2; exit 1; }
+  fase "2. aggiornamento: dati di TGen, toponimi e rifugi da $PREC; DEM e curve restano"
+  for A in landcover igm clc toponimi rifugi; do
+    test -f "$PREC/$A.pmtiles" || { echo "!! manca $PREC/$A.pmtiles" >&2; exit 1; }
+    cp "$PREC/$A.pmtiles" "$STAGE/"
+  done
+  fase "5. pubblicazione della versione $V (solo OpenStreetMap)"
+  cat > "$STAGE/provenance.json" <<JSON
+{
+  "archive": "italia (aggiornamento solo OSM)",
+  "version": "$V",
+  "scope": "Italia: OSM $OW,$OS,$OE,$ON; TGen e TINITALY $DW,$DS,$DE,$DN",
+  "sources": [
+    {"name": "Geofabrik, Europa ritagliata sull'Italia", "files": "$PBF"},
+    {"name": "TGen, copia in sola lettura", "files": "$TG (da $PREC)"},
+    {"name": "TINITALY 10 m, da TGen, quote fino a z$DEM_ZMAX (invariato)"}
+  ],
+  "createdAt": "$(date -u +%FT%TZ)"
+}
+JSON
+  rm -f "$STAGE"/.fatto-*
+  mv "$STAGE" "data/archives/$V"
+  fase "fatto: versione $V (solo OpenStreetMap). Riavvia il server"
+  exit 0
+fi
 
 # ---------------------------------------------------------------------------
 # 2. I dati di TGen, dalla copia nazionale (come build-celle.sh)
