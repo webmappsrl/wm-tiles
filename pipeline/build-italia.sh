@@ -70,15 +70,36 @@ passo() {  # <uscita> <comando...>: lo esegue se non e' gia' fatto, e lo segna
 # 1. OpenStreetMap
 # ---------------------------------------------------------------------------
 fase "1. OpenStreetMap da $PBF"
-passo "$STAGE/osm.pmtiles" env PLANETILER_XMX="${PLANETILER_XMX:-16g}" PLANETILER_TMP="$WORK/planetiler" \
+# I passi sono indipendenti e girano insieme, a gruppi di WM_PASSI, ognuno con
+# il suo log in $WORK: in sequenza la rigenerazione "solo OSM" del 12 ottobre
+# 2026 ha impiegato oltre tre ore usando un processore su 8. I piu' lunghi per
+# primi: planetiler (CPU) accanto alle estrazioni (lettura del PBF).
+source pipeline/parallelo.sh
+WM_PARALLELO="${WM_PASSI:-4}"
+passo_log() {  # come passo, con l'uscita in un log a parte
+  local OUT="$1"; shift
+  local L="$WORK/$(basename "$OUT").log" t
+  fatto "$OUT" && return 0
+  t=$(date +%s)
+  if "$@" > "$L" 2>&1; then
+    segna "$OUT"; echo "   $(basename "$OUT"): $(durata $t)"
+  else
+    echo "!! $(basename "$OUT") fallito dopo $(durata $t); ultime righe di $L:" >&2
+    tail -15 "$L" >&2
+    return 1
+  fi
+}
+avvia passo_log "$STAGE/osm.pmtiles" env PLANETILER_XMX="${PLANETILER_XMX:-16g}" PLANETILER_TMP="$WORK/planetiler" \
   bash pipeline/build-osm.sh "$PBF" "$STAGE" 14
-passo "$STAGE/hiking.pmtiles" bash pipeline/build-hiking-full.sh "$PBF" $OW $OS $OE $ON "$STAGE/hiking.pmtiles" 10 14
-passo "$STAGE/roadslz.pmtiles" bash pipeline/build-roads-lowzoom.sh "$PBF" $OW $OS $OE $ON "$STAGE/roadslz.pmtiles" 8 11
-passo "$STAGE/osmpoi.pmtiles" bash pipeline/build-osmpoi.sh "$PBF" $OW $OS $OE $ON "$STAGE/osmpoi.pmtiles" 11 14
-passo "$STAGE/power.pmtiles" bash pipeline/build-power.sh "$PBF" $OW $OS $OE $ON "$STAGE/power.pmtiles"
-passo "$STAGE/extra.pmtiles" bash pipeline/build-extra.sh "$PBF" $OW $OS $OE $ON "$STAGE/extra.pmtiles"
-passo "$STAGE/parchi.pmtiles" bash pipeline/build-parchi.sh "$PBF" $OW $OS $OE $ON "$STAGE/parchi.pmtiles"
-passo "$STAGE/amenity.pmtiles" bash pipeline/build-amenity.sh "$PBF" $OW $OS $OE $ON "$STAGE/amenity.pmtiles"
+avvia passo_log "$STAGE/extra.pmtiles" bash pipeline/build-extra.sh "$PBF" $OW $OS $OE $ON "$STAGE/extra.pmtiles"
+avvia passo_log "$STAGE/amenity.pmtiles" bash pipeline/build-amenity.sh "$PBF" $OW $OS $OE $ON "$STAGE/amenity.pmtiles"
+avvia passo_log "$STAGE/roadslz.pmtiles" bash pipeline/build-roads-lowzoom.sh "$PBF" $OW $OS $OE $ON "$STAGE/roadslz.pmtiles" 8 11
+avvia passo_log "$STAGE/parchi.pmtiles" bash pipeline/build-parchi.sh "$PBF" $OW $OS $OE $ON "$STAGE/parchi.pmtiles"
+avvia passo_log "$STAGE/osmpoi.pmtiles" bash pipeline/build-osmpoi.sh "$PBF" $OW $OS $OE $ON "$STAGE/osmpoi.pmtiles" 11 14
+avvia passo_log "$STAGE/hiking.pmtiles" bash pipeline/build-hiking-full.sh "$PBF" $OW $OS $OE $ON "$STAGE/hiking.pmtiles" 10 14
+avvia passo_log "$STAGE/power.pmtiles" bash pipeline/build-power.sh "$PBF" $OW $OS $OE $ON "$STAGE/power.pmtiles"
+aspetta
+fase "1. OpenStreetMap: fatto in $(durata $T0)"
 
 # ---------------------------------------------------------------------------
 # --solo-osm: il resto dalla versione precedente, e si pubblica

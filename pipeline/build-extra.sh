@@ -24,6 +24,8 @@ set -euo pipefail
 # Uso: build-extra.sh <pbf> <W> <S> <E> <N> <out.pmtiles>
 PBF="${1:?}"; W="${2:?}"; S="${3:?}"; E="${4:?}"; N="${5:?}"; OUT="${6:?}"
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
+# le estrazioni sono indipendenti: in parallelo, poi l'elaborazione
+source "$(dirname "$0")/parallelo.sh"
 
 ogr() {  # ogr <out.geojsonl> <sql>
   docker run --rm -v "$PWD":/w -v "$WORK":/out \
@@ -34,12 +36,12 @@ ogr() {  # ogr <out.geojsonl> <sql>
 
 echo "== dighe, traverse, frangiflutti"
 # nel layer `lines` del driver OSM `waterway` e `man_made` sono colonne proprie
-ogr barriere-l.geojsonl "SELECT name, waterway AS w, man_made FROM lines
+avvia ogr barriere-l.geojsonl "SELECT name, waterway AS w, man_made FROM lines
   WHERE waterway IN ('dam', 'weir', 'lock_gate') OR man_made IN ('breakwater', 'groyne')"
-ogr barriere-p.geojsonl "SELECT name, hstore_get_value(other_tags, 'waterway') AS w, man_made FROM multipolygons
+avvia ogr barriere-p.geojsonl "SELECT name, hstore_get_value(other_tags, 'waterway') AS w, man_made FROM multipolygons
   WHERE hstore_get_value(other_tags, 'waterway') = 'dam' OR man_made IN ('breakwater', 'groyne')"
 echo "== aree stradali"
-ogr aree.geojsonl "SELECT hstore_get_value(other_tags, 'highway') AS highway,
+avvia ogr aree.geojsonl "SELECT hstore_get_value(other_tags, 'highway') AS highway,
     hstore_get_value(other_tags, 'area:highway') AS area_highway,
     hstore_get_value(other_tags, 'railway') AS railway FROM multipolygons
   WHERE hstore_get_value(other_tags, 'highway') IN ('pedestrian', 'footway', 'cycleway', 'path', 'living_street',
@@ -48,56 +50,61 @@ ogr aree.geojsonl "SELECT hstore_get_value(other_tags, 'highway') AS highway,
      OR hstore_get_value(other_tags, 'railway') = 'platform'"
 echo "== nomi di ferrovie ed edifici"
 # railways-text-name: le linee principali (usage=main) e l'alta velocita'
-ogr ferrovie.geojsonl "SELECT name FROM lines
+avvia ogr ferrovie.geojsonl "SELECT name FROM lines
   WHERE railway IN ('rail', 'narrow_gauge', 'light_rail', 'preserved', 'funicular', 'monorail', 'subway')
     AND name IS NOT NULL
     AND (hstore_get_value(other_tags, 'usage') = 'main' OR hstore_get_value(other_tags, 'highspeed') = 'yes')"
 # building-text: edifici con nome, con la soglia way_pixels > 3000 di TGen
-ogr edifici.geojsonl "SELECT name FROM multipolygons WHERE building IS NOT NULL AND name IS NOT NULL"
-python3 -I pipeline/parchi-soglia.py "$WORK/edifici.geojsonl" "$WORK/edifici-z.geojsonl" 12 14
+avvia ogr edifici.geojsonl "SELECT name FROM multipolygons WHERE building IS NOT NULL AND name IS NOT NULL"
 echo "== barriere, punti, marine e parchi tematici, guidovie"
 # line-barriers e area-barriers (classe .barriers di landcover.mss)
-ogr recinzioni-l.geojsonl "SELECT barrier, hstore_get_value(other_tags, 'historic') AS historic FROM lines
+avvia ogr recinzioni-l.geojsonl "SELECT barrier, hstore_get_value(other_tags, 'historic') AS historic FROM lines
   WHERE (barrier IN ('chain', 'city_wall', 'embankment', 'ditch', 'fence', 'guard_rail', 'handrail', 'hedge', 'kerb',
                      'retaining_wall', 'wall') OR hstore_get_value(other_tags, 'historic') = 'citywalls')
     AND (waterway IS NULL OR waterway NOT IN ('river', 'canal', 'stream', 'drain', 'ditch', 'wadi'))"
-ogr recinzioni-p.geojsonl "SELECT barrier, historic FROM multipolygons
+avvia ogr recinzioni-p.geojsonl "SELECT barrier, historic FROM multipolygons
   WHERE barrier IN ('chain', 'city_wall', 'embankment', 'ditch', 'fence', 'guard_rail', 'handrail', 'hedge', 'kerb',
                     'retaining_wall', 'wall') OR historic = 'citywalls'"
 # amenity-low-priority e turning-circle: passaggi a livello, croci, slarghi di inversione
-ogr punti.geojsonl "SELECT highway, man_made, hstore_get_value(other_tags, 'railway') AS railway,
+avvia ogr punti.geojsonl "SELECT highway, man_made, hstore_get_value(other_tags, 'railway') AS railway,
     hstore_get_value(other_tags, 'historic') AS historic FROM points
   WHERE highway = 'turning_circle' OR man_made = 'cross'
      OR hstore_get_value(other_tags, 'railway') IN ('level_crossing', 'crossing')
      OR hstore_get_value(other_tags, 'historic') = 'wayside_cross'"
 # marinas-area e tourism-boundary (zoo e parchi tematici sopra 750 pixel)
-ogr marine.geojsonl "SELECT 'marina' AS tipo FROM multipolygons WHERE leisure = 'marina'"
-ogr turismo.geojsonl "SELECT tourism AS tipo FROM multipolygons WHERE tourism IN ('zoo', 'theme_park')"
-python3 -I pipeline/parchi-soglia.py "$WORK/turismo.geojsonl" "$WORK/turismo-z.geojsonl" 10 14 750
+avvia ogr marine.geojsonl "SELECT 'marina' AS tipo FROM multipolygons WHERE leisure = 'marina'"
+avvia ogr turismo.geojsonl "SELECT tourism AS tipo FROM multipolygons WHERE tourism IN ('zoo', 'theme_park')"
 # i guadi (ford=yes o stepping_stones), da z16: su una via (amenity-line), al centro
 # della via, e sui nodi (`highway_ford` di amenity-points). In OSM sono quasi tutti
 # nodi, il punto dove il sentiero incrocia il torrente: fino all'11/10/2026 si
 # prendevano solo le vie e sulla mappa i guadi mancavano quasi ovunque.
-ogr guadi-l.geojsonl "SELECT 'ford' AS tipo FROM lines
+avvia ogr guadi-l.geojsonl "SELECT 'ford' AS tipo FROM lines
   WHERE hstore_get_value(other_tags, 'ford') IN ('yes', 'stepping_stones')"
-python3 -I pipeline/centro-linee.py "$WORK/guadi-l.geojsonl" "$WORK/guadi.geojsonl"
-ogr guadi-p.geojsonl "SELECT 'ford' AS tipo FROM points
+avvia ogr guadi-p.geojsonl "SELECT 'ford' AS tipo FROM points
   WHERE hstore_get_value(other_tags, 'ford') IN ('yes', 'stepping_stones')"
-cat "$WORK/guadi-p.geojsonl" >> "$WORK/guadi.geojsonl"
 # guideways
-ogr guidovie.geojsonl "SELECT 'bus_guideway' AS tipo FROM lines WHERE highway = 'bus_guideway'"
+avvia ogr guidovie.geojsonl "SELECT 'bus_guideway' AS tipo FROM lines WHERE highway = 'bus_guideway'"
 echo "== nomi di ponti, piazze, scogliere e argini"
 # bridge-text: way_pixels > 62,5 (11 px sopra 250, cioe' un livello dopo)
-ogr ponti.geojsonl "SELECT name FROM multipolygons WHERE man_made = 'bridge' AND name IS NOT NULL"
-python3 -I pipeline/parchi-soglia.py "$WORK/ponti.geojsonl" "$WORK/ponti-z.geojsonl" 12 14 62.5
+avvia ogr ponti.geojsonl "SELECT name FROM multipolygons WHERE man_made = 'bridge' AND name IS NOT NULL"
 # roads-area-text-name: aree stradali con nome, way_pixels > 3000
-ogr piazze.geojsonl "SELECT name FROM multipolygons WHERE name IS NOT NULL
+avvia ogr piazze.geojsonl "SELECT name FROM multipolygons WHERE name IS NOT NULL
   AND (hstore_get_value(other_tags, 'highway') IN ('pedestrian', 'footway', 'cycleway', 'living_street', 'track', 'residential', 'service')
        OR hstore_get_value(other_tags, 'area:highway') IS NOT NULL)"
-python3 -I pipeline/parchi-soglia.py "$WORK/piazze.geojsonl" "$WORK/piazze-z.geojsonl" 12 14
 # text-line: nomi di scogliere e argini
-ogr linee-nome.geojsonl "SELECT name, hstore_get_value(other_tags, 'natural') AS natural, man_made FROM lines
+avvia ogr linee-nome.geojsonl "SELECT name, hstore_get_value(other_tags, 'natural') AS natural, man_made FROM lines
   WHERE name IS NOT NULL AND (hstore_get_value(other_tags, 'natural') = 'cliff' OR man_made = 'embankment')"
+# filari
+avvia ogr filari.geojsonl "SELECT 'tree_row' AS tipo FROM lines WHERE hstore_get_value(other_tags, 'natural') = 'tree_row'"
+aspetta
+
+echo "== soglie di superficie e composizione"
+python3 -I pipeline/parchi-soglia.py "$WORK/edifici.geojsonl" "$WORK/edifici-z.geojsonl" 12 14
+python3 -I pipeline/parchi-soglia.py "$WORK/turismo.geojsonl" "$WORK/turismo-z.geojsonl" 10 14 750
+python3 -I pipeline/centro-linee.py "$WORK/guadi-l.geojsonl" "$WORK/guadi.geojsonl"
+cat "$WORK/guadi-p.geojsonl" >> "$WORK/guadi.geojsonl"
+python3 -I pipeline/parchi-soglia.py "$WORK/ponti.geojsonl" "$WORK/ponti-z.geojsonl" 12 14 62.5
+python3 -I pipeline/parchi-soglia.py "$WORK/piazze.geojsonl" "$WORK/piazze-z.geojsonl" 12 14
 
 for f in recinzioni-l recinzioni-p; do
   jq -c '.properties = {tipo: (if .properties.historic == "citywalls" then "city_wall" else .properties.barrier end)}' \
@@ -110,8 +117,6 @@ jq -c '.properties = {tipo: (if .properties.highway == "turning_circle" then "tu
 jq -c '.properties = {name: .properties.name, tipo: (if .properties.natural == "cliff" then "cliff" else "embankment" end)}' \
   "$WORK/linee-nome.geojsonl" > "$WORK/linee-nome-2.geojsonl"
 
-echo "== filari"
-ogr filari.geojsonl "SELECT 'tree_row' AS tipo FROM lines WHERE hstore_get_value(other_tags, 'natural') = 'tree_row'"
 
 # OGRSQL non ha COALESCE: `tipo` si compone qui, e `area:highway` vale come `highway`
 for f in barriere-l barriere-p; do
