@@ -918,6 +918,14 @@ un colore noto, leggere il `getComputedStyle`, elencare i layer della mappa.
 - **`gdal2tiles` sovrascrive il canale alpha** — lo usa come maschera dei
   pixel validi — quindi un'ombra codificata in alpha esce nera e opaca. Non
   aggirabile: e' la ragione per cui l'hillshade e' calcolato e non precotto.
+- **Il driver OSM di GDAL perde oggetti in silenzio se si leggono i layer uno
+  per volta dallo stesso dataset**: leggendo prima `points` e poi
+  `multipolygons`, sulle due celle uscivano 3.632 aree su decine di migliaia
+  (111 luoghi di culto invece di 2.421). Si apre con
+  `INTERLEAVED_READING=YES` e si scorre con `ds.GetNextFeature()`
+  (`build-amenity.py`). `ogr2ogr` con un `-sql` per processo non ha il
+  problema. E di serie il driver **scarta il tag `source`**
+  (`osmconf.ini`): per filtrarci sopra serve `pipeline/osmconf-con-source.ini`.
 - **GDAL Python: non concatenare** `gdal.Open(...).GetRasterBand(1)`; il
   dataset viene garbage-collected e la banda muore con lui.
 - **`COPY ... TO STDOUT` in formato testo usa il backslash come escape**, e i

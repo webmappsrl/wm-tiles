@@ -299,6 +299,11 @@
         "text-point"
       ]
     },
+    "amenity-icon": {
+      "tgen": null,
+      "ordine": "amenity-points",
+      "nota": "icone di amenity-points, amenity-points-poly e amenity-low-priority di TGen: classe, icona, colore e livello d'ingresso calcolati nel dato da pipeline/build-amenity.py con le regole di project.xml (style/amenity-regole.json). Visibile da z10 a z16: la soglia vera e' tippecanoe.minzoom di ogni oggetto"
+    },
     "poi-icon": {
       "tgen": null,
       "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss",

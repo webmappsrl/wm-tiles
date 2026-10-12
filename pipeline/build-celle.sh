@@ -79,6 +79,7 @@ bash pipeline/build-osmpoi.sh "$WORK/celle.osm.pbf" "$UW" "$US" "$UE" "$UN" "$ST
 bash pipeline/build-power.sh "$WORK/celle.osm.pbf" "$UW" "$US" "$UE" "$UN" "$STAGE/power.pmtiles"
 bash pipeline/build-extra.sh "$WORK/celle.osm.pbf" "$UW" "$US" "$UE" "$UN" "$STAGE/extra.pmtiles"
 bash pipeline/build-parchi.sh "$WORK/celle.osm.pbf" "$UW" "$US" "$UE" "$UN" "$STAGE/parchi.pmtiles"
+bash pipeline/build-amenity.sh "$WORK/celle.osm.pbf" "$UW" "$US" "$UE" "$UN" "$STAGE/amenity.pmtiles"
 
 if [ -n "$SOLO_OSM" ]; then
   echo "== 2. aggiornamento: dati di TGen, DEM e curve restano quelli di $PREC"

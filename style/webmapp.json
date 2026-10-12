@@ -9653,6 +9653,30 @@
       "minzoom": 15
     },
     {
+      "id": "amenity-icon",
+      "type": "symbol",
+      "source": "amenity",
+      "source-layer": "amenity",
+      "layout": {
+        "icon-image": [
+          "get",
+          "icona"
+        ],
+        "icon-size": 1
+      },
+      "paint": {
+        "icon-opacity": [
+          "coalesce",
+          [
+            "get",
+            "opaco"
+          ],
+          1
+        ]
+      },
+      "minzoom": 9
+    },
+    {
       "id": "ford-icon",
       "type": "symbol",
       "source": "extra",

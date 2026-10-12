@@ -48,7 +48,8 @@ const KEEP_COLORS = new Set(['hiking-shield', 'power-tower', 'power-tower-small'
 const PADDING = 2;
 
 function colorize(svg, name) {
-  if (KEEP_COLORS.has(name)) return svg;
+  // le icone di TGen (svg-amenity.mjs) portano gia' il colore della loro regola
+  if (KEEP_COLORS.has(name) || name.startsWith('tg-')) return svg;
   const color = COLORS[CATEGORY[name] ?? 'service'];
   // I path Maki non hanno fill: si aggiunge sul tag <svg>, che i figli ereditano
   return svg.replace(/<svg\b/, `<svg fill="${color}"`);

@@ -33,7 +33,7 @@ const ATTRIBUTION_LC = '© ESA WorldCover 2021';
 const ATTRIBUTION_WM = '© Webmapp';
 const ATTRIBUTION_IGM = '© IGM — DBSN';
 const LEGACY_TILE_URL = 'https://api.webmapp.it/tiles/{z}/{x}/{y}.png';
-export const ARCHIVES = ['osm', 'hillshade', 'contours', 'hiking', 'toponimi', 'rifugi', 'landcover', 'osmpoi', 'clc', 'roadslz', 'igm', 'power', 'parchi', 'extra'];
+export const ARCHIVES = ['osm', 'hillshade', 'contours', 'hiking', 'toponimi', 'rifugi', 'landcover', 'osmpoi', 'clc', 'roadslz', 'igm', 'power', 'parchi', 'extra', 'amenity'];
 
 function log(level, msg, fields = {}) {
   const line = JSON.stringify({ts: new Date().toISOString(), level, msg, ...fields});
@@ -148,6 +148,17 @@ function buildStyle(manifest, resolved, version, base) {
       tiles: [`${base}/t/${version}/${resolved.setId}/osmpoi/{z}/{x}/{y}.pbf`],
       minzoom: 11,
       maxzoom: 14,
+      attribution: ATTRIBUTION,
+    },
+    // Icone dei punti di interesse come amenity-points di TGen: chiese,
+    // biblioteche, cinema, golf, parcheggi... Livello d'ingresso nel dato,
+    // fino a z16 (pipeline/build-amenity.py).
+    amenity: {
+      type: 'vector',
+      tileSize: 256,
+      tiles: [`${base}/t/${version}/${resolved.setId}/amenity/{z}/{x}/{y}.pbf`],
+      minzoom: 10,
+      maxzoom: 16,
       attribution: ATTRIBUTION,
     },
     // Parchi nazionali e riserve naturali selezionati come TGen

@@ -73,6 +73,7 @@ passo "$STAGE/osmpoi.pmtiles" bash pipeline/build-osmpoi.sh "$PBF" $OW $OS $OE $
 passo "$STAGE/power.pmtiles" bash pipeline/build-power.sh "$PBF" $OW $OS $OE $ON "$STAGE/power.pmtiles"
 passo "$STAGE/extra.pmtiles" bash pipeline/build-extra.sh "$PBF" $OW $OS $OE $ON "$STAGE/extra.pmtiles"
 passo "$STAGE/parchi.pmtiles" bash pipeline/build-parchi.sh "$PBF" $OW $OS $OE $ON "$STAGE/parchi.pmtiles"
+passo "$STAGE/amenity.pmtiles" bash pipeline/build-amenity.sh "$PBF" $OW $OS $OE $ON "$STAGE/amenity.pmtiles"
 
 # ---------------------------------------------------------------------------
 # --solo-osm: il resto dalla versione precedente, e si pubblica

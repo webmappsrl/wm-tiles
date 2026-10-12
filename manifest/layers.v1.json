@@ -130,7 +130,8 @@
       },
       "layers": [
         "poi",
-        "aerodrome_label"
+        "aerodrome_label",
+        "amenity"
       ],
       "class": "public",
       "attributes": [

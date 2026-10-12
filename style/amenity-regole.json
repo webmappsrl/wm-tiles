@@ -1,0 +1,5258 @@
+{
+ "punti": [
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 30) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 30) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_communication",
+   "percorso": "symbols/towers/tower_lattice_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_communication",
+   "percorso": "symbols/towers/tower_lattice_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_communication",
+   "percorso": "symbols/towers/tower_lattice_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 30) and (v('tower:type') == 'communication') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_communication",
+   "percorso": "symbols/towers/tower_lattice_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'communication') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'communication') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'communication') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_communication",
+   "percorso": "symbols/towers/tower_lattice_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 30) and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 50) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 50) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 30) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 50) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 30) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 50) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 30) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'observation')",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'observation')",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'observation')",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 30) and (v('tower:type') == 'observation')",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'defensive')",
+   "icona": "tower_defensive",
+   "percorso": "symbols/towers/tower_defensive.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'defensive')",
+   "icona": "tower_defensive",
+   "percorso": "symbols/towers/tower_defensive.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'defensive')",
+   "icona": "tower_defensive",
+   "percorso": "symbols/towers/tower_defensive.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 30) and (v('tower:type') == 'defensive')",
+   "icona": "tower_defensive",
+   "percorso": "symbols/towers/tower_defensive.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'lighting') and (v('height') > 50) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_lighting",
+   "percorso": "symbols/towers/tower_lattice_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'lighting') and (v('height') > 30) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_lighting",
+   "percorso": "symbols/towers/tower_lattice_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'observation')",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'defensive')",
+   "icona": "tower_defensive",
+   "percorso": "symbols/towers/tower_defensive.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100)",
+   "icona": "tower_generic",
+   "percorso": "symbols/towers/tower_generic.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100)",
+   "icona": "tower_generic",
+   "percorso": "symbols/towers/tower_generic.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 50)",
+   "icona": "tower_generic",
+   "percorso": "symbols/towers/tower_generic.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 30)",
+   "icona": "tower_generic",
+   "percorso": "symbols/towers/tower_generic.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 10,
+   "a": 13,
+   "filtro": "(v('feature') == 'aeroway_aerodrome') and (v('access') != 'private') and (v('icao') != None) and (v('iata') != None)",
+   "icona": "aerodrome.12",
+   "percorso": "symbols/aerodrome.12.svg",
+   "colore": "#8461c4",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_recycling') and (v('recycling_type') == 'centre') and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "recycling",
+   "percorso": "symbols/recycling.svg",
+   "colore": "#705d3d",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'lighting') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_lighting",
+   "percorso": "symbols/towers/tower_lattice_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'lighting') and (v('height') > 50)",
+   "icona": "tower_lighting",
+   "percorso": "symbols/towers/tower_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'lighting') and (v('height') > 30)",
+   "icona": "tower_lighting",
+   "percorso": "symbols/towers/tower_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 30) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 50) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 30) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 100) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 50) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 30) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 100) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 50) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 30) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 50) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 30) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 50) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 30) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 50) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 30) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 50) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 30) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 50) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 30) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 50)",
+   "icona": "tower_cooling",
+   "percorso": "symbols/towers/tower_cooling.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 30)",
+   "icona": "tower_cooling",
+   "percorso": "symbols/towers/tower_cooling.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 50)",
+   "icona": "bell_tower",
+   "percorso": "symbols/towers/bell_tower.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 30)",
+   "icona": "bell_tower",
+   "percorso": "symbols/towers/bell_tower.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 100)",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 50)",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 30)",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower')",
+   "icona": "tower_generic",
+   "percorso": "symbols/towers/tower_generic.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') == 'lighting') and (v('height') > 80)",
+   "icona": "mast_lighting",
+   "percorso": "symbols/towers/mast_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') == 'lighting') and (v('height') > 20)",
+   "icona": "mast_lighting",
+   "percorso": "symbols/towers/mast_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_playground') and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "playground",
+   "percorso": "symbols/playground.svg",
+   "colore": "#57a148",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_recycling') and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "recycling",
+   "percorso": "symbols/recycling.svg",
+   "colore": "#705d3d",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-points",
+   "da": 10,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_motorcycle_parking') and (v('way_pixels') > 900) and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "motorcycle_parking",
+   "percorso": "symbols/motorcycle_parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-points",
+   "da": 10,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_bicycle_parking') and (v('way_pixels') > 900) and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "bicycle_parking",
+   "percorso": "symbols/bicycle_parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-points",
+   "da": 10,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_parking') and (v('way_pixels') > 900) and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "parking",
+   "percorso": "symbols/parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'lighting')",
+   "icona": "tower_lighting",
+   "percorso": "symbols/towers/tower_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling')",
+   "icona": "tower_cooling",
+   "percorso": "symbols/towers/tower_cooling.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower')",
+   "icona": "bell_tower",
+   "percorso": "symbols/towers/bell_tower.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower')",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('height') > 80) and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 16,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('height') > 80) and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 15,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('height') > 80) and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('height') > 40) and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 16,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('height') > 40) and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('height') > 20) and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') == 'lighting')",
+   "icona": "mast_lighting",
+   "percorso": "symbols/towers/mast_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'fortress')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'shiro')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'kremlin')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'defensive')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'castrum')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'manor')",
+   "icona": "manor",
+   "percorso": "symbols/manor.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'stately')",
+   "icona": "palace",
+   "percorso": "symbols/palace.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'palace')",
+   "icona": "palace",
+   "percorso": "symbols/palace.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'christian') and (v('denomination') == 'jehovahs_witness')",
+   "icona": "place_of_worship",
+   "percorso": "symbols/place_of_worship.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting') and (v('height') > 80)",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 16,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting') and (v('height') > 80)",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 15,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting') and (v('height') > 80)",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting') and (v('height') > 40)",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 16,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting') and (v('height') > 40)",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting') and (v('height') > 20)",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'office')",
+   "icona": "office",
+   "percorso": "symbols/tourism/office.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_waste_disposal') and (v('access') == 'yes')",
+   "icona": "waste_disposal",
+   "percorso": "symbols/waste_disposal.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_waste_disposal') and (v('access') == None)",
+   "icona": "waste_disposal",
+   "percorso": "symbols/waste_disposal.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_waste_disposal') and (v('access') == 'permissive')",
+   "icona": "waste_disposal",
+   "percorso": "symbols/waste_disposal.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'power_generator') and (v('power_source') == 'wind')",
+   "icona": "power_wind",
+   "percorso": "symbols/power_wind.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'power_generator') and (v('generator:source') == 'wind')",
+   "icona": "power_wind",
+   "percorso": "symbols/power_wind.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('name') != None) and (v('height') > 20)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 14,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('name') != None) and (v('height') > 20)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('name') != None) and (v('height') > 10)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('name') != None) and (v('height') > 10)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('name') != None)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 20,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('height') > 20)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('height') > 10)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 11,
+   "a": 13,
+   "filtro": "(v('feature') == 'aeroway_aerodrome')",
+   "icona": "aerodrome.12",
+   "percorso": "symbols/aerodrome.12.svg",
+   "colore": "#8461c4",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_marketplace') and (v('way_pixels') > 3000)",
+   "icona": "marketplace",
+   "percorso": "symbols/shop/marketplace.svg",
+   "colore": "#3d58a1",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor') and (v('castle_type') == 'castrum')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor') and (v('castle_type') == 'kremlin')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor') and (v('castle_type') == 'defensive')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor') and (v('castle_type') == 'fortress')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor') and (v('castle_type') == 'shiro')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor') and (v('castle_type') == 'manor')",
+   "icona": "manor",
+   "percorso": "symbols/manor.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor')",
+   "icona": "manor",
+   "percorso": "symbols/manor.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') != 'stately')",
+   "icona": "castle",
+   "percorso": "symbols/castle.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_toilets') and (v('access') == 'yes')",
+   "icona": "toilets",
+   "percorso": "symbols/toilets.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_recycling') and (v('recycling_type') == 'centre')",
+   "icona": "recycling",
+   "percorso": "symbols/recycling.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'taoist')",
+   "icona": "taoist",
+   "percorso": "symbols/taoist.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'shinto')",
+   "icona": "shintoist",
+   "percorso": "symbols/shintoist.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'buddhist')",
+   "icona": "buddhist",
+   "percorso": "symbols/buddhist.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'hindu')",
+   "icona": "hinduist",
+   "percorso": "symbols/hinduist.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'jewish')",
+   "icona": "jewish",
+   "percorso": "symbols/jewish.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'sikh')",
+   "icona": "sikhist",
+   "percorso": "symbols/sikhist.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'muslim')",
+   "icona": "muslim",
+   "percorso": "symbols/muslim.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'christian')",
+   "icona": "christian",
+   "percorso": "symbols/christian.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 10,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_motorcycle_parking') and (v('way_pixels') > 900)",
+   "icona": "motorcycle_parking",
+   "percorso": "symbols/motorcycle_parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 10,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_bicycle_parking') and (v('way_pixels') > 900)",
+   "icona": "bicycle_parking",
+   "percorso": "symbols/bicycle_parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 10,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_parking') and (v('way_pixels') > 900)",
+   "icona": "parking",
+   "percorso": "symbols/parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_chimney') and (v('height') > 50)",
+   "icona": "chimney",
+   "percorso": "symbols/towers/chimney.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_chimney') and (v('height') > 30)",
+   "icona": "chimney",
+   "percorso": "symbols/towers/chimney.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting')",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'terminal')",
+   "icona": "terminal",
+   "percorso": "symbols/tourism/terminal.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'tactile_map')",
+   "icona": "map",
+   "percorso": "symbols/tourism/map.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'map')",
+   "icona": "map",
+   "percorso": "symbols/tourism/map.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'guidepost')",
+   "icona": "guidepost",
+   "percorso": "symbols/tourism/guidepost.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'board')",
+   "icona": "board",
+   "percorso": "symbols/tourism/board.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'tactile_model')",
+   "icona": "board",
+   "percorso": "symbols/tourism/board.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'audioguide')",
+   "icona": "audioguide",
+   "percorso": "symbols/tourism/audioguide.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'highway_elevator') and (v('access') == None)",
+   "icona": "elevator.12",
+   "percorso": "symbols/elevator.12.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'highway_elevator') and (v('access') == 'yes')",
+   "icona": "elevator.12",
+   "percorso": "symbols/elevator.12.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_shelter')",
+   "icona": "shelter",
+   "percorso": "symbols/shelter.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_alpine_hut')",
+   "icona": "alpine-hut-cai",
+   "percorso": "symbols/wm-icons/alpine-hut-cai.svg",
+   "colore": "#734a08",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_wilderness_hut')",
+   "icona": "wilderness-hut-cai",
+   "percorso": "symbols/wm-icons/wilderness-hut-cai.svg",
+   "colore": "#734a08",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_hunting_stand')",
+   "icona": "hunting_stand",
+   "percorso": "symbols/hunting_stand.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_windmill')",
+   "icona": "windmill",
+   "percorso": "symbols/windmill.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'military_bunker')",
+   "icona": "bunker",
+   "percorso": "symbols/bunker.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'waterway_waterfall')",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'natural_cave_entrance')",
+   "icona": "cave",
+   "percorso": "symbols/cave.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'natural_saddle')",
+   "icona": "saddle",
+   "percorso": "symbols/saddle.svg",
+   "colore": "#5c491d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 12,
+   "a": 20,
+   "filtro": "(v('feature') == 'natural_volcano')",
+   "icona": "peak",
+   "percorso": "symbols/peak.svg",
+   "colore": "#5c491d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 12,
+   "a": 20,
+   "filtro": "(v('feature') == 'natural_peak')",
+   "icona": "peak",
+   "percorso": "symbols/peak.svg",
+   "colore": "#5c491d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_lighthouse')",
+   "icona": "lighthouse",
+   "percorso": "symbols/towers/lighthouse.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_ferry_terminal')",
+   "icona": "ferry",
+   "percorso": "symbols/ferry.svg",
+   "colore": "#8461c4",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'aeroway_helipad')",
+   "icona": "helipad.16",
+   "percorso": "symbols/helipad.16.svg",
+   "colore": "#8461c4",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_slipway')",
+   "icona": "transport_slipway.p.20",
+   "percorso": "symbols/transport_slipway.p.20.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_firepit')",
+   "icona": "firepit",
+   "percorso": "symbols/firepit.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_picnic_table')",
+   "icona": "picnic",
+   "percorso": "symbols/picnic.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_picnic_site')",
+   "icona": "picnic",
+   "percorso": "symbols/picnic.svg",
+   "colore": "#57a148",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_golf_course')",
+   "icona": "golf",
+   "percorso": "symbols/golf.svg",
+   "colore": "#57a148",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_playground')",
+   "icona": "playground",
+   "percorso": "symbols/playground.svg",
+   "colore": "#57a148",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_dog_park')",
+   "icona": "pet",
+   "percorso": "symbols/shop/pet.svg",
+   "colore": "#57a148",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_water_park')",
+   "icona": "water_park",
+   "percorso": "symbols/water_park.svg",
+   "colore": "#57a148",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_marketplace')",
+   "icona": "marketplace",
+   "percorso": "symbols/shop/marketplace.svg",
+   "colore": "#3d58a1",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_archaeological_site')",
+   "icona": "archaeological_site",
+   "percorso": "symbols/archaeological_site.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_fort')",
+   "icona": "fort",
+   "percorso": "symbols/fort.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_monument')",
+   "icona": "monument",
+   "percorso": "symbols/monument.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_obelisk')",
+   "icona": "monument",
+   "percorso": "symbols/monument.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_memorial_plaque')",
+   "icona": "plaque",
+   "percorso": "symbols/plaque.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_memorial')",
+   "icona": "memorial",
+   "percorso": "symbols/memorial.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_water_tower')",
+   "icona": "water_tower",
+   "percorso": "symbols/towers/water_tower.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_prison')",
+   "icona": "prison",
+   "percorso": "symbols/prison.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_drinking_water')",
+   "icona": "drinking_water",
+   "percorso": "symbols/drinking_water.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_toilets')",
+   "icona": "toilets",
+   "percorso": "symbols/toilets.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_arts_centre')",
+   "icona": "art",
+   "percorso": "symbols/shop/art.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_theatre')",
+   "icona": "theatre",
+   "percorso": "symbols/theatre.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_recycling')",
+   "icona": "recycling",
+   "percorso": "symbols/recycling.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_post_office')",
+   "icona": "post_office",
+   "percorso": "symbols/post_office.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_police')",
+   "icona": "police",
+   "percorso": "symbols/police.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_wayside_shrine')",
+   "icona": "shrine",
+   "percorso": "symbols/shrine.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_wayside_cross')",
+   "icona": "christian.9",
+   "percorso": "symbols/christian.9.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_cross')",
+   "icona": "christian.9",
+   "percorso": "symbols/christian.9.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship')",
+   "icona": "place_of_worship",
+   "percorso": "symbols/place_of_worship.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_clinic')",
+   "icona": "doctors",
+   "percorso": "symbols/doctors.svg",
+   "colore": "#c26ba5",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_doctors')",
+   "icona": "doctors",
+   "percorso": "symbols/doctors.svg",
+   "colore": "#c26ba5",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_pharmacy')",
+   "icona": "pharmacy",
+   "percorso": "symbols/pharmacy.svg",
+   "colore": "#c26ba5",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_city_gate')",
+   "icona": "city_gate",
+   "percorso": "symbols/city_gate.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_chimney')",
+   "icona": "chimney",
+   "percorso": "symbols/towers/chimney.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 13,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_communications_tower')",
+   "icona": "communications_tower",
+   "percorso": "symbols/towers/communications_tower.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_townhall')",
+   "icona": "town_hall",
+   "percorso": "symbols/town_hall.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_community_centre')",
+   "icona": "community_centre",
+   "percorso": "symbols/community_centre.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_courthouse')",
+   "icona": "courthouse",
+   "percorso": "symbols/courthouse.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_library')",
+   "icona": "library",
+   "percorso": "symbols/library.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_embassy')",
+   "icona": "embassy",
+   "percorso": "symbols/embassy.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information')",
+   "icona": "information",
+   "percorso": "symbols/tourism/information.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_hostel')",
+   "icona": "hostel",
+   "percorso": "symbols/hostel.svg",
+   "colore": "#734a08",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_hospital')",
+   "icona": "hospital",
+   "percorso": "symbols/hospital.svg",
+   "colore": "#c26ba5",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_fuel')",
+   "icona": "fuel",
+   "percorso": "symbols/fuel.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_charging_station')",
+   "icona": "charging_station",
+   "percorso": "symbols/charging_station.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_fire_station')",
+   "icona": "firestation",
+   "percorso": "symbols/firestation.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_public_bath')",
+   "icona": "public_bath",
+   "percorso": "symbols/public_bath.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_cinema')",
+   "icona": "cinema",
+   "percorso": "symbols/cinema.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_chalet')",
+   "icona": "chalet",
+   "percorso": "symbols/chalet.svg",
+   "colore": "#734a08",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_caravan_site')",
+   "icona": "caravan_park",
+   "percorso": "symbols/caravan_park.svg",
+   "colore": "#734a08",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'highway_ford')",
+   "icona": "ford",
+   "percorso": "symbols/ford.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_camp_site')",
+   "icona": "camping",
+   "percorso": "symbols/camping.svg",
+   "colore": "#734a08",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_bus_station')",
+   "icona": "bus_station",
+   "percorso": "symbols/bus_station.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'highway_bus_stop')",
+   "icona": "bus_stop.12",
+   "percorso": "symbols/bus_stop.12.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points",
+   "da": 16,
+   "a": 16,
+   "filtro": "(v('feature') == 'highway_bus_stop')",
+   "icona": "square",
+   "percorso": "symbols/square.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-nozzle",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_fountain')",
+   "icona": "fountain",
+   "percorso": "symbols/fountain.svg",
+   "colore": "#576ddf",
+   "opacita": 1.0
+  }
+ ],
+ "aree": [
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 30) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 30) and (v('tower:type') == 'communication') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_communication",
+   "percorso": "symbols/towers/tower_lattice_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_communication",
+   "percorso": "symbols/towers/tower_lattice_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_communication",
+   "percorso": "symbols/towers/tower_lattice_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 30) and (v('tower:type') == 'communication') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_communication",
+   "percorso": "symbols/towers/tower_lattice_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'communication') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'communication') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'communication') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_communication",
+   "percorso": "symbols/towers/tower_lattice_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 30) and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 50) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 50) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 30) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 50) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 30) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 50) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 30) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'observation')",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'observation')",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'observation')",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 30) and (v('tower:type') == 'observation')",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'defensive')",
+   "icona": "tower_defensive",
+   "percorso": "symbols/towers/tower_defensive.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 100) and (v('tower:type') == 'defensive')",
+   "icona": "tower_defensive",
+   "percorso": "symbols/towers/tower_defensive.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 50) and (v('tower:type') == 'defensive')",
+   "icona": "tower_defensive",
+   "percorso": "symbols/towers/tower_defensive.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('height') > 30) and (v('tower:type') == 'defensive')",
+   "icona": "tower_defensive",
+   "percorso": "symbols/towers/tower_defensive.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'lighting') and (v('height') > 50) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_lighting",
+   "percorso": "symbols/towers/tower_lattice_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'lighting') and (v('height') > 30) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_lighting",
+   "percorso": "symbols/towers/tower_lattice_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'communication')",
+   "icona": "tower_cantilever_communication",
+   "percorso": "symbols/towers/tower_cantilever_communication.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'observation')",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'defensive')",
+   "icona": "tower_defensive",
+   "percorso": "symbols/towers/tower_defensive.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100)",
+   "icona": "tower_generic",
+   "percorso": "symbols/towers/tower_generic.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 13,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 100)",
+   "icona": "tower_generic",
+   "percorso": "symbols/towers/tower_generic.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 50)",
+   "icona": "tower_generic",
+   "percorso": "symbols/towers/tower_generic.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower') and (v('height') > 30)",
+   "icona": "tower_generic",
+   "percorso": "symbols/towers/tower_generic.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 10,
+   "a": 13,
+   "filtro": "(v('feature') == 'aeroway_aerodrome') and (v('access') != 'private') and (v('icao') != None) and (v('iata') != None)",
+   "icona": "aerodrome.12",
+   "percorso": "symbols/aerodrome.12.svg",
+   "colore": "#8461c4",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_recycling') and (v('recycling_type') == 'centre') and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "recycling",
+   "percorso": "symbols/recycling.svg",
+   "colore": "#705d3d",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'lighting') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice_lighting",
+   "percorso": "symbols/towers/tower_lattice_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'lighting') and (v('height') > 50)",
+   "icona": "tower_lighting",
+   "percorso": "symbols/towers/tower_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'lighting') and (v('height') > 30)",
+   "icona": "tower_lighting",
+   "percorso": "symbols/towers/tower_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 30) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 50) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 30) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 100) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 50) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 30) and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 100) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 50) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 30) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 50) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 30) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 50) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 30) and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 50) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 30) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 100) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 50) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 30) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 50) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 30) and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 50)",
+   "icona": "tower_cooling",
+   "percorso": "symbols/towers/tower_cooling.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('height') > 30)",
+   "icona": "tower_cooling",
+   "percorso": "symbols/towers/tower_cooling.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 50)",
+   "icona": "bell_tower",
+   "percorso": "symbols/towers/bell_tower.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('height') > 30)",
+   "icona": "bell_tower",
+   "percorso": "symbols/towers/bell_tower.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 100)",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 50)",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('height') > 30)",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') != 'cooling') and (v('tower:type') != 'lighting') and (v('tower:type') != 'bell_tower') and (v('tower:type') != 'watchtower')",
+   "icona": "tower_generic",
+   "percorso": "symbols/towers/tower_generic.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') == 'lighting') and (v('height') > 80)",
+   "icona": "mast_lighting",
+   "percorso": "symbols/towers/mast_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') == 'lighting') and (v('height') > 20)",
+   "icona": "mast_lighting",
+   "percorso": "symbols/towers/mast_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_playground') and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "playground",
+   "percorso": "symbols/playground.svg",
+   "colore": "#57a148",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_recycling') and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "recycling",
+   "percorso": "symbols/recycling.svg",
+   "colore": "#705d3d",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 10,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_motorcycle_parking') and (v('way_pixels') > 900) and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "motorcycle_parking",
+   "percorso": "symbols/motorcycle_parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 10,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_bicycle_parking') and (v('way_pixels') > 900) and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "bicycle_parking",
+   "percorso": "symbols/bicycle_parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 10,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_parking') and (v('way_pixels') > 900) and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "parking",
+   "percorso": "symbols/parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'lighting')",
+   "icona": "tower_lighting",
+   "percorso": "symbols/towers/tower_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('tower:construction') == 'dome')",
+   "icona": "tower_dome",
+   "percorso": "symbols/towers/tower_dome.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('tower:construction') == 'dish')",
+   "icona": "tower_dish",
+   "percorso": "symbols/towers/tower_dish.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling') and (v('tower:construction') == 'lattice')",
+   "icona": "tower_lattice",
+   "percorso": "symbols/towers/tower_lattice.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'cooling')",
+   "icona": "tower_cooling",
+   "percorso": "symbols/towers/tower_cooling.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'bell_tower')",
+   "icona": "bell_tower",
+   "percorso": "symbols/towers/bell_tower.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_tower') and (v('tower:type') == 'watchtower')",
+   "icona": "tower_observation",
+   "percorso": "symbols/towers/tower_observation.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('height') > 80) and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 16,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('height') > 80) and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 15,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('height') > 80) and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('height') > 40) and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 16,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('height') > 40) and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('height') > 20) and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') == 'lighting')",
+   "icona": "mast_lighting",
+   "percorso": "symbols/towers/mast_lighting.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'fortress')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'shiro')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'kremlin')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'defensive')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'castrum')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'manor')",
+   "icona": "manor",
+   "percorso": "symbols/manor.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'stately')",
+   "icona": "palace",
+   "percorso": "symbols/palace.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') == 'palace')",
+   "icona": "palace",
+   "percorso": "symbols/palace.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'christian') and (v('denomination') == 'jehovahs_witness')",
+   "icona": "place_of_worship",
+   "percorso": "symbols/place_of_worship.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') == 'communication')",
+   "icona": "mast_communications",
+   "percorso": "symbols/towers/mast_communications.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting') and (v('height') > 80)",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 16,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting') and (v('height') > 80)",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 15,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting') and (v('height') > 80)",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting') and (v('height') > 40)",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 16,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting') and (v('height') > 40)",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting') and (v('height') > 20)",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'office')",
+   "icona": "office",
+   "percorso": "symbols/tourism/office.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_waste_disposal') and (v('access') == 'yes')",
+   "icona": "waste_disposal",
+   "percorso": "symbols/waste_disposal.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_waste_disposal') and (v('access') == None)",
+   "icona": "waste_disposal",
+   "percorso": "symbols/waste_disposal.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_waste_disposal') and (v('access') == 'permissive')",
+   "icona": "waste_disposal",
+   "percorso": "symbols/waste_disposal.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'power_generator') and (v('power_source') == 'wind')",
+   "icona": "power_wind",
+   "percorso": "symbols/power_wind.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'power_generator') and (v('generator:source') == 'wind')",
+   "icona": "power_wind",
+   "percorso": "symbols/power_wind.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('name') != None) and (v('height') > 20)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 14,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('name') != None) and (v('height') > 20)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('name') != None) and (v('height') > 10)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 14,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('name') != None) and (v('height') > 10)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('name') != None)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 20,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('height') > 20)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'waterway_waterfall') and (v('height') > 10)",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 11,
+   "a": 13,
+   "filtro": "(v('feature') == 'aeroway_aerodrome')",
+   "icona": "aerodrome.12",
+   "percorso": "symbols/aerodrome.12.svg",
+   "colore": "#8461c4",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_marketplace') and (v('way_pixels') > 3000)",
+   "icona": "marketplace",
+   "percorso": "symbols/shop/marketplace.svg",
+   "colore": "#3d58a1",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor') and (v('castle_type') == 'castrum')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor') and (v('castle_type') == 'kremlin')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor') and (v('castle_type') == 'defensive')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor') and (v('castle_type') == 'fortress')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor') and (v('castle_type') == 'shiro')",
+   "icona": "fortress",
+   "percorso": "symbols/fortress.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor') and (v('castle_type') == 'manor')",
+   "icona": "manor",
+   "percorso": "symbols/manor.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_manor')",
+   "icona": "manor",
+   "percorso": "symbols/manor.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_castle') and (v('castle_type') != 'stately')",
+   "icona": "castle",
+   "percorso": "symbols/castle.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_toilets') and (v('access') == 'yes')",
+   "icona": "toilets",
+   "percorso": "symbols/toilets.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_recycling') and (v('recycling_type') == 'centre')",
+   "icona": "recycling",
+   "percorso": "symbols/recycling.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'taoist')",
+   "icona": "taoist",
+   "percorso": "symbols/taoist.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'shinto')",
+   "icona": "shintoist",
+   "percorso": "symbols/shintoist.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'buddhist')",
+   "icona": "buddhist",
+   "percorso": "symbols/buddhist.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'hindu')",
+   "icona": "hinduist",
+   "percorso": "symbols/hinduist.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'jewish')",
+   "icona": "jewish",
+   "percorso": "symbols/jewish.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'sikh')",
+   "icona": "sikhist",
+   "percorso": "symbols/sikhist.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'muslim')",
+   "icona": "muslim",
+   "percorso": "symbols/muslim.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship') and (v('religion') == 'christian')",
+   "icona": "christian",
+   "percorso": "symbols/christian.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 10,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_motorcycle_parking') and (v('way_pixels') > 900)",
+   "icona": "motorcycle_parking",
+   "percorso": "symbols/motorcycle_parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 10,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_bicycle_parking') and (v('way_pixels') > 900)",
+   "icona": "bicycle_parking",
+   "percorso": "symbols/bicycle_parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 10,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_parking') and (v('way_pixels') > 900)",
+   "icona": "parking",
+   "percorso": "symbols/parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_chimney') and (v('height') > 50)",
+   "icona": "chimney",
+   "percorso": "symbols/towers/chimney.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_chimney') and (v('height') > 30)",
+   "icona": "chimney",
+   "percorso": "symbols/towers/chimney.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_mast') and (v('tower:type') != 'lighting')",
+   "icona": "mast",
+   "percorso": "symbols/towers/mast.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'terminal')",
+   "icona": "terminal",
+   "percorso": "symbols/tourism/terminal.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'tactile_map')",
+   "icona": "map",
+   "percorso": "symbols/tourism/map.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'map')",
+   "icona": "map",
+   "percorso": "symbols/tourism/map.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'guidepost')",
+   "icona": "guidepost",
+   "percorso": "symbols/tourism/guidepost.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'board')",
+   "icona": "board",
+   "percorso": "symbols/tourism/board.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'tactile_model')",
+   "icona": "board",
+   "percorso": "symbols/tourism/board.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information') and (v('information') == 'audioguide')",
+   "icona": "audioguide",
+   "percorso": "symbols/tourism/audioguide.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'highway_elevator') and (v('access') == None)",
+   "icona": "elevator.12",
+   "percorso": "symbols/elevator.12.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'highway_elevator') and (v('access') == 'yes')",
+   "icona": "elevator.12",
+   "percorso": "symbols/elevator.12.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_shelter')",
+   "icona": "shelter",
+   "percorso": "symbols/shelter.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_alpine_hut')",
+   "icona": "alpine-hut-cai",
+   "percorso": "symbols/wm-icons/alpine-hut-cai.svg",
+   "colore": "#734a08",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_wilderness_hut')",
+   "icona": "wilderness-hut-cai",
+   "percorso": "symbols/wm-icons/wilderness-hut-cai.svg",
+   "colore": "#734a08",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_hunting_stand')",
+   "icona": "hunting_stand",
+   "percorso": "symbols/hunting_stand.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_windmill')",
+   "icona": "windmill",
+   "percorso": "symbols/windmill.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'military_bunker')",
+   "icona": "bunker",
+   "percorso": "symbols/bunker.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'waterway_waterfall')",
+   "icona": "waterfall",
+   "percorso": "symbols/waterfall.svg",
+   "colore": "#679bce",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'natural_cave_entrance')",
+   "icona": "cave",
+   "percorso": "symbols/cave.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 14,
+   "a": 20,
+   "filtro": "(v('feature') == 'natural_saddle')",
+   "icona": "saddle",
+   "percorso": "symbols/saddle.svg",
+   "colore": "#5c491d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 12,
+   "a": 20,
+   "filtro": "(v('feature') == 'natural_volcano')",
+   "icona": "peak",
+   "percorso": "symbols/peak.svg",
+   "colore": "#5c491d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 12,
+   "a": 20,
+   "filtro": "(v('feature') == 'natural_peak')",
+   "icona": "peak",
+   "percorso": "symbols/peak.svg",
+   "colore": "#5c491d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_lighthouse')",
+   "icona": "lighthouse",
+   "percorso": "symbols/towers/lighthouse.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_ferry_terminal')",
+   "icona": "ferry",
+   "percorso": "symbols/ferry.svg",
+   "colore": "#8461c4",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'aeroway_helipad')",
+   "icona": "helipad.16",
+   "percorso": "symbols/helipad.16.svg",
+   "colore": "#8461c4",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_slipway')",
+   "icona": "transport_slipway.p.20",
+   "percorso": "symbols/transport_slipway.p.20.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_firepit')",
+   "icona": "firepit",
+   "percorso": "symbols/firepit.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_picnic_table')",
+   "icona": "picnic",
+   "percorso": "symbols/picnic.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_picnic_site')",
+   "icona": "picnic",
+   "percorso": "symbols/picnic.svg",
+   "colore": "#57a148",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_golf_course')",
+   "icona": "golf",
+   "percorso": "symbols/golf.svg",
+   "colore": "#57a148",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_playground')",
+   "icona": "playground",
+   "percorso": "symbols/playground.svg",
+   "colore": "#57a148",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_dog_park')",
+   "icona": "pet",
+   "percorso": "symbols/shop/pet.svg",
+   "colore": "#57a148",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'leisure_water_park')",
+   "icona": "water_park",
+   "percorso": "symbols/water_park.svg",
+   "colore": "#57a148",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_marketplace')",
+   "icona": "marketplace",
+   "percorso": "symbols/shop/marketplace.svg",
+   "colore": "#3d58a1",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_archaeological_site')",
+   "icona": "archaeological_site",
+   "percorso": "symbols/archaeological_site.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_fort')",
+   "icona": "fort",
+   "percorso": "symbols/fort.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_monument')",
+   "icona": "monument",
+   "percorso": "symbols/monument.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_obelisk')",
+   "icona": "monument",
+   "percorso": "symbols/monument.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_memorial_plaque')",
+   "icona": "plaque",
+   "percorso": "symbols/plaque.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_memorial')",
+   "icona": "memorial",
+   "percorso": "symbols/memorial.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_water_tower')",
+   "icona": "water_tower",
+   "percorso": "symbols/towers/water_tower.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_prison')",
+   "icona": "prison",
+   "percorso": "symbols/prison.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_drinking_water')",
+   "icona": "drinking_water",
+   "percorso": "symbols/drinking_water.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_toilets')",
+   "icona": "toilets",
+   "percorso": "symbols/toilets.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_arts_centre')",
+   "icona": "art",
+   "percorso": "symbols/shop/art.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_theatre')",
+   "icona": "theatre",
+   "percorso": "symbols/theatre.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_recycling')",
+   "icona": "recycling",
+   "percorso": "symbols/recycling.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_post_office')",
+   "icona": "post_office",
+   "percorso": "symbols/post_office.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_police')",
+   "icona": "police",
+   "percorso": "symbols/police.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_wayside_shrine')",
+   "icona": "shrine",
+   "percorso": "symbols/shrine.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_wayside_cross')",
+   "icona": "christian.9",
+   "percorso": "symbols/christian.9.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_cross')",
+   "icona": "christian.9",
+   "percorso": "symbols/christian.9.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_place_of_worship')",
+   "icona": "place_of_worship",
+   "percorso": "symbols/place_of_worship.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_clinic')",
+   "icona": "doctors",
+   "percorso": "symbols/doctors.svg",
+   "colore": "#c26ba5",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_doctors')",
+   "icona": "doctors",
+   "percorso": "symbols/doctors.svg",
+   "colore": "#c26ba5",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_pharmacy')",
+   "icona": "pharmacy",
+   "percorso": "symbols/pharmacy.svg",
+   "colore": "#c26ba5",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_city_gate')",
+   "icona": "city_gate",
+   "percorso": "symbols/city_gate.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_chimney')",
+   "icona": "chimney",
+   "percorso": "symbols/towers/chimney.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 13,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_communications_tower')",
+   "icona": "communications_tower",
+   "percorso": "symbols/towers/communications_tower.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_townhall')",
+   "icona": "town_hall",
+   "percorso": "symbols/town_hall.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_community_centre')",
+   "icona": "community_centre",
+   "percorso": "symbols/community_centre.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_courthouse')",
+   "icona": "courthouse",
+   "percorso": "symbols/courthouse.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_library')",
+   "icona": "library",
+   "percorso": "symbols/library.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_embassy')",
+   "icona": "embassy",
+   "percorso": "symbols/embassy.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_information')",
+   "icona": "information",
+   "percorso": "symbols/tourism/information.svg",
+   "colore": "#555555",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_hostel')",
+   "icona": "hostel",
+   "percorso": "symbols/hostel.svg",
+   "colore": "#734a08",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 15,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_hospital')",
+   "icona": "hospital",
+   "percorso": "symbols/hospital.svg",
+   "colore": "#c26ba5",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_fuel')",
+   "icona": "fuel",
+   "percorso": "symbols/fuel.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_charging_station')",
+   "icona": "charging_station",
+   "percorso": "symbols/charging_station.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_fire_station')",
+   "icona": "firestation",
+   "percorso": "symbols/firestation.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_public_bath')",
+   "icona": "public_bath",
+   "percorso": "symbols/public_bath.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_cinema')",
+   "icona": "cinema",
+   "percorso": "symbols/cinema.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_chalet')",
+   "icona": "chalet",
+   "percorso": "symbols/chalet.svg",
+   "colore": "#734a08",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_caravan_site')",
+   "icona": "caravan_park",
+   "percorso": "symbols/caravan_park.svg",
+   "colore": "#734a08",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'highway_ford')",
+   "icona": "ford",
+   "percorso": "symbols/ford.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'tourism_camp_site')",
+   "icona": "camping",
+   "percorso": "symbols/camping.svg",
+   "colore": "#734a08",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_bus_station')",
+   "icona": "bus_station",
+   "percorso": "symbols/bus_station.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'highway_bus_stop')",
+   "icona": "bus_stop.12",
+   "percorso": "symbols/bus_stop.12.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly",
+   "da": 16,
+   "a": 16,
+   "filtro": "(v('feature') == 'highway_bus_stop')",
+   "icona": "square",
+   "percorso": "symbols/square.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-points-poly-nozzle",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_fountain')",
+   "icona": "fountain",
+   "percorso": "symbols/fountain.svg",
+   "colore": "#576ddf",
+   "opacita": 1.0
+  }
+ ],
+ "bassa": [
+  {
+   "stile": "amenity-low-priority",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_motorcycle_parking') and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "motorcycle_parking",
+   "percorso": "symbols/motorcycle_parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-low-priority",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_bicycle_parking') and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "bicycle_parking",
+   "percorso": "symbols/bicycle_parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-low-priority",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_parking') and (v('access') != '') and (v('access') != 'permissive') and (v('access') != 'yes')",
+   "icona": "parking",
+   "percorso": "symbols/parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 0.33
+  },
+  {
+   "stile": "amenity-low-priority",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_motorcycle_parking')",
+   "icona": "motorcycle_parking",
+   "percorso": "symbols/motorcycle_parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority",
+   "da": 18,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_bicycle_parking')",
+   "icona": "bicycle_parking",
+   "percorso": "symbols/bicycle_parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_parking')",
+   "icona": "parking",
+   "percorso": "symbols/parking.svg",
+   "colore": "#3b8eb8",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'historic_wayside_cross')",
+   "icona": "christian.9",
+   "percorso": "symbols/christian.9.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'man_made_cross')",
+   "icona": "christian.9",
+   "percorso": "symbols/christian.9.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority-railway",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'railway_crossing')",
+   "icona": "level_crossing2",
+   "percorso": "symbols/level_crossing2.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority-railway",
+   "da": 15,
+   "a": 15,
+   "filtro": "(v('feature') == 'railway_crossing')",
+   "icona": "level_crossing",
+   "percorso": "symbols/level_crossing.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority-railway",
+   "da": 16,
+   "a": 20,
+   "filtro": "(v('feature') == 'railway_level_crossing')",
+   "icona": "level_crossing2",
+   "percorso": "symbols/level_crossing2.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority-railway",
+   "da": 14,
+   "a": 15,
+   "filtro": "(v('feature') == 'railway_level_crossing')",
+   "icona": "level_crossing",
+   "percorso": "symbols/level_crossing.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority-highway",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'highway_mini_roundabout')",
+   "icona": "mini_roundabout",
+   "percorso": "symbols/mini_roundabout.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority-barrier",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'barrier_swing_gate')",
+   "icona": "liftgate",
+   "percorso": "symbols/liftgate.svg",
+   "colore": "#3f3f3f",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority-barrier",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'barrier_lift_gate')",
+   "icona": "liftgate",
+   "percorso": "symbols/liftgate.svg",
+   "colore": "#3f3f3f",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority-barrier",
+   "da": 17,
+   "a": 20,
+   "filtro": "(v('feature') == 'barrier_gate')",
+   "icona": "gate",
+   "percorso": "symbols/gate.svg",
+   "colore": "#000000",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority-amenity",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_waste_disposal') and (v('access') == None)",
+   "icona": "waste_disposal",
+   "percorso": "symbols/waste_disposal.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority-amenity",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_waste_disposal') and (v('access') == 'yes')",
+   "icona": "waste_disposal",
+   "percorso": "symbols/waste_disposal.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority-amenity",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_waste_disposal') and (v('access') == 'permissive')",
+   "icona": "waste_disposal",
+   "percorso": "symbols/waste_disposal.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority-amenity",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_waste_basket')",
+   "icona": "waste_basket.10",
+   "percorso": "symbols/waste_basket.10.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  },
+  {
+   "stile": "amenity-low-priority-amenity",
+   "da": 19,
+   "a": 20,
+   "filtro": "(v('feature') == 'amenity_bench')",
+   "icona": "bench",
+   "percorso": "symbols/bench.svg",
+   "colore": "#705d3d",
+   "opacita": 1.0
+  }
+ ]
+}
