@@ -167,7 +167,7 @@ for (const d of difformita) {
   if (immagini.length) await dossier({d, immagini, out: `${OUT}/dossier/${fileDossier(d.id)}`});
 }
 writeFileSync(`${OUT}/risultati.json`, JSON.stringify({giro: GIRO, versione: versione.current, parametri, scarti, tabella, difformita, stati, risultati}, null, 1));
-writeFileSync(`${OUT}/index.html`, pagina({giro: GIRO, tabella, difformita, stati, scarti}));
+writeFileSync(`${OUT}/index.html`, pagina({giro: GIRO, tabella, difformita, stati, scarti, registro}));
 
 const bloccanti = difformita.filter(d => bloccante(stati[d.id]));
 console.log(`${risultati.length} tile misurate; ${difformita.length} difformita', ${bloccanti.length} da giudicare o correggere`);

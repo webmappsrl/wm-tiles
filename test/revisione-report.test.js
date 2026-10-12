@@ -25,13 +25,21 @@ describe('pagina', () => {
   it('elenca le difformita\' con il loro stato e i livelli scartati', () => {
     const html = pagina({
       giro: 'a', tabella: {13: {bosco: {dE: 12, presenza: 0, nTile: 4, esito: 'stile'}}},
-      difformita: [{id: 'z13:bosco:stile', tipo: 'stile', misure: {dE: 12, diffusione: 1, nTile: 4}, esempi: []}],
+      difformita: [{id: 'z13:bosco:stile', tipo: 'stile', misure: {dE: 12, diffusione: 1, nTile: 4}, esempi: [{tile: '13/1/1'}]}],
       stati: {'z13:bosco:stile': 'aperta'}, scarti: {8: {copertura: 12}},
     });
     expect(html).toContain('z13:bosco:stile');
     expect(html).toContain('aperta');
     expect(html).toContain('copertura');
     expect(html).toContain('href="dossier/z13_bosco_stile.png"');
+  });
+  it('mostra verdetto, motivo e immagine del dossier di ogni difformita\'', () => {
+    const d = {id: 'z13:bosco:stile', tipo: 'stile', misure: {dE: 12}, esempi: [{tile: '13/1/1'}]};
+    const html = pagina({giro: 'a', tabella: {}, difformita: [d], stati: {[d.id]: 'da-correggere'}, scarti: {},
+      registro: {[d.id]: {verdetto: 'stile', motivo: 'verde <troppo> chiaro', giro: 'a'}}});
+    expect(html).toContain('verde &lt;troppo&gt; chiaro');
+    expect(html).toContain('<img src="dossier/z13_bosco_stile.png"');
+    expect(html).toContain('da-correggere');
   });
   it('le righe dei layer symbol mostrano il rapporto, non il dE', () => {
     const html = pagina({giro: 'a', tabella: {14: {cime: {rapporto: 3, nTile: 4, esito: 'simboli'}}}, difformita: [], stati: {}, scarti: {}});

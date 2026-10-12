@@ -266,5 +266,401 @@
       "nTile": 3
     },
     "data": "2026-10-12"
+  },
+  "z14:hiking-line:stile": {
+    "verdetto": "stile",
+    "motivo": "TGen disegna solo i sentieri CAI rilevati: hiking_trails in project.mml filtra cai_scale IS NOT NULL AND source LIKE '%survey:CAI%'; build-hiking-full.sh prende tutte le route=hiking. Stessa causa di z14:hiking-line-t e z16:hiking-ref",
+    "giro": "prova3",
+    "misure": {
+      "dE": 26.209244367307925,
+      "presenza": 0.2049335863377609,
+      "diffusione": 0.7777777777777778,
+      "nTile": 9,
+      "tgen": [
+        179,
+        148,
+        143
+      ],
+      "locale": [
+        190,
+        118,
+        109
+      ]
+    },
+    "data": "2026-10-12"
+  },
+  "z15:hiking-line:stile": {
+    "verdetto": "stile",
+    "motivo": "TGen disegna solo i sentieri CAI rilevati: hiking_trails in project.mml filtra cai_scale IS NOT NULL AND source LIKE '%survey:CAI%'; build-hiking-full.sh prende tutte le route=hiking. Stessa causa di z14:hiking-line-t e z16:hiking-ref",
+    "giro": "prova3",
+    "misure": {
+      "dE": 10.138336770045935,
+      "presenza": 0.3796376186367558,
+      "diffusione": 1,
+      "nTile": 4,
+      "tgen": [
+        153,
+        87,
+        83
+      ],
+      "locale": [
+        176,
+        94,
+        84
+      ]
+    },
+    "data": "2026-10-12"
+  },
+  "z15:hiking-line-t:stile": {
+    "verdetto": "stile",
+    "motivo": "TGen disegna solo i sentieri CAI rilevati: hiking_trails in project.mml filtra cai_scale IS NOT NULL AND source LIKE '%survey:CAI%'; build-hiking-full.sh prende tutte le route=hiking. Stessa causa di z14:hiking-line-t e z16:hiking-ref",
+    "giro": "prova3",
+    "misure": {
+      "dE": 39.89141999508348,
+      "presenza": 0.8192419825072886,
+      "diffusione": 1,
+      "nTile": 4,
+      "tgen": [
+        163,
+        149,
+        129
+      ],
+      "locale": [
+        183,
+        88,
+        75
+      ]
+    },
+    "data": "2026-10-12"
+  },
+  "z14:hiking-ref:simboli": {
+    "verdetto": "stile",
+    "motivo": "TGen disegna solo i sentieri CAI rilevati: hiking_trails in project.mml filtra cai_scale IS NOT NULL AND source LIKE '%survey:CAI%'; build-hiking-full.sh prende tutte le route=hiking. Stessa causa di z14:hiking-line-t e z16:hiking-ref",
+    "giro": "prova3",
+    "misure": {
+      "rapporto": 4.154245856113859,
+      "diffusione": 0.6666666666666666,
+      "nTile": 12
+    },
+    "data": "2026-10-12"
+  },
+  "z11:residuo:#b0d0f0": {
+    "verdetto": "mancanza",
+    "motivo": "TGen disegna tutti i waterway=river da z8 a z11 (water-lines-low-zoom in project.mml); OpenMapTiles ai livelli bassi ne porta pochi (11/1084/748: un fiume, 12/2168/1497: nessuno). Vanno estratti dal PBF come le strade di roadslz",
+    "giro": "prova3",
+    "misure": {
+      "diffusione": 0.23333333333333334,
+      "nTile": 30,
+      "pixel": 628
+    },
+    "data": "2026-10-12"
+  },
+  "z12:residuo:#b0d0f0": {
+    "verdetto": "mancanza",
+    "motivo": "TGen disegna tutti i waterway=river da z8 a z11 (water-lines-low-zoom in project.mml); OpenMapTiles ai livelli bassi ne porta pochi (11/1084/748: un fiume, 12/2168/1497: nessuno). Vanno estratti dal PBF come le strade di roadslz",
+    "giro": "prova3",
+    "misure": {
+      "diffusione": 0.16666666666666666,
+      "nTile": 30,
+      "pixel": 602
+    },
+    "data": "2026-10-12"
+  },
+  "z11:residuo:#d0b090": {
+    "verdetto": "stile",
+    "motivo": "a z11-z12 TGen scrive piu' cartellini del locale (SP52, SP60, SP11, SR439 assenti nel locale; road-ref-lz-primary a z12 rapporto 0,36): la distanza minima di 250 px (punti-cartellini.py) e' troppo larga rispetto ai PNG del 2018. Da misurare sui PNG la distanza fra cartellini uguali",
+    "giro": "prova3",
+    "misure": {
+      "diffusione": 0.3,
+      "nTile": 30,
+      "pixel": 518
+    },
+    "data": "2026-10-12"
+  },
+  "z12:residuo:#d0b090": {
+    "verdetto": "stile",
+    "motivo": "a z11-z12 TGen scrive piu' cartellini del locale (SP52, SP60, SP11, SR439 assenti nel locale; road-ref-lz-primary a z12 rapporto 0,36): la distanza minima di 250 px (punti-cartellini.py) e' troppo larga rispetto ai PNG del 2018. Da misurare sui PNG la distanza fra cartellini uguali",
+    "giro": "prova3",
+    "misure": {
+      "diffusione": 0.13333333333333333,
+      "nTile": 30,
+      "pixel": 126
+    },
+    "data": "2026-10-12"
+  },
+  "z11:residuo:#f0f0d0": {
+    "verdetto": "stile",
+    "motivo": "a z11-z12 TGen scrive piu' cartellini del locale (SP52, SP60, SP11, SR439 assenti nel locale; road-ref-lz-primary a z12 rapporto 0,36): la distanza minima di 250 px (punti-cartellini.py) e' troppo larga rispetto ai PNG del 2018. Da misurare sui PNG la distanza fra cartellini uguali",
+    "giro": "prova3",
+    "misure": {
+      "diffusione": 0.16666666666666666,
+      "nTile": 30,
+      "pixel": 787
+    },
+    "data": "2026-10-12"
+  },
+  "z12:residuo:#f0f0d0": {
+    "verdetto": "stile",
+    "motivo": "a z11-z12 TGen scrive piu' cartellini del locale (SP52, SP60, SP11, SR439 assenti nel locale; road-ref-lz-primary a z12 rapporto 0,36): la distanza minima di 250 px (punti-cartellini.py) e' troppo larga rispetto ai PNG del 2018. Da misurare sui PNG la distanza fra cartellini uguali",
+    "giro": "prova3",
+    "misure": {
+      "diffusione": 0.23333333333333334,
+      "nTile": 30,
+      "pixel": 435
+    },
+    "data": "2026-10-12"
+  },
+  "z12:road-ref-lz-primary:simboli": {
+    "verdetto": "stile",
+    "motivo": "a z11-z12 TGen scrive piu' cartellini del locale (SP52, SP60, SP11, SR439 assenti nel locale; road-ref-lz-primary a z12 rapporto 0,36): la distanza minima di 250 px (punti-cartellini.py) e' troppo larga rispetto ai PNG del 2018. Da misurare sui PNG la distanza fra cartellini uguali",
+    "giro": "prova3",
+    "misure": {
+      "rapporto": 0.3621072188058991,
+      "diffusione": 0.75,
+      "nTile": 8
+    },
+    "data": "2026-10-12"
+  },
+  "z13:residuo:#b0b090": {
+    "verdetto": "mancanza",
+    "motivo": "a z13 TGen disegna tutte le piste e i sentieri (tratteggi marroni e grigi in 13/4337/2985, 13/4420/3176, 13/4416/3185); OpenMapTiles a z13 ne porta solo una parte (planetiler scarta le vie corte sotto z14: 7 track e 3 path in 13/4337/2985). Vanno presi dal PBF per z13, come roadslz per i livelli bassi",
+    "giro": "prova3",
+    "misure": {
+      "diffusione": 0.23333333333333334,
+      "nTile": 30,
+      "pixel": 347
+    },
+    "data": "2026-10-12"
+  },
+  "z13:residuo:#b0b0b0": {
+    "verdetto": "mancanza",
+    "motivo": "a z13 TGen disegna tutte le piste e i sentieri (tratteggi marroni e grigi in 13/4337/2985, 13/4420/3176, 13/4416/3185); OpenMapTiles a z13 ne porta solo una parte (planetiler scarta le vie corte sotto z14: 7 track e 3 path in 13/4337/2985). Vanno presi dal PBF per z13, come roadslz per i livelli bassi",
+    "giro": "prova3",
+    "misure": {
+      "diffusione": 0.5,
+      "nTile": 30,
+      "pixel": 792
+    },
+    "data": "2026-10-12"
+  },
+  "z13:residuo:#d0b0b0": {
+    "verdetto": "mancanza",
+    "motivo": "a z13 TGen disegna tutte le piste e i sentieri (tratteggi marroni e grigi in 13/4337/2985, 13/4420/3176, 13/4416/3185); OpenMapTiles a z13 ne porta solo una parte (planetiler scarta le vie corte sotto z14: 7 track e 3 path in 13/4337/2985). Vanno presi dal PBF per z13, come roadslz per i livelli bassi",
+    "giro": "prova3",
+    "misure": {
+      "diffusione": 0.26666666666666666,
+      "nTile": 30,
+      "pixel": 615
+    },
+    "data": "2026-10-12"
+  },
+  "z12:park-band-a:stile": {
+    "verdetto": "contenuto",
+    "motivo": "stesso tono e larghezza delle bande dove ci sono entrambe (Monterufoli, 12/2169/1501); lo scarto viene dai tracciati: l'elenco delle riserve del 2018 e' diverso da quello di oggi (Monti Livornesi solo nel locale, 12/2166/1496)",
+    "giro": "prova3",
+    "misure": {
+      "dE": 19.30836997348584,
+      "presenza": 0.5124463519313305,
+      "diffusione": 1,
+      "nTile": 3,
+      "tgen": [
+        184,
+        155,
+        181
+      ],
+      "locale": [
+        183,
+        144,
+        188
+      ]
+    },
+    "data": "2026-10-12"
+  },
+  "z12:park-band-b:presenza": {
+    "verdetto": "contenuto",
+    "motivo": "stesso tono e larghezza delle bande dove ci sono entrambe (Monterufoli, 12/2169/1501); lo scarto viene dai tracciati: l'elenco delle riserve del 2018 e' diverso da quello di oggi (Monti Livornesi solo nel locale, 12/2166/1496)",
+    "giro": "prova3",
+    "misure": {
+      "dE": 4.73897010127155,
+      "presenza": 0.6260039070978946,
+      "diffusione": 0.6666666666666666,
+      "nTile": 3,
+      "tgen": [
+        189,
+        184,
+        186
+      ],
+      "locale": [
+        181,
+        181,
+        178
+      ]
+    },
+    "data": "2026-10-12"
+  },
+  "z10:boundary:stile": {
+    "verdetto": "stile",
+    "motivo": "il confine lungo la costa a z10 e' piu' scuro e saturo del PNG 2018: locale rgb(105,159,97), TGen rgb(161,179,154) (10/541/374). Da misurare con colore-per-classe --verde e schiarire",
+    "giro": "prova3",
+    "misure": {
+      "dE": 25.417073101728423,
+      "presenza": 0.1360544217687075,
+      "diffusione": 0.6666666666666666,
+      "nTile": 3,
+      "tgen": [
+        161,
+        179,
+        154
+      ],
+      "locale": [
+        105,
+        159,
+        97
+      ]
+    },
+    "data": "2026-10-12"
+  },
+  "z11:boundary-l6:stile": {
+    "verdetto": "stile",
+    "motivo": "stesso confine verde tratteggiato del 2018, scarto minore (dE 8,4) e probabilmente stessa causa di z10:boundary: tono piu' scuro del PNG. Da misurare insieme",
+    "giro": "prova3",
+    "misure": {
+      "dE": 8.378943931962333,
+      "presenza": 0.06318082788671024,
+      "diffusione": 0.5263157894736842,
+      "nTile": 19,
+      "tgen": [
+        141,
+        170,
+        134
+      ],
+      "locale": [
+        140,
+        177,
+        122
+      ]
+    },
+    "data": "2026-10-12"
+  },
+  "z14:road-fill-major:stile": {
+    "verdetto": "motore",
+    "motivo": "le strade coincidono (mediana bianca da entrambe le parti, stessa larghezza in 14/8670/5977); lo scarto per tile viene dai nomi delle vie scritti sopra la strada in posizioni diverse",
+    "giro": "prova3",
+    "misure": {
+      "dE": 17.67796389666474,
+      "presenza": 0.21497120921305182,
+      "diffusione": 0.75,
+      "nTile": 4,
+      "tgen": [
+        255,
+        255,
+        255
+      ],
+      "locale": [
+        255,
+        255,
+        255
+      ]
+    },
+    "data": "2026-10-12"
+  },
+  "z14:wood-label:simboli": {
+    "verdetto": "stile",
+    "motivo": "a z14 il locale scrive nomi di boschi che TGen non scrive (Macchia di San Rossore 14/8662/5976, Pineta Serra la Nave 14/8872/6336): controllare la soglia di superficie dei nomi dei boschi (text-poly, layer boschi) contro way_pixels di TGen",
+    "giro": "prova3",
+    "misure": {
+      "rapporto": 45863.69481354479,
+      "diffusione": 1,
+      "nTile": 3
+    },
+    "data": "2026-10-12"
+  },
+  "z12:station-icon:simboli": {
+    "verdetto": "misura",
+    "motivo": "le icone delle stazioni coincidono (Grammichele, Leonforte); l'inchiostro nella loro zona viene da etichette vicine: Raffineria Eni di Gela solo in TGen, Grammichele ovest (uscita) solo nel locale",
+    "giro": "prova3",
+    "misure": {
+      "rapporto": 0.22618524620172065,
+      "diffusione": 0.75,
+      "nTile": 4
+    },
+    "data": "2026-10-12"
+  },
+  "z14:road-ref:simboli": {
+    "verdetto": "stile",
+    "motivo": "a z14 il locale mette cartellini delle provinciali (SP55, SP40, SP37, SP210, SP186) che TGen a quel livello non mette; nella stessa zona pesano anche i numeri dei sentieri non CAI (B6, 401A). Controllare in roads.mss le classi di roads-text-ref per livello",
+    "giro": "prova3",
+    "misure": {
+      "rapporto": 2.244960325970405,
+      "diffusione": 0.5882352941176471,
+      "nTile": 17
+    },
+    "data": "2026-10-12"
+  },
+  "z16:path:stile": {
+    "verdetto": "stile",
+    "motivo": "a z16 i sentieri di TGen sono tratteggiati piu' scuri e marcati: TGen rgb(145,145,146), locale rgb(162,165,162) (16/35365/25427). Da tarare colore e larghezza su roads.mss / project.xml",
+    "giro": "prova3",
+    "misure": {
+      "dE": 10.020564159065623,
+      "presenza": 0.04477611940298507,
+      "diffusione": 0.625,
+      "nTile": 8,
+      "tgen": [
+        145,
+        145,
+        146
+      ],
+      "locale": [
+        162,
+        165,
+        162
+      ]
+    },
+    "data": "2026-10-12"
+  },
+  "z13:road-ref:simboli": {
+    "verdetto": "stile",
+    "motivo": "a z13 TGen scrive i nomi delle strade lungo la linea (Via Fiorentina, Strada Provinciale 77, Strada Statale 192 in 13/4435/3175) e non mette cartellini; il locale mette i cartellini (SP77, SS192, SP25/I, SP103) e pochi nomi. Nello stesso dossier la ferrovia: puntinata grigia in TGen, tratteggiata bianco-nera nel locale",
+    "giro": "prova3",
+    "misure": {
+      "rapporto": 0.48872180451127817,
+      "diffusione": 0.6666666666666666,
+      "nTile": 12
+    },
+    "data": "2026-10-12"
+  },
+  "z14:road-label-tertiary:simboli": {
+    "verdetto": "misura",
+    "motivo": "i nomi delle vie coincidono (14/8660/5961, 14/8683/5977); l'inchiostro in piu' viene da cartellini e cime vicine. Da segnare a parte: il locale disegna cime senza nome (quattro triangoli vicino a Cozzo Luppinaro, 14/8870/6357) che TGen non disegna",
+    "giro": "prova3",
+    "misure": {
+      "rapporto": 0.6286020716321865,
+      "diffusione": 0.6,
+      "nTile": 5
+    },
+    "data": "2026-10-12"
+  },
+  "z14:lake-label:simboli": {
+    "verdetto": "misura",
+    "motivo": "gli esempi (14/8662/5976, 14/8670/5977) non contengono nomi di laghi: l'inchiostro viene da nomi di boschi e riserve vicini, gia' in z14:wood-label e park-label",
+    "giro": "prova3",
+    "misure": {
+      "rapporto": 10.62012012012012,
+      "diffusione": 0.6666666666666666,
+      "nTile": 3
+    },
+    "data": "2026-10-12"
+  },
+  "z12:wood-label:simboli": {
+    "verdetto": "stile",
+    "motivo": "il locale scrive nomi di boschi e riserve che il PNG del 2018 non ha (Foresta della Valle Benedetta, Monti Livornesi in 12/2166/1496): stessa soglia di superficie di z14:wood-label",
+    "giro": "prova3",
+    "misure": {
+      "rapporto": 0.8689655172413793,
+      "diffusione": 0.6666666666666666,
+      "nTile": 3
+    },
+    "data": "2026-10-12"
   }
 }

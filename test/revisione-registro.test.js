@@ -31,6 +31,10 @@ describe('registro', () => {
     const r3 = registra({}, {id: 'c', verdetto: 'contenuto', motivo: 'x', giro: 'g', misure: {diffusione: 0.2, pixel: 1000}});
     expect(stato(d('c', {diffusione: 0.2, pixel: 3000}), r3)).toBe('riaperta');
   });
+  it('misura: un falso allarme del sistema silenzia come contenuto, e resta distinguibile', () => {
+    const reg = registra({}, {id: 'z12:station-icon:simboli', verdetto: 'misura', motivo: 'inchiostro di etichette vicine', giro: 'g', misure: {rapporto: 0.23}});
+    expect(stato(d('z12:station-icon:simboli', {rapporto: 0.25}), reg)).toBe('giudicata');
+  });
   it('rifiuta un verdetto sconosciuto', () => {
     expect(() => registra({}, {id: 'x', verdetto: 'boh', motivo: '', giro: 'a', misure: {}})).toThrow();
   });
