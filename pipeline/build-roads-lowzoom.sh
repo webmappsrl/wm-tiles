@@ -64,7 +64,21 @@ wc -l < "$WORK/ref.geojsonl" | awk '{print "   "$1" tratti numerati"}'
 python3 pipeline/punti-cartellini.py "$WORK/ref.geojsonl" "$WORK/ref-punti.geojsonl" 10 12
 tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/ref.mbtiles" --force -l roadslz -Z10 -z12 \
   --no-feature-limit --no-tile-size-limit "$WORK/ref-punti.geojsonl" -q
-tile-join -o "$WORK/tutto.mbtiles" --force -q --no-tile-size-limit "$WORK/r.mbtiles" "$WORK/ref.mbtiles"
+# I fiumi: TGen disegna tutti i waterway=river da z8 a z11
+# (water-lines-low-zoom del project.mml) e da z12 tutti i corsi d'acqua;
+# OpenMapTiles ai livelli bassi ne porta pochi (un fiume in 11/1084/748,
+# nessuno in 12/2168/1497). Layer `fiumi`, z8-z12. Trovato dalla revisione.
+echo "== estraggo i fiumi"
+docker run --rm -v "$PWD":/w -v "$WORK":/out \
+  --entrypoint ogr2ogr ghcr.io/osgeo/gdal:ubuntu-small-latest \
+  -f GeoJSONSeq -t_srs EPSG:4326 -spat "$W" "$S" "$E" "$N" \
+  -lco COORDINATE_PRECISION=6 \
+  -sql "SELECT waterway AS class, name FROM lines WHERE waterway = 'river'" \
+  /out/fiumi.geojsonl "/w/$PBF"
+wc -l < "$WORK/fiumi.geojsonl" | awk '{print "   "$1" fiumi"}'
+tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/fiumi.mbtiles" --force -l fiumi -Z8 -z12 \
+  --no-feature-limit --no-tile-size-limit --simplification=4 "$WORK/fiumi.geojsonl" -q
+tile-join -o "$WORK/tutto.mbtiles" --force -q --no-tile-size-limit "$WORK/r.mbtiles" "$WORK/ref.mbtiles" "$WORK/fiumi.mbtiles"
 
 pmtiles convert "$WORK/tutto.mbtiles" "$OUT"
 echo "== fatto: $OUT ($(du -h "$OUT" | cut -f1))"

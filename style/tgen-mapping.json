@@ -181,6 +181,10 @@
       ],
       "notaLivelli": "Nei PNG del 2018 (z10-z12) le piste non ci sono: la mediana sotto la maschera e' il colore del fondo. Il .mss di oggi le disegna da z10."
     },
+    "path-casing": {
+      "tgen": null,
+      "nota": "alone dei sentieri da z15 (roads.mss: background/line-color @footway-casing, opacita 0,4, larghezza del sentiero + 2): project.xml, highway_path"
+    },
     "path": {
       "tgen": "roads-fill",
       "livelli": [
@@ -237,10 +241,10 @@
       "nota": "scudi da z11: nel CartoCSS scaricato i due blocchi #roads-text-ref sono COMMENTATI (righe 2555-2715) ma la produzione li disegna, quindi la soglia viene dai PNG",
       "ordine": "roads-text-ref",
       "livelli": [
-        13,
+        17,
         16
       ],
-      "notaLivelli": "Da z13 come roads-text-ref del .mml; fino a z12 i cartellini sono quelli di roadslz (road-ref-lz-*, roads-text-ref-low-zoom). Visibili insieme davano doppioni (SS1 tre volte in una tile a z11)."
+      "notaLivelli": "Mai visibile fino a z16 (12 ottobre 2026): nei PNG di TGen del 2025 da z13 a z16 non c'e' nessun cartellino, nemmeno sulle autostrade (A19 in 13/4435/3175 ha solo il nome lungo la linea; nessun cartellino nei dossier di revisione z13:road-ref, z14:road-ref, z16:road-ref). Il .mss li dichiara, ma vince il PNG. Prima: Da z13 come roads-text-ref del .mml, insieme a roadslz davano doppioni."
     },
     "road-ref-lz-motorway": {
       "tgen": "roads-text-ref-low-zoom",
@@ -351,8 +355,14 @@
       "tgen": null,
       "nota": "water.mss: river/canal, larghezze 0,7 a z8 fino a 6 a z15",
       "copre": [
-        "water-lines-low-zoom",
         "water-lines"
+      ]
+    },
+    "waterway-river-lz": {
+      "tgen": null,
+      "nota": "tutti i waterway=river da z8 a z12, estratti dal PBF in roadslz/fiumi (build-roads-lowzoom.sh): OpenMapTiles ai livelli bassi ne porta pochi. Stessa resa di waterway-river",
+      "copre": [
+        "water-lines-low-zoom"
       ]
     },
     "waterway-stream": {
@@ -402,10 +412,6 @@
     },
     "power-minorline": {
       "tgen": "power-minorline"
-    },
-    "water-outline": {
-      "tgen": null,
-      "nota": "bordo degli specchi d'acqua (@acquebordo #a3c4e9): ol-mapbox-style non applica fill-outline-color, serve un layer di linea"
     },
     "railway-lz": {
       "tgen": null,

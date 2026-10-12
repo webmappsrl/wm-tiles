@@ -27,6 +27,7 @@
       "layers": [
         "water",
         "waterway",
+        "fiumi",
         "landcover",
         "landuse",
         "park",

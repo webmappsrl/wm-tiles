@@ -29,6 +29,7 @@
  * Opzioni: --base http://localhost:8080  --lato 4  --margine 128
  *          --only a,b  (solo questi layer, come `?only=` della preview; l'ombra resta)
  *          --dem-max 14  (quote fino a questo livello, ingrandite oltre)
+ *          --stile file.json  (stile da file, per provare una variante)
  * Su Linux senza le librerie giuste: pipeline/render-png-docker.sh, stessi argomenti.
  */
 import mbgl from '@maplibre/maplibre-gl-native';
@@ -74,7 +75,11 @@ if (!ver?.current) {
 // Il server scrive gli URL delle sorgenti con l'host della richiesta, quindi da
 // un container basta passare --base con l'host raggiungibile da li'.
 // lo stile puo' portare l'indirizzo pubblico del server (CDN): si torna a quello locale
-const stile = adattaStile(localizza(await fetch(`${BASE}/style.json`).then(r => r.json()), BASE));
+// --stile: uno style.json da file invece di quello del server, per provare una
+// variante senza pubblicarla (stesso adattamento, stesse tile)
+const stileOl = opz('stile') ? JSON.parse(readFileSync(opz('stile'), 'utf8'))
+  : await fetch(`${BASE}/style.json`).then(r => r.json());
+const stile = adattaStile(localizza(stileOl, BASE));
 if (SOLO) for (const l of stile.layers) if (!SOLO.has(l.id)) (l.layout ??= {}).visibility = 'none';
 // l'ombra sta sopra le superfici e sotto le curve di livello, come posizionaOmbra() della preview
 const iOmbra = stile.layers.findIndex(l => l.id.startsWith('contour'));
@@ -95,8 +100,12 @@ mbgl.on('message', m => {
   if (m.severity === 'WARNING' || m.severity === 'ERROR') console.error(`  maplibre ${m.severity}: ${m.text}`);
 });
 const vuoto = Buffer.alloc(0);
+// un errore di rete transitorio (connessione chiusa dal server) si riprova:
+// alla prima perdita il blocco intero non si disegnava e il processo cadeva
+const prendi = (url, prove = 3) => fetch(url).catch(e => (prove > 1
+  ? new Promise(ok => setTimeout(ok, 200)).then(() => prendi(url, prove - 1)) : Promise.reject(e)));
 const richiesta = (req, cb) => {
-  fetch(req.url).then(async r => {
+  prendi(req.url).then(async r => {
     // fuori copertura il server risponde 204 o 404: tile vuota, non errore
     if (r.status === 204 || r.status === 404) return cb(null, {data: vuoto});
     if (!r.ok) return cb(new Error(`${r.status} ${req.url}`));
@@ -169,10 +178,11 @@ async function quoteDellaVista(z, x0, y0, N) {
 // --- i metatile ----------------------------------------------------------------------
 const blocchi = raggruppa(tiles, LATO);
 console.log(`  ${tiles.length} tile in ${blocchi.length} metatile, versione ${ver.current} -> ${OUT}`);
-let scritte = 0;
+let scritte = 0, falliti = 0;
 const t0 = Date.now();
 try {
   for (const [i, m] of blocchi.entries()) {
+   try {
     const v = vistaMetatile(m, MARGINE);
     const N = v.pixel;
     const vista = {zoom: m.z, center: [v.lon, v.lat], width: N / PIXEL_RATIO, height: N / PIXEL_RATIO, bearing: 0, pitch: 0};
@@ -196,13 +206,20 @@ try {
     }
     const s = (Date.now() - t0) / 1000;
     console.log(`  [${i + 1}/${blocchi.length}] z${m.z} ${m.mx},${m.my}: ${m.tiles.length} tile — ${scritte} scritte in ${s.toFixed(1)} s`);
+   } catch (e) {
+    // un blocco che non si disegna si salta e si conta: fermarsi buttava
+    // tutti i blocchi successivi
+    falliti++;
+    console.error(`  !! z${m.z} ${m.mx},${m.my}: ${e.message}`);
+   }
   }
 } finally {
   mSotto.release();
   mSopra.release();
 }
 console.log(`  fatto: ${scritte} PNG in ${OUT}`);
-if (errori) {
+if (falliti) console.error(`  ${falliti} metatile non disegnati: i loro PNG mancano`);
+if (errori || falliti) {
   console.error(`  ${errori} errori di maplibre-native: i PNG potrebbero mancare di qualcosa`);
   process.exit(1);
 }

@@ -94,3 +94,21 @@ export function coperta(t, riquadri) {
 
 /** I PNG di TGen fino a z12 sono del 2018, da z13 del 2025: due stili. */
 export const fascia = z => (z <= 12 ? '2018' : '2025');
+
+/**
+ * Le tile dei blocchi `lato` x `lato` che contengono quelle date, senza
+ * doppioni: si rende il blocco intero, come render-png in produzione. Una tile
+ * resa da sola perde le etichette lungo le linee (quote, nomi dei fossi),
+ * perche' il renderer le piazza a intervalli dall'inizio della linea nella
+ * vista: la revisione segnalava mancanti etichette che nei PNG consegnati ci
+ * sono (12 ottobre 2026).
+ */
+export function blocchi(tiles, lato) {
+  const visti = new Map();
+  for (const {z, x, y} of tiles) {
+    const l = Math.min(lato, 2 ** z);
+    const x0 = Math.floor(x / l) * l, y0 = Math.floor(y / l) * l;
+    for (let i = 0; i < l; i++) for (let j = 0; j < l; j++) visti.set(`${z}/${x0 + i}/${y0 + j}`, {z, x: x0 + i, y: y0 + j});
+  }
+  return [...visti.values()];
+}

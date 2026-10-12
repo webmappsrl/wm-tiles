@@ -499,8 +499,8 @@
     "data": "2026-10-12"
   },
   "z10:boundary:stile": {
-    "verdetto": "stile",
-    "motivo": "il confine lungo la costa a z10 e' piu' scuro e saturo del PNG 2018: locale rgb(105,159,97), TGen rgb(161,179,154) (10/541/374). Da misurare con colore-per-classe --verde e schiarire",
+    "verdetto": "motore",
+    "motivo": "in OpenLayers il confine marittimo a z10 e' giusto, un puntinato chiaro come TGen (verificato con tile-diff); solo maplibre-native lo rende verde scuro continuo: sulla costa frastagliata somma l'opacita' dei segmenti che si sovrappongono e il tratteggio si chiude. Lo stile e' corretto; il difetto resta nei PNG, da risolvere nel renderer nativo (es. semplificare la geometria)",
     "giro": "prova3",
     "misure": {
       "dE": 25.417073101728423,

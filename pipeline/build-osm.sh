@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# --transportation_z13_paths: TGen a z13 disegna tutte le piste e i sentieri;
+# planetiler di serie a z13 scarta i tratti corti (7 piste in 13/4337/2985
+# contro la rete fitta del PNG). Trovato dalla revisione, 12 ottobre 2026.
 # Tile vettoriali OpenStreetMap con planetiler, schema OpenMapTiles.
 #
 # Lo script mancava dal repo pur essendo citato in CLAUDE.md: il primo
@@ -28,6 +31,7 @@ docker run --rm \
   --osm-path="/data/${IN#data/}" \
   --output="/data/${OUT#data/}/osm.pmtiles" \
   --maxzoom="$ZMAX" \
+  --transportation_z13_paths=true \
   --download \
   --tmpdir=/planetiler-lavoro/tmp \
   --data-dir=/data/planetiler-sources \

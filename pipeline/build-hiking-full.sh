@@ -5,6 +5,12 @@ set -euo pipefail
 # `cai_scale` serve allo stile come in hiking_trails.mss: E ed EE tratteggiati,
 # EEA a puntini, gli altri continui.
 #
+# Solo i sentieri CAI rilevati, come hiking_trails e hiking_trails_labels del
+# project.mml di TGen: `cai_scale` presente e `source` che contiene
+# `survey:CAI`. Senza questo filtro il locale disegnava anche la Via
+# Francigena, i percorsi IBI e ogni altra relazione escursionistica, e la
+# revisione li segnalava da z14 a z16 (12 ottobre 2026).
+#
 # `build-hiking.sh` si ferma al GeoJSONSeq e usa ogr2ogr, che in locale non
 # c'e': gira nel container GDAL. Qui la catena e' completa.
 #
@@ -17,6 +23,7 @@ echo "== estraggo le relazioni route=hiking"
 docker run --rm -v "$PWD":/w -v "$WORK":/out \
   --entrypoint ogr2ogr ghcr.io/osgeo/gdal:ubuntu-small-latest \
   -f GeoJSONSeq /out/hiking.geojsonl "/w/$PBF" \
+  -oo CONFIG_FILE=/w/pipeline/osmconf-con-source.ini \
   -spat "$W" "$S" "$E" "$N" -lco COORDINATE_PRECISION=6 \
   -sql "SELECT osm_id, name,
                hstore_get_value(other_tags, 'ref')         AS ref,
@@ -26,7 +33,9 @@ docker run --rm -v "$PWD":/w -v "$WORK":/out \
                hstore_get_value(other_tags, 'cai_scale')   AS cai_scale
         FROM multilinestrings
         WHERE type = 'route'
-          AND hstore_get_value(other_tags, 'route') = 'hiking'"
+          AND hstore_get_value(other_tags, 'route') = 'hiking'
+          AND hstore_get_value(other_tags, 'cai_scale') IS NOT NULL
+          AND hstore_get_value(other_tags, 'source') LIKE '%survey:CAI%'"
 echo "   $(wc -l < "$WORK/hiking.geojsonl") relazioni"
 
 echo "== tiles z${ZMIN}-${ZMAX}"

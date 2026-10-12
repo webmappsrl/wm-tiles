@@ -22,7 +22,7 @@ import sharp from 'sharp';
 import {VectorTile} from '@mapbox/vector-tile';
 import {PbfReader} from 'pbf';
 import {chiave, parseZxy, tileInBbox} from '../src/raster/tiles.js';
-import {campiona, coperta, fascia} from '../src/revisione/campione.js';
+import {blocchi, campiona, coperta, fascia} from '../src/revisione/campione.js';
 import {maschereTile, tileSorgente} from '../src/revisione/maschere.js';
 import {misuraTile} from '../src/revisione/misure.js';
 import {aggrega, regressioni} from '../src/revisione/aggrega.js';
@@ -101,7 +101,9 @@ for (const t of bacino) {
 console.error(`${campione.length} tile nel campione (${universo.length} nell'universo)`);
 
 // 2. resa locale
-writeFileSync(`${OUT}/tile.txt`, campione.map(chiave).join('\n') + '\n');
+// si rende il blocco 4x4 intero di ogni tile, come in produzione: rese da
+// sole le tile perdono le etichette lungo le linee. Si misura solo il campione
+writeFileSync(`${OUT}/tile.txt`, blocchi(campione, 4).map(chiave).join('\n') + '\n');
 // --senza: il locale si rende senza questi layer. E' il collaudo del sistema:
 // un difetto introdotto apposta deve uscire come difformita'
 const senza = opz('senza') ? new Set(opz('senza').split(',')) : null;

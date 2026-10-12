@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {campiona, cellaDi, coperta, fascia, limiti} from '../src/revisione/campione.js';
+import {blocchi, campiona, cellaDi, coperta, fascia, limiti} from '../src/revisione/campione.js';
 import {tileInBbox} from '../src/raster/tiles.js';
 
 /**
@@ -65,5 +65,20 @@ describe('limiti e fascia', () => {
   it('fascia: 2018 fino a z12, 2025 da z13', () => {
     expect(fascia(12)).toBe('2018');
     expect(fascia(13)).toBe('2025');
+  });
+});
+
+describe('blocchi', () => {
+  // le etichette lungo le linee si piazzano a intervalli dall'inizio della
+  // linea nella vista: una tile resa da sola le perde, quindi si rende il
+  // blocco intero come in produzione (render-png, metatile di 4)
+  it('ogni tile porta con se\' tutto il suo blocco 4x4, senza doppioni', () => {
+    const b = blocchi([{z: 15, x: 17361, y: 12023}, {z: 15, x: 17362, y: 12022}], 4);
+    expect(b).toHaveLength(16);
+    expect(b).toContainEqual({z: 15, x: 17360, y: 12020});
+    expect(b).toContainEqual({z: 15, x: 17363, y: 12023});
+  });
+  it('ai livelli bassi il blocco non esce dalla griglia', () => {
+    expect(blocchi([{z: 1, x: 1, y: 0}], 4)).toHaveLength(4);
   });
 });
