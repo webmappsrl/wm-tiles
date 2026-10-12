@@ -11,8 +11,9 @@
  *   node tools/png-vs-tgen.mjs tile.txt nativo=data/png [ol=data/png-ol] [--foglio provini.png]
  */
 import sharp from 'sharp';
-import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
+import {existsSync, readFileSync} from 'node:fs';
 import {join} from 'node:path';
+import {scaricaTgen as tgen} from '../src/revisione/tgen.js';
 
 const argv = process.argv.slice(2);
 const iF = argv.indexOf('--foglio');
@@ -24,19 +25,6 @@ if (!lista || !colonne.length) {
   process.exit(2);
 }
 const dirs = colonne.map(c => { const [nome, dir] = c.includes('=') ? c.split('=') : [c, c]; return {nome, dir}; });
-const CACHE = 'data/ref-cache';
-const LEGACY = process.env.WM_LEGACY ?? 'https://api.webmapp.it/tiles';
-mkdirSync(CACHE, {recursive: true});
-
-async function tgen(t) {
-  const f = join(CACHE, `${t.replaceAll('/', '-')}.png`);
-  if (!existsSync(f)) {
-    const r = await fetch(`${LEGACY}/${t}.png`);
-    if (!r.ok) return null;
-    writeFileSync(f, Buffer.from(await r.arrayBuffer()));
-  }
-  return f;
-}
 const grezzo = f => sharp(f).removeAlpha().resize(256, 256).raw().toBuffer();
 function stat(b) {
   let s = 0, s2 = 0;

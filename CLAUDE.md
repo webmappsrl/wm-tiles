@@ -134,7 +134,34 @@ node tools/shade-grid-test.mjs 13 14 15 16  # l'ombreggiatura non deve fare reti
 node tools/oltre-z16.mjs 16 17 18 19      # oltre il riferimento non deve sparire nulla
 node tools/colore-per-classe.mjs mediana osm transportation "p.class === 'primary'" 12/2207/1587  # colore di TGen per classe
 node tools/tgen-copertura.mjs            # layer di TGen senza alcun layer locale (esce 1 se ce ne sono)
+node tools/revisione.mjs --giro <nome> [--zoom 5-16] [--per-livello 60] [--confronta <giro>]  # revisione: esce 1 se restano difformita'
+node tools/revisione-verdetto.mjs <giro> <id> <stile|contenuto|buco-tgen|mancanza|motore> "<motivo>"
+node tools/revisione.mjs --giro collaudo --zoom 13-15 --per-livello 20 --senza track [--ignora track]  # il sistema deve vedere il difetto
 ```
+
+**La revisione e' il controllo sistematico con TGen**
+(`docs/features/revisione-tile/`). Tutte le tile fino a z8, un campione
+stratificato per cella sopra, scartate quelle che i dati locali non coprono
+per intero e quelle uniformi (solo mare). Il sistema misura e classifica; le
+difformita' le giudica l'AI guardando i dossier in
+`data/revisione/<giro>/dossier/`, e i verdetti stanno in
+`docs/revisione/verdetti.json`: un `contenuto` silenzia solo finche' le misure
+restano quelle. Tre cose imparate collaudandolo con `--senza`, che toglie un
+layer apposta: la mediana sotto una maschera di linea cade sul fondo (si
+misura l'INCHIOSTRO, il quarto piu' lontano dall'anello attorno); un pixel
+appartiene al layer piu' in alto, altrimenti il riempimento di una strada,
+sempre sopra il bordo, non si misura mai; etichette e icone si confrontano
+per quantita' d'inchiostro nella zona del layer, non per posizione. La
+review indipendente ha trovato il residuo cieco (le superfici "spiegavano"
+tutta la tile): ora lo spiegano solo linee, zone etichetta e superfici
+sbagliate in quella tile, e conta anche il DETTAGLIO (luminosita' meno la
+media locale: TGen netto dove il locale e' liscio), perche' una pista tenue e
+tratteggiata non supera nessuna soglia di colore. `--senza` toglie un layer
+dalla resa, `--ignora` anche dalle maschere: insieme simulano un layer che il
+locale non ha. Sul server serve `--copertura`, perche' `build-italia.sh` non
+dichiara le celle; `--confronta` vuole lo stesso campione. Limite noto: a z14
+le curve mancanti non escono per classe (l'ombra forte confonde
+l'inchiostro), a z13 e z15 si'.
 
 `layer-contrib.mjs` spegne un layer per volta e rimisura: dice DOVE nasce uno
 scarto che le medie complessive rilevano soltanto. A z10 ha attribuito alle

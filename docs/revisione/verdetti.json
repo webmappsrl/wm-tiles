@@ -1,0 +1,270 @@
+{
+  "z10:water-outline:stile": {
+    "verdetto": "stile",
+    "motivo": "TGen non disegna il bordo degli specchi d'acqua: #water-areas (water.mss) ha solo polygon-fill; @acquebordo serve solo ai ghiacciai. Il layer water-outline va tolto",
+    "giro": "prova",
+    "misure": {
+      "dE": 10.537656281428877,
+      "presenza": 0,
+      "diffusione": 1,
+      "nTile": 6
+    },
+    "data": "2026-10-12"
+  },
+  "z11:water-outline:stile": {
+    "verdetto": "stile",
+    "motivo": "TGen non disegna il bordo degli specchi d'acqua: #water-areas (water.mss) ha solo polygon-fill; @acquebordo serve solo ai ghiacciai. Il layer water-outline va tolto",
+    "giro": "prova",
+    "misure": {
+      "dE": 8.35608455910555,
+      "presenza": 0.023622047244094488,
+      "diffusione": 0.7368421052631579,
+      "nTile": 19
+    },
+    "data": "2026-10-12"
+  },
+  "z12:water-outline:stile": {
+    "verdetto": "stile",
+    "motivo": "TGen non disegna il bordo degli specchi d'acqua: #water-areas (water.mss) ha solo polygon-fill; @acquebordo serve solo ai ghiacciai. Il layer water-outline va tolto",
+    "giro": "prova",
+    "misure": {
+      "dE": 8.81021728883426,
+      "presenza": 0.043478260869565216,
+      "diffusione": 0.8421052631578947,
+      "nTile": 19
+    },
+    "data": "2026-10-12"
+  },
+  "z13:water-outline:stile": {
+    "verdetto": "stile",
+    "motivo": "TGen non disegna il bordo degli specchi d'acqua: #water-areas (water.mss) ha solo polygon-fill; @acquebordo serve solo ai ghiacciai. Il layer water-outline va tolto",
+    "giro": "prova",
+    "misure": {
+      "dE": 16.039330335674375,
+      "presenza": 0.011879049676025918,
+      "diffusione": 1,
+      "nTile": 14
+    },
+    "data": "2026-10-12"
+  },
+  "z14:water-outline:stile": {
+    "verdetto": "stile",
+    "motivo": "TGen non disegna il bordo degli specchi d'acqua: #water-areas (water.mss) ha solo polygon-fill; @acquebordo serve solo ai ghiacciai. Il layer water-outline va tolto",
+    "giro": "prova",
+    "misure": {
+      "dE": 16.859210723863498,
+      "presenza": 0.0027624309392265192,
+      "diffusione": 1,
+      "nTile": 6
+    },
+    "data": "2026-10-12"
+  },
+  "z15:water-outline:stile": {
+    "verdetto": "stile",
+    "motivo": "TGen non disegna il bordo degli specchi d'acqua: #water-areas (water.mss) ha solo polygon-fill; @acquebordo serve solo ai ghiacciai. Il layer water-outline va tolto",
+    "giro": "prova",
+    "misure": {
+      "dE": 18.415792679829597,
+      "presenza": 0.022426095820591234,
+      "diffusione": 1,
+      "nTile": 3
+    },
+    "data": "2026-10-12"
+  },
+  "z16:water-outline:stile": {
+    "verdetto": "stile",
+    "motivo": "TGen non disegna il bordo degli specchi d'acqua: #water-areas (water.mss) ha solo polygon-fill; @acquebordo serve solo ai ghiacciai. Il layer water-outline va tolto",
+    "giro": "prova",
+    "misure": {
+      "dE": 18.124634505793434,
+      "presenza": 0.01662049861495845,
+      "diffusione": 1,
+      "nTile": 4
+    },
+    "data": "2026-10-12"
+  },
+  "z12:road-casing-major:stile": {
+    "verdetto": "stile",
+    "motivo": "PNG 2018 a z12: statali e provinciali piu' larghe e con il bordo piu' scuro del locale (dossier, 12/2208/1587). Da misurare con colore-per-classe e tarare sul PNG",
+    "giro": "prova",
+    "misure": {
+      "dE": 30.459007246588452,
+      "presenza": 0.18012422360248448,
+      "diffusione": 1,
+      "nTile": 10
+    },
+    "data": "2026-10-12"
+  },
+  "z12:road-casing-secondary:stile": {
+    "verdetto": "stile",
+    "motivo": "PNG 2018 a z12: statali e provinciali piu' larghe e con il bordo piu' scuro del locale (dossier, 12/2208/1587). Da misurare con colore-per-classe e tarare sul PNG",
+    "giro": "prova",
+    "misure": {
+      "dE": 28.086251106700267,
+      "presenza": 0.06893819334389857,
+      "diffusione": 1,
+      "nTile": 9
+    },
+    "data": "2026-10-12"
+  },
+  "z12:road-fill-major:stile": {
+    "verdetto": "stile",
+    "motivo": "PNG 2018 a z12: statali e provinciali piu' larghe e con il bordo piu' scuro del locale (dossier, 12/2208/1587). Da misurare con colore-per-classe e tarare sul PNG",
+    "giro": "prova",
+    "misure": {
+      "dE": 12.572508480665196,
+      "presenza": 0.05042816365366318,
+      "diffusione": 0.8,
+      "nTile": 10
+    },
+    "data": "2026-10-12"
+  },
+  "z12:road-fill-secondary:stile": {
+    "verdetto": "stile",
+    "motivo": "PNG 2018 a z12: statali e provinciali piu' larghe e con il bordo piu' scuro del locale (dossier, 12/2208/1587). Da misurare con colore-per-classe e tarare sul PNG",
+    "giro": "prova",
+    "misure": {
+      "dE": 12.56760710501393,
+      "presenza": 0.06759348034515819,
+      "diffusione": 0.75,
+      "nTile": 16
+    },
+    "data": "2026-10-12"
+  },
+  "z11:ferry:stile": {
+    "verdetto": "contenuto",
+    "motivo": "le rotte dei traghetti da Livorno sono cambiate dal 2018: stesso tratteggio azzurro-viola da entrambe le parti, posizioni diverse (dossier 11/1082/748)",
+    "giro": "prova",
+    "misure": {
+      "dE": 55.02654089063541,
+      "presenza": 0.3739209450249886,
+      "diffusione": 1,
+      "nTile": 3
+    },
+    "data": "2026-10-12"
+  },
+  "z14:hiking-line-t:stile": {
+    "verdetto": "stile",
+    "motivo": "TGen disegna solo i sentieri CAI rilevati: hiking_trails in project.mml filtra cai_scale IS NOT NULL AND source LIKE '%survey:CAI%'; build-hiking-full.sh prende tutte le route=hiking (Via Francigena, IBI-1, 122/124 solo nel locale). Va aggiunto il filtro, come in TGen",
+    "giro": "prova",
+    "misure": {
+      "dE": 45.818664510220835,
+      "presenza": 0.32634338138925295,
+      "diffusione": 1,
+      "nTile": 3
+    },
+    "data": "2026-10-12"
+  },
+  "z14:building-igm:stile": {
+    "verdetto": "contenuto",
+    "motivo": "stesso colore degli edifici da entrambe le parti; il locale ha piu' edifici IGM di TGen (14/8683/5977): quantita', non stile",
+    "giro": "prova",
+    "misure": {
+      "dE": 14.13708609539073,
+      "presenza": 0.004784688995215311,
+      "diffusione": 0.9285714285714286,
+      "nTile": 14
+    },
+    "data": "2026-10-12"
+  },
+  "z13:boundary-l6:stile": {
+    "verdetto": "contenuto",
+    "motivo": "stesso tratteggio lilla; lo scarto viene dal tracciato su due tile sole (13/4430/3167)",
+    "giro": "prova",
+    "misure": {
+      "dE": 10.805503327409017,
+      "presenza": 0.01834862385321101,
+      "diffusione": 0.6666666666666666,
+      "nTile": 3
+    },
+    "data": "2026-10-12"
+  },
+  "z16:hiking-ref:simboli": {
+    "verdetto": "stile",
+    "motivo": "TGen disegna solo i sentieri CAI rilevati: hiking_trails in project.mml filtra cai_scale IS NOT NULL AND source LIKE '%survey:CAI%'; build-hiking-full.sh prende tutte le route=hiking (Via Francigena, IBI-1, 122/124 solo nel locale). Va aggiunto il filtro, come in TGen",
+    "giro": "prova",
+    "misure": {
+      "rapporto": 5.516809335674568,
+      "diffusione": 0.6666666666666666,
+      "nTile": 3
+    },
+    "data": "2026-10-12"
+  },
+  "z16:waterway-label-stream:simboli": {
+    "verdetto": "stile",
+    "motivo": "TGen scrive i nomi lungo i fossi (Fosso Borgognano in 16/34731/24067), il locale non ne scrive nessuno (rapporto 0): da capire se manca il dato o se e' il posizionamento di maplibre-native. Nello stesso dossier mancano nel locale le icone dei guadi (16/34662/23847)",
+    "giro": "prova",
+    "misure": {
+      "rapporto": 0,
+      "diffusione": 0.8,
+      "nTile": 5
+    },
+    "data": "2026-10-12"
+  },
+  "z15:contour-label:simboli": {
+    "verdetto": "stile",
+    "motivo": "TGen scrive le quote lungo le curve (200, 700 in 15/17361/12023 e 15/17725/12753), i PNG locali quasi nessuna: da verificare se e' il posizionamento di maplibre-native (nella preview OpenLayers ci sono?)",
+    "giro": "prova",
+    "misure": {
+      "rapporto": 0.3816570129681084,
+      "diffusione": 0.5555555555555556,
+      "nTile": 27
+    },
+    "data": "2026-10-12"
+  },
+  "z16:contour-label:simboli": {
+    "verdetto": "stile",
+    "motivo": "TGen scrive le quote lungo le curve (200, 700 in 15/17361/12023 e 15/17725/12753), i PNG locali quasi nessuna: da verificare se e' il posizionamento di maplibre-native (nella preview OpenLayers ci sono?)",
+    "giro": "prova",
+    "misure": {
+      "rapporto": 0.5892880147721905,
+      "diffusione": 0.55,
+      "nTile": 20
+    },
+    "data": "2026-10-12"
+  },
+  "z13:waterway-label:simboli": {
+    "verdetto": "stile",
+    "motivo": "TGen scrive i nomi dei corsi d'acqua lungo la linea (Botro del Romi 15/17361/12023, Cava Conserva 15/17725/12753, Fosso Borgognano 16/34731/24067), i PNG locali quasi mai: stessa causa sospetta delle quote, etichette lungo linee in maplibre-native",
+    "giro": "prova",
+    "misure": {
+      "rapporto": 0.7572213073623056,
+      "diffusione": 0.5555555555555556,
+      "nTile": 9
+    },
+    "data": "2026-10-12"
+  },
+  "z14:waterway-label:simboli": {
+    "verdetto": "stile",
+    "motivo": "TGen scrive i nomi dei corsi d'acqua lungo la linea (Botro del Romi 15/17361/12023, Cava Conserva 15/17725/12753, Fosso Borgognano 16/34731/24067), i PNG locali quasi mai: stessa causa sospetta delle quote, etichette lungo linee in maplibre-native",
+    "giro": "prova",
+    "misure": {
+      "rapporto": 0.25517242603781426,
+      "diffusione": 0.5714285714285714,
+      "nTile": 7
+    },
+    "data": "2026-10-12"
+  },
+  "z15:waterway-label-stream:simboli": {
+    "verdetto": "stile",
+    "motivo": "TGen scrive i nomi dei corsi d'acqua lungo la linea (Botro del Romi 15/17361/12023, Cava Conserva 15/17725/12753, Fosso Borgognano 16/34731/24067), i PNG locali quasi mai: stessa causa sospetta delle quote, etichette lungo linee in maplibre-native",
+    "giro": "prova",
+    "misure": {
+      "rapporto": 0.24583333333333335,
+      "diffusione": 0.6,
+      "nTile": 15
+    },
+    "data": "2026-10-12"
+  },
+  "z14:park-label:simboli": {
+    "verdetto": "stile",
+    "motivo": "a z14 il locale nomina aree protette e riserve che TGen non nomina (Macchia di San Rossore, Riserve del Bosco di San Bartolomeo, Valle dell'Anapo): controllare la soglia way_pixels > 3000 e i livelli zpx in parchi-soglia.py",
+    "giro": "prova",
+    "misure": {
+      "rapporto": 2.8764044943820224,
+      "diffusione": 0.6666666666666666,
+      "nTile": 3
+    },
+    "data": "2026-10-12"
+  }
+}
