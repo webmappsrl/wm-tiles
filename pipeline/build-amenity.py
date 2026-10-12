@@ -166,6 +166,23 @@ a_merc = osr.CoordinateTransformation(wgs, merc)
 # invece di 2.421. Cosi' si scorre il file una volta sola, tutti i layer.
 ds = gdal.OpenEx(pbf, gdal.OF_VECTOR, open_options=['INTERLEAVED_READING=YES'])
 LAYER = {'points': False, 'multipolygons': True}
+# Filtri dentro GDAL, in C: a Python arrivano solo gli oggetti che portano una
+# delle chiavi che feature() e feature_bassa() guardano; linee e relazioni si
+# scartano subito. Sull'Italia il passo girava oltre mezz'ora con Python che
+# scorreva ogni strada. Le chiavi che nel driver OSM sono colonne si guardano
+# come colonne, le altre in other_tags.
+TAG = lambda k: f"other_tags LIKE '%\"{k}\"=>%'"
+FILTRI = {
+    'points': ' OR '.join(['man_made IS NOT NULL', 'highway IS NOT NULL', 'barrier IS NOT NULL'] + [TAG(k) for k in (
+        'amenity', 'tourism', 'leisure', 'historic', 'natural', 'waterway', 'military', 'power', 'aeroway',
+        'shop', 'office', 'advertising', 'emergency', 'ford', 'memorial')]),
+    'multipolygons': ' OR '.join([f'{c} IS NOT NULL' for c in (
+        'amenity', 'tourism', 'leisure', 'historic', 'man_made', 'military', 'natural', 'aeroway', 'shop', 'office')]
+        + [TAG(k) for k in ('highway', 'power', 'advertising', 'memorial')]),
+}
+for i in range(ds.GetLayerCount()):
+    lay = ds.GetLayer(i)
+    lay.SetAttributeFilter(FILTRI.get(lay.GetName(), 'osm_id IS NULL'))
 uscita = []
 conteggi = {}
 while True:
