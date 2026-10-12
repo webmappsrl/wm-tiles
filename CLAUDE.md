@@ -526,6 +526,11 @@ anche la precedenza fra etichette, nell'ordine delle feature nella tile: a
 parita' di layer OpenLayers premia la feature che viene prima, e TGen ordina
 per punteggio (`--preserve-input-order` in tippecanoe).
 
+**tippecanoe dirada i punti sotto il livello massimo** (`-r 2.5` di serie): un
+simbolo che TGen mostra sempre, come i rifugi da z13, va nel dato con `-r1` e
+con il suo `tippecanoe.minzoom`. Col diradamento a z13 sparivano rifugi a caso,
+e aggiungere altri punti all'archivio ne faceva sparire di diversi.
+
 `pipeline/parse-cartocss.mjs` legge i `.mss` **elencati da `project.mml`, nel
 suo ordine** — non la cartella: esistono varianti alternative dello stesso
 file (`road-colors-generated.mss` da' `@motorway-low-zoom #ffe37e`,
@@ -695,6 +700,15 @@ Prima di dare un colore a un layer, cercare nel `.mss` il selettore che lo
 governa e replicarne il filtro. Il colore giusto sull'insieme sbagliato di
 geometrie resta un difetto.
 
+**Un filtro giusto non basta se lo schema scarta la classe.** `place-minor`
+prevedeva `locality` e `farm`, ma il layer `place` di OpenMapTiles non le
+porta: le localita' (226.760 in Italia, "Al Castagno") sono mancate per mesi
+senza che nulla lo segnalasse. Lo stesso per `osmpoi`, che prendeva solo i
+punti con nome mentre TGen prende anche le aree e non chiede il nome per le
+icone (rifugi disegnati come edifici, tre su quattro), e per i guadi, presi
+solo sulle vie mentre in OSM sono nodi. Prima di dare per coperta una classe,
+contarla nell'archivio.
+
 Il caso opposto costa altrettanto: **un selettore di TGen senza alcun layer
 locale.** Le ferrovie (`railway_rail` dentro `roads-fill`, da z8) e le uscite
 autostradali (`#junctions`, da z11) mancavano del tutto, e nessuna misura per
@@ -763,6 +777,17 @@ node tools/avvio-check.mjs        # l'avvio non deve "lampeggiare"
 ```bash
 node tools/taratura-ombra.mjs gamma 1,0.85,0.7 14/8668/5972 14/8686/5995   # un parametro, molti valori
 ```
+
+```bash
+WM_BASE=https://tiles.maphub.it node tools/ombra-per-classe.mjs 15/17335/11944 15/17344/11945  # TGen per classe di versante
+```
+
+`ombra-per-classe.mjs` e' quello da usare per decidere: confronta TGen e il
+modello d'ombra solo sui pixel senza niente sopra, per pendenza ed esposizione,
+e prova una griglia di parametri. Le medie globali dicevano che z15 era a posto
+mentre a occhio TGen era piu' marcato; per classe si e' visto che TGen
+schiarisce i piani e scurisce i ripidi quasi senza guardare l'esposizione, e
+che serviva la luce a 60 gradi (11 ottobre 2026).
 
 `taratura-ombra.mjs` carica la tile una volta e cambia il parametro nella
 pagina: sedici misure in 36 secondi invece di un quarto d'ora, e coincide con
@@ -833,6 +858,11 @@ compensano il difetto invece di rivelarlo.
   si riallinea dopo ogni disegno, e `tile-diff.mjs` e `render-png-ol.mjs`
   confrontano la classe con la composizione VOLUTA dal motore, non solo con
   il calcolato: classe e calcolato coincidevano anche quando erano sbagliati.
+- **L'elevazione del sole per livello.** Ogni set del profilo dichiarava
+  `sunElevation`, ma lo shader della preview la scriveva come costante, presa
+  dal primo set: cambiarla per un livello non aveva effetto nelle app, mentre
+  i PNG (`ombra.js`) la applicavano. Ora e' una variabile (`sinEl`, `cosEl`)
+  aggiornata a ogni cambio di livello, come `vert`.
 - **L'ombra di z16 sotto z8.** Un livello senza fascia ricadeva sull'ULTIMA
   fascia, pensata per z17 e oltre: z7 (che nel profilo non aveva set) e z0–z6
   prendevano la composizione normale a 0,3 di z16, un velo grigio al posto del

@@ -1,7 +1,7 @@
 import {readFileSync} from 'node:fs';
 import {describe, expect, it} from 'vitest';
 import {validateStyleMin} from '@maplibre/maplibre-gl-style-spec';
-import {adattaStile, per, sposta} from '../src/raster/stile-nativo.js';
+import {adattaStile, localizza, per, sposta} from '../src/raster/stile-nativo.js';
 
 /**
  * L'adattamento dello stile a maplibre-native non da' errori quando sbaglia:
@@ -76,5 +76,22 @@ describe('adattaStile', () => {
       .map(s => [s, {type: 'vector', tiles: ['http://example.invalid/{z}/{x}/{y}.pbf']}]));
     vero.glyphs ??= 'http://example.invalid/{fontstack}/{range}.pbf';
     expect(validateStyleMin(adattaStile(vero))).toEqual([]);
+  });
+});
+
+describe('localizza', () => {
+  it('riporta al server locale tile, glifi, sprite e quote dello stile pubblico', () => {
+    const s = localizza({
+      version: 8, glyphs: 'https://tiles.maphub.it/glyphs/{fontstack}/{range}.pbf', sprite: 'https://tiles.maphub.it/sprite/v1/webmapp',
+      sources: {
+        osm: {type: 'vector', tiles: ['https://tiles.maphub.it/t/v/s/osm/{z}/{x}/{y}.pbf']},
+        terrain: {type: 'raster-dem', tiles: ['https://tiles.maphub.it/dem/terrain/{z}/{x}/{y}.png']},
+      },
+      layers: [],
+    }, 'http://localhost:8080/');
+    expect(s.sources.osm.tiles[0]).toBe('http://localhost:8080/t/v/s/osm/{z}/{x}/{y}.pbf');
+    expect(s.sources.terrain.tiles[0]).toBe('http://localhost:8080/dem/terrain/{z}/{x}/{y}.png');
+    expect(s.glyphs).toBe('http://localhost:8080/glyphs/{fontstack}/{range}.pbf');
+    expect(s.sprite).toBe('http://localhost:8080/sprite/v1/webmapp');
   });
 });

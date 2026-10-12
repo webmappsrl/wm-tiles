@@ -123,42 +123,46 @@
           "zmin": 14,
           "zmax": 14,
           "nota": "Gamma 0,7 dal 10 ottobre 2026: l'opacita' 0,3 e la composizione normale sono quelle dichiarate da TGen; la gamma schiarisce i toni medi del grigio e rende il tono del suo raster (piu' chiaro del nostro calcolo). COMPOSIZIONE NORMALE dal 10 ottobre 2026, come #hs10m nel webmapp.mss di TGen (raster-opacity 0.3 senza comp-op; fino a z13 e' multiply). Con multiply la mappa risultava piu' scura di 11-15 punti sul Monte Pisano con TINITALY: multiply puo' solo scurire, mentre TGen schiarisce i versanti al sole. z14. Set proprio del livello (derivato dalla fascia hs10m). Ogni zoom ha il suo: le fasce condivise si tarano l'una contro l'altra — abbassare hs25m per z12 ha spostato z11 da -1,3 a +4,9. RITARATO dopo aver scoperto che `mix-blend-mode: multiply` non veniva applicato affatto (ol.css ha un selettore piu' specifico: serve !important). Le opacita' precedenti compensavano una composizione NORMALE ed erano quindi circa il doppio del necessario. Ritarato con Horn: la somma pesata 3x3 divisa per 8 smorza il gradiente rispetto ai due campioni precedenti, quindi a parita' di opacita' l'ombra risultava piu' debole (a z16 la luminosita' era +13,3).",
-          "opacity": 0.3,
-          "vert": 1,
+          "opacity": 0.35,
+          "vert": 2,
           "sunAzimuth": 315,
-          "sunElevation": 45,
-          "gamma": 0.6,
-          "slope": 0.1,
+          "sunElevation": 60,
+          "gamma": 1.1,
+          "slope": 0,
           "blend": "normal",
-          "notaGamma": "Gamma 0,6 (11/10/2026, taratura-ombra sui quattro punti): Δlum medio da -1,9/-2,4/-2,1 a -0,2/-1,0/-0,2 su z14/z15/z16, contrasto invariato. Con le strade alla larghezza giusta (un livello piu' larghe di prima) e gli elementi che mancavano, la mappa era piu' scura di 2 punti."
+          "notaGamma": "Gamma 0,8 (11/10/2026, taratura-ombra su otto zone di montagna di tutta Italia servite dal server nazionale: Monte Pisano, Apuane, Dolomiti, Gran Sasso, Etna, Gennargentu, Sila, Sibillini). Con 0,6, tarato sulle sole celle di prova, la mappa era in media +4,3 punti piu' chiara di TGen; ora +0,2. Contrasto quasi invariato, leggermente piu' vicino a TGen.",
+          "notaTaratura": "Luce a 60 gradi, esagerazione 2, gamma 1,1, opacita' 0,35, pendenza 0 (11/10/2026, su richiesta dell'utente: 'le ombreggiature sono piu' marcate in TGen'). Ricavati dai PNG di TGen e non a tentativi: su nove zone per livello (il Monte Pisano chiesto dall'utente e le otto del campione nazionale) si sono resi con maplibre-native le superfici e il resto SENZA ombra, e sui pixel dove non c'e' niente sopra si e' confrontato TGen con il modello per classe di pendenza (piano, 2-8, 8-15, 15-25, 25-35, oltre 35 gradi) ed esposizione (al sole, di lato, in ombra). Prima TGen era 3-4 punti piu' chiaro nei piani e sui versanti al sole e 2-5 piu' scuro sui ripidi: schiarisce i piani e scurisce i versanti ripidi quasi a prescindere dall'esposizione, l'effetto del suo #slope10m. Con la luce a 45 gradi nessuna combinazione di esagerazione, gamma, opacita' e pendenza lo rende (scarto medio per classe 3,3 nel migliore dei casi); alzando la luce si': da 3,6 a 2,2. Lo stesso set e' il migliore a z14, z15 e z16, com'e' giusto: TGen usa un solo raster da z14 in su. L'opacita' e' 0,35 e non lo 0,3 dichiarato da TGen perche' il tono del suo raster non lo conosciamo: con 0,3 lo scarto e' piu' alto del 10%. Resta un limite sui versanti in ombra oltre 35 gradi, che TGen fa meno scuri di 7-8 punti: sono il 2% dei pixel di montagna. Strumento: tools/ombra-per-classe.mjs."
         },
         {
           "set": "hs-z15",
           "zmin": 15,
           "zmax": 15,
           "nota": "Pendenza 0,3 dal 10 ottobre 2026 (era 0,7, fuori scala rispetto a z14 0,1 e z16 0,05): con TINITALY scuriva i versanti ripidi del Monte Pisano di 9 punti. Gamma 0,7 dal 10 ottobre 2026: l'opacita' 0,3 e la composizione normale sono quelle dichiarate da TGen; la gamma schiarisce i toni medi del grigio e rende il tono del suo raster (piu' chiaro del nostro calcolo). COMPOSIZIONE NORMALE dal 10 ottobre 2026, come #hs10m nel webmapp.mss di TGen (raster-opacity 0.3 senza comp-op; fino a z13 e' multiply). Con multiply la mappa risultava piu' scura di 11-15 punti sul Monte Pisano con TINITALY: multiply puo' solo scurire, mentre TGen schiarisce i versanti al sole. z15. Set proprio del livello (derivato dalla fascia hs10m). Ogni zoom ha il suo: le fasce condivise si tarano l'una contro l'altra — abbassare hs25m per z12 ha spostato z11 da -1,3 a +4,9. RITARATO dopo aver scoperto che `mix-blend-mode: multiply` non veniva applicato affatto (ol.css ha un selettore piu' specifico: serve !important). Le opacita' precedenti compensavano una composizione NORMALE ed erano quindi circa il doppio del necessario. Ritarato con Horn: la somma pesata 3x3 divisa per 8 smorza il gradiente rispetto ai due campioni precedenti, quindi a parita' di opacita' l'ombra risultava piu' debole (a z16 la luminosita' era +13,3).",
-          "opacity": 0.3,
-          "vert": 1,
+          "opacity": 0.35,
+          "vert": 2,
           "sunAzimuth": 315,
-          "sunElevation": 45,
-          "gamma": 0.6,
-          "slope": 0.3,
+          "sunElevation": 60,
+          "gamma": 1.1,
+          "slope": 0,
           "blend": "normal",
-          "notaGamma": "Gamma 0,6 (11/10/2026, taratura-ombra sui quattro punti): Δlum medio da -1,9/-2,4/-2,1 a -0,2/-1,0/-0,2 su z14/z15/z16, contrasto invariato. Con le strade alla larghezza giusta (un livello piu' larghe di prima) e gli elementi che mancavano, la mappa era piu' scura di 2 punti."
+          "notaGamma": "Gamma 0,75 (11/10/2026, taratura-ombra su otto zone di montagna di tutta Italia servite dal server nazionale: Monte Pisano, Apuane, Dolomiti, Gran Sasso, Etna, Gennargentu, Sila, Sibillini). Con 0,6, tarato sulle sole celle di prova, la mappa era in media +3,3 punti piu' chiara di TGen; ora circa 0 (0,8 dava -0,9). Contrasto quasi invariato, leggermente piu' vicino a TGen.",
+          "notaVert": "Esagerazione 2, pendenza 0, gamma 0,65 (11/10/2026, su richiesta dell'utente: 'le ombreggiature sono piu' marcate in TGen'). In Web Mercator un metro della mappa vale cos(lat) metri sul terreno (0,72 a Pisa): calcolato sui metri della mappa il rilievo e' piu' dolce del vero, e TGen lo calcola sul DEM in metri veri. Alzando `vert` il contrasto cresce, ma con la pendenza al 0,3 i versanti ripidi si scurivano due volte (la pendenza cresce con `vert`): pendenza a 0, e gamma un po' piu' basso per riportare la luminosita'. taratura-ombra sulle 15 tile z15 di San Giuliano Terme e Monte Pisano: da Δlum -2,7 / Δsd -1,3 a -2,1 / -0,2 (le tile di pianura della zona sono gia' circa -3 di base).",
+          "notaTaratura": "Luce a 60 gradi, esagerazione 2, gamma 1,1, opacita' 0,35, pendenza 0 (11/10/2026, su richiesta dell'utente: 'le ombreggiature sono piu' marcate in TGen'). Ricavati dai PNG di TGen e non a tentativi: su nove zone per livello (il Monte Pisano chiesto dall'utente e le otto del campione nazionale) si sono resi con maplibre-native le superfici e il resto SENZA ombra, e sui pixel dove non c'e' niente sopra si e' confrontato TGen con il modello per classe di pendenza (piano, 2-8, 8-15, 15-25, 25-35, oltre 35 gradi) ed esposizione (al sole, di lato, in ombra). Prima TGen era 3-4 punti piu' chiaro nei piani e sui versanti al sole e 2-5 piu' scuro sui ripidi: schiarisce i piani e scurisce i versanti ripidi quasi a prescindere dall'esposizione, l'effetto del suo #slope10m. Con la luce a 45 gradi nessuna combinazione di esagerazione, gamma, opacita' e pendenza lo rende (scarto medio per classe 3,3 nel migliore dei casi); alzando la luce si': da 3,6 a 2,2. Lo stesso set e' il migliore a z14, z15 e z16, com'e' giusto: TGen usa un solo raster da z14 in su. L'opacita' e' 0,35 e non lo 0,3 dichiarato da TGen perche' il tono del suo raster non lo conosciamo: con 0,3 lo scarto e' piu' alto del 10%. Resta un limite sui versanti in ombra oltre 35 gradi, che TGen fa meno scuri di 7-8 punti: sono il 2% dei pixel di montagna. Strumento: tools/ombra-per-classe.mjs."
         },
         {
           "set": "hs-z16",
           "zmin": 16,
           "zmax": 16,
           "nota": "Esagerazione 1,5 dal 10 ottobre 2026: a z16 TGen usa un rilievo a 5 m e il nostro DEM e' a 10 m, piu' morbido; il contrasto era 3 punti sotto. Gamma 0,7 dal 10 ottobre 2026: l'opacita' 0,3 e la composizione normale sono quelle dichiarate da TGen; la gamma schiarisce i toni medi del grigio e rende il tono del suo raster (piu' chiaro del nostro calcolo). COMPOSIZIONE NORMALE dal 10 ottobre 2026, come #hs10m nel webmapp.mss di TGen (raster-opacity 0.3 senza comp-op; fino a z13 e' multiply). Con multiply la mappa risultava piu' scura di 11-15 punti sul Monte Pisano con TINITALY: multiply puo' solo scurire, mentre TGen schiarisce i versanti al sole. z16. Set proprio del livello (derivato dalla fascia hs10m). Ogni zoom ha il suo: le fasce condivise si tarano l'una contro l'altra — abbassare hs25m per z12 ha spostato z11 da -1,3 a +4,9. RITARATO dopo aver scoperto che `mix-blend-mode: multiply` non veniva applicato affatto (ol.css ha un selettore piu' specifico: serve !important). Le opacita' precedenti compensavano una composizione NORMALE ed erano quindi circa il doppio del necessario. Ritarato con Horn: la somma pesata 3x3 divisa per 8 smorza il gradiente rispetto ai due campioni precedenti, quindi a parita' di opacita' l'ombra risultava piu' debole (a z16 la luminosita' era +13,3).",
-          "opacity": 0.3,
-          "vert": 1.5,
+          "opacity": 0.35,
+          "vert": 2,
           "sunAzimuth": 315,
-          "sunElevation": 45,
-          "gamma": 0.6,
-          "slope": 0.05,
+          "sunElevation": 60,
+          "gamma": 1.1,
+          "slope": 0,
           "blend": "normal",
-          "notaGamma": "Gamma 0,6 (11/10/2026, taratura-ombra sui quattro punti): Δlum medio da -1,9/-2,4/-2,1 a -0,2/-1,0/-0,2 su z14/z15/z16, contrasto invariato. Con le strade alla larghezza giusta (un livello piu' larghe di prima) e gli elementi che mancavano, la mappa era piu' scura di 2 punti."
+          "notaGamma": "Gamma 0,7 (11/10/2026, taratura-ombra su otto zone di montagna di tutta Italia servite dal server nazionale: Monte Pisano, Apuane, Dolomiti, Gran Sasso, Etna, Gennargentu, Sila, Sibillini). Con 0,6, tarato sulle sole celle di prova, la mappa era in media +2,4 punti piu' chiara di TGen; ora circa 0 (0,8 dava -2,5). Contrasto quasi invariato, leggermente piu' vicino a TGen.",
+          "notaTaratura": "Luce a 60 gradi, esagerazione 2, gamma 1,1, opacita' 0,35, pendenza 0 (11/10/2026, su richiesta dell'utente: 'le ombreggiature sono piu' marcate in TGen'). Ricavati dai PNG di TGen e non a tentativi: su nove zone per livello (il Monte Pisano chiesto dall'utente e le otto del campione nazionale) si sono resi con maplibre-native le superfici e il resto SENZA ombra, e sui pixel dove non c'e' niente sopra si e' confrontato TGen con il modello per classe di pendenza (piano, 2-8, 8-15, 15-25, 25-35, oltre 35 gradi) ed esposizione (al sole, di lato, in ombra). Prima TGen era 3-4 punti piu' chiaro nei piani e sui versanti al sole e 2-5 piu' scuro sui ripidi: schiarisce i piani e scurisce i versanti ripidi quasi a prescindere dall'esposizione, l'effetto del suo #slope10m. Con la luce a 45 gradi nessuna combinazione di esagerazione, gamma, opacita' e pendenza lo rende (scarto medio per classe 3,3 nel migliore dei casi); alzando la luce si': da 3,6 a 2,2. Lo stesso set e' il migliore a z14, z15 e z16, com'e' giusto: TGen usa un solo raster da z14 in su. L'opacita' e' 0,35 e non lo 0,3 dichiarato da TGen perche' il tono del suo raster non lo conosciamo: con 0,3 lo scarto e' piu' alto del 10%. Resta un limite sui versanti in ombra oltre 35 gradi, che TGen fa meno scuri di 7-8 punti: sono il 2% dei pixel di montagna. Strumento: tools/ombra-per-classe.mjs."
         }
       ]
     },
@@ -6563,12 +6567,19 @@
           "name"
         ],
         [
-          "==",
+          "in",
           [
             "get",
             "class"
           ],
-          "stream"
+          [
+            "literal",
+            [
+              "stream",
+              "drain",
+              "ditch"
+            ]
+          ]
         ]
       ],
       "layout": {
@@ -6778,8 +6789,26 @@
         "text-size": 10,
         "text-anchor": "top",
         "text-offset": [
-          0,
-          0.7
+          "match",
+          [
+            "get",
+            "kind"
+          ],
+          "cave_entrance",
+          [
+            "literal",
+            [
+              0,
+              1.1
+            ]
+          ],
+          [
+            "literal",
+            [
+              0,
+              0.7
+            ]
+          ]
         ],
         "text-max-width": 7,
         "text-padding": 2,
@@ -9838,6 +9867,69 @@
             "isolated_dwelling",
             "farm",
             "locality"
+          ]
+        ]
+      ],
+      "layout": {
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-font": [
+          "Noto Sans Regular"
+        ],
+        "text-size": [
+          "step",
+          [
+            "zoom"
+          ],
+          10,
+          15,
+          12
+        ],
+        "text-max-width": 4.5,
+        "text-padding": 1,
+        "symbol-sort-key": 2
+      },
+      "paint": {
+        "text-color": [
+          "step",
+          [
+            "zoom"
+          ],
+          "#222222",
+          15,
+          "#777777"
+        ],
+        "text-halo-color": [
+          "step",
+          [
+            "zoom"
+          ],
+          "rgba(255,255,255,0.6)",
+          15,
+          "#ffffff"
+        ],
+        "text-halo-width": 1.5
+      },
+      "minzoom": 14
+    },
+    {
+      "id": "place-minor-osm",
+      "type": "symbol",
+      "source": "osmpoi",
+      "source-layer": "osmpoi",
+      "filter": [
+        "in",
+        [
+          "get",
+          "kind"
+        ],
+        [
+          "literal",
+          [
+            "locality",
+            "farm"
           ]
         ]
       ],

@@ -9,19 +9,27 @@ set -euo pipefail
 # `--download` NON serve: le sorgenti ausiliarie (lakelines, water polygons,
 # natural earth) stanno gia' in data/planetiler-sources dopo il primo giro.
 #
+# Memoria e file temporanei si regolano con l'ambiente: per l'Italia intera
+# servono piu' dei 6 GB delle celle, e i temporanei vanno su un disco veloce.
+#   PLANETILER_XMX=16g PLANETILER_TMP=/var/tmp/planetiler build-osm.sh ...
+#
 # Uso: build-osm.sh <in.pbf> <out-dir> [maxzoom]
 IN="${1:?in.pbf}"; OUT="${2:?out-dir}"; ZMAX="${3:-14}"
-mkdir -p "$OUT" data/planetiler-sources data/planetiler-tmp
+# planetiler cancella la sua cartella temporanea all'inizio e alla fine: deve
+# essere una sottocartella del mount, non il mount stesso ("Device or resource busy")
+TMP="${PLANETILER_TMP:-$PWD/data/planetiler-tmp}"
+mkdir -p "$OUT" data/planetiler-sources "$TMP"
 
 docker run --rm \
   -v "$PWD/data":/data \
-  -e JAVA_TOOL_OPTIONS=-Xmx6g \
+  -v "$TMP":/planetiler-lavoro \
+  -e JAVA_TOOL_OPTIONS="-Xmx${PLANETILER_XMX:-6g}" \
   ghcr.io/onthegomap/planetiler:latest \
   --osm-path="/data/${IN#data/}" \
   --output="/data/${OUT#data/}/osm.pmtiles" \
   --maxzoom="$ZMAX" \
   --download \
-  --tmpdir=/data/planetiler-tmp \
+  --tmpdir=/planetiler-lavoro/tmp \
   --data-dir=/data/planetiler-sources \
   --force
 

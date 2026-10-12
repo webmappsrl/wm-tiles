@@ -84,15 +84,26 @@ ufw allow 80/tcp >/dev/null
 ufw allow 443/tcp >/dev/null
 ufw --force enable >/dev/null
 
-echo "== cartelle: /data sul Volume, repo in /srv/wm-tiles"
-ln -sfn "$VOLUME" /data
-mkdir -p /data/wm-tiles
+echo "== cartelle: repo in /srv/wm-tiles, il suo data/ e' il Volume"
+ln -sfn "$VOLUME" /data   # comodo da shell
+mkdir -p "$VOLUME/wm-tiles"
 if [ ! -d /srv/wm-tiles/.git ]; then
   git clone -q --branch "$BRANCH" "$REPO_URL" /srv/wm-tiles
 fi
-[ -e /srv/wm-tiles/data ] || ln -s /data/wm-tiles /srv/wm-tiles/data
+# Un mount, non un link simbolico: le pipeline montano il repo nei container,
+# e dentro un container un link che punta fuori dal repo non porta da nessuna
+# parte ("Unable to open datasource"). I mount invece si vedono.
+[ -L /srv/wm-tiles/data ] && rm /srv/wm-tiles/data
+mkdir -p /srv/wm-tiles/data
+grep -q " /srv/wm-tiles/data " /etc/fstab \
+  || echo "$VOLUME/wm-tiles /srv/wm-tiles/data none bind,nofail,x-systemd.requires-mounts-for=$VOLUME 0 0" >> /etc/fstab
+systemctl daemon-reload
+mountpoint -q /srv/wm-tiles/data || mount /srv/wm-tiles/data
 cd /srv/wm-tiles
 npm ci --no-audit --no-fund --loglevel=error
+# i glifi dei font non stanno nel repo (circa 100 MB): senza, maplibre-native
+# non scrive nessuna etichetta nei PNG, e la preview chiede font che non ci sono
+[ -d style/glyphs/"Noto Sans Regular" ] || bash pipeline/get-glyphs.sh >/dev/null
 
 echo "== immagine del renderer PNG"
 docker build -q -t wm-render-png -f pipeline/render-png.Dockerfile pipeline >/dev/null
@@ -101,5 +112,5 @@ echo "== fatto"
 . /etc/os-release
 echo "   $PRETTY_NAME, Docker $(docker --version | awk '{print $3}' | tr -d ,), Node $(node --version), $(aws --version 2>&1 | awk '{print $1}')"
 echo "   osmium $(osmium --version | head -1 | awk '{print $NF}'), tippecanoe $(tippecanoe --version 2>&1 | grep -o '[0-9.]*$'), pmtiles $(pmtiles version 2>&1 | grep -o '[0-9]*\.[0-9]*\.[0-9]*' | head -1)"
-echo "   swap $(swapon --show=SIZE --noheadings | head -1), /data -> $VOLUME, repo $(git -C /srv/wm-tiles rev-parse --abbrev-ref HEAD)@$(git -C /srv/wm-tiles rev-parse --short HEAD)"
+echo "   swap $(swapon --show=SIZE --noheadings | head -1), data/ = $VOLUME/wm-tiles, repo $(git -C /srv/wm-tiles rev-parse --abbrev-ref HEAD)@$(git -C /srv/wm-tiles rev-parse --short HEAD)"
 [ -f /var/run/reboot-required ] && echo "   serve un riavvio per il kernel aggiornato: reboot" || true

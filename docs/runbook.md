@@ -55,6 +55,18 @@ Tre cose da sapere:
   binario precompilato vuole le librerie di Ubuntu 22.04, e `aggiorna-png.sh`
   ci passa da solo.
 
+Per pubblicare il server delle tile su un dominio, dopo aver puntato il record
+`A` del dominio all'IP del server:
+
+```bash
+ssh wm-tiles 'DOMINIO=tiles.maphub.it bash -s' < infra/pubblica-dominio.sh
+```
+
+Crea il servizio `wm-tiles` (systemd, solo su `127.0.0.1:8080`) e mette
+davanti Caddy, che chiede e rinnova il certificato a Let's Encrypt. Su
+`maphub.it` c'è un wildcard verso `server.webmapp.it`: è il record esplicito a
+mandare `tiles.maphub.it` qui.
+
 ---
 
 ## Ripopolare da zero, dopo un clone

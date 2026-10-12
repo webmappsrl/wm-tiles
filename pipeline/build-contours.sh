@@ -12,7 +12,7 @@ trap 'rm -rf "$WORK"' EXIT
 #    un GeoJSON di curve non semplificato e' decine di MB e non serve a nessuno
 for I in 100 50 25 10; do
   echo "== riproietto e semplifico contour ${I}m"
-  docker run --rm --platform linux/arm64 -v "$PWD":/w -v "$WORK":/out \
+  docker run --rm -v "$PWD":/w -v "$WORK":/out \
     --entrypoint ogr2ogr ghcr.io/osgeo/gdal:ubuntu-small-latest \
     -f GeoJSONSeq -t_srs EPSG:4326 -simplify 3 \
     -lco COORDINATE_PRECISION=5 \

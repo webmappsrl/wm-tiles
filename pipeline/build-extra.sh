@@ -14,7 +14,7 @@ set -euo pipefail
 #   marine       porti turistici (marinas-area, da z14)
 #   turismo      zoo e parchi tematici, soglia 750 pixel (tourism-boundary, da z10)
 #   guidovie     corsie guidate degli autobus (guideways, da z11)
-#   guadi        guadi, al centro della via (amenity-line, da z16)
+#   guadi        guadi sui nodi e al centro delle vie (amenity-points e amenity-line, da z16)
 #   ponti, piazze, linee_nome   nomi di ponti (soglia 62,5 px), aree stradali, scogliere
 #                e argini (bridge-text, roads-area-text-name, text-line)
 #
@@ -74,10 +74,16 @@ ogr punti.geojsonl "SELECT highway, man_made, hstore_get_value(other_tags, 'rail
 ogr marine.geojsonl "SELECT 'marina' AS tipo FROM multipolygons WHERE leisure = 'marina'"
 ogr turismo.geojsonl "SELECT tourism AS tipo FROM multipolygons WHERE tourism IN ('zoo', 'theme_park')"
 python3 -I pipeline/parchi-soglia.py "$WORK/turismo.geojsonl" "$WORK/turismo-z.geojsonl" 10 14 750
-# amenity-line: i guadi (ford=yes o stepping_stones) su una via, da z16, al centro della via
+# i guadi (ford=yes o stepping_stones), da z16: su una via (amenity-line), al centro
+# della via, e sui nodi (`highway_ford` di amenity-points). In OSM sono quasi tutti
+# nodi, il punto dove il sentiero incrocia il torrente: fino all'11/10/2026 si
+# prendevano solo le vie e sulla mappa i guadi mancavano quasi ovunque.
 ogr guadi-l.geojsonl "SELECT 'ford' AS tipo FROM lines
   WHERE hstore_get_value(other_tags, 'ford') IN ('yes', 'stepping_stones')"
 python3 -I pipeline/centro-linee.py "$WORK/guadi-l.geojsonl" "$WORK/guadi.geojsonl"
+ogr guadi-p.geojsonl "SELECT 'ford' AS tipo FROM points
+  WHERE hstore_get_value(other_tags, 'ford') IN ('yes', 'stepping_stones')"
+cat "$WORK/guadi-p.geojsonl" >> "$WORK/guadi.geojsonl"
 # guideways
 ogr guidovie.geojsonl "SELECT 'bus_guideway' AS tipo FROM lines WHERE highway = 'bus_guideway'"
 echo "== nomi di ponti, piazze, scogliere e argini"
@@ -127,7 +133,7 @@ minz() {
 minz barriere 12; minz aree2 14; minz filari 14; minz ferrovie 14; minz recinzioni 14
 minz punti-2 14; minz marine 14; minz linee-nome-2 14; minz guidovie 11; minz guadi 14
 
-tippecanoe -o "$WORK/extra.mbtiles" --force -q -Z10 -z14 \
+tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/extra.mbtiles" --force -q -Z10 -z14 \
   --no-feature-limit --no-tile-size-limit \
   -L barriere:"$WORK/barriere.geojsonl" -L aree_strade:"$WORK/aree2.geojsonl" -L filari:"$WORK/filari.geojsonl" \
   -L ferrovie:"$WORK/ferrovie.geojsonl" -L edifici:"$WORK/edifici-z.geojsonl" \

@@ -90,35 +90,12 @@ else
 # ---------------------------------------------------------------------------
 # 2. I dati di TGen, dalle copie delle celle
 # ---------------------------------------------------------------------------
-# Unisce un layer di TGen di tutte le celle in un GeoJSON, tenendo solo i
-# campi indicati e rinominandoli se serve (`code_12` -> `code`, il nome che lo
-# stile usa per Corine). `src` dice da quale layer di TGen viene l'elemento.
+# Unisce un layer di TGen di tutte le celle in un GeoJSON (pipeline/unisci-tgen.py).
+COPIE=$(printf 'data/tgen-copia/%s,' "${NOMI[@]}"); COPIE="${COPIE%,}"
 unisci() {  # <uscita> <campi: nome|nome=nuovo,...> <layer...>
   local OUT="$1" CAMPI="$2"; shift 2
-  python3 - "$OUT" "$CAMPI" "$@" <<'PY'
-import gzip, json, os, sys
-out, campi, layer = sys.argv[1], sys.argv[2].split(","), sys.argv[3:]
-mappa = dict((c.split("=") + [c])[:2] for c in campi)
-celle = os.environ["CELLE"].split()
-n = 0
-with open(out, "w") as f:
-    for l in layer:              # l'ordine dei layer e' l'ordine di disegno
-        for c in celle:
-            p = f"data/tgen-copia/{c}/{l}.geojsonl.gz"
-            if not os.path.exists(p):
-                sys.exit(f"manca {p}: rifare copia-da-tgen.sh per {c}")
-            with gzip.open(p, "rt") as g:
-                for riga in g:
-                    e = json.loads(riga)
-                    pr = e["properties"]
-                    e["properties"] = {nuovo: pr[vecchio] for vecchio, nuovo in mappa.items() if vecchio in pr}
-                    e["properties"]["src"] = l
-                    f.write(json.dumps(e, separators=(",", ":")) + "\n")
-                    n += 1
-print(f"   {os.path.basename(out)}: {n} elementi da {len(layer)} layer")
-PY
+  python3 pipeline/unisci-tgen.py "$OUT" "$CAMPI" "$COPIE" "$@"
 }
-export CELLE="${NOMI[*]}"
 
 # L'ordine dei layer di uso suolo e' quello del project.mml (manifest).
 USO=$(awk -F'\t' 'NR > 1 && ($1 ~ /^igm_dbsn_/ || $1 ~ /^uso/ || $1 == "ghiacciai_piemonte" || $1 == "land_cover_hr") { print $1 }' pipeline/sql/tgen/manifest.tsv)

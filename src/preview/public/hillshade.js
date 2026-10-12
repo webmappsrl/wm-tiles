@@ -83,7 +83,7 @@ const dQuota = (ax, ay, bx, by) =>
  * Grigio dell'incidenza della luce: 1 dove il versante e' illuminato, verso 0
  * dove e' in ombra. Moltiplicato sul disegno sottostante da' il rilievo.
  */
-function grigioIncidenza({sunAzimuth = 315, sunElevation = 45}) {
+function grigioIncidenza({sunAzimuth = 315}) {
   // il passo di campionamento segue la risoluzione, cosi' la pendenza non
   // dipende dallo zoom e il rilievo non "monta" ingrandendo
   /**
@@ -126,7 +126,12 @@ function grigioIncidenza({sunAzimuth = 315, sunElevation = 45}) {
   // intermedi e bassi lasciando 1 invariato: le ombre si approfondiscono e le
   // luci restano dove sono. Alzare `vert` invece accentua tutto e scurisce
   // anche i versanti illuminati.
-  const el = (sunElevation * Math.PI) / 180;
+  //
+  // L'elevazione del sole e' una VARIABILE di stile (`sinEl`, `cosEl`), come
+  // `vert`: cambia per livello. Da z14 TGen schiarisce i pianori e scurisce i
+  // versanti ripidi quasi a prescindere dall'esposizione (il suo `#slope10m`),
+  // e una luce piu' alta e' cio' che lo riproduce; scritta come costante,
+  // restava quella del primo livello per tutta la scala.
   // L'azimut e' GEOGRAFICO (0 = Nord, in senso orario), come in gdaldem e nel
   // riferimento: -az 315 significa luce da Nord-Ovest. L'esposizione qui sopra
   // e' invece un angolo matematico (0 = Est, antiorario), quindi va convertito.
@@ -135,8 +140,8 @@ function grigioIncidenza({sunAzimuth = 315, sunElevation = 45}) {
   const az = ((90 - sunAzimuth) * Math.PI) / 180;
   const incidenza = [
     '+',
-    ['*', Math.sin(el), ['cos', pendenza]],
-    ['*', Math.cos(el), ['sin', pendenza], ['cos', ['-', az, esposizione]]],
+    ['*', ['var', 'sinEl'], ['cos', pendenza]],
+    ['*', ['var', 'cosEl'], ['sin', pendenza], ['cos', ['-', az, esposizione]]],
   ];
   // il clamp serve prima della potenza: sui versanti opposti al sole
   // l'incidenza e' negativa e una potenza su un negativo non e' definita
@@ -268,6 +273,12 @@ function sorgenteQuote(ol, sourceDef) {
   });
 }
 
+/** Seno e coseno dell'elevazione del sole di un set, per le variabili dello shader. */
+const elevazione = f => {
+  const el = ((f.sunElevation ?? 45) * Math.PI) / 180;
+  return {sinEl: Math.sin(el), cosEl: Math.cos(el)};
+};
+
 export function hillshadeGpu(ol, sourceDef, fasce) {
   const primo = fasce[0] ?? {opacity: 0.25};
   const grigio = grigioIncidenza(primo);
@@ -275,7 +286,7 @@ export function hillshadeGpu(ol, sourceDef, fasce) {
   const layer = new ol.layer.WebGLTile({
     source: sorgenteQuote(ol, sourceDef),
     style: {
-      variables: {vert: primo.vert ?? 1, gamma: primo.gamma ?? 1, slope: primo.slope ?? 0, passoDem: 1},
+      variables: {vert: primo.vert ?? 1, gamma: primo.gamma ?? 1, slope: primo.slope ?? 0, passoDem: 1, ...elevazione(primo)},
       color: ['color', ['*', 255, grigio], ['*', 255, grigio], ['*', 255, grigio]],
     },
     opacity: primo.opacity,
@@ -321,13 +332,16 @@ export function hillshadeGpu(ol, sourceDef, fasce) {
     const gamma = f.gamma ?? 1;
     const slope = f.slope ?? 0;
     const passoDem = passoDelDem(zoom);
+    const el = f.sunElevation ?? 45;
     if (layer.get('wm-vert') !== vert || layer.get('wm-gamma') !== gamma
-        || layer.get('wm-slope') !== slope || layer.get('wm-passo') !== passoDem) {
+        || layer.get('wm-slope') !== slope || layer.get('wm-passo') !== passoDem
+        || layer.get('wm-el') !== el) {
       layer.set('wm-vert', vert);
       layer.set('wm-gamma', gamma);
       layer.set('wm-slope', slope);
       layer.set('wm-passo', passoDem);
-      layer.updateStyleVariables({vert, gamma, slope, passoDem});
+      layer.set('wm-el', el);
+      layer.updateStyleVariables({vert, gamma, slope, passoDem, ...elevazione(f)});
     }
     layer.set('wm-blend', f.blend ?? 'multiply');
     allineaBlend();

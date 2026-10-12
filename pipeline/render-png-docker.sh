@@ -23,6 +23,7 @@ if [ "$(uname)" = Darwin ]; then
 fi
 # --init: senza, xvfb-run e' il processo 1 del container e resta bloccato in attesa di Xvfb
 # ${A[@]+"${A[@]}"}: con set -u il bash 3 del Mac rifiuta un array vuoto
-docker run --rm --init ${RETE[@]+"${RETE[@]}"} -v "$PWD:$PWD" -w "$PWD" \
+# LP_NUM_THREADS: i thread di OpenGL in software; render-italia.sh lo mette a 1
+docker run --rm --init ${RETE[@]+"${RETE[@]}"} -e LP_NUM_THREADS -v "$PWD:$PWD" -w "$PWD" \
   -v "$R/pipeline:/repo/pipeline:ro" -v "$R/src:/repo/src:ro" -v "$R/package.json:/repo/package.json:ro" \
   "$IMG" xvfb-run -a -s "-screen 0 1024x768x24" node /repo/pipeline/render-png.mjs ${BASE[@]+"${BASE[@]}"} "$@"

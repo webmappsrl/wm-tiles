@@ -39,12 +39,19 @@ export const fasciaDi = (fasce, z) => fasce.find(x => z >= x.zmin && z <= x.zmax
 /**
  * Grigi della luce e della pendenza (0-255) per una vista N x N.
  *
+ * Oltre l'ultimo livello del DEM la vista e' piu' fine del dato: un punto del
+ * DEM copre `s` x `s` pixel. Come in hillshade.js le quote si leggono
+ * interpolate (vedi quoteVista) e la finestra del gradiente si misura in punti
+ * del DEM, cioe' `s` pixel: dividere per il passo della vista farebbe crescere
+ * il gradiente con l'ingrandimento fino a bande nere.
+ *
  * @param {Float32Array} E   quote della vista con un bordo di `B` pixel per lato (lato W = N + 2B)
- * @param {number} passo     metri per pixel del DEM al livello usato
+ * @param {number} passo     metri per punto del DEM al livello usato
  * @param {object} f         il set del livello: vert, gamma, slope, sunAzimuth, sunElevation
+ * @param {number} s         pixel della vista per punto del DEM (1 fino all'ultimo livello del DEM)
  */
-export function grigi(E, N, B, passo, f) {
-  if (B < 3) throw new Error('servono 3 pixel di bordo per la pendenza');
+export function grigi(E, N, B, passo, f, s = 1) {
+  if (B < 3 * s) throw new Error(`servono ${3 * s} pixel di bordo per la pendenza`);
   const W = N + 2 * B;
   const vert = f.vert ?? 1, gamma = f.gamma ?? 1, slope = f.slope ?? 0;
   const el = ((f.sunElevation ?? 45) * Math.PI) / 180;
@@ -60,20 +67,47 @@ export function grigi(E, N, B, passo, f) {
   for (let r = 0; r < N; r++) {
     for (let c = 0; c < N; c++) {
       const R = r + B, C = c + B;
-      const dx = (vert * hornX(R, C, 1)) / (8 * passo), dy = (vert * hornY(R, C, 1)) / (8 * passo);
+      const dx = (vert * hornX(R, C, s)) / (8 * passo), dy = (vert * hornY(R, C, s)) / (8 * passo);
       const p = Math.atan(Math.hypot(dx, dy));
       const esposizione = Math.atan2(-dy, dx);
       const inc = Math.min(1, Math.max(0, sEl * Math.cos(p) + cEl * Math.sin(p) * Math.cos(az - esposizione)));
       luce[r * N + c] = Math.round(255 * Math.pow(inc, gamma) * (1 - slope * Math.sin(p)));
       if (pend) {
         const P = 3;
-        const p3 = Math.atan(Math.hypot((vert * hornX(R, C, P)) / (8 * P * passo), (vert * hornY(R, C, P)) / (8 * P * passo)));
+        const p3 = Math.atan(Math.hypot((vert * hornX(R, C, P * s)) / (8 * P * passo), (vert * hornY(R, C, P * s)) / (8 * P * passo)));
         // 0,35 e' la pendenza attorno a cui il contributo si annulla
         pend[r * N + c] = Math.round(255 * Math.min(1, Math.max(0, 0.5 + slope * (0.35 - Math.sin(p3)))));
       }
     }
   }
   return {luce: sfoca(luce, N), pend: pend && sfoca(pend, N)};
+}
+
+/**
+ * Quote della vista N x N (con bordo B) dal mosaico del DEM a un livello piu'
+ * basso, interpolate fra i punti come fa la GPU con la texture delle quote
+ * (`interpolate: true` in hillshade.js): l'interpolazione e' lecita perche'
+ * le quote sono gia' decodificate in virgola mobile.
+ *
+ * @param {Float32Array} D    quote del DEM, griglia larga `Wd`, con il punto (u0, v0) in alto a sinistra
+ * @param {number} x0, y0     angolo della vista in pixel mondo al livello della vista
+ * @param {number} s          pixel della vista per punto del DEM
+ */
+export function quoteVista(D, Wd, u0, v0, x0, y0, N, B, s) {
+  const W = N + 2 * B, E = new Float32Array(W * W);
+  const Hd = D.length / Wd;
+  for (let r = 0; r < W; r++) {
+    // centro del pixel della vista, in punti del DEM (centri dei punti a +0,5)
+    const v = (y0 - B + r + 0.5) / s - 0.5 - v0;
+    const vi = Math.min(Hd - 2, Math.max(0, Math.floor(v))), fv = v - vi;
+    for (let c = 0; c < W; c++) {
+      const u = (x0 - B + c + 0.5) / s - 0.5 - u0;
+      const ui = Math.min(Wd - 2, Math.max(0, Math.floor(u))), fu = u - ui;
+      const a = D[vi * Wd + ui], b = D[vi * Wd + ui + 1], c2 = D[(vi + 1) * Wd + ui], d = D[(vi + 1) * Wd + ui + 1];
+      E[r * W + c] = (a * (1 - fu) + b * fu) * (1 - fv) + (c2 * (1 - fu) + d * fu) * fv;
+    }
+  }
+  return E;
 }
 
 /** Blur gaussiano separabile con sigma 0,5 px, come `filter: blur(0.5px)`; valori 0-255. */

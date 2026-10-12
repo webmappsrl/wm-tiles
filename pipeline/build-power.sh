@@ -23,7 +23,7 @@ done
 # Un archivio, due layer. Solo z14, il livello da cui TGen li disegna: oltre
 # il client li ingrandisce. Nessun limite: un traliccio perso e' un buco
 # nella linea.
-tippecanoe -o "$WORK/power.mbtiles" --force -q -Z14 -z14 \
+tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/power.mbtiles" --force -q -Z14 -z14 \
   --no-feature-limit --no-tile-size-limit \
   -L "power_line:$WORK/linee.geojsonl" -L "power_point:$WORK/punti.geojsonl"
 pmtiles convert "$WORK/power.mbtiles" "$OUT"

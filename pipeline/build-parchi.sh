@@ -81,7 +81,7 @@ jq -c 'select(.properties.capital != "yes")
 # prima nella tile, e TGen piazza i nomi in ORDER BY score DESC (vedi --preserve-input-order)
 echo "   $(wc -l < "$WORK/citta-z.geojsonl" | tr -d ' ') citta' e paesi"
 
-tippecanoe -o "$WORK/parchi.mbtiles" --force -q -Z4 -z14 --preserve-input-order \
+tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/parchi.mbtiles" --force -q -Z4 -z14 --preserve-input-order \
   --no-feature-limit --no-tile-size-limit --simplification=4 \
   -L parchi:"$WORK/parchi-z.geojsonl" -L boschi:"$WORK/boschi-z.geojsonl" \
   -L acque:"$WORK/acque-z.geojsonl" -L citta:"$WORK/citta-z.geojsonl"

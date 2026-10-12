@@ -18,6 +18,10 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
 
 const PORT = Number(process.env.PORT ?? 8080);
+// In produzione 127.0.0.1: da fuori si entra dal reverse proxy (infra/pubblica-dominio.sh)
+const HOST = process.env.HOST;
+// L'indirizzo pubblico, quando il server sta dietro una CDN (es. https://tiles.maphub.it)
+const PUBLIC_URL = process.env.PUBLIC_URL?.replace(/\/$/, '') || undefined;
 const ARCHIVE_DIR = process.env.ARCHIVE_DIR ?? join(ROOT, 'data/archives');
 const MANIFEST_PATH = process.env.MANIFEST_PATH ?? join(ROOT, 'manifest/layers.v1.json');
 const STYLE_PATH = process.env.STYLE_PATH ?? join(ROOT, 'style/webmapp.json');
@@ -309,6 +313,11 @@ function buildStyle(manifest, resolved, version, base) {
 
 export function createApp() {
   const app = express();
+  // In produzione il server sta dietro Caddy, che termina HTTPS. Senza fidarsi
+  // del suo X-Forwarded-Proto `req.protocol` resta `http`: lo stile punta a
+  // tile http:// e una pagina https le blocca come contenuto misto, mappa
+  // vuota. Solo dal loopback, cosi' nessun client esterno puo' falsarlo.
+  app.set('trust proxy', 'loopback');
   const manifest = loadManifest();
   const sets = loadSetRegistry(manifest);
 
@@ -348,7 +357,10 @@ export function createApp() {
     }
     const requested = typeof req.query.set === 'string' ? req.query.set : setIdFor(manifest.defaultSet);
     const resolved = resolveSet(manifest, requested, sets);
-    const base = `${req.protocol}://${req.get('host')}`;
+    // Dietro CloudFront il server riceve l'Host dell'origine, non quello pubblico:
+    // costruendo gli URL dalla richiesta, lo stile manderebbe i client
+    // direttamente all'origine, scavalcando la cache. PUBLIC_URL lo fissa.
+    const base = PUBLIC_URL ?? `${req.protocol}://${req.get('host')}`;
     // Lo stile porta la versione dell'archivio nelle URL delle tile: se venisse
     // cachato, dopo un nuovo build il client continuerebbe a chiedere tile di una
     // versione che non e' piu' la corrente e riceverebbe 204 — mappa vuota senza
@@ -474,6 +486,8 @@ export function createApp() {
     setHeaders: r => r.set('Cache-Control', 'no-cache'),
   }));
 
+  // alla radice non c'e' nulla da servire: si va alla preview
+  app.get('/', (req, res) => res.redirect(302, '/preview/'));
   app.use('/preview', express.static(join(HERE, 'preview/public'), {etag: true, maxAge: 0, cacheControl: true, setHeaders: r => r.set('Cache-Control', 'no-cache, must-revalidate')}));
 
   // Uso suolo (ESA WorldCover 10 m) reso come tile raster colorate.
@@ -559,7 +573,7 @@ export function createApp() {
 
 const invokedDirectly = process.argv[1] && process.argv[1].endsWith('server.js');
 if (invokedDirectly) {
-  createApp().listen(PORT, () => {
+  createApp().listen(PORT, HOST, () => {
     log('info', 'server in ascolto', {port: PORT, archiveDir: ARCHIVE_DIR});
     console.log(`\n  preview:  http://localhost:${PORT}/preview`);
     console.log(`  versione: http://localhost:${PORT}/version\n`);

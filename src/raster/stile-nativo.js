@@ -62,6 +62,28 @@ export function per(v, f) {
   throw new Error(`valore non numerico: ${JSON.stringify(v)}`);
 }
 
+/**
+ * Gli URL dello stile (tile, glifi, sprite, quote) riscritti verso `base`.
+ *
+ * Dietro una CDN il server scrive nello stile l'indirizzo pubblico
+ * (`PUBLIC_URL`): il renderer, che gira accanto al server, scaricherebbe ogni
+ * tile passando da internet e dalla CDN, piu' lento e con milioni di richieste
+ * a pagamento. Tutti gli URL dello stile puntano allo stesso server, quindi
+ * basta cambiarne l'origine.
+ */
+export function localizza(stile, base) {
+  const b = base.replace(/\/$/, '');
+  const qui = u => (typeof u === 'string' ? u.replace(/^https?:\/\/[^/]+/, b) : u);
+  const s = structuredClone(stile);
+  for (const src of Object.values(s.sources ?? {})) {
+    if (Array.isArray(src.tiles)) src.tiles = src.tiles.map(qui);
+    if (src.url) src.url = qui(src.url);
+  }
+  if (s.glyphs) s.glyphs = qui(s.glyphs);
+  if (s.sprite) s.sprite = qui(s.sprite);
+  return s;
+}
+
 /** Copia dello stile pronta per maplibre-native a pixel ratio `PIXEL_RATIO`. */
 export function adattaStile(stileOl) {
   const stile = structuredClone(stileOl);

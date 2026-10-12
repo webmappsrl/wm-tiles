@@ -277,6 +277,11 @@
       "nota": "placenames.mss, #placenames-small::hamlet (hamlet, locality, neighbourhood, isolated_dwelling, farm): da z15 (10 px #222), 12 px #777 da z16. Soglie lette a mano: il selettore del .mml copre anche i paesi da z12.",
       "ordine": "placenames-small"
     },
+    "place-minor-osm": {
+      "tgen": null,
+      "nota": "Come place-minor, sulle localita' (place=locality e farm) che il layer `place` di OpenMapTiles scarta e TGen scrive da z15 in #placenames-small::hamlet: vengono da osmpoi (11/10/2026). Senza, nomi come 'Al Castagno' sul Monte Pisano mancavano ovunque.",
+      "ordine": "placenames-small"
+    },
     "mountain-peak-icon": {
       "tgen": null,
       "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss",
@@ -319,7 +324,7 @@
         15,
         16
       ],
-      "nota": "amenity-points.mss: nomi di selle e grotte da z15, @landform-color.",
+      "nota": "amenity-points.mss: nomi di selle e grotte da z15, @landform-color. Scostamento come text-dy: 7 px per le selle, 11 per le grotte (con 7 il nome cadeva sotto l'icona da 14 px e OpenLayers lo scartava: 11/10/2026).",
       "copre": [
         "text-point"
       ]
@@ -609,7 +614,7 @@
         15,
         16
       ],
-      "nota": "water.mss, #water-lines-text: stream da z15, 10 px, text-spacing 600, text-dy 8."
+      "nota": "water.mss, #water-lines-text: stream, drain e ditch da z15, stesso testo (10 px, text-spacing 600, text-dy 8). Fino all'11/10/2026 il filtro prendeva solo stream: i fossi e i botri tagliati `drain` in OSM (sul Monte Pisano quasi tutti) restavano senza nome."
     },
     "aeroway-taxiway": {
       "tgen": "aeroways"

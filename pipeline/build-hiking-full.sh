@@ -14,7 +14,7 @@ ZMIN="${7:-10}"; ZMAX="${8:-14}"
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
 
 echo "== estraggo le relazioni route=hiking"
-docker run --rm --platform linux/arm64 -v "$PWD":/w -v "$WORK":/out \
+docker run --rm -v "$PWD":/w -v "$WORK":/out \
   --entrypoint ogr2ogr ghcr.io/osgeo/gdal:ubuntu-small-latest \
   -f GeoJSONSeq /out/hiking.geojsonl "/w/$PBF" \
   -spat "$W" "$S" "$E" "$N" -lco COORDINATE_PRECISION=6 \
@@ -30,7 +30,7 @@ docker run --rm --platform linux/arm64 -v "$PWD":/w -v "$WORK":/out \
 echo "   $(wc -l < "$WORK/hiking.geojsonl") relazioni"
 
 echo "== tiles z${ZMIN}-${ZMAX}"
-tippecanoe -o "$WORK/h.mbtiles" --force -l hiking -Z"$ZMIN" -z"$ZMAX" \
+tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/h.mbtiles" --force -l hiking -Z"$ZMIN" -z"$ZMAX" \
   --no-feature-limit --no-tile-size-limit --no-simplification-of-shared-nodes \
   "$WORK/hiking.geojsonl" -q
 pmtiles convert "$WORK/h.mbtiles" "$OUT"

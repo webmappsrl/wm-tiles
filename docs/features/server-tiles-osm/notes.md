@@ -4,6 +4,14 @@ Nessun ticket Orchestrator: feature tracciata solo in questa cartella.
 
 ## Deviazioni dal piano
 
+- **2026-10-11 — Le quote del DEM si generano fino a z14, non z16.** TINITALY ha
+  un punto ogni 10 m e a z14 un pixel vale gia' circa 7 m: oltre non c'e'
+  dettaglio, solo interpolazione. Sulle celle di prova le PNG z15-z16 con le
+  quote fino a z14, ingrandite come fa la preview (`render-png.mjs
+  --dem-max 14`), differiscono da quelle con le quote fino a z16 di meno di 0,6
+  livelli di grigio su 255 in media. Circa 8 GB invece di 130. Reversibile:
+  TINITALY resta, e lo stile e il renderer leggono dai dati fin dove arrivano
+  le quote.
 - **2026-10-11 — Renderer PNG con maplibre-native, come prevedeva il piano
   (Task 13); sostituisce la decisione del giorno prima.** Lo spike mai fatto,
   rifatto con lo stile gia' tarato: stesse tile, stesso `style.json`,
@@ -775,3 +783,55 @@ regione): decide il livello d'ingresso e, ordinando le feature, la precedenza
 fra nomi vicini. La finestra dei nomi di regioni e nazioni viene per ora da una
 tabella di superfici; sul server va calcolata dai poligoni OSM, che includono le
 acque territoriali.
+
+## Quarto giro: l'ombra per classe di versante e i filtri troppo stretti (11/10/2026)
+
+**L'ombra da z14 a z16.** L'utente vedeva TGen piu' marcato mentre le medie
+globali erano a posto (z15: -2,1 di luminosita', -0,2 di contrasto). Le medie
+mescolano ombra, curve, etichette e uso del suolo. `tools/ombra-per-classe.mjs`
+rende le superfici e il resto senza ombra con maplibre-native e confronta TGen
+con il modello d'ombra solo sui pixel liberi, raggruppati per pendenza ed
+esposizione. Risultato: TGen schiarisce i piani e i versanti al sole di 3-4
+punti e scurisce i ripidi di 2-5, quasi a prescindere dall'esposizione — l'effetto
+del suo `#slope10m`. Con la luce a 45 gradi nessuna combinazione di
+esagerazione, gamma, opacita' e pendenza lo rende; con la luce a 60 gradi si':
+scarto medio per classe da 3,6 a 2,2 su nove zone per livello (il Monte Pisano e
+le otto del campione). Lo stesso set e' il migliore a z14, z15 e z16, com'e'
+giusto con un solo raster. **Deviazione**: opacita' 0,35 invece dello 0,3
+dichiarato da TGen, perche' il tono del suo raster non lo conosciamo (con 0,3 lo
+scarto e' piu' alto del 10%). Per poterla cambiare per livello, l'elevazione del
+sole e' diventata una variabile dello shader della preview: era una costante
+presa dal primo set, quindi `sunElevation` nel profilo sembrava configurata e
+non lo era.
+
+**Quattro filtri piu' stretti di TGen**, trovati dall'utente guardando la mappa.
+Nessuna misura poteva vederli: si confronta solo cio' che c'e' da entrambe le
+parti.
+
+- Le **localita'** (`place=locality`, `farm`): il layer `place` di OpenMapTiles
+  le scarta per schema, quindi `place-minor`, che le prevedeva nel filtro, non
+  le riceveva mai. Ora vengono da `osmpoi` (layer `place-minor-osm`, nel dato da
+  z14).
+- I **rifugi disegnati come aree** (in Italia circa tre su quattro) e le icone
+  **senza nome**: `osmpoi` leggeva solo i punti con nome. TGen prende punti e
+  aree (`amenity-points-poly`) e non chiede il nome per le icone. Le aree
+  diventano un punto interno (`punto-interno.py`, come `ST_PointOnSurface`).
+- I **guadi sui nodi**: `build-extra.sh` prendeva solo le vie (`amenity-line`),
+  ma in OSM i guadi sono quasi tutti nodi (`highway_ford` di
+  `amenity-points`). Nella cella di Pisa: 53 vie contro 2.242 nodi.
+- I nomi di **`drain` e `ditch`**: TGen li scrive come i torrenti, da z15;
+  `waterway-label-stream` prendeva solo `stream`.
+- I nomi delle **grotte**: TGen li scosta di 11 px (`text-dy`), il nostro
+  layer di 7 come per le selle. Con 7 il nome cade sotto l'icona da 14 px, e in
+  OpenLayers l'icona, che viene dopo, vince: il nome spariva.
+
+Pubblicati nella versione `20261011-2130` (con `osmpoi` ed `extra` rigenerati
+sul PBF nazionale; gli altri archivi sono quelli di `20261011-1804`, in hard link).
+
+**Il diradamento di tippecanoe.** Sotto il livello massimo tippecanoe tiene di
+serie una frazione dei punti (`-r 2.5`): a z13 l'archivio dei POI aveva solo una
+parte dei rifugi, scelti dalla densita' locale. Con l'archivio piu' ricco il
+Rifugio Genova e' sparito da z12-z13 mentre prima c'era: era fragile anche
+prima. TGen li mostra tutti da z13. Ora `build-osmpoi.sh` usa `-r1` e mette ogni
+tipo nel dato dal livello in cui lo stile lo disegna (uscite z11, rifugi z13, il
+resto z14): i livelli bassi restano leggeri senza perdere nulla.

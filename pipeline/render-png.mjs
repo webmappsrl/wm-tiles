@@ -28,6 +28,7 @@
  *   node pipeline/render-png.mjs --bbox W,S,E,N --zoom 8-16 [--out data/png]
  * Opzioni: --base http://localhost:8080  --lato 4  --margine 128
  *          --only a,b  (solo questi layer, come `?only=` della preview; l'ombra resta)
+ *          --dem-max 14  (quote fino a questo livello, ingrandite oltre)
  * Su Linux senza le librerie giuste: pipeline/render-png-docker.sh, stessi argomenti.
  */
 import mbgl from '@maplibre/maplibre-gl-native';
@@ -35,8 +36,8 @@ import sharp from 'sharp';
 import {mkdirSync, readFileSync, renameSync, writeFileSync} from 'node:fs';
 import {dirname, join} from 'node:path';
 import {parseZxy, raggruppa, tileInBbox, vistaMetatile} from '../src/raster/tiles.js';
-import {adattaStile, PIXEL_RATIO} from '../src/raster/stile-nativo.js';
-import {componi, decodificaTerrarium, fasciaDi, grigi, PIXEL_Z0} from '../src/raster/ombra.js';
+import {adattaStile, localizza, PIXEL_RATIO} from '../src/raster/stile-nativo.js';
+import {componi, decodificaTerrarium, fasciaDi, grigi, PIXEL_Z0, quoteVista} from '../src/raster/ombra.js';
 
 const argv = process.argv.slice(2);
 const opz = (nome, def) => {
@@ -72,7 +73,8 @@ if (!ver?.current) {
 // --- stile: due meta', sotto e sopra l'ombreggiatura ---------------------------
 // Il server scrive gli URL delle sorgenti con l'host della richiesta, quindi da
 // un container basta passare --base con l'host raggiungibile da li'.
-const stile = adattaStile(await fetch(`${BASE}/style.json`).then(r => r.json()));
+// lo stile puo' portare l'indirizzo pubblico del server (CDN): si torna a quello locale
+const stile = adattaStile(localizza(await fetch(`${BASE}/style.json`).then(r => r.json()), BASE));
 if (SOLO) for (const l of stile.layers) if (!SOLO.has(l.id)) (l.layout ??= {}).visibility = 'none';
 // l'ombra sta sopra le superfici e sotto le curve di livello, come posizionaOmbra() della preview
 const iOmbra = stile.layers.findIndex(l => l.id.startsWith('contour'));
@@ -82,7 +84,9 @@ const sopra = {...stile, layers: stile.layers.slice(iOmbra).filter(l => l.type !
 const fasce = stile.metadata?.['wm:hillshade']?.fasce ?? [];
 const terrain = stile.sources.terrain;
 const DEM_MIN = terrain?.minzoom ?? 8;
-const DEM_MAX = terrain?.maxzoom ?? 16;
+// --dem-max fa finta che le quote si fermino prima: serve a decidere fino a che
+// livello generarle, confrontando i PNG nei due casi
+const DEM_MAX = Math.min(Number(opz('dem-max', terrain?.maxzoom ?? 16)), terrain?.maxzoom ?? 16);
 
 // --- maplibre-native -------------------------------------------------------------
 let errori = 0;
@@ -125,27 +129,41 @@ const quote = (z, x, y) => {
   return cacheDem.get(k);
 };
 
-/** Quote della vista N x N con angolo (x0, y0) in pixel mondo a zoom z, piu' un bordo B. */
-async function mosaico(z, x0, y0, N, B) {
-  const W = N + 2 * B, E = new Float32Array(W * W), k = 2 ** z;
+/** Quote del DEM al livello zd, griglia Wd x Hd con il punto (u0, v0) in alto a sinistra. */
+async function mosaicoDem(zd, u0, v0, Wd, Hd) {
+  const D = new Float32Array(Wd * Hd), k = 2 ** zd;
   const lavori = [];
-  for (let ty = Math.floor((y0 - B) / 256); ty <= Math.floor((y0 + N + B - 1) / 256); ty++) {
-    for (let tx = Math.floor((x0 - B) / 256); tx <= Math.floor((x0 + N + B - 1) / 256); tx++) {
+  for (let ty = Math.floor(v0 / 256); ty <= Math.floor((v0 + Hd - 1) / 256); ty++) {
+    for (let tx = Math.floor(u0 / 256); tx <= Math.floor((u0 + Wd - 1) / 256); tx++) {
       if (tx < 0 || ty < 0 || tx >= k || ty >= k) continue;
-      lavori.push(quote(z, tx, ty).then(q => {
+      lavori.push(quote(zd, tx, ty).then(q => {
         for (let r = 0; r < 256; r++) {
-          const er = ty * 256 + r - (y0 - B);
-          if (er < 0 || er >= W) continue;
+          const dr = ty * 256 + r - v0;
+          if (dr < 0 || dr >= Hd) continue;
           for (let c = 0; c < 256; c++) {
-            const ec = tx * 256 + c - (x0 - B);
-            if (ec >= 0 && ec < W) E[er * W + ec] = q[r * 256 + c];
+            const dc = tx * 256 + c - u0;
+            if (dc >= 0 && dc < Wd) D[dr * Wd + dc] = q[r * 256 + c];
           }
         }
       }));
     }
   }
   await Promise.all(lavori);
-  return E;
+  return D;
+}
+
+/**
+ * Quote della vista N x N con angolo (x0, y0) in pixel mondo a zoom z, piu' un
+ * bordo per la finestra della pendenza. Fino all'ultimo livello del DEM sono i
+ * suoi punti, uno per pixel; oltre, interpolate fra i punti dell'ultimo livello.
+ */
+async function quoteDellaVista(z, x0, y0, N) {
+  const zd = Math.min(z, DEM_MAX), s = 2 ** (z - zd), B = 3 * s;
+  const u0 = Math.floor((x0 - B + 0.5) / s - 0.5), u1 = Math.floor((x0 + N + B - 0.5) / s - 0.5) + 1;
+  const v0 = Math.floor((y0 - B + 0.5) / s - 0.5), v1 = Math.floor((y0 + N + B - 0.5) / s - 0.5) + 1;
+  const Wd = u1 - u0 + 1, Hd = v1 - v0 + 1;
+  const D = await mosaicoDem(zd, u0, v0, Wd, Hd);
+  return {E: quoteVista(D, Wd, u0, v0, x0, y0, N, B, s), B, s, passo: PIXEL_Z0 / 2 ** zd};
 }
 
 // --- i metatile ----------------------------------------------------------------------
@@ -162,11 +180,9 @@ try {
     const b = await disegna(mSopra, vista);
     let f = null, sh = null;
     if (m.z >= DEM_MIN && terrain) {
-      if (m.z > DEM_MAX) throw new Error(`z${m.z}: oltre il livello massimo del DEM (${DEM_MAX}) l'ombra non e' calcolata`);
       f = fasciaDi(fasce, m.z);
-      const B = 3;
-      const E = await mosaico(m.z, m.mx * m.lato * 256 - MARGINE, m.my * m.lato * 256 - MARGINE, N, B);
-      sh = grigi(E, N, B, PIXEL_Z0 / 2 ** m.z, f);
+      const q = await quoteDellaVista(m.z, m.mx * m.lato * 256 - MARGINE, m.my * m.lato * 256 - MARGINE, N);
+      sh = grigi(q.E, N, q.B, q.passo, f, q.s);
     }
     const rgb = componi(a, b, sh, f, N);
     for (const t of m.tiles) {

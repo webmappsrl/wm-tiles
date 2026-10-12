@@ -11,18 +11,26 @@
  *
  * Il riferimento viene dalla cache di tile-diff (data/ref-cache).
  *
- * Uso: node tools/taratura-ombra.mjs <opacity|gamma|vert|slope> <v1,v2,...> <z/x/y> [z/x/y ...]
+ * Uso: node tools/taratura-ombra.mjs <opacity|gamma|vert|slope|el> <v1,v2,...> <z/x/y> [z/x/y ...]
+ * (`el` e' l'elevazione del sole in gradi)
  */
 import {chromium} from 'playwright';
 import sharp from 'sharp';
 import {existsSync, readFileSync, writeFileSync, mkdirSync} from 'node:fs';
 
 const [param, valori, ...tiles] = process.argv.slice(2);
-if (!['opacity', 'gamma', 'vert', 'slope'].includes(param) || !valori || !tiles.length) {
-  console.error('uso: taratura-ombra.mjs <opacity|gamma|vert|slope> <v1,v2,...> <z/x/y> [...]');
+const PARAMETRI = ['opacity', 'gamma', 'vert', 'slope', 'el'];
+if (!PARAMETRI.includes(param) || !valori || !tiles.length) {
+  console.error('uso: taratura-ombra.mjs <opacity|gamma|vert|slope|el> <v1,v2,...> <z/x/y> [...]');
   process.exit(2);
 }
 const vs = valori.split(',').map(Number);
+const fissi = (process.env.WM_FISSI ?? '').split(',').filter(Boolean).map(c => { const [n, v] = c.split('='); return [n, Number(v)]; });
+if (fissi.some(([n, v]) => !PARAMETRI.includes(n) || !Number.isFinite(v))) {
+  console.error('WM_FISSI vuole nome=valore,... fra opacity, gamma, vert, slope, el');
+  process.exit(2);
+}
+if (fissi.length) console.log(`  fissi: ${fissi.map(([n, v]) => `${n}=${v}`).join(' ')}`);
 const BASE = process.env.WM_BASE ?? 'http://localhost:8080';
 
 const misura = async buf => {
@@ -66,12 +74,26 @@ for (const t of tiles) {
     const l = window.__wm.shade?.layer;
     return nome === 'opacity' ? l?.getOpacity() : l?.get(`wm-${nome}`);
   }, param);
+  // WM_FISSI="vert=1.4,gamma=0.6": parametri tenuti fermi mentre si prova l'altro,
+  // per cercare due leve insieme (piu' esagerazione e un gamma diverso)
+  for (const [nome, valore] of fissi) {
+    await p.evaluate(([n, v]) => {
+      const l = window.__wm.shade.layer;
+      if (n === 'opacity') { l.setOpacity(v); return; }
+      l.set(`wm-${n}`, v);
+      const el = ((l.get('wm-el') ?? 45) * Math.PI) / 180;
+      const vars = {vert: l.get('wm-vert'), gamma: l.get('wm-gamma'), slope: l.get('wm-slope'), passoDem: l.get('wm-passo'), sinEl: Math.sin(el), cosEl: Math.cos(el)};
+      l.updateStyleVariables(vars);
+      window.__wm.shade.pendenzaLayer?.updateStyleVariables?.(vars);
+    }, [nome, valore]);
+  }
   for (const v of vs) {
     await p.evaluate(([nome, valore]) => {
       const l = window.__wm.shade.layer;
       if (nome === 'opacity') { l.setOpacity(valore); return; }
       l.set(`wm-${nome}`, valore);
-      const vars = {vert: l.get('wm-vert'), gamma: l.get('wm-gamma'), slope: l.get('wm-slope'), passoDem: l.get('wm-passo')};
+      const el = ((l.get('wm-el') ?? 45) * Math.PI) / 180;
+      const vars = {vert: l.get('wm-vert'), gamma: l.get('wm-gamma'), slope: l.get('wm-slope'), passoDem: l.get('wm-passo'), sinEl: Math.sin(el), cosEl: Math.cos(el)};
       l.updateStyleVariables(vars);
       // Anche il layer della pendenza legge `vert` e il passo: aggiornare solo
       // quello della luce sottostimava lo scurimento dell'esagerazione.

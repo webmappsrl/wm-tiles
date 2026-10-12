@@ -21,7 +21,7 @@ ZMIN="${7:-8}"; ZMAX="${8:-11}"
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
 
 echo "== estraggo le strade da $PBF"
-docker run --rm --platform linux/arm64 -v "$PWD":/w -v "$WORK":/out \
+docker run --rm -v "$PWD":/w -v "$WORK":/out \
   --entrypoint ogr2ogr ghcr.io/osgeo/gdal:ubuntu-small-latest \
   -f GeoJSONSeq -t_srs EPSG:4326 -spat "$W" "$S" "$E" "$N" \
   -lco COORDINATE_PRECISION=6 \
@@ -35,7 +35,7 @@ wc -l < "$WORK/roads.geojsonl" | awk '{print "   "$1" strade"}'
 echo "== tiles z${ZMIN}-${ZMAX}"
 # --drop-densest-as-needed evita tile enormi ai livelli bassi mantenendo la
 # trama della rete, che e' cio' che conta a quelle scale
-tippecanoe -o "$WORK/r.mbtiles" --force -l roadslz -Z"$ZMIN" -z"$ZMAX" \
+tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/r.mbtiles" --force -l roadslz -Z"$ZMIN" -z"$ZMAX" \
   --drop-densest-as-needed --no-simplification-of-shared-nodes \
   --simplification=4 "$WORK/roads.geojsonl" -q
 
@@ -44,7 +44,7 @@ tippecanoe -o "$WORK/r.mbtiles" --force -l roadslz -Z"$ZMIN" -z"$ZMAX" \
 # da z10 (autostrade), z11 (superstrade e primarie) e z12 (secondarie). Layer
 # a parte e senza scarti per densita': un cartellino perso e' un buco visibile.
 echo "== estraggo i numeri delle strade"
-docker run --rm --platform linux/arm64 -v "$PWD":/w -v "$WORK":/out \
+docker run --rm -v "$PWD":/w -v "$WORK":/out \
   --entrypoint ogr2ogr ghcr.io/osgeo/gdal:ubuntu-small-latest \
   -f GeoJSONSeq -t_srs EPSG:4326 -spat "$W" "$S" "$E" "$N" \
   -lco COORDINATE_PRECISION=6 \
@@ -62,7 +62,7 @@ wc -l < "$WORK/ref.geojsonl" | awk '{print "   "$1" tratti numerati"}'
 # livello oltre le strade: la soglia di ogni punto e' nel dato e vale
 # esattamente solo se il livello ha tile proprie.
 python3 pipeline/punti-cartellini.py "$WORK/ref.geojsonl" "$WORK/ref-punti.geojsonl" 10 12
-tippecanoe -o "$WORK/ref.mbtiles" --force -l roadslz -Z10 -z12 \
+tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/ref.mbtiles" --force -l roadslz -Z10 -z12 \
   --no-feature-limit --no-tile-size-limit "$WORK/ref-punti.geojsonl" -q
 tile-join -o "$WORK/tutto.mbtiles" --force -q --no-tile-size-limit "$WORK/r.mbtiles" "$WORK/ref.mbtiles"
 

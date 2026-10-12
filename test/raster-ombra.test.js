@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {componi, decodificaTerrarium, fasciaDi, grigi, sfoca} from '../src/raster/ombra.js';
+import {componi, decodificaTerrarium, fasciaDi, grigi, quoteVista, sfoca} from '../src/raster/ombra.js';
 
 /**
  * L'ombra dei PNG puo' sbagliare senza alcun errore, come e' successo a quella
@@ -39,6 +39,31 @@ describe('grigi', () => {
   it('la pendenza in overlay c\'e\' solo se il set la chiede', () => {
     expect(grigi(piano(5, 0), N, B, 10, set).pend).toBeNull();
     expect(grigi(piano(5, 0), N, B, 10, {...set, slope: 0.3}).pend).not.toBeNull();
+  });
+});
+
+describe('quoteVista', () => {
+  // un piano che sale di 10 m a ogni punto verso est: D(u, v) = 10 u
+  const Wd = 12, D = new Float32Array(Wd * Wd).map((_, i) => 10 * (i % Wd));
+  it('fino all\'ultimo livello del DEM restituisce i suoi punti, senza interpolare', () => {
+    const E = quoteVista(D, Wd, 0, 0, 2, 2, 4, 2, 1);
+    expect(E[0]).toBe(0);           // vista da x0 - B = 0
+    expect(E[5]).toBe(50);
+  });
+  it('oltre, interpola fra i punti: su un piano la quota cresce di meta\' a ogni pixel', () => {
+    const E = quoteVista(D, Wd, 0, 0, 8, 8, 4, 6, 2);
+    const W = 4 + 2 * 6;
+    expect(E[W * 6 + 7] - E[W * 6 + 6]).toBeCloseTo(5, 5);
+  });
+});
+
+describe('grigi oltre l\'ultimo livello del DEM', () => {
+  it('un piano da\' la stessa luce che al livello del DEM', () => {
+    const P = 10;
+    const Wd = 40, D = new Float32Array(Wd * Wd).map((_, i) => 3 * (i % Wd) + 2 * Math.floor(i / Wd));
+    const a = grigi(quoteVista(D, Wd, 0, 0, 10, 10, 8, 3, 1), 8, 3, P, set, 1);
+    const b = grigi(quoteVista(D, Wd, 0, 0, 20, 20, 8, 6, 2), 8, 6, P, set, 2);
+    expect(Math.abs(a.luce[36] - b.luce[36])).toBeLessThanOrEqual(1);
   });
 });
 
