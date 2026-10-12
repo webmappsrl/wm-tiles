@@ -49,6 +49,9 @@ mkdir -p "$WORK/tmp" "$STAGE"
 # Ubuntu 26.04 sta in memoria (16 GB) e con l'Italia si riempie.
 export TMPDIR="$WORK/tmp"
 fase() { echo "== $(date -u '+%F %T') $*"; }
+# i tempi: ogni passo scrive quanto ha impiegato, e alla fine il totale
+T0=$(date +%s)
+durata() { local s=$(( $(date +%s) - $1 )); printf '%dh%02dm%02ds' $((s / 3600)) $((s % 3600 / 60)) $((s % 60)); }
 # Un passo e' fatto quando ha lasciato il suo segno, non quando il file esiste:
 # planetiler e tippecanoe scrivono l'archivio mentre lavorano, e dopo
 # un'interruzione un file a meta' verrebbe preso per buono.
@@ -57,8 +60,10 @@ segna() { touch "$(dirname "$1")/.fatto-$(basename "$1")"; }
 passo() {  # <uscita> <comando...>: lo esegue se non e' gia' fatto, e lo segna
   local OUT="$1"; shift
   fatto "$OUT" && return 0
+  local t=$(date +%s)
   "$@"
   segna "$OUT"
+  echo "   $(basename "$OUT"): $(durata $t)"
 }
 
 # ---------------------------------------------------------------------------
@@ -102,7 +107,7 @@ if [ -n "$SOLO_OSM" ]; then
 JSON
   rm -f "$STAGE"/.fatto-*
   mv "$STAGE" "data/archives/$V"
-  fase "fatto: versione $V (solo OpenStreetMap). Riavvia il server"
+  fase "fatto: versione $V (solo OpenStreetMap) in $(durata $T0). Riavvia il server"
   exit 0
 fi
 
@@ -254,4 +259,4 @@ mv "$DEM/terrain" data/dem/terrain
 rm -f data/dem/terrain/.z*
 if [ -e data/archives/dem/contours.pmtiles ]; then mv data/archives/dem/contours.pmtiles "data/archives/dem/contours-prima-di-$V.pmtiles"; fi
 cp "$CL/contours.pmtiles" data/archives/dem/contours.pmtiles
-fase "fatto: versione $V, DEM $(find data/dem/terrain -name '*.png' | wc -l | tr -d ' ') tile. Riavvia il server; i file di lavoro restano in $WORK"
+fase "fatto: versione $V in $(durata $T0), DEM $(find data/dem/terrain -name '*.png' | wc -l | tr -d ' ') tile. Riavvia il server; i file di lavoro restano in $WORK"

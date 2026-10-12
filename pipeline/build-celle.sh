@@ -34,6 +34,8 @@ set -euo pipefail
 SOLO_OSM=""
 if [ "${1:-}" = "--solo-osm" ]; then SOLO_OSM=1; shift; fi
 V="${1:?versione, es. 20261010-1930}"; shift
+T0=$(date +%s)  # il tempo totale si scrive alla fine
+durata() { local s=$(( $(date +%s) - T0 )); printf '%dh%02dm%02ds' $((s / 3600)) $((s % 3600 / 60)) $((s % 60)); }
 [ $# -ge 1 ] || { echo "uso: build-celle.sh <versione> <nome>:<W,S,E,N>:<pbf> [...]" >&2; exit 2; }
 echo "$V" | grep -Eq '^[0-9]{8}-[0-9]{4}$' || { echo "!! versione non valida: $V" >&2; exit 2; }
 
@@ -207,7 +209,7 @@ cat > "$STAGE/provenance.json" <<JSON
 JSON
 mv "$STAGE" "data/archives/$V"
 if [ -n "$SOLO_OSM" ]; then
-  echo "== fatto: versione $V (solo OpenStreetMap). Riavvia il server."
+  echo "== fatto: versione $V (solo OpenStreetMap) in $(durata). Riavvia il server."
   exit 0
 fi
 if [ ! -e data/dem/terrain-prototipo ]; then mv data/dem/terrain data/dem/terrain-prototipo; else rm -rf data/dem/terrain; fi
@@ -216,4 +218,4 @@ if [ ! -e data/archives/dem/contours-prototipo.pmtiles ]; then
   mv data/archives/dem/contours.pmtiles data/archives/dem/contours-prototipo.pmtiles
 fi
 cp "$WORK/contours.pmtiles" data/archives/dem/contours.pmtiles
-echo "== fatto: versione $V, DEM $(find data/dem/terrain -name '*.png' | wc -l | tr -d ' ') tile. Riavvia il server."
+echo "== fatto: versione $V in $(durata), DEM $(find data/dem/terrain -name '*.png' | wc -l | tr -d ' ') tile. Riavvia il server."
