@@ -296,7 +296,8 @@
     },
     "place-city": {
       "tgen": "capital-names",
-      "nota": "Solo la capitale (capital=2): le altre citta' e i paesi sono city-dot, city-dot-label e city-label."
+      "nota": "Solo la capitale (capital=2): le altre citta' e i paesi sono city-dot, city-dot-label e city-label.",
+      "notaCapitale": "fino a z7 il nome sta sotto il simbolo della capitale (ShieldSymbolizer di capital-names con dy 6-7): centrato lo copriva"
     },
     "place-village": {
       "tgen": "placenames-small"
@@ -1152,7 +1153,8 @@
       "copre": [
         "placenames-medium"
       ],
-      "nota": "placenames.mss #placenames-medium: il livello d'ingresso di ogni citta' e' nel dato (tippecanoe.minzoom dal punteggio, build-parchi.sh). Visibile da z7 nel profilo vuol dire anche z4-z6."
+      "nota": "placenames.mss #placenames-medium: il livello d'ingresso di ogni citta' e' nel dato (tippecanoe.minzoom dal punteggio, build-parchi.sh). Visibile da z7 nel profilo vuol dire anche z4-z6.",
+      "notaOstacolo": "icon-ignore-placement: il pallino veniva disegnato dopo il proprio nome e, con allow-overlap ma senza ignore-placement, lo cancellava: a z6-z7 su tiles.maphub.it non c'era nessun nome di citta' (13/10/2026)"
     },
     "city-dot-label": {
       "tgen": null,

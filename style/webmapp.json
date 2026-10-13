@@ -10520,7 +10520,8 @@
             "place-4-z7"
           ]
         ],
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": true
       },
       "minzoom": 3,
       "maxzoom": 7
@@ -11195,7 +11196,8 @@
           6,
           "place-capital-8"
         ],
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": true
       },
       "minzoom": 3,
       "maxzoom": 7
@@ -11293,7 +11295,37 @@
         ],
         "text-max-width": 6,
         "text-padding": 6,
-        "symbol-sort-key": 0
+        "symbol-sort-key": 0,
+        "text-anchor": [
+          "step",
+          [
+            "zoom"
+          ],
+          "top",
+          7,
+          "center"
+        ],
+        "text-offset": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "literal",
+            [
+              0,
+              0.5
+            ]
+          ],
+          7,
+          [
+            "literal",
+            [
+              0,
+              0
+            ]
+          ]
+        ]
       },
       "paint": {
         "text-color": "#222",
