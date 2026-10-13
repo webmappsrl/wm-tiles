@@ -213,7 +213,8 @@ for Z in $(seq $DEM_ZMIN $DEM_ZMAX); do
   # Ogni livello dal mosaico in float, con cubicspline: la pendenza resta
   # continua e non c'e' reticolo (build-terrain-zoom.sh). Il float di z14 resta
   # per le curve di livello.
-  docker run --rm -v "$DEM":/work -v "$PWD/pipeline":/pipeline --entrypoint bash "$GDAL" -c "
+  # /src: i VRT delle zone puntano ai fogli di TINITALY con quel percorso
+  docker run --rm -v "$DEM":/work -v "$PWD/$TG/tinitaly":/src:ro -v "$PWD/pipeline":/pipeline --entrypoint bash "$GDAL" -c "
     set -euo pipefail; cd /work
     gdalwarp -overwrite -q -t_srs EPSG:3857 -te_srs EPSG:4326 -te $DW $DS $DE $DN -tr $STEP $STEP \
       -r cubicspline -multi -wo NUM_THREADS=ALL_CPUS \
