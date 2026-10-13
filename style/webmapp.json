@@ -7212,6 +7212,120 @@
       "minzoom": 12
     },
     {
+      "id": "poi-name",
+      "type": "symbol",
+      "source": "amenity",
+      "source-layer": "testi",
+      "filter": [
+        "==",
+        [
+          "get",
+          "f"
+        ],
+        "R"
+      ],
+      "layout": {
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-font": [
+          "Noto Sans Regular"
+        ],
+        "text-size": [
+          "get",
+          "dim"
+        ],
+        "text-max-width": [
+          "get",
+          "w"
+        ],
+        "text-anchor": [
+          "match",
+          [
+            "get",
+            "a"
+          ],
+          "t",
+          "top",
+          "b",
+          "bottom",
+          "center"
+        ],
+        "text-line-height": 1.05,
+        "text-padding": 0
+      },
+      "paint": {
+        "text-color": [
+          "get",
+          "col"
+        ],
+        "text-halo-color": "rgba(255,255,255,0.6)",
+        "text-halo-width": [
+          "get",
+          "h"
+        ]
+      },
+      "minzoom": 9
+    },
+    {
+      "id": "poi-name-bold",
+      "type": "symbol",
+      "source": "amenity",
+      "source-layer": "testi",
+      "filter": [
+        "==",
+        [
+          "get",
+          "f"
+        ],
+        "B"
+      ],
+      "layout": {
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-font": [
+          "Noto Sans Bold"
+        ],
+        "text-size": [
+          "get",
+          "dim"
+        ],
+        "text-max-width": [
+          "get",
+          "w"
+        ],
+        "text-anchor": [
+          "match",
+          [
+            "get",
+            "a"
+          ],
+          "t",
+          "top",
+          "b",
+          "bottom",
+          "center"
+        ],
+        "text-line-height": 1.05,
+        "text-padding": 0
+      },
+      "paint": {
+        "text-color": [
+          "get",
+          "col"
+        ],
+        "text-halo-color": "rgba(255,255,255,0.6)",
+        "text-halo-width": [
+          "get",
+          "h"
+        ]
+      },
+      "minzoom": 9
+    },
+    {
       "id": "cliff-label",
       "type": "symbol",
       "source": "extra",
@@ -8181,6 +8295,63 @@
         "text-halo-width": 1
       },
       "minzoom": 7
+    },
+    {
+      "id": "poi-name-italic",
+      "type": "symbol",
+      "source": "amenity",
+      "source-layer": "testi",
+      "filter": [
+        "==",
+        [
+          "get",
+          "f"
+        ],
+        "I"
+      ],
+      "layout": {
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-font": [
+          "Noto Sans Italic"
+        ],
+        "text-size": [
+          "get",
+          "dim"
+        ],
+        "text-max-width": [
+          "get",
+          "w"
+        ],
+        "text-anchor": [
+          "match",
+          [
+            "get",
+            "a"
+          ],
+          "t",
+          "top",
+          "b",
+          "bottom",
+          "center"
+        ],
+        "text-line-height": 1.05,
+        "text-padding": 0
+      },
+      "paint": {
+        "text-color": [
+          "get",
+          "col"
+        ],
+        "text-halo-color": "rgba(255,255,255,0.6)",
+        "text-halo-width": [
+          "get",
+          "h"
+        ]
+      },
+      "minzoom": 9
     },
     {
       "id": "railway-label",

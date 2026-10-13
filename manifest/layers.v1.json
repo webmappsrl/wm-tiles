@@ -132,7 +132,8 @@
       "layers": [
         "poi",
         "aerodrome_label",
-        "amenity"
+        "amenity",
+        "testi"
       ],
       "class": "public",
       "attributes": [

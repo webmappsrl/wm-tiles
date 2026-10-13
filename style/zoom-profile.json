@@ -104,11 +104,14 @@
     "osmpoi-label-spring",
     "rifugi-label",
     "mountain-peak-label",
+    "poi-name",
+    "poi-name-bold",
     "cliff-label",
     "dam-label",
     "water-name",
     "lake-label",
     "wood-label",
+    "poi-name-italic",
     "railway-label",
     "road-label-path",
     "road-label-track",
@@ -367,7 +370,10 @@
         "city-label",
         "state-label",
         "place-city",
-        "country-label"
+        "country-label",
+        "poi-name",
+        "poi-name-italic",
+        "poi-name-bold"
       ]
     },
     "11": {
@@ -414,7 +420,10 @@
         "city-label",
         "state-label",
         "place-city",
-        "country-label"
+        "country-label",
+        "poi-name",
+        "poi-name-italic",
+        "poi-name-bold"
       ]
     },
     "12": {
@@ -482,7 +491,10 @@
         "city-label",
         "state-label",
         "place-city",
-        "country-label"
+        "country-label",
+        "poi-name",
+        "poi-name-italic",
+        "poi-name-bold"
       ]
     },
     "13": {
@@ -568,7 +580,10 @@
         "city-label",
         "state-label",
         "place-city",
-        "country-label"
+        "country-label",
+        "poi-name",
+        "poi-name-italic",
+        "poi-name-bold"
       ],
       "notaRifugi": "Rifugi da z13, etichette da z14: in TGen (amenity-points.mss) il marker e' [zoom >= 13] e il testo [zoom >= 14]. Le icone sono gia' della dimensione giusta (13 px contro marker-width 12), era sbagliata solo la soglia."
     },
@@ -677,7 +692,10 @@
         "state-label",
         "place-city",
         "country-label",
-        "spring-icon"
+        "spring-icon",
+        "poi-name",
+        "poi-name-italic",
+        "poi-name-bold"
       ]
     },
     "15": {
@@ -800,7 +818,10 @@
         "state-label",
         "place-city",
         "country-label",
-        "spring-icon"
+        "spring-icon",
+        "poi-name",
+        "poi-name-italic",
+        "poi-name-bold"
       ]
     },
     "16": {
@@ -889,6 +910,7 @@
         "level-crossing",
         "rail-crossing",
         "cross-icon",
+        "ford-icon",
         "park-label",
         "ferry-label",
         "waterway-label-stream",
@@ -926,7 +948,6 @@
         "hut-label",
         "shelter-icon",
         "amenity-icon",
-        "ford-icon",
         "station-label-halt",
         "station-label",
         "station-icon-halt",
@@ -938,7 +959,10 @@
         "city-label",
         "state-label",
         "country-label",
-        "spring-icon"
+        "spring-icon",
+        "poi-name",
+        "poi-name-italic",
+        "poi-name-bold"
       ]
     }
   },
@@ -1254,6 +1278,9 @@
     "mountain-peak-icon": "nostro",
     "mountain-peak-label": "nostro",
     "oneway-arrow": "nostro",
+    "poi-name": "livelli (PNG)",
+    "poi-name-italic": "livelli (PNG)",
+    "poi-name-bold": "livelli (PNG)",
     "amenity-icon": "nostro",
     "poi-icon": "livelli (PNG)",
     "osmpoi-icon": "livelli (PNG)",

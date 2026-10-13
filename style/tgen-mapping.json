@@ -330,6 +330,33 @@
       "ordine": "roads-text-name",
       "nota": "frecce dei sensi unici (classe directions di roads-text-name e paths-text-name): da z16, ogni 180 px, colore per classe (style/frecce-colori.json). Punti con rotazione calcolati da pipeline/build-frecce.py: ol-mapbox-style non mette icone su linee sotto i 150 px. Non coprono ne' spostano le etichette (allow-overlap e ignore-placement)"
     },
+    "poi-name": {
+      "tgen": null,
+      "ordine": "text-point",
+      "livelli": [
+        10,
+        16
+      ],
+      "nota": "nomi dei punti di interesse come text-point e text-poly di TGen: classe dalla COALESCE del .mml (style/testi-coalesce.json), regola per livello da project.xml (style/testi-regole.json), un punto per livello con dimensione, colore, alone, larghezza e spostamento nel dato (pipeline/build-testi.py)"
+    },
+    "poi-name-italic": {
+      "tgen": null,
+      "ordine": "text-poly",
+      "livelli": [
+        10,
+        16
+      ],
+      "nota": "idem, carattere corsivo (fontset-1)"
+    },
+    "poi-name-bold": {
+      "tgen": null,
+      "ordine": "text-point",
+      "livelli": [
+        10,
+        16
+      ],
+      "nota": "idem, grassetto (fontset-2)"
+    },
     "amenity-icon": {
       "tgen": null,
       "ordine": "amenity-points",
