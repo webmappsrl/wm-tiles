@@ -18,6 +18,10 @@ describe('/preview/<area>', () => {
     expect((await request(app).get('/preview/appennino')).headers.location).toBe('/preview/?area=appennino');
     expect((await request(app).get('/preview/monte-pisano')).headers.location).toBe('/preview/?area=montepisano');
   });
+  it('la configurazione della preview porta il nome di ogni area, per riscrivere l\'indirizzo', async () => {
+    const {areas} = (await request(app).get('/preview/config.json')).body;
+    expect(areas.find(a => a.id === 'appennino').slug).toBe('appennino-tosco-emiliano');
+  });
   it('un nome sconosciuto e i file della preview non cambiano', async () => {
     expect((await request(app).get('/preview/nessuna-area')).status).toBe(404);
     expect((await request(app).get('/preview/config.json')).status).toBe(200);

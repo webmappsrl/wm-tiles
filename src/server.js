@@ -48,6 +48,11 @@ function loadManifest() {
 }
 
 /** Identificatore del set: hash del contenuto, non auto-descrittivo, indipendente dall'ordine. */
+/** Il nome di un'area della preview nell'indirizzo: l'etichetta senza
+ * parentesi, in minuscolo, senza accenti, con i trattini. */
+export const slugArea = s => s.toLowerCase().replace(/\(.*?\)/g, '').normalize('NFD').replace(/[̀-ͯ]/g, '')
+  .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
 export function setIdFor(groupIds) {
   const canonical = [...new Set(groupIds)].sort().join('\n');
   return createHash('sha256').update(canonical).digest('hex').slice(0, 12);
@@ -483,7 +488,7 @@ export function createApp() {
       groups: manifest.groups,
       defaultSet: setIdFor(manifest.defaultSet),
       sets: [...sets.entries()].map(([setId, groups]) => ({setId, groups})),
-      areas: manifest.previewAreas ?? [],
+      areas: (manifest.previewAreas ?? []).map(a => ({...a, slug: slugArea(a.label)})),
       legacyTileUrl: LEGACY_TILE_URL,
       pngTileUrl: '/png/{z}/{x}/{y}.png',
       styleUrl: '/style.json',
@@ -499,11 +504,10 @@ export function createApp() {
 
   // Un indirizzo per ogni area della preview, da mandare a chi deve guardare
   // un caso d'uso: /preview/appennino-tosco-emiliano apre gia' su quell'area.
-  // Vale l'id o l'etichetta senza parentesi, in minuscolo e con i trattini.
-  const slug = s => s.toLowerCase().replace(/\(.*?\)/g, '').normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  // Vale l'id o il nome dell'area (slugArea); la preview riscrive l'indirizzo
+  // con quel nome quando si cambia area dal menu.
   app.get('/preview/:area', (req, res, next) => {
-    const a = (manifest.previewAreas ?? []).find(x => x.id === req.params.area || slug(x.label) === req.params.area);
+    const a = (manifest.previewAreas ?? []).find(x => x.id === req.params.area || slugArea(x.label) === req.params.area);
     if (!a) return next();
     res.redirect(302, `/preview/?area=${encodeURIComponent(a.id)}`);
   });

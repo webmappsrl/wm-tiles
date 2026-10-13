@@ -54,6 +54,7 @@ for (const s of cfg.sets) el('set').append(new Option(s.groups.join(', '), s.set
 el('set').value = state.set;
 
 const start = areas.find(a => a.id === params.get('area')) ?? areas[0];
+el('area').value = start.id; // il menu mostra l'area aperta, non sempre la prima
 const fromLonLat = ol.proj.fromLonLat;
 
 // `?c=lon,lat` centra la vista all'apertura. Spostarla dopo il caricamento
@@ -479,11 +480,22 @@ view.on('change', () => {
   gridLabel();
 });
 
+// l'indirizzo segue l'area scelta (/preview/<nome>), cosi' quello che si
+// copia e si manda apre cio' che si sta guardando; gli altri parametri restano
+const indirizzoArea = a => {
+  if (!a?.slug) return;
+  const q = new URLSearchParams(location.search);
+  for (const k of ['area', 'c', 'zoom']) q.delete(k);
+  history.replaceState(null, '', `/preview/${a.slug}${q.size ? `?${q}` : ''}`);
+};
+if (params.get('area')) indirizzoArea(start);
+
 el('area').onchange = e => {
   const a = areas.find(x => x.id === e.target.value);
   if (a) {
     view.setCenter(fromLonLat(a.center));
     view.setZoom(a.zoom);
+    indirizzoArea(a);
   }
 };
 
