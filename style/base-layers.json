@@ -455,6 +455,59 @@
       ]
     },
     {
+      "id": "military-hatch",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "landuse",
+      "filter": [
+        "==",
+        [
+          "get",
+          "class"
+        ],
+        "military"
+      ],
+      "paint": {
+        "fill-pattern": "tg-military_red_hatch"
+      }
+    },
+    {
+      "id": "military-outline",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "landuse",
+      "filter": [
+        "==",
+        [
+          "get",
+          "class"
+        ],
+        "military"
+      ],
+      "paint": {
+        "line-color": "#dddbdb",
+        "line-opacity": 0.24,
+        "line-width": [
+          "step",
+          [
+            "zoom"
+          ],
+          1,
+          15,
+          2
+        ],
+        "line-offset": [
+          "step",
+          [
+            "zoom"
+          ],
+          -0.5,
+          15,
+          -1
+        ]
+      }
+    },
+    {
       "id": "water",
       "type": "fill",
       "source": "openmaptiles",
@@ -7013,6 +7066,49 @@
         "icon-ignore-placement": true
       },
       "paint": {}
+    },
+    {
+      "id": "capital-dot",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "filter": [
+        "all",
+        [
+          "in",
+          [
+            "get",
+            "class"
+          ],
+          [
+            "literal",
+            [
+              "city",
+              "town"
+            ]
+          ]
+        ],
+        [
+          "==",
+          [
+            "get",
+            "capital"
+          ],
+          2
+        ]
+      ],
+      "layout": {
+        "icon-image": [
+          "step",
+          [
+            "zoom"
+          ],
+          "place-capital-6",
+          7,
+          "place-capital-8"
+        ],
+        "icon-allow-overlap": true
+      }
     },
     {
       "id": "place-city",

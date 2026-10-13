@@ -68,6 +68,23 @@
         "cl_hr_subd_labels"
       ]
     },
+    "military-hatch": {
+      "tgen": "landuse-overlay",
+      "livelli": [
+        13,
+        16
+      ],
+      "nota": "tratteggio rosso (military_red_hatch.png) sulle aree militari, come landuse-overlay di project.xml",
+      "notaLivelli": "da z13: nei PNG del 2018 (z11, z12) non c'e'; il .mss lo dichiara da z8 sopra i 900 px. Trovato dall'inventario dei simboli (tools/tgen-simboli.py), 13 ottobre 2026"
+    },
+    "military-outline": {
+      "tgen": "landuse-overlay",
+      "livelli": [
+        13,
+        16
+      ],
+      "nota": "contorno #dddbdb al 24%, 1 px fino a z14 e 2 da z15, spostato verso l'interno"
+    },
     "water": {
       "tgen": [
         "water_polygons",
@@ -268,6 +285,14 @@
       "copre": [
         "text-poly"
       ]
+    },
+    "capital-dot": {
+      "tgen": "capital-names",
+      "livelli": [
+        4,
+        7
+      ],
+      "nota": "simbolo della capitale (place-capital-6 fino a z6, place-capital-8 a z7): mancava, Roma era senza simbolo perche' le citta' (parchi/citta) escludono capital=yes. Trovato dall'inventario dei simboli"
     },
     "place-city": {
       "tgen": "capital-names",

@@ -43,7 +43,7 @@ const CATEGORY = {
 };
 
 /** Icone che definiscono i propri colori e non vanno ricolorate. */
-const KEEP_COLORS = new Set(['hiking-shield', 'power-tower', 'power-tower-small', 'power-pole', 'aerodrome', 'station', 'spring', 'saddle', 'cave', 'level-crossing', 'level-crossing2', 'cross', 'bus-stop', 'ford', 'place-4', 'place-4-z7', 'place-6', 'place-6-z7', 'alpine-hut-cai', 'wilderness-hut-cai', 'tgen-shelter']);
+const KEEP_COLORS = new Set(['hiking-shield', 'power-tower', 'power-tower-small', 'power-pole', 'aerodrome', 'station', 'spring', 'saddle', 'cave', 'level-crossing', 'level-crossing2', 'cross', 'bus-stop', 'ford', 'place-4', 'place-4-z7', 'place-6', 'place-6-z7', 'place-capital-6', 'place-capital-8', 'alpine-hut-cai', 'wilderness-hut-cai', 'tgen-shelter']);
 
 const PADDING = 2;
 
@@ -88,6 +88,9 @@ const svgScudo = ({fill, stroke}, w) =>
   `style="fill:${fill};stroke:${stroke};stroke-width:1"/></svg>`;
 
 const files = readdirSync(SVG_DIR).filter(f => f.endsWith('.svg')).sort();
+// i motivi di riempimento di TGen sono PNG (es. il tratteggio delle aree
+// militari): entrano cosi' come sono, ingranditi senza sfumare per la 2x
+const motivi = readdirSync(SVG_DIR).filter(f => f.endsWith('.png')).sort();
 if (files.length === 0) {
   console.error(`nessun .svg in ${SVG_DIR}`);
   process.exit(1);
@@ -110,6 +113,12 @@ for (const ratio of [1, 2]) {
     const buf = await sharp(Buffer.from(svg), {density: 72 * ratio}).png().toBuffer();
     const meta = await sharp(buf).metadata();
     items.push({name, buf, width: meta.width, height: meta.height});
+  }
+  for (const file of motivi) {
+    const src = sharp(join(SVG_DIR, file));
+    const {width, height} = await src.metadata();
+    const buf = await src.resize(width * ratio, height * ratio, {kernel: 'nearest'}).png().toBuffer();
+    items.push({name: basename(file, '.png'), buf, width: width * ratio, height: height * ratio});
   }
 
   // Griglia semplice: righe di altezza uniforme, larghezza dell'atlas a

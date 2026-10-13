@@ -928,234 +928,6 @@
       }
     },
     {
-      "id": "waterway-river",
-      "type": "line",
-      "source": "openmaptiles",
-      "source-layer": "waterway",
-      "filter": [
-        "in",
-        [
-          "get",
-          "class"
-        ],
-        [
-          "literal",
-          [
-            "river",
-            "canal"
-          ]
-        ]
-      ],
-      "layout": {
-        "line-cap": "round",
-        "line-join": "round"
-      },
-      "paint": {
-        "line-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "#acd4ea",
-          12,
-          "#dce7f7"
-        ],
-        "line-width": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          8,
-          0.7,
-          9,
-          1.2,
-          10,
-          1.6,
-          12,
-          2,
-          13,
-          3,
-          14,
-          5,
-          15,
-          6,
-          16,
-          8
-        ]
-      },
-      "minzoom": 12
-    },
-    {
-      "id": "waterway-river-lz",
-      "type": "line",
-      "source": "roadslz",
-      "source-layer": "fiumi",
-      "layout": {
-        "line-cap": "round",
-        "line-join": "round"
-      },
-      "paint": {
-        "line-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "#acd4ea",
-          12,
-          "#dce7f7"
-        ],
-        "line-width": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          8,
-          0.7,
-          9,
-          1.2,
-          10,
-          1.6,
-          12,
-          2,
-          13,
-          3,
-          14,
-          5,
-          15,
-          6,
-          16,
-          8
-        ]
-      },
-      "minzoom": 7,
-      "maxzoom": 12
-    },
-    {
-      "id": "waterway-stream",
-      "type": "line",
-      "source": "openmaptiles",
-      "source-layer": "waterway",
-      "layout": {
-        "line-cap": "round",
-        "line-join": "round"
-      },
-      "paint": {
-        "line-color": "#dce7f7",
-        "line-width": [
-          "step",
-          [
-            "zoom"
-          ],
-          2,
-          14,
-          3
-        ]
-      },
-      "filter": [
-        "all",
-        [
-          "in",
-          [
-            "get",
-            "class"
-          ],
-          [
-            "literal",
-            [
-              "stream",
-              "ditch",
-              "drain"
-            ]
-          ]
-        ],
-        [
-          "!=",
-          [
-            "get",
-            "intermittent"
-          ],
-          1
-        ]
-      ],
-      "minzoom": 12
-    },
-    {
-      "id": "waterway-stream-intermittent",
-      "type": "line",
-      "source": "openmaptiles",
-      "source-layer": "waterway",
-      "layout": {
-        "line-cap": "butt",
-        "line-join": "round"
-      },
-      "paint": {
-        "line-color": "#dce7f7",
-        "line-width": [
-          "step",
-          [
-            "zoom"
-          ],
-          2,
-          14,
-          3
-        ],
-        "line-dasharray": [
-          "step",
-          [
-            "zoom"
-          ],
-          [
-            "literal",
-            [
-              2,
-              1.5
-            ]
-          ],
-          14,
-          [
-            "literal",
-            [
-              1.33,
-              1
-            ]
-          ]
-        ]
-      },
-      "filter": [
-        "all",
-        [
-          "in",
-          [
-            "get",
-            "class"
-          ],
-          [
-            "literal",
-            [
-              "stream",
-              "ditch",
-              "drain"
-            ]
-          ]
-        ],
-        [
-          "==",
-          [
-            "get",
-            "intermittent"
-          ],
-          1
-        ]
-      ],
-      "minzoom": 12
-    },
-    {
       "id": "barrier-dam",
       "type": "line",
       "source": "extra",
@@ -1180,45 +952,6 @@
       "paint": {
         "line-color": "#444444",
         "line-width": 2
-      },
-      "minzoom": 12
-    },
-    {
-      "id": "barrier-weir",
-      "type": "line",
-      "source": "extra",
-      "source-layer": "barriere",
-      "filter": [
-        "all",
-        [
-          "==",
-          [
-            "geometry-type"
-          ],
-          "LineString"
-        ],
-        [
-          "in",
-          [
-            "get",
-            "tipo"
-          ],
-          [
-            "literal",
-            [
-              "weir",
-              "lock_gate"
-            ]
-          ]
-        ]
-      ],
-      "paint": {
-        "line-color": "#aaaaaa",
-        "line-width": 2,
-        "line-dasharray": [
-          1,
-          1
-        ]
       },
       "minzoom": 12
     },
@@ -1256,23 +989,6 @@
       "minzoom": 12
     },
     {
-      "id": "marina-band-b",
-      "type": "line",
-      "source": "extra",
-      "source-layer": "marine",
-      "layout": {
-        "line-join": "round",
-        "line-cap": "round"
-      },
-      "paint": {
-        "line-color": "#0000ff",
-        "line-opacity": 0.1,
-        "line-width": 3,
-        "line-offset": -1.5
-      },
-      "minzoom": 13
-    },
-    {
       "id": "marina-band-a",
       "type": "line",
       "source": "extra",
@@ -1288,44 +1004,6 @@
         "line-offset": -0.5
       },
       "minzoom": 13
-    },
-    {
-      "id": "pier-poly",
-      "type": "fill",
-      "source": "openmaptiles",
-      "source-layer": "transportation",
-      "filter": [
-        "all",
-        [
-          "==",
-          [
-            "geometry-type"
-          ],
-          "Polygon"
-        ],
-        [
-          "==",
-          [
-            "get",
-            "class"
-          ],
-          "pier"
-        ]
-      ],
-      "paint": {
-        "fill-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "#fefceb",
-          12,
-          "#fcf8e9",
-          13,
-          "#fdf8ef"
-        ]
-      },
-      "minzoom": 11
     },
     {
       "id": "breakwater-fill",
@@ -1358,58 +1036,6 @@
       ],
       "paint": {
         "fill-color": "#aaaaaa"
-      },
-      "minzoom": 11
-    },
-    {
-      "id": "pier-line",
-      "type": "line",
-      "source": "openmaptiles",
-      "source-layer": "transportation",
-      "filter": [
-        "all",
-        [
-          "==",
-          [
-            "geometry-type"
-          ],
-          "LineString"
-        ],
-        [
-          "==",
-          [
-            "get",
-            "class"
-          ],
-          "pier"
-        ]
-      ],
-      "layout": {
-        "line-cap": "square"
-      },
-      "paint": {
-        "line-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "#fefceb",
-          12,
-          "#fcf8e9",
-          13,
-          "#fdf8ef"
-        ],
-        "line-width": [
-          "step",
-          [
-            "zoom"
-          ],
-          0.5,
-          12,
-          1,
-          14,
-          2
-        ]
       },
       "minzoom": 11
     },
@@ -1459,56 +1085,10 @@
       "minzoom": 11
     },
     {
-      "id": "bridge-area",
-      "type": "fill",
-      "source": "openmaptiles",
-      "source-layer": "transportation",
-      "filter": [
-        "all",
-        [
-          "==",
-          [
-            "geometry-type"
-          ],
-          "Polygon"
-        ],
-        [
-          "==",
-          [
-            "get",
-            "class"
-          ],
-          "bridge"
-        ]
-      ],
-      "paint": {
-        "fill-color": "#b8b8b8"
-      },
-      "minzoom": 11
-    },
-    {
       "id": "building-igm",
       "type": "fill",
       "source": "igm",
       "source-layer": "igm_edifici",
-      "paint": {
-        "fill-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "#bd957f",
-          14,
-          "#c4a08c"
-        ]
-      },
-      "minzoom": 13
-    },
-    {
-      "id": "building",
-      "type": "fill",
-      "source": "openmaptiles",
-      "source-layer": "building",
       "paint": {
         "fill-color": [
           "step",
@@ -1950,6 +1530,426 @@
       "minzoom": 11
     },
     {
+      "id": "waterway-river",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "waterway",
+      "filter": [
+        "in",
+        [
+          "get",
+          "class"
+        ],
+        [
+          "literal",
+          [
+            "river",
+            "canal"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": [
+          "step",
+          [
+            "zoom"
+          ],
+          "#acd4ea",
+          12,
+          "#dce7f7"
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          8,
+          0.7,
+          9,
+          1.2,
+          10,
+          1.6,
+          12,
+          2,
+          13,
+          3,
+          14,
+          5,
+          15,
+          6,
+          16,
+          8
+        ]
+      },
+      "minzoom": 12
+    },
+    {
+      "id": "waterway-river-lz",
+      "type": "line",
+      "source": "roadslz",
+      "source-layer": "fiumi",
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": [
+          "step",
+          [
+            "zoom"
+          ],
+          "#acd4ea",
+          12,
+          "#dce7f7"
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          8,
+          0.7,
+          9,
+          1.2,
+          10,
+          1.6,
+          12,
+          2,
+          13,
+          3,
+          14,
+          5,
+          15,
+          6,
+          16,
+          8
+        ]
+      },
+      "minzoom": 7,
+      "maxzoom": 12
+    },
+    {
+      "id": "waterway-stream",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "waterway",
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "#dce7f7",
+        "line-width": [
+          "step",
+          [
+            "zoom"
+          ],
+          2,
+          14,
+          3
+        ]
+      },
+      "filter": [
+        "all",
+        [
+          "in",
+          [
+            "get",
+            "class"
+          ],
+          [
+            "literal",
+            [
+              "stream",
+              "ditch",
+              "drain"
+            ]
+          ]
+        ],
+        [
+          "!=",
+          [
+            "get",
+            "intermittent"
+          ],
+          1
+        ]
+      ],
+      "minzoom": 12
+    },
+    {
+      "id": "waterway-stream-intermittent",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "waterway",
+      "layout": {
+        "line-cap": "butt",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "#dce7f7",
+        "line-width": [
+          "step",
+          [
+            "zoom"
+          ],
+          2,
+          14,
+          3
+        ],
+        "line-dasharray": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "literal",
+            [
+              2,
+              1.5
+            ]
+          ],
+          14,
+          [
+            "literal",
+            [
+              1.33,
+              1
+            ]
+          ]
+        ]
+      },
+      "filter": [
+        "all",
+        [
+          "in",
+          [
+            "get",
+            "class"
+          ],
+          [
+            "literal",
+            [
+              "stream",
+              "ditch",
+              "drain"
+            ]
+          ]
+        ],
+        [
+          "==",
+          [
+            "get",
+            "intermittent"
+          ],
+          1
+        ]
+      ],
+      "minzoom": 12
+    },
+    {
+      "id": "barrier-weir",
+      "type": "line",
+      "source": "extra",
+      "source-layer": "barriere",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "geometry-type"
+          ],
+          "LineString"
+        ],
+        [
+          "in",
+          [
+            "get",
+            "tipo"
+          ],
+          [
+            "literal",
+            [
+              "weir",
+              "lock_gate"
+            ]
+          ]
+        ]
+      ],
+      "paint": {
+        "line-color": "#aaaaaa",
+        "line-width": 2,
+        "line-dasharray": [
+          1,
+          1
+        ]
+      },
+      "minzoom": 12
+    },
+    {
+      "id": "marina-band-b",
+      "type": "line",
+      "source": "extra",
+      "source-layer": "marine",
+      "layout": {
+        "line-join": "round",
+        "line-cap": "round"
+      },
+      "paint": {
+        "line-color": "#0000ff",
+        "line-opacity": 0.1,
+        "line-width": 3,
+        "line-offset": -1.5
+      },
+      "minzoom": 13
+    },
+    {
+      "id": "pier-poly",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "geometry-type"
+          ],
+          "Polygon"
+        ],
+        [
+          "==",
+          [
+            "get",
+            "class"
+          ],
+          "pier"
+        ]
+      ],
+      "paint": {
+        "fill-color": [
+          "step",
+          [
+            "zoom"
+          ],
+          "#fefceb",
+          12,
+          "#fcf8e9",
+          13,
+          "#fdf8ef"
+        ]
+      },
+      "minzoom": 11
+    },
+    {
+      "id": "pier-line",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "geometry-type"
+          ],
+          "LineString"
+        ],
+        [
+          "==",
+          [
+            "get",
+            "class"
+          ],
+          "pier"
+        ]
+      ],
+      "layout": {
+        "line-cap": "square"
+      },
+      "paint": {
+        "line-color": [
+          "step",
+          [
+            "zoom"
+          ],
+          "#fefceb",
+          12,
+          "#fcf8e9",
+          13,
+          "#fdf8ef"
+        ],
+        "line-width": [
+          "step",
+          [
+            "zoom"
+          ],
+          0.5,
+          12,
+          1,
+          14,
+          2
+        ]
+      },
+      "minzoom": 11
+    },
+    {
+      "id": "bridge-area",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "geometry-type"
+          ],
+          "Polygon"
+        ],
+        [
+          "==",
+          [
+            "get",
+            "class"
+          ],
+          "bridge"
+        ]
+      ],
+      "paint": {
+        "fill-color": "#b8b8b8"
+      },
+      "minzoom": 11
+    },
+    {
+      "id": "building",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "building",
+      "paint": {
+        "fill-color": [
+          "step",
+          [
+            "zoom"
+          ],
+          "#bd957f",
+          14,
+          "#c4a08c"
+        ]
+      },
+      "minzoom": 13
+    },
+    {
       "id": "road-casing-minor-tunnel",
       "type": "line",
       "source": "openmaptiles",
@@ -2268,6 +2268,171 @@
       "minzoom": 11
     },
     {
+      "id": "road-casing-secondary-tunnel",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "class"
+          ],
+          "secondary"
+        ],
+        [
+          "==",
+          [
+            "get",
+            "brunnel"
+          ],
+          "tunnel"
+        ]
+      ],
+      "layout": {
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": [
+          "step",
+          [
+            "zoom"
+          ],
+          "#8e8b84",
+          12,
+          "#797569"
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          11,
+          3.5,
+          12,
+          5,
+          13,
+          5,
+          14,
+          9,
+          15,
+          10,
+          16,
+          18,
+          17,
+          21,
+          18,
+          27
+        ],
+        "line-dasharray": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "literal",
+            [
+              1.143,
+              0.571
+            ]
+          ],
+          12,
+          [
+            "literal",
+            [
+              0.8,
+              0.4
+            ]
+          ],
+          13,
+          [
+            "literal",
+            [
+              0.8,
+              0.4
+            ]
+          ],
+          14,
+          [
+            "literal",
+            [
+              0.444,
+              0.222
+            ]
+          ],
+          15,
+          [
+            "literal",
+            [
+              0.4,
+              0.2
+            ]
+          ]
+        ]
+      },
+      "minzoom": 11
+    },
+    {
+      "id": "military-hatch",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "landuse",
+      "filter": [
+        "==",
+        [
+          "get",
+          "class"
+        ],
+        "military"
+      ],
+      "paint": {
+        "fill-pattern": "tg-military_red_hatch"
+      },
+      "minzoom": 12
+    },
+    {
+      "id": "military-outline",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "landuse",
+      "filter": [
+        "==",
+        [
+          "get",
+          "class"
+        ],
+        "military"
+      ],
+      "paint": {
+        "line-color": "#dddbdb",
+        "line-opacity": 0.24,
+        "line-width": [
+          "step",
+          [
+            "zoom"
+          ],
+          1,
+          14,
+          2
+        ],
+        "line-offset": [
+          "step",
+          [
+            "zoom"
+          ],
+          -0.5,
+          14,
+          -1
+        ]
+      },
+      "minzoom": 12
+    },
+    {
       "id": "landuse-park",
       "type": "fill",
       "source": "openmaptiles",
@@ -2569,116 +2734,6 @@
       },
       "minzoom": 8,
       "maxzoom": 11
-    },
-    {
-      "id": "road-casing-secondary-tunnel",
-      "type": "line",
-      "source": "openmaptiles",
-      "source-layer": "transportation",
-      "filter": [
-        "all",
-        [
-          "==",
-          [
-            "get",
-            "class"
-          ],
-          "secondary"
-        ],
-        [
-          "==",
-          [
-            "get",
-            "brunnel"
-          ],
-          "tunnel"
-        ]
-      ],
-      "layout": {
-        "line-join": "round"
-      },
-      "paint": {
-        "line-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "#8e8b84",
-          12,
-          "#797569"
-        ],
-        "line-width": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          11,
-          3.5,
-          12,
-          5,
-          13,
-          5,
-          14,
-          9,
-          15,
-          10,
-          16,
-          18,
-          17,
-          21,
-          18,
-          27
-        ],
-        "line-dasharray": [
-          "step",
-          [
-            "zoom"
-          ],
-          [
-            "literal",
-            [
-              1.143,
-              0.571
-            ]
-          ],
-          12,
-          [
-            "literal",
-            [
-              0.8,
-              0.4
-            ]
-          ],
-          13,
-          [
-            "literal",
-            [
-              0.8,
-              0.4
-            ]
-          ],
-          14,
-          [
-            "literal",
-            [
-              0.444,
-              0.222
-            ]
-          ],
-          15,
-          [
-            "literal",
-            [
-              0.4,
-              0.2
-            ]
-          ]
-        ]
-      },
-      "minzoom": 11
     },
     {
       "id": "ferry",
@@ -11099,6 +11154,51 @@
         "text-halo-width": 1.5
       },
       "minzoom": 4
+    },
+    {
+      "id": "capital-dot",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "filter": [
+        "all",
+        [
+          "in",
+          [
+            "get",
+            "class"
+          ],
+          [
+            "literal",
+            [
+              "city",
+              "town"
+            ]
+          ]
+        ],
+        [
+          "==",
+          [
+            "get",
+            "capital"
+          ],
+          2
+        ]
+      ],
+      "layout": {
+        "icon-image": [
+          "step",
+          [
+            "zoom"
+          ],
+          "place-capital-6",
+          6,
+          "place-capital-8"
+        ],
+        "icon-allow-overlap": true
+      },
+      "minzoom": 3,
+      "maxzoom": 7
     },
     {
       "id": "place-city",
