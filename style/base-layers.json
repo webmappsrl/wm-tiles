@@ -7716,7 +7716,8 @@
         ],
         "icon-size": 1,
         "icon-anchor": "center",
-        "icon-allow-overlap": false
+        "icon-allow-overlap": false,
+        "icon-ignore-placement": true
       },
       "paint": {},
       "filter": [
@@ -7743,7 +7744,8 @@
         "icon-image": "cave",
         "icon-size": 1,
         "icon-anchor": "center",
-        "icon-allow-overlap": false
+        "icon-allow-overlap": false,
+        "icon-ignore-placement": true
       },
       "paint": {},
       "filter": [
@@ -7791,7 +7793,8 @@
         ],
         "icon-anchor": "bottom",
         "icon-allow-overlap": false,
-        "visibility": "none"
+        "visibility": "none",
+        "icon-ignore-placement": true
       },
       "paint": {}
     },
@@ -9261,7 +9264,8 @@
           0.4444444444444444,
           15,
           0.6666666666666666
-        ]
+        ],
+        "icon-ignore-placement": true
       }
     },
     {
@@ -9300,7 +9304,8 @@
           0.6666666666666666,
           15,
           1
-        ]
+        ],
+        "icon-ignore-placement": true
       }
     },
     {
@@ -11460,7 +11465,8 @@
           "wilderness_hut",
           "wilderness-hut-cai",
           "alpine-hut-cai"
-        ]
+        ],
+        "icon-ignore-placement": true
       }
     },
     {
@@ -11519,7 +11525,8 @@
         "shelter"
       ],
       "layout": {
-        "icon-image": "tgen-shelter"
+        "icon-image": "tgen-shelter",
+        "icon-ignore-placement": true
       }
     }
   ]
