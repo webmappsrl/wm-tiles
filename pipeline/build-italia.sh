@@ -47,6 +47,10 @@ NPROC=$(nproc)
 WORK="${WM_WORK:-/var/tmp/wm-tiles}/$V"
 STAGE="data/archives/.tmp-$V"
 GDAL="ghcr.io/osgeo/gdal:ubuntu-small-latest"
+# tippecanoe scrive temporanei grandi quanto l'ingresso: sul disco locale.
+# Definito qui e non nel passo 2: con --solo-dem il passo 2 si salta, e le
+# curve si fermavano su "-o: command not found" (13 ottobre 2026)
+TIPPE=(tippecanoe -t "$WORK" --force -q --no-feature-limit --no-tile-size-limit)
 mkdir -p "$WORK/tmp" "$STAGE"
 # Gli script dei singoli strati scrivono i loro file di lavoro con mktemp, e
 # tippecanoe i suoi in TMPDIR (con -t): sul disco locale, non in /tmp, che su
@@ -147,8 +151,6 @@ fi
 # ---------------------------------------------------------------------------
 # 2. I dati di TGen, dalla copia nazionale (come build-celle.sh)
 # ---------------------------------------------------------------------------
-# tippecanoe scrive temporanei grandi quanto l'ingresso: sul disco locale
-TIPPE=(tippecanoe -t "$WORK" --force -q --no-feature-limit --no-tile-size-limit)
 USO=$(awk -F'\t' 'NR > 1 && ($1 ~ /^igm_dbsn_/ || $1 ~ /^uso/ || $1 == "ghiacciai_piemonte" || $1 == "land_cover_hr") { print $1 }' pipeline/sql/tgen/manifest.tsv)
 fase "2. uso suolo da TGen: $(echo $USO | wc -w | tr -d ' ') layer"
 if ! fatto "$STAGE/landcover.pmtiles"; then
