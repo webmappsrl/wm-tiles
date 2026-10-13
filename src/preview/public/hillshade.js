@@ -236,10 +236,50 @@ function sorgenteQuote(ol, sourceDef) {
   tela.width = tela.height = dimensione;
   const ctx2d = tela.getContext('2d', {willReadFrequently: true});
 
+  /**
+   * Il bordo (gutter): ogni tile arriva allo shader con BORDO texel delle
+   * tile vicine attorno. Senza, al bordo di una tile lo shader non vede le
+   * quote accanto, il gradiente si appiattisce e l'ombra disegna linee chiare
+   * dritte lungo la griglia delle tile (Fosciandora, 15/17334/11900, 13
+   * ottobre 2026: con le quote fino a z14 e la vista a z16 i bordi diventano
+   * lunghi e ben visibili). Lo shader legge fino a 3 texel di distanza (la
+   * pendenza, P = 3): 4 bastano.
+   */
+  const BORDO = 4;
+  const lato = dimensione + 2 * BORDO;
+  const cache = new Map(); // z/x/y -> Promise<Float32Array|null>, le vicine servono a piu' tile
+  const quoteDi = (z, x, y) => {
+    const n = 2 ** z;
+    if (y < 0 || y >= n) return Promise.resolve(null);
+    x = ((x % n) + n) % n;
+    const k = `${z}/${x}/${y}`;
+    if (!cache.has(k)) {
+      if (cache.size > 300) cache.delete(cache.keys().next().value);
+      cache.set(k, new Promise(risolvi => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onerror = () => risolvi(null);
+        img.onload = () => {
+          ctx2d.clearRect(0, 0, dimensione, dimensione);
+          ctx2d.drawImage(img, 0, 0, dimensione, dimensione);
+          const px = ctx2d.getImageData(0, 0, dimensione, dimensione).data;
+          const quote = new Float32Array(dimensione * dimensione);
+          for (let i = 0, p = 0; i < quote.length; i++, p += 4) {
+            quote[i] = px[p] * 256 + px[p + 1] + px[p + 2] / 256 - 32768;
+          }
+          risolvi(quote);
+        };
+        img.src = url.replace('{z}', z).replace('{x}', x).replace('{y}', y);
+      }));
+    }
+    return cache.get(k);
+  };
+
   return new ol.source.DataTile({
     minZoom: sourceDef.minzoom ?? 0,
     maxZoom: sourceDef.maxzoom ?? 14,
     tileSize: dimensione,
+    gutter: BORDO,
     bandCount: 1,
     /**
      * Ora l'interpolazione e' LECITA, ed e' quella che serve in overzoom.
@@ -252,24 +292,28 @@ function sorgenteQuote(ol, sourceDef) {
      */
     interpolate: true,
     attributions: sourceDef.attribution,
-    loader: (z, x, y) => new Promise(risolvi => {
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      // fuori copertura il server risponde 404: si restituisce quota 0, cosi'
-      // il bordo dell'area generata non diventa un muro nell'ombreggiatura
-      img.onerror = () => risolvi(new Float32Array(dimensione * dimensione));
-      img.onload = () => {
-        ctx2d.clearRect(0, 0, dimensione, dimensione);
-        ctx2d.drawImage(img, 0, 0, dimensione, dimensione);
-        const px = ctx2d.getImageData(0, 0, dimensione, dimensione).data;
-        const quote = new Float32Array(dimensione * dimensione);
-        for (let k = 0, p = 0; k < quote.length; k++, p += 4) {
-          quote[k] = px[p] * 256 + px[p + 1] + px[p + 2] / 256 - 32768;
+    loader: async (z, x, y) => {
+      // la tile e le 8 vicine; fuori copertura (404) la tile vale quota 0,
+      // cosi' il bordo dell'area generata non diventa un muro nell'ombra
+      const t = await Promise.all([-1, 0, 1].flatMap(dy => [-1, 0, 1].map(dx => quoteDi(z, x + dx, y + dy))));
+      const centro = t[4] ?? new Float32Array(dimensione * dimensione);
+      const out = new Float32Array(lato * lato);
+      const fascia = v => (v < 0 ? 0 : v < dimensione ? 1 : 2);
+      for (let j = -BORDO; j < dimensione + BORDO; j++) {
+        for (let i = -BORDO; i < dimensione + BORDO; i++) {
+          const vicina = t[fascia(j) * 3 + fascia(i)];
+          let q;
+          if (vicina) q = vicina[((j + dimensione) % dimensione) * dimensione + ((i + dimensione) % dimensione)];
+          else {
+            // vicina assente: si ripete il bordo della tile stessa
+            const ci = Math.min(dimensione - 1, Math.max(0, i)), cj = Math.min(dimensione - 1, Math.max(0, j));
+            q = centro[cj * dimensione + ci];
+          }
+          out[(j + BORDO) * lato + (i + BORDO)] = q;
         }
-        risolvi(quote);
-      };
-      img.src = url.replace('{z}', z).replace('{x}', x).replace('{y}', y);
-    }),
+      }
+      return out;
+    },
   });
 }
 
