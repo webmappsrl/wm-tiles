@@ -1054,7 +1054,8 @@
       ],
       "copre": [
         "amenity-points"
-      ]
+      ],
+      "notaGlifo": "Autobus di TGen (bus_stop.12.svg, #3b8eb8) gia' da z16: TGen a z16 mette un quadratino di 6 px che sembra un refuso; scelto dall'utente fra quattro proposte il 13 ottobre 2026"
     },
     "bridge-label": {
       "tgen": null,

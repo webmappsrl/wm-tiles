@@ -524,456 +524,463 @@
   "height": 14,
   "pixelRatio": 1
  },
- "tg-camping-734a08": {
+ "tg-bus_stop.12-3b8eb8": {
   "x": 170,
+  "y": 218,
+  "width": 12,
+  "height": 12,
+  "pixelRatio": 1
+ },
+ "tg-camping-734a08": {
+  "x": 226,
   "y": 218,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-caravan_park-734a08": {
-  "x": 226,
+  "x": 282,
   "y": 218,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-castle-705d3d": {
-  "x": 282,
+  "x": 338,
   "y": 218,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-cave-000000": {
-  "x": 338,
+  "x": 394,
   "y": 218,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-chimney-555555": {
-  "x": 394,
+  "x": 450,
   "y": 218,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-christian-000000": {
-  "x": 450,
+  "x": 506,
   "y": 218,
   "width": 16,
   "height": 16,
   "pixelRatio": 1
  },
  "tg-christian.9-000000": {
-  "x": 506,
+  "x": 562,
   "y": 218,
   "width": 9,
   "height": 9,
   "pixelRatio": 1
  },
  "tg-cinema-705d3d": {
-  "x": 562,
+  "x": 618,
   "y": 218,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-communications_tower-555555": {
-  "x": 618,
-  "y": 218,
+  "x": 2,
+  "y": 254,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-courthouse-705d3d": {
-  "x": 2,
+  "x": 58,
   "y": 254,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-doctors-c26ba5": {
-  "x": 58,
+  "x": 114,
   "y": 254,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-ferry-8461c4": {
-  "x": 114,
+  "x": 170,
   "y": 254,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-firestation-705d3d": {
-  "x": 170,
+  "x": 226,
   "y": 254,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-ford-3b8eb8": {
-  "x": 226,
+  "x": 282,
   "y": 254,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-fort-705d3d": {
-  "x": 282,
+  "x": 338,
   "y": 254,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-fortress-705d3d": {
-  "x": 338,
+  "x": 394,
   "y": 254,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-golf-57a148": {
-  "x": 394,
+  "x": 450,
   "y": 254,
   "width": 20,
   "height": 20,
   "pixelRatio": 1
  },
  "tg-helipad.16-8461c4": {
-  "x": 450,
+  "x": 506,
   "y": 254,
   "width": 16,
   "height": 16,
   "pixelRatio": 1
  },
  "tg-hinduist-000000": {
-  "x": 506,
+  "x": 562,
   "y": 254,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-hospital-c26ba5": {
-  "x": 562,
+  "x": 618,
   "y": 254,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-hunting_stand-555555": {
-  "x": 618,
-  "y": 254,
+  "x": 2,
+  "y": 290,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-jewish-000000": {
-  "x": 2,
+  "x": 58,
   "y": 290,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-level_crossing-000000": {
-  "x": 58,
+  "x": 114,
   "y": 290,
   "width": 7,
   "height": 7,
   "pixelRatio": 1
  },
  "tg-level_crossing2-000000": {
-  "x": 114,
+  "x": 170,
   "y": 290,
   "width": 11,
   "height": 11,
   "pixelRatio": 1
  },
  "tg-library-705d3d": {
-  "x": 170,
+  "x": 226,
   "y": 290,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-lighthouse-555555": {
-  "x": 226,
+  "x": 282,
   "y": 290,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-manor-705d3d": {
-  "x": 282,
+  "x": 338,
   "y": 290,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-marketplace-3d58a1": {
-  "x": 338,
+  "x": 394,
   "y": 290,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-mast-555555": {
-  "x": 394,
+  "x": 450,
   "y": 290,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-mast_communications-555555": {
-  "x": 450,
+  "x": 506,
   "y": 290,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-monument-705d3d": {
-  "x": 506,
+  "x": 562,
   "y": 290,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-motorcycle_parking-3b8eb8": {
-  "x": 562,
+  "x": 618,
   "y": 290,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-muslim-000000": {
-  "x": 618,
-  "y": 290,
+  "x": 2,
+  "y": 326,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-palace-705d3d": {
-  "x": 2,
+  "x": 58,
   "y": 326,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-parking-3b8eb8": {
-  "x": 58,
+  "x": 114,
   "y": 326,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-peak-5c491d": {
-  "x": 114,
+  "x": 170,
   "y": 326,
   "width": 8,
   "height": 8,
   "pixelRatio": 1
  },
  "tg-picnic-57a148": {
-  "x": 170,
+  "x": 226,
   "y": 326,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-place_of_worship-000000": {
-  "x": 226,
+  "x": 282,
   "y": 326,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-police-705d3d": {
-  "x": 282,
+  "x": 338,
   "y": 326,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-power_wind-000000": {
-  "x": 338,
+  "x": 394,
   "y": 326,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-saddle-5c491d": {
-  "x": 394,
+  "x": 450,
   "y": 326,
   "width": 8,
   "height": 8,
   "pixelRatio": 1
  },
  "tg-shelter-705d3d": {
-  "x": 450,
+  "x": 506,
   "y": 326,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-shintoist-000000": {
-  "x": 506,
+  "x": 562,
   "y": 326,
   "width": 16,
   "height": 16,
   "pixelRatio": 1
  },
  "tg-sikhist-000000": {
-  "x": 562,
+  "x": 618,
   "y": 326,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-square-3b8eb8": {
-  "x": 618,
-  "y": 326,
+  "x": 2,
+  "y": 362,
   "width": 1,
   "height": 1,
   "pixelRatio": 1
  },
  "tg-taoist-000000": {
-  "x": 2,
+  "x": 58,
   "y": 362,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-theatre-705d3d": {
-  "x": 58,
+  "x": 114,
   "y": 362,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-tower_cantilever_communication-555555": {
-  "x": 114,
+  "x": 170,
   "y": 362,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-tower_cooling-555555": {
-  "x": 170,
+  "x": 226,
   "y": 362,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-tower_defensive-555555": {
-  "x": 226,
+  "x": 282,
   "y": 362,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-tower_dish-555555": {
-  "x": 282,
+  "x": 338,
   "y": 362,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-tower_dome-555555": {
-  "x": 338,
+  "x": 394,
   "y": 362,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
  "tg-tower_generic-555555": {
-  "x": 394,
-  "y": 362,
-  "width": 14,
-  "height": 14,
-  "pixelRatio": 1
- },
- "tg-tower_lattice-555555": {
   "x": 450,
   "y": 362,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
- "tg-tower_lattice_communication-555555": {
+ "tg-tower_lattice-555555": {
   "x": 506,
   "y": 362,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
- "tg-tower_observation-555555": {
+ "tg-tower_lattice_communication-555555": {
   "x": 562,
   "y": 362,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
- "tg-town_hall-705d3d": {
+ "tg-tower_observation-555555": {
   "x": 618,
   "y": 362,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
- "tg-waterfall-679bce": {
+ "tg-town_hall-705d3d": {
   "x": 2,
   "y": 398,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
- "tg-wilderness-hut-cai-734a08": {
+ "tg-waterfall-679bce": {
   "x": 58,
+  "y": 398,
+  "width": 14,
+  "height": 14,
+  "pixelRatio": 1
+ },
+ "tg-wilderness-hut-cai-734a08": {
+  "x": 114,
   "y": 398,
   "width": 32,
   "height": 32,
   "pixelRatio": 1
  },
  "tg-windmill-555555": {
-  "x": 114,
-  "y": 398,
-  "width": 14,
-  "height": 14,
-  "pixelRatio": 1
- },
- "tgen-shelter": {
   "x": 170,
   "y": 398,
   "width": 14,
   "height": 14,
   "pixelRatio": 1
  },
- "toilet": {
+ "tgen-shelter": {
   "x": 226,
   "y": 398,
-  "width": 15,
-  "height": 15,
+  "width": 14,
+  "height": 14,
   "pixelRatio": 1
  },
- "viewpoint": {
+ "toilet": {
   "x": 282,
   "y": 398,
   "width": 15,
   "height": 15,
   "pixelRatio": 1
  },
- "waterfall": {
+ "viewpoint": {
   "x": 338,
   "y": 398,
   "width": 15,
   "height": 15,
   "pixelRatio": 1
  },
- "wilderness-hut-cai": {
+ "waterfall": {
   "x": 394,
+  "y": 398,
+  "width": 15,
+  "height": 15,
+  "pixelRatio": 1
+ },
+ "wilderness-hut-cai": {
+  "x": 450,
   "y": 398,
   "width": 12,
   "height": 12,

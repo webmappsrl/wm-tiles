@@ -24,6 +24,13 @@ for (const r of Object.values(regole).flat()) {
   if (r.da > 16) continue;
   fatte.set(`tg-${r.icona}-${r.colore.replace('#', '')}`, r);
 }
+// Le fermate degli autobus: TGen mette un quadratino blu a z16 e l'autobus
+// solo da z17. Il quadratino sembra un refuso e l'utente ha scelto l'autobus
+// gia' da z16 (13 ottobre 2026): il simbolo serve anche se la sua regola parte
+// da z17. Lo usa il layer bus-stop-icon.
+for (const r of regole.punti) {
+  if (r.icona === 'bus_stop.12') fatte.set(`tg-${r.icona}-${r.colore.replace('#', '')}`, r);
+}
 let n = 0;
 for (const [nome, r] of fatte) {
   const f = join(SORG, r.percorso);
