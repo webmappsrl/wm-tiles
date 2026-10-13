@@ -18,7 +18,7 @@ Mancavano tutti: "Tower Parking", "Polo Ospedaliero Santa Chiara", "ex campo
 da golf"... (13 ottobre 2026).
 
 Gira nell'immagine GDAL. Uso:
-  python3 build-testi.py <pbf> <W> <S> <E> <N> <coalesce.json> <regole.json> <out.geojsonl>
+  python3 build-testi.py <pbf> <W> <S> <E> <N> <coalesce.json> <regole.json> <out.geojsonl> <glifi-larghezze.json>
 """
 import json
 import re
@@ -31,6 +31,33 @@ pbf, W, S, E, N = sys.argv[1], *map(float, sys.argv[2:6])
 COALESCE = json.load(open(sys.argv[6]))
 REGOLE = json.load(open(sys.argv[7]))
 out = sys.argv[8]
+GLIFI = json.load(open(sys.argv[9]))
+
+
+def a_capo(nome, font, dim, larghezza):
+    """Le righe come le spezza Mapnik (wrap-before falso): si aggiungono
+    parole finche' la riga non SUPERA la larghezza, e si va a capo dopo la
+    parola che l'ha superata. OpenLayers va a capo prima di superarla, e con
+    la stessa larghezza le righe venivano diverse: per questo il testo arriva
+    gia' spezzato. Larghezze dei caratteri dai glifi dello stile."""
+    if not larghezza:
+        return nome
+    # 1,1: Mapnik disegna a 10-15 px con FreeType e arrotonda ogni carattere
+    # al pixel, i glifi SDF sono misurati a 24: le sue righe sono ~10% piu'
+    # larghe. Tarato sui PNG di TGen: "Centro / Universitario / Sportivo /
+    # Pisa", "ex campo / da golf", "Parcheggio / di Piazza / dei Miracoli"
+    tab, scala = GLIFI['font'][font], 1.1 * dim / GLIFI['corpo']
+    lungo = lambda w: sum(tab.get(str(ord(c)), 13) for c in w) * scala
+    spazio = lungo(' ')
+    righe, riga, l = [], [], 0.0
+    for parola in nome.split():
+        riga.append(parola)
+        l += (spazio if len(riga) > 1 else 0) + lungo(parola)
+        if l > larghezza:
+            righe.append(' '.join(riga)); riga, l = [], 0.0
+    if riga:
+        righe.append(' '.join(riga))
+    return '\n'.join(righe)
 for lista in REGOLE.values():
     for r in lista:
         r['f'] = compile(r['filtro'], r['filtro'], 'eval')
@@ -147,15 +174,15 @@ while True:
         # dy di Mapnik: il nome sotto (o sopra) il punto di tanti pixel
         lon, lat, _ = a_wgs.TransformPoint(x, y - regola['dy'] * PIXEL(z))
         dim = regola['dim']
+        sigla = {'Noto Sans Italic': 'I', 'Noto Sans Bold': 'B'}.get(regola['font'], 'R')
         uscita.append((area or 0, z, {
             'type': 'Feature', 'geometry': {'type': 'Point', 'coordinates': [round(lon, 7), round(lat, 7)]},
             'properties': {
-                'name': t['name'], 'dim': dim, 'col': regola['colore'],
-                'f': {'Noto Sans Italic': 'I', 'Noto Sans Bold': 'B'}.get(regola['font'], 'R'),
-                # Mapnik va a capo DOPO aver superato wrap-width (la riga puo'
-                # sforare di una parola), OpenLayers PRIMA: 1,5 volte la
-                # larghezza da' le stesse righe ("ex campo / da golf")
-                'h': regola['aloneR'], 'w': round(1.5 * regola['acapo'] / dim, 2) if regola['acapo'] else 10,
+                'name': a_capo(t['name'], sigla, dim, regola['acapo']), 'dim': dim, 'col': regola['colore'],
+                'f': sigla,
+                # le righe sono gia' spezzate (a_capo): OpenLayers non deve
+                # spezzarle di nuovo
+                'h': regola['aloneR'], 'w': 100,
                 'a': 't' if regola['dy'] > 0 else 'b' if regola['dy'] < 0 else 'c',
             },
             'tippecanoe': {'minzoom': z, 'maxzoom': z},

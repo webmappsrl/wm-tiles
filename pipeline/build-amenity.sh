@@ -21,7 +21,7 @@ echo "== nomi dei punti di interesse"
 docker run --rm -v "$PWD":/w -v "$WORK":/out -e CPL_LOG=/dev/null \
   --entrypoint python3 ghcr.io/osgeo/gdal:ubuntu-small-latest -I \
   /w/pipeline/build-testi.py "/w/$PBF" "$W" "$S" "$E" "$N" \
-  /w/style/testi-coalesce.json /w/style/testi-regole.json /out/testi.geojsonl
+  /w/style/testi-coalesce.json /w/style/testi-regole.json /out/testi.geojsonl /w/style/glifi-larghezze.json
 # -r1: nessun diradamento, ogni icona entra al suo livello (CLAUDE.md:
 # tippecanoe dirada i punti sotto il livello massimo e ne sparivano a caso);
 # l'ordine e' quello di TGen, e decide chi vince nelle collisioni
