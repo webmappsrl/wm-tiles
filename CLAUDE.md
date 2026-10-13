@@ -674,6 +674,12 @@ Verificate sul campo, ognuna e' costata un ciclo di debug:
   `ordine` del mapping per quelli senza selettore). Conseguenza da ricordare:
   un'icona con `icon-allow-overlap` ma senza `icon-ignore-placement` e' un
   ostacolo, e se sta sopra il proprio nome lo cancella (le cime a z14).
+  **E `icon-ignore-placement` da solo non fa niente in ol-mapbox-style 11**
+  (`getIconDeclutterMode`: senza allow-overlap e' sempre `declutter`): per
+  un'icona che non deve cancellare il proprio nome servono ENTRAMBI
+  (`declutterMode: 'none'`). maplibre-native invece li tratta separati,
+  quindi un PNG giusto non prova niente: si verifica in OpenLayers. Cosi'
+  sono mancati i nomi delle sorgenti, delle stazioni e dei rifugi.
 - **`symbol-spacing` vale il doppio.** ol-mapbox-style ripete il testo lungo
   una linea ogni `symbol-spacing x 2` pixel (`text.setRepeat(symbolSpacing *
   2)`): per il `text-spacing` di Mapnik il valore va dimezzato. Con 300 i nomi

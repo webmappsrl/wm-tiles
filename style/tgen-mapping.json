@@ -352,10 +352,20 @@
         14,
         16
       ],
+      "copre": [],
+      "nota": "amenity-points.mss natural_saddle: da z14."
+    },
+    "spring-icon": {
+      "tgen": null,
+      "ordine": "springs",
+      "livelli": [
+        14,
+        16
+      ],
       "copre": [
         "springs"
       ],
-      "nota": "water-features.mss #springs e amenity-points.mss natural_saddle: da z14."
+      "nota": "water-features.mss #springs, da z14. Layer a parte con l'ordine di springs (molto prima di amenity-points nel .mml): in TGen la sorgente si piazza prima delle altre icone e vince; con l'ordine di amenity-points il guado vicino la cancellava (Polla Cipollina, 16/34687/23890, 13/10/2026)"
     },
     "osmpoi-label": {
       "tgen": null,
@@ -1134,14 +1144,15 @@
     },
     "ford-icon": {
       "tgen": null,
-      "ordine": "amenity-line",
+      "ordine": "amenity-low-priority",
       "livelli": [
         16,
         16
       ],
       "copre": [
         "amenity-line"
-      ]
+      ],
+      "notaOrdine": "priorita' di amenity-low-priority: in TGen il guado cede alla sorgente (springs viene molto prima) e al suo nome; con la priorita' di amenity-line il guado sopra Polla Cipollina ne cancellava il nome (16/34687/23890, 13/10/2026)"
     },
     "city-dot": {
       "tgen": null,

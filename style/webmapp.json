@@ -6527,6 +6527,16 @@
       "minzoom": 15
     },
     {
+      "id": "ford-icon",
+      "type": "symbol",
+      "source": "extra",
+      "source-layer": "guadi",
+      "layout": {
+        "icon-image": "ford"
+      },
+      "minzoom": 15
+    },
+    {
       "id": "park-label",
       "type": "symbol",
       "source": "parchi",
@@ -9481,35 +9491,20 @@
       "source": "osmpoi",
       "source-layer": "osmpoi",
       "layout": {
-        "icon-image": [
-          "match",
-          [
-            "get",
-            "kind"
-          ],
-          "saddle",
-          "saddle",
-          "spring"
-        ],
+        "icon-image": "saddle",
         "icon-size": 1,
         "icon-anchor": "center",
-        "icon-allow-overlap": false,
+        "icon-allow-overlap": true,
         "icon-ignore-placement": true
       },
       "paint": {},
       "filter": [
-        "in",
+        "==",
         [
           "get",
           "kind"
         ],
-        [
-          "literal",
-          [
-            "saddle",
-            "spring"
-          ]
-        ]
+        "saddle"
       ],
       "minzoom": 13
     },
@@ -9522,7 +9517,7 @@
         "icon-image": "cave",
         "icon-size": 1,
         "icon-anchor": "center",
-        "icon-allow-overlap": false,
+        "icon-allow-overlap": true,
         "icon-ignore-placement": true
       },
       "paint": {},
@@ -9571,7 +9566,7 @@
           1
         ],
         "icon-anchor": "bottom",
-        "icon-allow-overlap": false,
+        "icon-allow-overlap": true,
         "visibility": "none",
         "icon-ignore-placement": true
       },
@@ -9666,7 +9661,8 @@
           "wilderness-hut-cai",
           "alpine-hut-cai"
         ],
-        "icon-ignore-placement": true
+        "icon-ignore-placement": true,
+        "icon-allow-overlap": true
       },
       "minzoom": 12
     },
@@ -9728,7 +9724,8 @@
       ],
       "layout": {
         "icon-image": "tgen-shelter",
-        "icon-ignore-placement": true
+        "icon-ignore-placement": true,
+        "icon-allow-overlap": true
       },
       "minzoom": 15
     },
@@ -9755,16 +9752,6 @@
         ]
       },
       "minzoom": 9
-    },
-    {
-      "id": "ford-icon",
-      "type": "symbol",
-      "source": "extra",
-      "source-layer": "guadi",
-      "layout": {
-        "icon-image": "ford"
-      },
-      "minzoom": 15
     },
     {
       "id": "station-label-halt",
@@ -9905,7 +9892,8 @@
           14,
           0.6666666666666666
         ],
-        "icon-ignore-placement": true
+        "icon-ignore-placement": true,
+        "icon-allow-overlap": true
       },
       "minzoom": 12
     },
@@ -9946,7 +9934,8 @@
           14,
           1
         ],
-        "icon-ignore-placement": true
+        "icon-ignore-placement": true,
+        "icon-allow-overlap": true
       },
       "minzoom": 11
     },
@@ -12025,6 +12014,29 @@
         "text-halo-width": 1.5
       },
       "minzoom": 2
+    },
+    {
+      "id": "spring-icon",
+      "type": "symbol",
+      "source": "osmpoi",
+      "source-layer": "osmpoi",
+      "layout": {
+        "icon-image": "spring",
+        "icon-size": 1,
+        "icon-anchor": "center",
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": true
+      },
+      "paint": {},
+      "filter": [
+        "==",
+        [
+          "get",
+          "kind"
+        ],
+        "spring"
+      ],
+      "minzoom": 13
     }
   ]
 }

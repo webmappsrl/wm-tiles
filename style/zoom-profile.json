@@ -94,6 +94,7 @@
     "level-crossing",
     "rail-crossing",
     "cross-icon",
+    "ford-icon",
     "park-label",
     "ferry-label",
     "waterway-label-stream",
@@ -139,7 +140,6 @@
     "hut-label",
     "shelter-icon",
     "amenity-icon",
-    "ford-icon",
     "station-label-halt",
     "station-label",
     "station-icon-halt",
@@ -154,7 +154,8 @@
     "state-label",
     "capital-dot",
     "place-city",
-    "country-label"
+    "country-label",
+    "spring-icon"
   ],
   "levels": {
     "0": {
@@ -675,7 +676,8 @@
         "city-label",
         "state-label",
         "place-city",
-        "country-label"
+        "country-label",
+        "spring-icon"
       ]
     },
     "15": {
@@ -797,7 +799,8 @@
         "city-label",
         "state-label",
         "place-city",
-        "country-label"
+        "country-label",
+        "spring-icon"
       ]
     },
     "16": {
@@ -934,7 +937,8 @@
         "place-village",
         "city-label",
         "state-label",
-        "country-label"
+        "country-label",
+        "spring-icon"
       ]
     }
   },
@@ -1253,6 +1257,7 @@
     "amenity-icon": "nostro",
     "poi-icon": "livelli (PNG)",
     "osmpoi-icon": "livelli (PNG)",
+    "spring-icon": "livelli (PNG)",
     "osmpoi-label": "livelli (PNG)",
     "rifugi-icon": "nostro",
     "rifugi-label": "nostro",
