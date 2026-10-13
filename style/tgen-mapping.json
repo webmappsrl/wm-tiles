@@ -946,7 +946,9 @@
         5,
         16
       ],
-      "nota": "placenames.mss .state: regioni con 3000 < way_pixels < 196000 da z5; la superficie viene da una tabella (OpenMapTiles porta solo il punto). Visibile da z7 nel profilo, quindi anche sotto: la finestra la fa il testo vuoto."
+      "nota": "placenames.mss .state: regioni con 3000 < way_pixels < 196000 da z5; la superficie viene da una tabella (OpenMapTiles porta solo il punto). Visibile da z7 nel profilo, quindi anche sotto: la finestra la fa il testo vuoto.",
+      "ordine": "placenames-small",
+      "notaOrdine": "priorita' delle etichette DOPO i nomi delle citta' (in OpenLayers vince chi viene dopo): con quella del .mml (state-names prima di placenames-medium) i nomi delle regioni, larghi e a capo, cancellavano le citta' a z6-z7 (L'Aquila, Rieti, Bologna, Napoli, Bari mancanti; TGen le mostra con le regioni). Mapnik piazza le regioni con margine e testi stretti, OpenLayers no (13/10/2026)"
     },
     "country-label": {
       "tgen": "country-names",

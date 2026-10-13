@@ -73,7 +73,9 @@ const ordineTgen = id => {
   // posizione (le etichette dei POI stanno in amenity-points anche se le loro
   // regole non hanno id)
   if (m.tgen === null && !m.ordine) return null;
-  const sels = m.tgen === null ? [m.ordine] : Array.isArray(m.tgen) ? m.tgen : [m.tgen];
+  // `ordine` vale anche per un layer CON selettore quando la sua priorita'
+  // deve scostarsi da quella del .mml (state-label: vedi il mapping)
+  const sels = m.ordine ? [m.ordine] : Array.isArray(m.tgen) ? m.tgen : [m.tgen];
   // un layer del .mml senza regole attive (roads-text-ref ha i blocchi commentati)
   // non ha `ordine` in cc.layer: vale la sua posizione nel .mml
   const posMml = s => cc.layer[s]?.ordine ?? (i => (i >= 0 ? i : null))(cc.ordineMml.findIndex(o => o.id === s));

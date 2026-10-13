@@ -151,10 +151,10 @@
     "place-minor-osm",
     "place-quarter",
     "place-village",
+    "state-label",
     "city-label",
     "city-dot-label",
     "city-dot",
-    "state-label",
     "capital-dot",
     "place-city",
     "country-label",
@@ -361,8 +361,11 @@
         "boundary-l2",
         "toponimi",
         "park-label",
+        "poi-name",
+        "poi-name-bold",
         "lake-label",
         "wood-label",
+        "poi-name-italic",
         "road-ref-lz-motorway",
         "aerodrome-label-z10",
         "aerodrome-icon-z10",
@@ -370,10 +373,7 @@
         "city-label",
         "state-label",
         "place-city",
-        "country-label",
-        "poi-name",
-        "poi-name-italic",
-        "poi-name-bold"
+        "country-label"
       ]
     },
     "11": {
@@ -408,9 +408,12 @@
         "boundary-l2",
         "toponimi",
         "park-label",
+        "poi-name",
+        "poi-name-bold",
         "water-name",
         "lake-label",
         "wood-label",
+        "poi-name-italic",
         "junction-label",
         "road-ref-lz-primary",
         "road-ref-lz-motorway",
@@ -420,10 +423,7 @@
         "city-label",
         "state-label",
         "place-city",
-        "country-label",
-        "poi-name",
-        "poi-name-italic",
-        "poi-name-bold"
+        "country-label"
       ]
     },
     "12": {
@@ -474,9 +474,12 @@
         "park-band-a",
         "toponimi",
         "park-label",
+        "poi-name",
+        "poi-name-bold",
         "water-name",
         "lake-label",
         "wood-label",
+        "poi-name-italic",
         "bridge-label",
         "junction-label",
         "road-ref-lz-secondary",
@@ -491,10 +494,7 @@
         "city-label",
         "state-label",
         "place-city",
-        "country-label",
-        "poi-name",
-        "poi-name-italic",
-        "poi-name-bold"
+        "country-label"
       ]
     },
     "13": {
@@ -562,9 +562,12 @@
         "ferry-label",
         "waterway-label",
         "mountain-peak-label",
+        "poi-name",
+        "poi-name-bold",
         "water-name",
         "lake-label",
         "wood-label",
+        "poi-name-italic",
         "road-label",
         "bridge-label",
         "junction-label",
@@ -580,10 +583,7 @@
         "city-label",
         "state-label",
         "place-city",
-        "country-label",
-        "poi-name",
-        "poi-name-italic",
-        "poi-name-bold"
+        "country-label"
       ],
       "notaRifugi": "Rifugi da z13, etichette da z14: in TGen (amenity-points.mss) il marker e' [zoom >= 13] e il testo [zoom >= 14]. Le icone sono gia' della dimensione giusta (13 px contro marker-width 12), era sbagliata solo la soglia."
     },
@@ -668,9 +668,12 @@
         "building-label",
         "rifugi-label",
         "mountain-peak-label",
+        "poi-name",
+        "poi-name-bold",
         "water-name",
         "lake-label",
         "wood-label",
+        "poi-name-italic",
         "railway-label",
         "road-label-tertiary",
         "road-label",
@@ -692,10 +695,7 @@
         "state-label",
         "place-city",
         "country-label",
-        "spring-icon",
-        "poi-name",
-        "poi-name-italic",
-        "poi-name-bold"
+        "spring-icon"
       ]
     },
     "15": {
@@ -786,11 +786,14 @@
         "osmpoi-label",
         "rifugi-label",
         "mountain-peak-label",
+        "poi-name",
+        "poi-name-bold",
         "cliff-label",
         "dam-label",
         "water-name",
         "lake-label",
         "wood-label",
+        "poi-name-italic",
         "railway-label",
         "road-label-track",
         "road-label-minor",
@@ -818,10 +821,7 @@
         "state-label",
         "place-city",
         "country-label",
-        "spring-icon",
-        "poi-name",
-        "poi-name-italic",
-        "poi-name-bold"
+        "spring-icon"
       ]
     },
     "16": {
@@ -920,11 +920,14 @@
         "osmpoi-label-spring",
         "rifugi-label",
         "mountain-peak-label",
+        "poi-name",
+        "poi-name-bold",
         "cliff-label",
         "dam-label",
         "water-name",
         "lake-label",
         "wood-label",
+        "poi-name-italic",
         "railway-label",
         "road-label-path",
         "road-label-track",
@@ -959,10 +962,7 @@
         "city-label",
         "state-label",
         "country-label",
-        "spring-icon",
-        "poi-name",
-        "poi-name-italic",
-        "poi-name-bold"
+        "spring-icon"
       ]
     }
   },

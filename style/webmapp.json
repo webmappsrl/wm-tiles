@@ -10403,297 +10403,6 @@
       "minzoom": 11
     },
     {
-      "id": "city-label",
-      "type": "symbol",
-      "source": "parchi",
-      "source-layer": "citta",
-      "layout": {
-        "text-field": [
-          "get",
-          "name"
-        ],
-        "text-font": [
-          "Noto Sans Regular"
-        ],
-        "text-size": [
-          "step",
-          [
-            "zoom"
-          ],
-          [
-            "case",
-            [
-              "==",
-              [
-                "get",
-                "category"
-              ],
-              2
-            ],
-            10,
-            [
-              ">=",
-              [
-                "get",
-                "score"
-              ],
-              400000
-            ],
-            13,
-            10
-          ],
-          8,
-          [
-            "case",
-            [
-              "==",
-              [
-                "get",
-                "category"
-              ],
-              2
-            ],
-            10,
-            [
-              ">=",
-              [
-                "get",
-                "score"
-              ],
-              400000
-            ],
-            13,
-            12
-          ],
-          9,
-          [
-            "case",
-            [
-              "==",
-              [
-                "get",
-                "category"
-              ],
-              2
-            ],
-            10,
-            [
-              ">=",
-              [
-                "get",
-                "score"
-              ],
-              400000
-            ],
-            14,
-            13
-          ],
-          10,
-          [
-            "case",
-            [
-              "==",
-              [
-                "get",
-                "category"
-              ],
-              2
-            ],
-            11,
-            [
-              ">=",
-              [
-                "get",
-                "score"
-              ],
-              400000
-            ],
-            15,
-            14
-          ],
-          11,
-          [
-            "case",
-            [
-              "==",
-              [
-                "get",
-                "category"
-              ],
-              2
-            ],
-            13,
-            [
-              ">=",
-              [
-                "get",
-                "score"
-              ],
-              400000
-            ],
-            15,
-            14
-          ],
-          13,
-          [
-            "case",
-            [
-              "==",
-              [
-                "get",
-                "category"
-              ],
-              2
-            ],
-            15,
-            [
-              ">=",
-              [
-                "get",
-                "score"
-              ],
-              400000
-            ],
-            15,
-            15
-          ]
-        ],
-        "text-max-width": 5,
-        "text-line-height": 1.05
-      },
-      "paint": {
-        "text-color": "#222222",
-        "text-halo-color": "rgba(255,255,255,0.6)",
-        "text-halo-width": 1.5
-      },
-      "minzoom": 7
-    },
-    {
-      "id": "city-dot-label",
-      "type": "symbol",
-      "source": "parchi",
-      "source-layer": "citta",
-      "filter": [
-        "==",
-        [
-          "get",
-          "category"
-        ],
-        1
-      ],
-      "layout": {
-        "text-field": [
-          "get",
-          "name"
-        ],
-        "text-font": [
-          "Noto Sans Regular"
-        ],
-        "text-size": [
-          "step",
-          [
-            "zoom"
-          ],
-          [
-            "case",
-            [
-              ">=",
-              [
-                "get",
-                "score"
-              ],
-              400000
-            ],
-            11,
-            10
-          ],
-          5,
-          [
-            "case",
-            [
-              ">=",
-              [
-                "get",
-                "score"
-              ],
-              400000
-            ],
-            12,
-            10
-          ]
-        ],
-        "text-anchor": "top",
-        "text-offset": [
-          0,
-          0.35
-        ],
-        "text-max-width": 5,
-        "text-line-height": 1.05
-      },
-      "paint": {
-        "text-color": "#222222",
-        "text-halo-color": "rgba(255,255,255,0.6)",
-        "text-halo-width": 1.5
-      },
-      "minzoom": 3,
-      "maxzoom": 7
-    },
-    {
-      "id": "city-dot",
-      "type": "symbol",
-      "source": "parchi",
-      "source-layer": "citta",
-      "filter": [
-        "==",
-        [
-          "get",
-          "category"
-        ],
-        1
-      ],
-      "layout": {
-        "icon-image": [
-          "step",
-          [
-            "zoom"
-          ],
-          "place-4",
-          5,
-          [
-            "case",
-            [
-              ">=",
-              [
-                "get",
-                "score"
-              ],
-              400000
-            ],
-            "place-6",
-            "place-4"
-          ],
-          6,
-          [
-            "case",
-            [
-              ">=",
-              [
-                "get",
-                "score"
-              ],
-              400000
-            ],
-            "place-6-z7",
-            "place-4-z7"
-          ]
-        ],
-        "icon-allow-overlap": true,
-        "icon-ignore-placement": true
-      },
-      "minzoom": 3,
-      "maxzoom": 7
-    },
-    {
       "id": "state-label",
       "type": "symbol",
       "source": "openmaptiles",
@@ -11322,6 +11031,297 @@
         "text-halo-width": 1.5
       },
       "minzoom": 4
+    },
+    {
+      "id": "city-label",
+      "type": "symbol",
+      "source": "parchi",
+      "source-layer": "citta",
+      "layout": {
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-font": [
+          "Noto Sans Regular"
+        ],
+        "text-size": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "case",
+            [
+              "==",
+              [
+                "get",
+                "category"
+              ],
+              2
+            ],
+            10,
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            13,
+            10
+          ],
+          8,
+          [
+            "case",
+            [
+              "==",
+              [
+                "get",
+                "category"
+              ],
+              2
+            ],
+            10,
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            13,
+            12
+          ],
+          9,
+          [
+            "case",
+            [
+              "==",
+              [
+                "get",
+                "category"
+              ],
+              2
+            ],
+            10,
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            14,
+            13
+          ],
+          10,
+          [
+            "case",
+            [
+              "==",
+              [
+                "get",
+                "category"
+              ],
+              2
+            ],
+            11,
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            15,
+            14
+          ],
+          11,
+          [
+            "case",
+            [
+              "==",
+              [
+                "get",
+                "category"
+              ],
+              2
+            ],
+            13,
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            15,
+            14
+          ],
+          13,
+          [
+            "case",
+            [
+              "==",
+              [
+                "get",
+                "category"
+              ],
+              2
+            ],
+            15,
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            15,
+            15
+          ]
+        ],
+        "text-max-width": 5,
+        "text-line-height": 1.05
+      },
+      "paint": {
+        "text-color": "#222222",
+        "text-halo-color": "rgba(255,255,255,0.6)",
+        "text-halo-width": 1.5
+      },
+      "minzoom": 7
+    },
+    {
+      "id": "city-dot-label",
+      "type": "symbol",
+      "source": "parchi",
+      "source-layer": "citta",
+      "filter": [
+        "==",
+        [
+          "get",
+          "category"
+        ],
+        1
+      ],
+      "layout": {
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-font": [
+          "Noto Sans Regular"
+        ],
+        "text-size": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "case",
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            11,
+            10
+          ],
+          5,
+          [
+            "case",
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            12,
+            10
+          ]
+        ],
+        "text-anchor": "top",
+        "text-offset": [
+          0,
+          0.35
+        ],
+        "text-max-width": 5,
+        "text-line-height": 1.05
+      },
+      "paint": {
+        "text-color": "#222222",
+        "text-halo-color": "rgba(255,255,255,0.6)",
+        "text-halo-width": 1.5
+      },
+      "minzoom": 3,
+      "maxzoom": 7
+    },
+    {
+      "id": "city-dot",
+      "type": "symbol",
+      "source": "parchi",
+      "source-layer": "citta",
+      "filter": [
+        "==",
+        [
+          "get",
+          "category"
+        ],
+        1
+      ],
+      "layout": {
+        "icon-image": [
+          "step",
+          [
+            "zoom"
+          ],
+          "place-4",
+          5,
+          [
+            "case",
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            "place-6",
+            "place-4"
+          ],
+          6,
+          [
+            "case",
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            "place-6-z7",
+            "place-4-z7"
+          ]
+        ],
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": true
+      },
+      "minzoom": 3,
+      "maxzoom": 7
     },
     {
       "id": "capital-dot",
