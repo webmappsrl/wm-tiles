@@ -111,6 +111,18 @@ function resolveSet(manifest, setId, registry) {
  * dell'app mostrera' meno dettaglio delle tiles raster che sostituisce.
  */
 /** Data di modifica dell'indice dello sprite, per l'URL versionato. */
+/**
+ * Versioni delle quote e delle curve di livello, nel percorso come per lo
+ * sprite. Hanno una cache di un anno: con un indirizzo fisso, dopo una
+ * rigenerazione browser e CloudFront continuavano a servire quelle vecchie
+ * (13 ottobre 2026, la cucitura corretta del DEM non arrivava). La versione e'
+ * il momento di modifica dei dati: la cartella del terrain e l'archivio delle
+ * curve vengono sostituiti, non riscritti, a ogni rigenerazione.
+ */
+const versioneDi = p => { try { return String(Math.floor(statSync(p).mtimeMs)); } catch { return '0'; } };
+const demVer = () => versioneDi(join(ROOT, 'data/dem/terrain'));
+const curveVer = () => versioneDi(join(ROOT, 'data/archives/dem/contours.pmtiles'));
+
 let spriteVer = null;
 function spriteVersione() {
   if (spriteVer !== null) return spriteVer;
@@ -258,7 +270,7 @@ function buildStyle(manifest, resolved, version, base) {
     // pixelate nell'ombreggiatura.
     terrain: {
       type: 'raster-dem',
-      tiles: [`${base}/dem/terrain/{z}/{x}/{y}.png`],
+      tiles: [`${base}/dem/v${demVer()}/terrain/{z}/{x}/{y}.png`],
       tileSize: 256,
       minzoom: 8,
       maxzoom: demMaxZoom(),
@@ -280,7 +292,7 @@ function buildStyle(manifest, resolved, version, base) {
     contours: {
       type: 'vector',
       tileSize: 256,
-      tiles: [`${base}/t/dem/${resolved.setId}/contours/{z}/{x}/{y}.pbf`],
+      tiles: [`${base}/t/dem-v${curveVer()}/${resolved.setId}/contours/{z}/{x}/{y}.pbf`],
       minzoom: 10,
       // L'archivio arriva a z15: dichiarando 14 si usavano tile z14
       // sovraingrandite e le curve risultavano meno fitte del riferimento.
@@ -392,7 +404,9 @@ export function createApp() {
   });
 
   app.get('/t/:version/:set/:archive/:z/:x/:y.:ext', async (req, res) => {
-    const {version, set, archive, ext} = req.params;
+    const {set, archive, ext} = req.params;
+    // dem-v<n>: la versione delle curve nell'indirizzo, solo per la cache
+    const version = /^dem-v\d+$/.test(req.params.version) ? 'dem' : req.params.version;
     const z = Number(req.params.z);
     const x = Number(req.params.x);
     const y = Number(req.params.y);
@@ -517,7 +531,7 @@ export function createApp() {
   app.use('/preview', express.static(join(HERE, 'preview/public'), {etag: true, maxAge: 0, cacheControl: true, setHeaders: r => r.set('Cache-Control', 'no-cache, must-revalidate')}));
 
   // Uso suolo (ESA WorldCover 10 m) reso come tile raster colorate.
-  app.use('/dem/terrain', express.static(join(ROOT, 'data/dem/terrain'), {
+  app.use(['/dem/terrain', '/dem/:ver/terrain'], express.static(join(ROOT, 'data/dem/terrain'), {
     maxAge: '365d',
     setHeaders: r => r.set('Access-Control-Allow-Origin', '*'),
   }));

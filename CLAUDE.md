@@ -494,7 +494,9 @@ percorso e non in un parametro perche' lo Style Spec accoda `.json` e `.png`
 all'URL dichiarato, e un `?v=1` diventerebbe `?v=1.json`.
 
 **Cache-Control non e' un dettaglio qui**: i tile sono `immutable` per un anno
-perche' il path contiene la versione, ma `/style.json`, `/manifest` e
+perche' il path contiene la versione — anche quote e curve
+(`/dem/v<mtime>/terrain`, `/t/dem-v<mtime>/...`: con l'indirizzo fisso la
+correzione del DEM del 13 ottobre 2026 restava invisibile nelle cache), ma `/style.json`, `/manifest` e
 `/version` devono restare `no-cache`. Uno stile cachato che punta a una
 versione ritirata fa chiedere tile inesistenti: mappa vuota, zero errori.
 
