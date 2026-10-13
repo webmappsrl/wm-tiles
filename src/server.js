@@ -497,6 +497,17 @@ export function createApp() {
     setHeaders: r => r.set('Cache-Control', 'no-cache'),
   }));
 
+  // Un indirizzo per ogni area della preview, da mandare a chi deve guardare
+  // un caso d'uso: /preview/appennino-tosco-emiliano apre gia' su quell'area.
+  // Vale l'id o l'etichetta senza parentesi, in minuscolo e con i trattini.
+  const slug = s => s.toLowerCase().replace(/\(.*?\)/g, '').normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  app.get('/preview/:area', (req, res, next) => {
+    const a = (manifest.previewAreas ?? []).find(x => x.id === req.params.area || slug(x.label) === req.params.area);
+    if (!a) return next();
+    res.redirect(302, `/preview/?area=${encodeURIComponent(a.id)}`);
+  });
+
   // alla radice non c'e' nulla da servire: si va alla preview
   app.get('/', (req, res) => res.redirect(302, '/preview/'));
   app.use('/preview', express.static(join(HERE, 'preview/public'), {etag: true, maxAge: 0, cacheControl: true, setHeaders: r => r.set('Cache-Control', 'no-cache, must-revalidate')}));
