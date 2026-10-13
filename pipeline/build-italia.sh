@@ -24,9 +24,13 @@ set -euo pipefail
 # precedente, e DEM e curve restano quelli pubblicati (non cambiano). Ore
 # invece di una giornata.
 #
-# Uso: pipeline/build-italia.sh [--solo-osm] <versione> [estratto.osm.pbf]
-SOLO_OSM=""
+# Con --solo-dem si rifanno solo le quote e le curve di livello (che vengono
+# dal DEM); tutti gli archivi si copiano dalla versione precedente.
+#
+# Uso: pipeline/build-italia.sh [--solo-osm|--solo-dem] <versione> [estratto.osm.pbf]
+SOLO_OSM=""; SOLO_DEM=""
 if [ "${1:-}" = "--solo-osm" ]; then SOLO_OSM=1; shift; fi
+if [ "${1:-}" = "--solo-dem" ]; then SOLO_DEM=1; shift; fi
 V="${1:?versione, es. 20261011-1500}"
 PBF="${2:-data/sources/italia.osm.pbf}"
 echo "$V" | grep -Eq '^[0-9]{8}-[0-9]{4}$' || { echo "!! versione non valida: $V" >&2; exit 2; }
@@ -66,9 +70,17 @@ passo() {  # <uscita> <comando...>: lo esegue se non e' gia' fatto, e lo segna
   echo "   $(basename "$OUT"): $(durata $t)"
 }
 
+if [ -n "$SOLO_DEM" ]; then
+  PREC="$(ls -d data/archives/2*/ 2>/dev/null | grep -v "/$V/" | sort | tail -1 || true)"
+  [ -n "$PREC" ] || { echo "!! --solo-dem: nessuna versione precedente in data/archives" >&2; exit 1; }
+  fase "solo DEM e curve: gli archivi vengono da $PREC"
+  for f in "$PREC"/*.pmtiles; do ln -f "$f" "$STAGE/"; segna "$STAGE/$(basename "$f")"; done
+fi
+
 # ---------------------------------------------------------------------------
 # 1. OpenStreetMap
 # ---------------------------------------------------------------------------
+if [ -z "$SOLO_DEM" ]; then
 fase "1. OpenStreetMap da $PBF"
 # I passi sono indipendenti e girano insieme, a gruppi di WM_PASSI, ognuno con
 # il suo log in $WORK: in sequenza la rigenerazione "solo OSM" del 12 ottobre
@@ -171,22 +183,28 @@ for A in toponimi rifugi; do
   segna "$STAGE/$A.pmtiles"
 done
 
+fi  # fine dei passi 1 e 2, saltati con --solo-dem
+
 # ---------------------------------------------------------------------------
 # 3. DEM: TINITALY riproiettato una volta, ogni livello dal mosaico
 # ---------------------------------------------------------------------------
 DEM="$WORK/dem"
-mkdir -p "$DEM/4326" "$DEM/terrain"
-fase "3. DEM: TINITALY in WGS 84 e mosaico"
-# I file di TINITALY stanno in UTM 32 o 33: tutti in WGS 84 prima del mosaico,
-# perche' gdalbuildvrt scarta in silenzio i file con un'altra proiezione.
+mkdir -p "$DEM/terrain"
+fase "3. DEM: TINITALY, un mosaico per zona UTM"
+# I fogli di TINITALY stanno in UTM 32 o 33. Si montano PER ZONA, nella loro
+# proiezione, e si riproietta il mosaico intero, una volta per livello.
+# Riproiettare ogni foglio da solo (com'era fino al 13 ottobre 2026) lasciava
+# a ogni bordo di foglio una fascia di valori sbagliati, dove l'interpolazione
+# cubica non ha i pixel del foglio accanto: l'ombra la disegnava come una
+# linea dritta (Valle d'Arnetola, fogli w48555/w48560, curvatura 9,7 volte la
+# normale; col mosaico per zona 2 volte, cioe' terreno). gdalbuildvrt scarta in
+# silenzio i file con un'altra proiezione: per questo un VRT per zona.
 docker run --rm -v "$PWD/$TG/tinitaly":/src:ro -v "$DEM":/work --entrypoint bash "$GDAL" -c "
   set -euo pipefail; cd /work
-  ls /src/*.tif | xargs -P $NPROC -I{} bash -c '
-    o=4326/\$(basename {} .tif).tif
-    if [ ! -s \$o ]; then
-      gdalwarp -q -t_srs EPSG:4326 -r cubicspline -co COMPRESS=DEFLATE -co TILED=YES {} \$o.tmp.tif && mv \$o.tmp.tif \$o
-    fi'
-  gdalbuildvrt -overwrite -q -resolution highest -r cubicspline italia.vrt 4326/*.tif
+  rm -f zona_*.txt zona_*.vrt
+  for f in /src/*.tif; do echo \$f >> zona_\$(gdalsrsinfo -o epsg \$f | tr -dc 0-9).txt; done
+  for l in zona_*.txt; do gdalbuildvrt -q -r cubicspline -input_file_list \$l \${l%.txt}.vrt; done
+  wc -l zona_*.txt
 "
 for Z in $(seq $DEM_ZMIN $DEM_ZMAX); do
   if [ -d "$DEM/terrain/$Z" ] && [ -f "$DEM/terrain/.z$Z" ]; then echo "   z$Z: gia' fatto, salto"; continue; fi
@@ -199,7 +217,7 @@ for Z in $(seq $DEM_ZMIN $DEM_ZMAX); do
     set -euo pipefail; cd /work
     gdalwarp -overwrite -q -t_srs EPSG:3857 -te_srs EPSG:4326 -te $DW $DS $DE $DN -tr $STEP $STEP \
       -r cubicspline -multi -wo NUM_THREADS=ALL_CPUS \
-      -co COMPRESS=DEFLATE -co TILED=YES -co BIGTIFF=YES italia.vrt dem_z$Z.tif
+      -co COMPRESS=DEFLATE -co TILED=YES -co BIGTIFF=YES zona_*.vrt dem_z$Z.tif
     python3 /pipeline/encode-terrarium.py dem_z$Z.tif terrain_z$Z.tif
     rm -rf terrain/$Z
     gdal2tiles.py --xyz --zoom=$Z-$Z --resampling=near --processes=$NPROC \

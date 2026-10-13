@@ -910,8 +910,12 @@ un colore noto, leggere il `getComputedStyle`, elencare i layer della mappa.
 ## Trappole GDAL / PostGIS
 
 - **`gdalbuildvrt` scarta in silenzio** (solo warning) i file con proiezione
-  diversa dal primo: porta tutto in EPSG:4326, mosaica, e riproietta solo il
-  risultato.
+  diversa dal primo. Ma **non riproiettare i fogli uno per uno** per
+  aggirarlo: ai bordi di ogni foglio l'interpolazione cubica non ha i pixel
+  del foglio accanto, e l'ombra disegna una linea dritta lungo ogni cucitura
+  (TINITALY, Valle d'Arnetola, 13 ottobre 2026). Si fa un VRT per zona UTM
+  nella proiezione dei fogli e si riproietta il mosaico intero
+  (`build-italia.sh`, passo 3).
 - **Le quote Terrarium non si interpolano**: i canali RGB codificano un
   numero, non un colore, quindi il tiling usa `--resampling=near`. Ma tilare
   con `near` un DEM grosso fa nascere gli zoom alti dall'overzoom di pochi
