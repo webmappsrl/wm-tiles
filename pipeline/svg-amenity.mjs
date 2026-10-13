@@ -31,6 +31,10 @@ for (const r of Object.values(regole).flat()) {
 for (const r of regole.punti) {
   if (r.icona === 'bus_stop.12') fatte.set(`tg-${r.icona}-${r.colore.replace('#', '')}`, r);
 }
+// le frecce dei sensi unici (build-frecce.py), una per colore di classe
+for (const c of new Set(Object.values(JSON.parse(readFileSync('style/frecce-colori.json', 'utf8')).colori))) {
+  fatte.set(`tg-oneway-${c.replace('#', '')}`, {percorso: 'symbols/oneway.svg', colore: c});
+}
 let n = 0;
 for (const [nome, r] of fatte) {
   const f = join(SORG, r.percorso);

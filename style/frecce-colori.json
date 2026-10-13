@@ -1,0 +1,28 @@
+{
+ "nota": "colori delle frecce dei sensi unici per classe di strada, da project.xml (roads-text-name-directions, paths-text-name); footway/path con horse=designated #6f6553, bicycle=designated #4b4b4b",
+ "colori": {
+  "motorway": "#35332e",
+  "motorway_link": "#35332e",
+  "trunk": "#35332e",
+  "trunk_link": "#35332e",
+  "primary": "#504d45",
+  "primary_link": "#504d45",
+  "secondary": "#5e5b51",
+  "secondary_link": "#5e5b51",
+  "tertiary": "#434343",
+  "tertiary_link": "#434343",
+  "residential": "#555555",
+  "unclassified": "#555555",
+  "road": "#555555",
+  "service": "#555555",
+  "living_street": "#6e6e6e",
+  "pedestrian": "#595959",
+  "raceway": "#5e5e5e",
+  "track": "#605748",
+  "bridleway": "#6f6553",
+  "steps": "#323232",
+  "footway": "#323232",
+  "path": "#323232",
+  "cycleway": "#4b4b4b"
+ }
+}

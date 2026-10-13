@@ -7404,6 +7404,25 @@
       }
     },
     {
+      "id": "oneway-arrow",
+      "type": "symbol",
+      "source": "amenity",
+      "source-layer": "frecce",
+      "layout": {
+        "icon-image": [
+          "get",
+          "icona"
+        ],
+        "icon-rotate": [
+          "get",
+          "rot"
+        ],
+        "icon-rotation-alignment": "map",
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": true
+      }
+    },
+    {
       "id": "amenity-icon",
       "type": "symbol",
       "source": "amenity",

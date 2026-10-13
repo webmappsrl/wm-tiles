@@ -299,6 +299,11 @@
         "text-point"
       ]
     },
+    "oneway-arrow": {
+      "tgen": null,
+      "ordine": "roads-text-name",
+      "nota": "frecce dei sensi unici (classe directions di roads-text-name e paths-text-name): da z16, ogni 180 px, colore per classe (style/frecce-colori.json). Punti con rotazione calcolati da pipeline/build-frecce.py: ol-mapbox-style non mette icone su linee sotto i 150 px. Non coprono ne' spostano le etichette (allow-overlap e ignore-placement)"
+    },
     "amenity-icon": {
       "tgen": null,
       "ordine": "amenity-points",
