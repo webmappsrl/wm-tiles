@@ -158,6 +158,13 @@ while True:
             'iata': t.get('iata'), 'is_building': 'no' if t.get('building') in (None, 'no') else 'yes',
             'height': numero(t.get('height')), 'way_area': area}
     for z in range(ZMIN, ZMAX + 1):
+        # Le regole sono di project.xml (2025), che vale da z13. Fino a z12 la
+        # specifica sono i PNG del 2018: su 137 nomi di aree in 2.576 tile z10-z12
+        # del giro italia1 TGen non ne scrive nessuno (bonifiche 0/23, aree
+        # militari e industriali 0, ghiacciai 4/86 di rumore); le isole restano,
+        # la misura non le distingue dal nero delle altre scritte.
+        if z <= 12 and feat not in ('place_island', 'place_islet'):
+            continue
         p = dict(base, way_pixels=area / PIXEL(z) ** 2 if area is not None else None)
         v = lambda k, p=p: '' if p.get(k) is None else numero(p.get(k))
         regola = None
