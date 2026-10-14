@@ -117,8 +117,24 @@
     },
     "park-label": {
       "tgen": null,
-      "nota": "z10-z12 dai PNG del 2018: nome in #8f8491 (@admin-boundaries_txt), corsivo 10 px, a capo largo, con la stessa soglia way_pixels > 3000 (Migliarino-San Rossore compare a z10, i Monti Livornesi a z11). Da z13 nature-reserve-text del .mml: #4b7c37, 10/12/15 px secondo la superficie, a capo a 3 em. La soglia e' nel dato (pipeline/parchi-soglia.py).",
+      "nota": "z10-z12 dai PNG del 2018: nome in #8f8491 (@admin-boundaries_txt), corsivo 10 px, a capo largo, con la stessa soglia way_pixels > 3000 (Migliarino-San Rossore compare a z10, i Monti Livornesi a z11). La soglia e' nel dato (pipeline/parchi-soglia.py); il nome e' un punto nel baricentro della parte piu' grande (pipeline/label-points.py). Da z13 il nome sta lungo il confine: park-label-line.",
       "ordine": "nature-reserve-text",
+      "livelli": [
+        10,
+        12
+      ],
+      "copre": [
+        "nature-reserve-text"
+      ]
+    },
+    "park-label-line": {
+      "tgen": null,
+      "nota": "nature-reserve-text di project.xml (z13-z16): placement=line lungo il confine, Noto Sans Regular 10 px, #4b7c37, alone 1 px bianco al 60%, dy=-10, solo con way_pixels > 192000 (zpx+3). Il .mss diceva nome al centro, 10/12/15 px a capo a 3 em: vince l'XML. Punti ruotati calcolati in build-parchi.sh con punti-lungo-linee.py, uno ogni 2048 px (TGen non ha spacing: un nome per metatile).",
+      "ordine": "nature-reserve-text",
+      "livelli": [
+        13,
+        16
+      ],
       "copre": [
         "nature-reserve-text"
       ]

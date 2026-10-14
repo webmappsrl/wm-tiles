@@ -6471,10 +6471,42 @@
       "minzoom": 15
     },
     {
+      "id": "park-label-line",
+      "type": "symbol",
+      "source": "parchi",
+      "source-layer": "parchi_confine",
+      "layout": {
+        "text-field": [
+          "get",
+          "t"
+        ],
+        "text-font": [
+          "Noto Sans Regular"
+        ],
+        "text-size": [
+          "get",
+          "s"
+        ],
+        "text-rotate": [
+          "get",
+          "r"
+        ],
+        "text-rotation-alignment": "map",
+        "text-padding": 1,
+        "text-max-width": 100
+      },
+      "paint": {
+        "text-color": "#4b7c37",
+        "text-halo-color": "rgba(255,255,255,0.6)",
+        "text-halo-width": 1
+      },
+      "minzoom": 12
+    },
+    {
       "id": "park-label",
       "type": "symbol",
       "source": "parchi",
-      "source-layer": "parchi",
+      "source-layer": "parchi_nomi",
       "filter": [
         "has",
         "name"
@@ -6493,10 +6525,63 @@
           [
             "zoom"
           ],
-          10,
-          12,
           [
             "case",
+            [
+              "<=",
+              [
+                "get",
+                "zpx"
+              ],
+              8
+            ],
+            15,
+            [
+              "<=",
+              [
+                "get",
+                "zpx"
+              ],
+              9
+            ],
+            12,
+            10
+          ],
+          10,
+          [
+            "case",
+            [
+              "<=",
+              [
+                "get",
+                "zpx"
+              ],
+              9
+            ],
+            15,
+            [
+              "<=",
+              [
+                "get",
+                "zpx"
+              ],
+              10
+            ],
+            12,
+            10
+          ],
+          11,
+          [
+            "case",
+            [
+              "<=",
+              [
+                "get",
+                "zpx"
+              ],
+              10
+            ],
+            15,
             [
               "<=",
               [
@@ -6504,84 +6589,6 @@
                 "zpx"
               ],
               11
-            ],
-            15,
-            [
-              "<=",
-              [
-                "get",
-                "zpx"
-              ],
-              12
-            ],
-            12,
-            10
-          ],
-          13,
-          [
-            "case",
-            [
-              "<=",
-              [
-                "get",
-                "zpx"
-              ],
-              12
-            ],
-            15,
-            [
-              "<=",
-              [
-                "get",
-                "zpx"
-              ],
-              13
-            ],
-            12,
-            10
-          ],
-          14,
-          [
-            "case",
-            [
-              "<=",
-              [
-                "get",
-                "zpx"
-              ],
-              13
-            ],
-            15,
-            [
-              "<=",
-              [
-                "get",
-                "zpx"
-              ],
-              14
-            ],
-            12,
-            10
-          ],
-          15,
-          [
-            "case",
-            [
-              "<=",
-              [
-                "get",
-                "zpx"
-              ],
-              14
-            ],
-            15,
-            [
-              "<=",
-              [
-                "get",
-                "zpx"
-              ],
-              15
             ],
             12,
             10
@@ -6591,15 +6598,8 @@
           0,
           0
         ],
-        "text-max-width": [
-          "step",
-          [
-            "zoom"
-          ],
-          8,
-          12,
-          3
-        ],
+        "text-max-width": 100,
+        "text-padding": 0,
         "symbol-sort-key": 4,
         "text-line-height": 1.05
       },
@@ -6616,7 +6616,8 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 9
+      "minzoom": 9,
+      "maxzoom": 12
     },
     {
       "id": "ferry-label",

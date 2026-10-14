@@ -17,7 +17,8 @@ la spaziatura vale in pixel di quel livello.
 Uso: python3 punti-lungo-linee.py <in.geojsonl> <out.geojsonl> --testo CAMPO
        --zoom 14-16 --spaziatura 256 --dimensione 9 [--dy -3] [--angolo 30]
        [--filtro "p['type'].startswith('cp')"] [--campi a,b]
-Le geometrie in ingresso sono in WGS 84 (GeoJSONSeq di GDAL o tippecanoe).
+Le geometrie in ingresso sono in WGS 84 (GeoJSONSeq di GDAL o tippecanoe);
+di un'area si usa il bordo esterno.
 """
 import argparse
 import bisect
@@ -56,6 +57,12 @@ def linee(g):
         yield g['coordinates']
     elif g['type'] == 'MultiLineString':
         yield from g['coordinates']
+    # di un'area si segue il bordo esterno, come Mapnik con placement="line"
+    elif g['type'] == 'Polygon':
+        yield g['coordinates'][0]
+    elif g['type'] == 'MultiPolygon':
+        for parte in g['coordinates']:
+            yield parte[0]
 
 
 def misura(xy):

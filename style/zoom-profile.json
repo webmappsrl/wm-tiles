@@ -95,6 +95,7 @@
     "rail-crossing",
     "cross-icon",
     "ford-icon",
+    "park-label-line",
     "park-label",
     "ferry-label",
     "waterway-label-stream",
@@ -226,9 +227,9 @@
         "water",
         "boundary",
         "boundary-l2",
+        "state-label",
         "city-dot-label",
         "city-dot",
-        "state-label",
         "capital-dot",
         "place-city",
         "country-label"
@@ -246,9 +247,9 @@
         "road-fill-motorway",
         "boundary",
         "boundary-l2",
+        "state-label",
         "city-dot-label",
         "city-dot",
-        "state-label",
         "capital-dot",
         "place-city",
         "country-label"
@@ -268,9 +269,9 @@
         "road-fill-motorway",
         "boundary",
         "boundary-l2",
+        "state-label",
         "city-dot-label",
         "city-dot",
-        "state-label",
         "capital-dot",
         "place-city",
         "country-label"
@@ -298,8 +299,8 @@
         "boundary-l2",
         "lake-label",
         "wood-label",
-        "city-label",
         "state-label",
+        "city-label",
         "place-city",
         "country-label"
       ]
@@ -327,8 +328,8 @@
         "boundary-l2",
         "lake-label",
         "wood-label",
-        "city-label",
         "state-label",
+        "city-label",
         "place-city",
         "country-label"
       ]
@@ -370,8 +371,8 @@
         "aerodrome-label-z10",
         "aerodrome-icon-z10",
         "amenity-icon",
-        "city-label",
         "state-label",
+        "city-label",
         "place-city",
         "country-label"
       ]
@@ -420,8 +421,8 @@
         "aerodrome-label",
         "aerodrome-icon",
         "amenity-icon",
-        "city-label",
         "state-label",
+        "city-label",
         "place-city",
         "country-label"
       ]
@@ -491,8 +492,8 @@
         "amenity-icon",
         "station-icon",
         "place-village",
-        "city-label",
         "state-label",
+        "city-label",
         "place-city",
         "country-label"
       ]
@@ -558,7 +559,7 @@
         "park-band-b",
         "park-band-a",
         "toponimi",
-        "park-label",
+        "park-label-line",
         "ferry-label",
         "waterway-label",
         "mountain-peak-label",
@@ -580,8 +581,8 @@
         "station-icon-halt",
         "station-icon",
         "place-village",
-        "city-label",
         "state-label",
+        "city-label",
         "place-city",
         "country-label"
       ],
@@ -662,7 +663,7 @@
         "contour-label",
         "hiking-ref",
         "level-crossing",
-        "park-label",
+        "park-label-line",
         "ferry-label",
         "waterway-label",
         "building-label",
@@ -691,8 +692,8 @@
         "station-icon",
         "place-quarter",
         "place-village",
-        "city-label",
         "state-label",
+        "city-label",
         "place-city",
         "country-label",
         "spring-icon"
@@ -778,7 +779,7 @@
         "hiking-ref",
         "level-crossing",
         "rail-crossing",
-        "park-label",
+        "park-label-line",
         "ferry-label",
         "waterway-label-stream",
         "waterway-label",
@@ -817,8 +818,8 @@
         "place-minor-osm",
         "place-quarter",
         "place-village",
-        "city-label",
         "state-label",
+        "city-label",
         "place-city",
         "country-label",
         "spring-icon"
@@ -911,7 +912,7 @@
         "rail-crossing",
         "cross-icon",
         "ford-icon",
-        "park-label",
+        "park-label-line",
         "ferry-label",
         "waterway-label-stream",
         "waterway-label",
@@ -959,8 +960,8 @@
         "place-minor-osm",
         "place-quarter",
         "place-village",
-        "city-label",
         "state-label",
+        "city-label",
         "country-label",
         "spring-icon"
       ]
@@ -1244,7 +1245,8 @@
     "building-igm": "tgen",
     "park-band-a": "tgen",
     "park-band-b": "tgen",
-    "park-label": "nostro",
+    "park-label": "livelli (PNG)",
+    "park-label-line": "livelli (PNG)",
     "road-casing-minor": "tgen",
     "road-casing-secondary": "tgen",
     "road-casing-major": "livelli (PNG)",

@@ -36,6 +36,8 @@
         "power_line",
         "power_point",
         "parchi",
+        "parchi_nomi",
+        "parchi_confine",
         "boschi",
         "acque",
         "barriere",

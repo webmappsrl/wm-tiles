@@ -179,13 +179,14 @@ function buildStyle(manifest, resolved, version, base) {
       attribution: ATTRIBUTION,
     },
     // Parchi nazionali e riserve naturali selezionati come TGen
-    // (boundary=national_park OR leisure=nature_reserve), da z8.
+    // (boundary=national_park OR leisure=nature_reserve), da z8. Fino a z16
+    // per i nomi lungo il confine, spostati di 10 px a ogni livello.
     parchi: {
       type: 'vector',
       tileSize: 256,
       tiles: [`${base}/t/${version}/${resolved.setId}/parchi/{z}/{x}/{y}.pbf`],
       minzoom: 4,
-      maxzoom: 14,
+      maxzoom: 16,
       attribution: ATTRIBUTION,
     },
     // Cio' che TGen disegna e OpenMapTiles non porta: dighe, frangiflutti, aree

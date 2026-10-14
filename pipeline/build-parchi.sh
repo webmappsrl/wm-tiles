@@ -25,6 +25,23 @@ echo "   $(wc -l < "$WORK/parchi.geojsonl" | tr -d ' ') aree"
 
 # way_pixels > 3000, come nel .mml: il primo livello da cui ogni area compare
 python3 -I pipeline/parchi-soglia.py "$WORK/parchi.geojsonl" "$WORK/parchi-z.geojsonl" 8 14
+# il nome come punto, dove lo scrive Mapnik: OpenLayers etichetta ogni parte di un
+# multipoligono e ogni tile in cui l'area cade (vedi label-points.py)
+# a capo a 3 em come Mapnik (@standard-wrap-width): "Parco Naturale / di Migliarino /
+# San Rossore / Massaciuccoli" nei PNG di TGen
+python3 -I pipeline/label-points.py "$WORK/parchi-z.geojsonl" "$WORK/parchi-nomi.geojsonl" \
+  --wrap style/glifi-larghezze.json I 3
+# Da z13 TGen scrive il nome lungo il confine (nature-reserve-text di project.xml:
+# placement="line", 10 px, dy=-10) e solo se way_pixels > 192000, cioe' 64 volte
+# la soglia dell'area: tre livelli dopo zpx. Non ha spacing, quindi Mapnik scrive un
+# nome per ogni metatile (8x8 tile, 2048 px) in cui il confine passa.
+: > "$WORK/parchi-confine.geojsonl"
+for z in 13 14 15 16; do
+  python3 -I pipeline/punti-lungo-linee.py "$WORK/parchi-z.geojsonl" "$WORK/pc$z.geojsonl" \
+    --testo name --zoom $z-$z --spaziatura 2048 --dimensione 10 --dy -10 \
+    --filtro "p['zpx'] + 3 <= $z"
+  cat "$WORK/pc$z.geojsonl" >> "$WORK/parchi-confine.geojsonl"
+done
 
 # I nomi dei boschi: in TGen li scrive text-poly (natural_wood, landuse_forest)
 # con la stessa soglia di superficie dei parchi. Servono solo per l'etichetta.
@@ -36,7 +53,8 @@ docker run --rm -v "$PWD":/w -v "$WORK":/out \
   -sql "SELECT name FROM multipolygons \
         WHERE (natural = 'wood' OR landuse = 'forest') AND name IS NOT NULL AND building IS NULL"
 echo "   $(wc -l < "$WORK/boschi.geojsonl" | tr -d ' ') boschi"
-python3 -I pipeline/parchi-soglia.py "$WORK/boschi.geojsonl" "$WORK/boschi-z.geojsonl" 8 14
+python3 -I pipeline/parchi-soglia.py "$WORK/boschi.geojsonl" "$WORK/boschi-a.geojsonl" 8 14
+python3 -I pipeline/label-points.py "$WORK/boschi-a.geojsonl" "$WORK/boschi-z.geojsonl"
 
 # I nomi di laghi e bacini: water.mss li scrive con la stessa soglia
 # (natural_water, natural_bay, landuse_reservoir, landuse_basin). OpenMapTiles
@@ -49,7 +67,8 @@ docker run --rm -v "$PWD":/w -v "$WORK":/out \
   -sql "SELECT name FROM multipolygons \
         WHERE (natural IN ('water', 'bay') OR landuse IN ('reservoir', 'basin')) AND name IS NOT NULL"
 echo "   $(wc -l < "$WORK/acque.geojsonl" | tr -d ' ') acque"
-python3 -I pipeline/parchi-soglia.py "$WORK/acque.geojsonl" "$WORK/acque-z.geojsonl" 8 14
+python3 -I pipeline/parchi-soglia.py "$WORK/acque.geojsonl" "$WORK/acque-a.geojsonl" 8 14
+python3 -I pipeline/label-points.py "$WORK/acque-a.geojsonl" "$WORK/acque-z.geojsonl"
 
 # Citta' e paesi come placenames-medium: punteggio = popolazione (100.000 per una citta'
 # senza, 1.000 per un paese) raddoppiata per i capoluoghi di regione (capital=4); la capitale
@@ -81,9 +100,12 @@ jq -c 'select(.properties.capital != "yes")
 # prima nella tile, e TGen piazza i nomi in ORDER BY score DESC (vedi --preserve-input-order)
 echo "   $(wc -l < "$WORK/citta-z.geojsonl" | tr -d ' ') citta' e paesi"
 
-tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/parchi.mbtiles" --force -q -Z4 -z14 --preserve-input-order \
-  --no-feature-limit --no-tile-size-limit --simplification=4 \
-  -L parchi:"$WORK/parchi-z.geojsonl" -L boschi:"$WORK/boschi-z.geojsonl" \
+# -r1: i nomi sono punti, e di serie tippecanoe li dirada sotto z14; TGen li scrive tutti
+# fino a z16 per i nomi lungo il confine: lo spostamento di 10 px vale a quel livello
+tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/parchi.mbtiles" --force -q -Z4 -z16 --preserve-input-order \
+  --no-feature-limit --no-tile-size-limit --simplification=4 -r1 \
+  -L parchi:"$WORK/parchi-z.geojsonl" -L parchi_nomi:"$WORK/parchi-nomi.geojsonl" \
+  -L parchi_confine:"$WORK/parchi-confine.geojsonl" -L boschi:"$WORK/boschi-z.geojsonl" \
   -L acque:"$WORK/acque-z.geojsonl" -L citta:"$WORK/citta-z.geojsonl"
 pmtiles convert "$WORK/parchi.mbtiles" "$OUT"
 ls -la "$OUT" | awk '{printf "== fatto: %s (%.1f MB)\n", $9, $5/1048576}'
