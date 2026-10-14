@@ -131,16 +131,26 @@ def wrap_like_mapnik(name, widths, em):
     scale = 1.1 / widths['corpo']
     table = widths['table']
     length = lambda w: sum(table.get(str(ord(c)), 13) for c in w) * scale
-    space = length(' ')
-    lines, line, width = [], [], 0.0
-    for word in name.split():
-        line.append(word)
-        width += (space if len(line) > 1 else 0) + length(word)
-        if width > em:
-            lines.append(' '.join(line))
-            line, width = [], 0.0
-    if line:
-        lines.append(' '.join(line))
+    # dove si puo' andare a capo, come le regole di ICU che Mapnik usa: dopo uno
+    # spazio (ma non se segue una "/") e dopo una "/". "Mondellipass/ / Passo
+    # Mondelli", "Pizzo Mondelli / / Punta" nei PNG di TGen
+    segments, cur = [], ''
+    for i, ch in enumerate(name):
+        cur += ch
+        nxt = name[i + 1] if i + 1 < len(name) else ''
+        if (ch == ' ' and nxt not in ('/', ' ', '')) or (ch == '/' and nxt not in ('', ' ')):
+            segments.append(cur)
+            cur = ''
+    if cur:
+        segments.append(cur)
+    lines, line = [], ''
+    for seg in segments:
+        line += seg
+        if length(line.rstrip()) > em:
+            lines.append(line.rstrip())
+            line = ''
+    if line.strip():
+        lines.append(line.rstrip())
     return '\n'.join(lines)
 
 
