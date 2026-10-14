@@ -7057,63 +7057,31 @@
       "id": "hiking-ref",
       "type": "symbol",
       "source": "hiking",
-      "source-layer": "hiking",
+      "source-layer": "hiking_ref",
       "filter": [
-        "all",
-        [
-          "has",
-          "ref"
-        ],
-        [
-          "!=",
-          [
-            "get",
-            "ref"
-          ],
-          ""
-        ]
+        "has",
+        "t"
       ],
       "layout": {
-        "symbol-placement": "line",
         "text-field": [
           "get",
-          "ref"
+          "t"
         ],
         "text-font": [
           "Noto Sans Bold"
         ],
         "text-size": [
-          "step",
-          [
-            "zoom"
-          ],
-          9,
-          15,
-          10.5,
-          16,
-          12
+          "get",
+          "s"
         ],
         "text-letter-spacing": 0.1,
-        "text-offset": [
-          0,
-          -0.33
-        ],
-        "symbol-spacing": [
-          "step",
-          [
-            "zoom"
-          ],
-          200,
-          15,
-          150,
-          16,
-          125
-        ],
         "text-rotation-alignment": "map",
-        "text-keep-upright": true,
         "text-padding": 4,
         "symbol-sort-key": 2,
-        "text-max-angle": 60
+        "text-rotate": [
+          "get",
+          "r"
+        ]
       },
       "paint": {
         "text-color": "#b82e23",

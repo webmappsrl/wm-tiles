@@ -193,7 +193,8 @@
         "en": "Hiking routes"
       },
       "layers": [
-        "hiking"
+        "hiking",
+        "hiking_ref"
       ],
       "class": "public",
       "attributes": [

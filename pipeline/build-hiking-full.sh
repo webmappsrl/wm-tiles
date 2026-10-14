@@ -38,9 +38,21 @@ docker run --rm -v "$PWD":/w -v "$WORK":/out \
           AND hstore_get_value(other_tags, 'source') LIKE '%survey:CAI%'"
 echo "   $(wc -l < "$WORK/hiking.geojsonl") relazioni"
 
+# I numeri dei sentieri come punti ruotati posizionati come Mapnik
+# (punti-lungo-linee.py): lungo la linea OpenLayers prova posizioni fisse e ne
+# scartava molti ("489", "488" in 16/34660/23411, giro italia1). Dimensioni,
+# spaziature (Mapnik: 400/300/250 px) e spostamento sopra la linea sono quelli
+# gia' tarati sul layer hiking-ref; da z14, quindi l'archivio arriva a z16.
+PL="python3 -I $(dirname "$0")/punti-lungo-linee.py $WORK/hiking.geojsonl"
+GL="--glifi $(dirname "$0")/../style/glifi-larghezze.json B"
+$PL "$WORK/r14.geojsonl" --testo ref --zoom 14-14 --spaziatura 400 --dimensione 9 --dy -3 --angolo 60 $GL
+$PL "$WORK/r15.geojsonl" --testo ref --zoom 15-15 --spaziatura 300 --dimensione 10.5 --dy -3.5 --angolo 60 $GL
+$PL "$WORK/r16.geojsonl" --testo ref --zoom 16-16 --spaziatura 250 --dimensione 12 --dy -4 --angolo 60 $GL
+cat "$WORK"/r1[456].geojsonl > "$WORK/numeri.geojsonl"
+
 echo "== tiles z${ZMIN}-${ZMAX}"
-tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/h.mbtiles" --force -l hiking -Z"$ZMIN" -z"$ZMAX" \
+tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/h.mbtiles" --force -Z"$ZMIN" -z"$ZMAX" -r1 \
   --no-feature-limit --no-tile-size-limit --no-simplification-of-shared-nodes \
-  "$WORK/hiking.geojsonl" -q
+  -L hiking:"$WORK/hiking.geojsonl" -L hiking_ref:"$WORK/numeri.geojsonl" -q
 pmtiles convert "$WORK/h.mbtiles" "$OUT"
 echo "== fatto: $OUT ($(du -h "$OUT" | cut -f1))"

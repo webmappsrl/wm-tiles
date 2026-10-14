@@ -112,7 +112,7 @@ avvia passo_log "$STAGE/amenity.pmtiles" bash pipeline/build-amenity.sh "$PBF" $
 avvia passo_log "$STAGE/roadslz.pmtiles" bash pipeline/build-roads-lowzoom.sh "$PBF" $OW $OS $OE $ON "$STAGE/roadslz.pmtiles" 8 11
 avvia passo_log "$STAGE/parchi.pmtiles" bash pipeline/build-parchi.sh "$PBF" $OW $OS $OE $ON "$STAGE/parchi.pmtiles"
 avvia passo_log "$STAGE/osmpoi.pmtiles" bash pipeline/build-osmpoi.sh "$PBF" $OW $OS $OE $ON "$STAGE/osmpoi.pmtiles" 11 14
-avvia passo_log "$STAGE/hiking.pmtiles" bash pipeline/build-hiking-full.sh "$PBF" $OW $OS $OE $ON "$STAGE/hiking.pmtiles" 10 14
+avvia passo_log "$STAGE/hiking.pmtiles" bash pipeline/build-hiking-full.sh "$PBF" $OW $OS $OE $ON "$STAGE/hiking.pmtiles" 10 16
 avvia passo_log "$STAGE/power.pmtiles" bash pipeline/build-power.sh "$PBF" $OW $OS $OE $ON "$STAGE/power.pmtiles"
 avvia passo_log "$STAGE/nomistrade.pmtiles" bash pipeline/build-nomi-strade.sh "$PBF" $OW $OS $OE $ON "$STAGE/nomistrade.pmtiles"
 aspetta

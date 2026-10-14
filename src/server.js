@@ -252,7 +252,7 @@ function buildStyle(manifest, resolved, version, base) {
       tileSize: 256,
       tiles: [`${base}/t/${version}/${resolved.setId}/hiking/{z}/{x}/{y}.pbf`],
       minzoom: 10,
-      maxzoom: 14,
+      maxzoom: 16,
       attribution: ATTRIBUTION,
     },
     // Corine Land Cover: la fonte dell'uso suolo per z7-13, come in

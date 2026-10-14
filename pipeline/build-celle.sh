@@ -75,7 +75,7 @@ else
   cp "${PARTI[0]}" "$WORK/celle.osm.pbf"
 fi
 bash pipeline/build-osm.sh "$WORK/celle.osm.pbf" "$STAGE" 14
-bash pipeline/build-hiking-full.sh "$WORK/celle.osm.pbf" "$UW" "$US" "$UE" "$UN" "$STAGE/hiking.pmtiles" 10 14
+bash pipeline/build-hiking-full.sh "$WORK/celle.osm.pbf" "$UW" "$US" "$UE" "$UN" "$STAGE/hiking.pmtiles" 10 16
 bash pipeline/build-roads-lowzoom.sh "$WORK/celle.osm.pbf" "$UW" "$US" "$UE" "$UN" "$STAGE/roadslz.pmtiles" 8 11
 bash pipeline/build-osmpoi.sh "$WORK/celle.osm.pbf" "$UW" "$US" "$UE" "$UN" "$STAGE/osmpoi.pmtiles" 11 14
 bash pipeline/build-power.sh "$WORK/celle.osm.pbf" "$UW" "$US" "$UE" "$UN" "$STAGE/power.pmtiles"
