@@ -716,6 +716,10 @@ Verificate sul campo, ognuna e' costata un ciclo di debug:
   15/17331/11949). Lo Style Spec vieta i negativi, quindi e' scritto come
   espressione (`["-", 0, 4]`: il validatore controlla il tipo, non il valore) e
   `stile-nativo.js` lo azzera per maplibre-native.
+  Misurati poi sull'inchiostro nero di 10 tile urbane z15-z16 di Pisa (TGen =
+  1): cosi' 0,90; scegliendo nel dato le posizioni che non urtano, come fa
+  Mapnik, 0,85; con una distanza minima fra nomi uguali 0,83. Il resto dello
+  scarto e' il riquadro orizzontale del declutter di OpenLayers (14/10/2026).
 - **Niente `["zoom"]` nei filtri.** ol-mapbox-style li valuta con lo stesso
   livello di scarto delle espressioni, ma `scalaZoom` corregge solo `paint` e
   `layout`: `[">=", ["zoom"], 16]` scattava a z17, cioe' mai. `build-style`
