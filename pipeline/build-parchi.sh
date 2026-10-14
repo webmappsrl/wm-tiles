@@ -149,7 +149,11 @@ docker run --rm -v "$PWD":/w -v "$WORK":/out \
   -sql "SELECT name, admin_level FROM multipolygons \
         WHERE boundary = 'administrative' AND admin_level IN ('2', '4') AND name IS NOT NULL"
 jq -c 'select(.properties.admin_level == "2")' "$WORK/admin.geojsonl" > "$WORK/nazioni.geojsonl"
-jq -c 'select(.properties.admin_level == "4")' "$WORK/admin.geojsonl" > "$WORK/regioni.geojsonl"
+# Le contee croate oggi sono admin_level 4, nel 2018 no: nei PNG di TGen non c'e'
+# nessuna "zupanija" (giro italia1, 7/69/46 e 8/138/92), mentre Lander austriaci e
+# cantoni svizzeri si'. Vince il PNG.
+jq -c 'select(.properties.admin_level == "4" and ((.properties.name // "") | test("[žŽ]upanija|^Grad Zagreb$") | not))' \
+  "$WORK/admin.geojsonl" > "$WORK/regioni.geojsonl"
 python3 -I pipeline/label-points.py "$WORK/nazioni.geojsonl" "$WORK/nazioni-p.geojsonl" \
   --window 1000 360000 3 16 --extract "$W,$S,$E,$N"
 python3 -I pipeline/label-points.py "$WORK/regioni.geojsonl" "$WORK/regioni-p.geojsonl" \
