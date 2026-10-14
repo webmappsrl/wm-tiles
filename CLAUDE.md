@@ -688,8 +688,11 @@ Verificate sul campo, ognuna e' costata un ciclo di debug:
   delle strade si ripetevano ogni 600 px invece di 300.
 - **Lungo le linee OpenLayers non cerca posto.** Prova le posizioni a
   intervallo fisso e scarta quelle troppo curve; Mapnik sposta l'etichetta
-  (`text-label-position-tolerance`). I numeri dei sentieri su tracciati
-  tortuosi a volte mancano: e' un limite del motore, non dello stile.
+  (`text-label-position-tolerance`). Su curve di livello e fossi le quote
+  erano una su cinque rispetto a TGen: dal 14 ottobre 2026 quote e nomi dei
+  corsi d'acqua sono PUNTI ruotati calcolati nel dato come Mapnik
+  (`pipeline/punti-lungo-linee.py`, archivio `quote`, layer `nomi_acque`).
+  I numeri dei sentieri seguono ancora la linea.
 - **Niente `["zoom"]` nei filtri.** ol-mapbox-style li valuta con lo stesso
   livello di scarto delle espressioni, ma `scalaZoom` corregge solo `paint` e
   `layout`: `[">=", ["zoom"], 16]` scattava a z17, cioe' mai. `build-style`
