@@ -40,6 +40,15 @@ ap.add_argument('--campi', default='')
 # 0,6 em a carattere e la linea lunga 1,2 volte il testo, che scartava le vie
 # urbane corte dove Mapnik il nome lo scrive
 ap.add_argument('--glifi', nargs=2, metavar=('JSON', 'FONT'))
+# Come Mapnik, che se una posizione urta un'etichetta gia' piazzata prova la
+# successiva lungo la linea: si scarta il candidato il cui riquadro (orizzontale,
+# come lo misura il declutter di OpenLayers, ridotto di --padding px come il
+# text-padding dello stile) tocca un'etichetta gia' scritta in questo giro o in
+# quelli in --evita. Con -6 px nello stile, nomi delle strade in 15/17331/11949:
+# 15 su 17 di TGen (14 senza), inchiostro su 10 tile urbane 1,02 di TGen.
+ap.add_argument('--collisioni', action='store_true')
+ap.add_argument('--padding', type=float, default=0)
+ap.add_argument('--evita', action='append', default=[])
 a = ap.parse_args()
 Z0, Z1 = map(int, a.zoom.split('-'))
 FILTRO = compile(a.filtro, 'filtro', 'eval')
@@ -103,6 +112,52 @@ def curvatura(s, tv, d0, d1):
     return max(tv[i0:i1], default=0.0)
 
 
+CELLA = 64.0
+occupati = {}
+
+
+def riquadro(z, x, y, ang, lun_px, alt_px):
+    px = MONDO / (256 * 2 ** z)
+    cx, cy = x / px, -y / px
+    r = math.radians(ang)
+    w = abs(lun_px * math.cos(r)) + abs(alt_px * math.sin(r))
+    h = abs(lun_px * math.sin(r)) + abs(alt_px * math.cos(r))
+    w, h = max(0.0, w / 2 - a.padding), max(0.0, h / 2 - a.padding)
+    return (cx - w, cy - h, cx + w, cy + h)
+
+
+def celle(z, b):
+    for i in range(int(b[0] // CELLA), int(b[2] // CELLA) + 1):
+        for j in range(int(b[1] // CELLA), int(b[3] // CELLA) + 1):
+            yield (z, i, j)
+
+
+def urta(z, b):
+    for c in celle(z, b):
+        for o in occupati.get(c, ()):
+            if b[0] < o[2] and o[0] < b[2] and b[1] < o[3] and o[1] < b[3]:
+                return True
+    return False
+
+
+def occupa(z, b):
+    for c in celle(z, b):
+        occupati.setdefault(c, []).append(b)
+
+
+def lunghezza_px(testo, dim):
+    tab, corpo = GLIFI
+    return sum(tab.get(str(ord(ch)), 13) for ch in testo) * dim / corpo
+
+
+for f_evita in a.evita:
+    for riga in open(f_evita):
+        e = json.loads(riga)
+        z = e['tippecanoe']['minzoom']
+        x, y = merc(*e['geometry']['coordinates'])
+        q = e['properties']
+        occupa(z, riquadro(z, x, y, -q['r'], lunghezza_px(str(q['t']), q['s']), q['s'] * 1.2))
+
 uscita = n_linee = 0
 with open(a.ingresso) as fin, open(a.uscita, 'w') as fout:
     for riga in fin:
@@ -135,23 +190,31 @@ with open(a.ingresso) as fin, open(a.uscita, 'w') as fout:
                     continue
                 d = min(passo / 2, tot / 2)
                 while d < tot:
-                    migliore = None
-                    # candidati nel raggio di mezzo passo, ogni quarto di testo
+                    candidati = []
                     lo, hi = max(lun / 2, d - passo / 2), min(tot - lun / 2, d + passo / 2)
                     c = lo
                     while c <= hi:
                         cu = curvatura(s, tv, c - lun / 2, c + lun / 2)
                         if cu <= a.angolo:
-                            chiave = (round(cu, 1), abs(c - d))
-                            if migliore is None or chiave < migliore[0]:
-                                migliore = (chiave, c)
+                            candidati.append(((round(cu, 1), abs(c - d)), c))
                         c += max(2 * px, lun / 4)
-                    if migliore:
-                        c = migliore[1]
+                    candidati.sort()
+                    migliore = None
+                    for _, c in candidati:
                         (x0, y0), (x1, y1) = punto_a(xy, s, c - lun / 2), punto_a(xy, s, c + lun / 2)
                         ang = math.degrees(math.atan2(y1 - y0, x1 - x0))
                         if ang > 90: ang -= 180
                         if ang < -90: ang += 180
+                        if a.collisioni:
+                            mx, my = punto_a(xy, s, c)
+                            b = riquadro(z, mx, my, ang, lun / px, a.dimensione * 1.2)
+                            if urta(z, b):
+                                continue
+                            occupa(z, b)
+                        migliore = c
+                        break
+                    if migliore is not None:
+                        c = migliore
                         # dy di Mapnik: positivo verso il basso dello schermo,
                         # perpendicolare al testo
                         cx, cy = punto_a(xy, s, c)

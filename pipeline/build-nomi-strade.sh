@@ -43,6 +43,8 @@ for riga in open(sys.argv[1]):
         print(json.dumps(f, ensure_ascii=False))
 ' "$WORK/vie.geojsonl" > "$WORK/vie-g.geojsonl"
 
+# Ogni giro evita le etichette gia' scritte dai giri prima (--evita) e dalle
+# precedenti dello stesso giro, col riquadro ridotto di 6 px come lo stile.
 # livello -> gruppi visibili e dimensione (road-label*: major da z13, tertiary e
 # track/minor da z14-z15, service e path da z16)
 PL="python3 -I pipeline/punti-lungo-linee.py $WORK/vie-g.geojsonl"
@@ -50,7 +52,7 @@ PL="python3 -I pipeline/punti-lungo-linee.py $WORK/vie-g.geojsonl"
 punti() {  # punti <zoom> <dimensione> <gruppi separati da virgola>
   local z=$1 dim=$2 gruppi=$3
   $PL "$WORK/n.geojsonl" --testo name --zoom "$z-$z" --spaziatura 300 --dimensione "$dim" \
-    --filtro "p['g'] in '$gruppi'.split(',')" --campi g,mt --glifi style/glifi-larghezze.json R
+    --filtro "p['g'] in '$gruppi'.split(',')" --campi g,mt --glifi style/glifi-larghezze.json R --collisioni --padding 6 --evita "$WORK/nomi.geojsonl"
   cat "$WORK/n.geojsonl" >> "$WORK/nomi.geojsonl"
 }
 punti 13 8 major
