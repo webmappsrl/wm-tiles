@@ -72,7 +72,10 @@ confronto. Cio' che riguarda l'Italia intera — la copia completa da TGen, la
 generazione nazionale — si lancia sul server dedicato, mai sul Mac: richiede
 ore e decine di GB. Il server e' `ssh wm-tiles` (Hetzner Cloud): repo in
 `/srv/wm-tiles`, dati sul Volume in `/data/wm-tiles`, preparato da
-`infra/prepara-server.sh`. Il repo su GitHub e' pubblico: chiavi e
+`infra/prepara-server.sh`. **Non aggiornare i file di uno script mentre gira**:
+bash legge lo script a blocchi, per posizione, e una riga aggiunta piu' in alto
+gli fa eseguire pezzi a caso. Vale per `/srv/wm-tiles` e per il worktree
+`/srv/wm-tiles-nuovo` da cui si lanciano le rigenerazioni lunghe. Il repo su GitHub e' pubblico: chiavi e
 credenziali non entrano mai nei file.
 
 **Emulare TGen e' un algoritmo, non una serie di domande** (regola
@@ -693,6 +696,19 @@ Verificate sul campo, ognuna e' costata un ciclo di debug:
   corsi d'acqua sono PUNTI ruotati calcolati nel dato come Mapnik
   (`pipeline/punti-lungo-linee.py`, archivio `quote`, layer `nomi_acque`).
   I numeri dei sentieri seguono ancora la linea.
+- **Un multipoligono riceve un'etichetta per parte, e un'area una per tile.**
+  OpenLayers etichetta ogni anello esterno e ogni pezzo tagliato al bordo della
+  tile: il Parco della Maddalena 4 volte a z10. Mapnik scrive il nome una volta,
+  nel baricentro della parte col riquadro piu' grande. Le aree con nome sono
+  quindi PUNTI nel dato (`pipeline/label-points.py`).
+- **OpenLayers va a capo PRIMA della parola che supera `text-max-width`, Mapnik
+  DOPO.** "Alba / Adriatica" invece di "Alba Adriatica". Il testo arriva gia'
+  spezzato nel dato (`wrap_like_mapnik` in `label-points.py`, varianti `w45`,
+  `w50`... quando la larghezza cambia col livello) e lo stile mette
+  `text-max-width: 100`.
+- **Un testo ruotato occupa nel declutter il suo riquadro orizzontale.** Due
+  nomi di vie parallele e vicine si urtano dove Mapnik, che misura glifo per
+  glifo, li scrive entrambi: e' il residuo che resta anche coi punti calcolati.
 - **Niente `["zoom"]` nei filtri.** ol-mapbox-style li valuta con lo stesso
   livello di scarto delle espressioni, ma `scalaZoom` corregge solo `paint` e
   `layout`: `[">=", ["zoom"], 16]` scattava a z17, cioe' mai. `build-style`
@@ -941,6 +957,13 @@ un colore noto, leggere il `getComputedStyle`, elencare i layer della mappa.
   (`build-amenity.py`). `ogr2ogr` con un `-sql` per processo non ha il
   problema. E di serie il driver **scarta il tag `source`**
   (`osmconf.ini`): per filtrarci sopra serve `pipeline/osmconf-con-source.ini`.
+- **Il driver OSM di GDAL scarta anche `ele`** (`ignore=` di `osmconf.ini`):
+  le cime di `osmpoi` sono rimaste senza quota fino al 14 ottobre 2026.
+  `pipeline/osmconf-con-source.ini` tiene `source` ed `ele`.
+- **TINITALY fuori dall'Italia vale 0, non nodata.** Senza un DEM sotto, lungo
+  le Alpi l'ombra disegnava una parete nera e le curve si addensavano con quote
+  spurie. `build-italia.sh` monta Copernicus GLO-30 (`scarica-copernicus.sh`)
+  come prima sorgente e i VRT di TINITALY con `-srcnodata -9999 -vrtnodata 0`.
 - **GDAL Python: non concatenare** `gdal.Open(...).GetRasterBand(1)`; il
   dataset viene garbage-collected e la banda muore con lui.
 - **`COPY ... TO STDOUT` in formato testo usa il backslash come escape**, e i
