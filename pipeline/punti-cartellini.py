@@ -7,8 +7,8 @@ di 150 pixel ("FIXME Do not hard-code a size of 150" in stylefunction.js):
 alle scale basse le vie OSM sono lunghe pochi pixel e i cartellini non
 comparivano. Mapnik invece ne mette uno per via, a distanza minima fra
 uguali (shield-min-distance). Qui si fa lo stesso in anticipo: il centro di
-ogni via numerata, tenendone per ogni livello solo quelli a 250 pixel dagli
-altri con lo stesso numero (shield-min-distance di roads.mss); il livello da
+ogni via numerata, tenendone per ogni livello solo quelli a 125 pixel dagli
+altri con lo stesso numero (vedi DISTANZA_PX); il livello da
 cui un punto compare va in `tippecanoe.minzoom`.
 
 Uso: python3 punti-cartellini.py <vie.geojsonl> <punti.geojsonl> [zmin] [zmax]
@@ -40,10 +40,13 @@ def centro(coords):
     return coords[0], sum(tratti)
 
 
-# shield-min-distance di roads.mss: due cartellini con lo stesso numero stanno
-# ad almeno 250 pixel. Un pixel a zoom z misura 156543.03 / 2^z metri di
-# proiezione, cioe' per cos(lat) metri sul terreno.
-DISTANZA_PX = 250
+# Distanza minima fra due cartellini con lo stesso numero. roads.mss dichiara
+# shield-min-distance 250, ma nei PNG del 2018 i cartellini sono piu' fitti:
+# con 250 erano il 55% di quelli di TGen a z11 e il 39% a z12, con 125 l'87% e
+# il 96% (tools/conta-cartellini.mjs su 60 tile, 14 ottobre 2026); vince il
+# PNG. Un pixel a zoom z misura 156543.03 / 2^z metri di proiezione, cioe' per
+# cos(lat) metri sul terreno.
+DISTANZA_PX = float(__import__('os').environ.get('WM_DISTANZA_CARTELLINI', 125))
 PIXEL_Z0 = 156543.03392804097
 
 
