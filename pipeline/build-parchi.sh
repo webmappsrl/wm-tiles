@@ -67,7 +67,8 @@ docker run --rm -v "$PWD":/w -v "$WORK":/out \
   -sql "SELECT name FROM multipolygons \
         WHERE (natural IN ('water', 'bay') OR landuse IN ('reservoir', 'basin')) AND name IS NOT NULL"
 echo "   $(wc -l < "$WORK/acque.geojsonl" | tr -d ' ') acque"
-python3 -I pipeline/parchi-soglia.py "$WORK/acque.geojsonl" "$WORK/acque-a.geojsonl" 8 14
+# da z4: text-poly-low-zoom ha minzoom 0 (il Golfo di Gaeta a z7)
+python3 -I pipeline/parchi-soglia.py "$WORK/acque.geojsonl" "$WORK/acque-a.geojsonl" 4 14
 python3 -I pipeline/label-points.py "$WORK/acque-a.geojsonl" "$WORK/acque-z.geojsonl"
 
 # Citta' e paesi come placenames-medium: punteggio = popolazione (100.000 per una citta'
@@ -112,12 +113,35 @@ for riga in open(sys.argv[1]):
 # prima nella tile, e TGen piazza i nomi in ORDER BY score DESC (vedi --preserve-input-order)
 echo "   $(wc -l < "$WORK/citta-z.geojsonl" | tr -d ' ') citta' e paesi"
 
+# Nazioni e regioni: TGen le nomina dal poligono amministrativo (country-names e
+# state-names leggono planet_osm_polygon, text-placement interior), non dal punto
+# place=state di OpenMapTiles: "Hrvatska" sta sulla costa perche' il poligono della
+# Croazia comprende il mare territoriale, e "Basilicata" e "Corse" mancavano.
+# Finestre di superficie di placenames.mss: .country 1000-360000 px da z3, .state
+# 3000-196000 px da z5. Le aree tagliate dal bordo dell'estratto si scartano.
+echo "== estraggo nazioni e regioni"
+docker run --rm -v "$PWD":/w -v "$WORK":/out \
+  --entrypoint ogr2ogr ghcr.io/osgeo/gdal:ubuntu-small-latest \
+  -f GeoJSONSeq "/out/admin.geojsonl" "/w/$PBF" \
+  -spat "$W" "$S" "$E" "$N" -lco COORDINATE_PRECISION=6 \
+  -sql "SELECT name, admin_level FROM multipolygons \
+        WHERE boundary = 'administrative' AND admin_level IN ('2', '4') AND name IS NOT NULL"
+jq -c 'select(.properties.admin_level == "2")' "$WORK/admin.geojsonl" > "$WORK/nazioni.geojsonl"
+jq -c 'select(.properties.admin_level == "4")' "$WORK/admin.geojsonl" > "$WORK/regioni.geojsonl"
+python3 -I pipeline/label-points.py "$WORK/nazioni.geojsonl" "$WORK/nazioni-p.geojsonl" \
+  --window 1000 360000 3 16 --extract "$W,$S,$E,$N"
+python3 -I pipeline/label-points.py "$WORK/regioni.geojsonl" "$WORK/regioni-p.geojsonl" \
+  --window 3000 196000 5 16 --extract "$W,$S,$E,$N"
+# le nazioni prima: a parita' di layer OpenLayers premia la feature che viene prima
+cat "$WORK/nazioni-p.geojsonl" "$WORK/regioni-p.geojsonl" \
+  | jq -c '.properties.admin_level |= tonumber' > "$WORK/nomi-admin.geojsonl"
+
 # -r1: i nomi sono punti, e di serie tippecanoe li dirada sotto z14; TGen li scrive tutti
 # fino a z16 per i nomi lungo il confine: lo spostamento di 10 px vale a quel livello
-tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/parchi.mbtiles" --force -q -Z4 -z16 --preserve-input-order \
+tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/parchi.mbtiles" --force -q -Z3 -z16 --preserve-input-order \
   --no-feature-limit --no-tile-size-limit --simplification=4 -r1 \
   -L parchi:"$WORK/parchi-z.geojsonl" -L parchi_nomi:"$WORK/parchi-nomi.geojsonl" \
-  -L parchi_confine:"$WORK/parchi-confine.geojsonl" -L boschi:"$WORK/boschi-z.geojsonl" \
+  -L parchi_confine:"$WORK/parchi-confine.geojsonl" -L nomi_admin:"$WORK/nomi-admin.geojsonl" -L boschi:"$WORK/boschi-z.geojsonl" \
   -L acque:"$WORK/acque-z.geojsonl" -L citta:"$WORK/citta-z.geojsonl"
 pmtiles convert "$WORK/parchi.mbtiles" "$OUT"
 ls -la "$OUT" | awk '{printf "== fatto: %s (%.1f MB)\n", $9, $5/1048576}'

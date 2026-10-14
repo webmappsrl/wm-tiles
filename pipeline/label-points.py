@@ -17,7 +17,14 @@ Migliarino San / Rossore / Massaciuccoli" in cinque righe invece delle quattro d
 TGen, e la riga in piu' lo faceva urtare col nome della Macchia di San Rossore.
 La larghezza e' in em, quindi le righe non dipendono dalla dimensione del testo.
 
+Con `--window` i livelli li decide la superficie, come `way_pixels` nei .mss di
+TGen: per nazioni e regioni il nome c'e' solo finche' l'area in pixel resta fra due
+soglie (1000-360000 e 3000-196000), cosi' una regione non si scrive quando occupa
+mezza mappa. `--extract` scarta le aree che toccano il bordo dell'estratto OSM:
+sono tagliate, e il loro baricentro non e' quello di TGen (la Francia in Provenza).
+
 Uso: python3 label-points.py <in.geojsonl> <out.geojsonl> [--wrap <glifi.json> <R|I|B> <em>]
+       [--window <min_px> <max_px> <zmin> <zmax>] [--extract W,S,E,N]
 """
 import heapq
 import json
@@ -136,13 +143,46 @@ def wrap_like_mapnik(name, widths, em):
     return '\n'.join(lines)
 
 
+R = 6378137.0
+PIXEL_Z0 = 156543.03392804097  # metri di proiezione per pixel a z0, tile da 256
+
+
+def area_3857(rings):
+    """Superficie in EPSG:3857 (way_area di osm2pgsql): bordo meno buchi."""
+    total = 0.0
+    for k, ring in enumerate(rings):
+        pts = [(R * math.radians(lon),
+                R * math.log(math.tan(math.pi / 4 + math.radians(max(min(lat, 85.0511), -85.0511)) / 2)))
+               for lon, lat in ring]
+        a = 0.0
+        for (x1, y1), (x2, y2) in zip(pts, pts[1:] + pts[:1]):
+            a += x1 * y2 - x2 * y1
+        total += abs(a) / 2 * (1 if k == 0 else -1)
+    return total
+
+
+def zoom_window(area, min_px, max_px, zmin, zmax):
+    """I livelli con min_px < way_pixels < max_px (way_pixels = area / pixel^2)."""
+    zs = [z for z in range(zmin, zmax + 1) if min_px < area / (PIXEL_Z0 / 2 ** z) ** 2 < max_px]
+    return (zs[0], zs[-1]) if zs else None
+
+
 def main():
     src, dst = sys.argv[1], sys.argv[2]
-    widths = None
-    if len(sys.argv) > 3 and sys.argv[3] == '--wrap':
-        glyphs = json.load(open(sys.argv[4]))
-        widths = {'corpo': glyphs['corpo'], 'table': glyphs['font'][sys.argv[5]]}
-        em = float(sys.argv[6])
+    args = sys.argv[3:]
+    widths = window = extract = None
+    while args:
+        opt = args.pop(0)
+        if opt == '--wrap':
+            glyphs = json.load(open(args.pop(0)))
+            widths = {'corpo': glyphs['corpo'], 'table': glyphs['font'][args.pop(0)]}
+            em = float(args.pop(0))
+        elif opt == '--window':
+            window = [float(args.pop(0)), float(args.pop(0)), int(args.pop(0)), int(args.pop(0))]
+        elif opt == '--extract':
+            extract = [float(v) for v in args.pop(0).split(',')]
+        else:
+            sys.exit(f'opzione sconosciuta: {opt}')
     count = 0
     with open(src) as fin, open(dst, 'w') as fout:
         for line in fin:
@@ -157,6 +197,17 @@ def main():
             parts = [p for p in parts if p and len(p[0]) >= 4]
             if not parts:
                 continue
+            if extract:
+                w, s_, e, n = extract
+                xs = [x for p in parts for x, _ in p[0]]
+                ys = [y for p in parts for _, y in p[0]]
+                if min(xs) <= w + 0.01 or min(ys) <= s_ + 0.01 or max(xs) >= e - 0.01 or max(ys) >= n - 0.01:
+                    continue
+            if window:
+                zs = zoom_window(sum(area_3857(p) for p in parts), *window)
+                if not zs:
+                    continue
+                ft['tippecanoe'] = {'minzoom': zs[0], 'maxzoom': zs[1]}
 
             # text-largest-bbox-only: la parte col riquadro piu' grande
             def bbox_area(p):

@@ -185,7 +185,7 @@ function buildStyle(manifest, resolved, version, base) {
       type: 'vector',
       tileSize: 256,
       tiles: [`${base}/t/${version}/${resolved.setId}/parchi/{z}/{x}/{y}.pbf`],
-      minzoom: 4,
+      minzoom: 3,
       maxzoom: 16,
       attribution: ATTRIBUTION,
     },

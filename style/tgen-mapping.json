@@ -606,10 +606,10 @@
       "tgen": null,
       "ordine": "text-poly",
       "livelli": [
-        8,
+        4,
         16
       ],
-      "nota": "water.mss, .text: natural_water, natural_bay, landuse_reservoir, landuse_basin con way_pixels > 3000, 10/12/15/19 px secondo la superficie, @txt_acque #679bce corsivo, orizzontale. Dato: layer acque dell'archivio parchi (parchi-soglia.py).",
+      "nota": "water.mss, .text: natural_water, natural_bay, landuse_reservoir, landuse_basin con way_pixels > 3000, 10/12/15/19 px secondo la superficie, @txt_acque #679bce corsivo, orizzontale. Dato: layer acque dell'archivio parchi (parchi-soglia.py), un punto per area (label-points.py). Da z4: text-poly-low-zoom ha minzoom 0, e nei PNG a z7 c'e' il Golfo di Gaeta (giro italia1).",
       "copre": [
         "text-poly"
       ]
@@ -966,7 +966,7 @@
         5,
         16
       ],
-      "nota": "placenames.mss .state: regioni con 3000 < way_pixels < 196000 da z5; la superficie viene da una tabella (OpenMapTiles porta solo il punto). Visibile da z7 nel profilo, quindi anche sotto: la finestra la fa il testo vuoto.",
+      "nota": "placenames.mss .state: regioni con 3000 < way_pixels < 196000 da z5, nome nel baricentro del poligono (planet_osm_polygon, text-placement interior). Dal 14/10/2026 il dato e' il layer nomi_admin dell'archivio parchi (label-points.py --window): prima il punto place=state di OpenMapTiles con un elenco di nomi per livello, e Basilicata e Corse mancavano.",
       "ordine": "placenames-small",
       "notaOrdine": "priorita' delle etichette DOPO i nomi delle citta' (in OpenLayers vince chi viene dopo): con quella del .mml (state-names prima di placenames-medium) i nomi delle regioni, larghi e a capo, cancellavano le citta' a z6-z7 (L'Aquila, Rieti, Bologna, Napoli, Bari mancanti; TGen le mostra con le regioni). Mapnik piazza le regioni con margine e testi stretti, OpenLayers no (13/10/2026)"
     },
@@ -976,7 +976,7 @@
         3,
         16
       ],
-      "nota": "placenames.mss .country: nazioni con 1000 < way_pixels < 360000 da z3; superficie da tabella."
+      "nota": "placenames.mss .country: nazioni con 1000 < way_pixels < 360000 da z3, nome nel baricentro del poligono amministrativo, mare territoriale compreso (Hrvatska sulla costa). Dato: layer nomi_admin dell'archivio parchi; le nazioni tagliate dal bordo dell'estratto OSM (Francia, Germania) non ci sono."
     },
     "barrier-line": {
       "tgen": null,
