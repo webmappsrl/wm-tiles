@@ -212,7 +212,9 @@ docker run --rm -v "$PWD/$TG/tinitaly":/src:ro -v "$PWD/$COP":/cop:ro -v "$DEM":
   set -euo pipefail; cd /work
   rm -f zona_*.txt zona_*.vrt
   for f in /src/*.tif; do echo \$f >> zona_\$(gdalsrsinfo -o epsg \$f | tr -dc 0-9).txt; done
-  for l in zona_*.txt; do gdalbuildvrt -q -r cubicspline -input_file_list \$l \${l%.txt}.vrt; done
+  # fuori dall'Italia i fogli di TINITALY valgono 0, non -9999: nel VRT entrambi
+  # diventano 0 dichiarato nodata, e sotto resta Copernicus (anche il mare e' 0)
+  for l in zona_*.txt; do gdalbuildvrt -q -r cubicspline -srcnodata -9999 -vrtnodata 0 -input_file_list \$l \${l%.txt}.vrt; done
   gdalbuildvrt -q -r cubicspline zona_0_copernicus.vrt /cop/*.tif
   wc -l zona_*.txt
 "
