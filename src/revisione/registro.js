@@ -12,8 +12,10 @@ import {deltaE} from './misure.js';
 // `misura`: un falso allarme del sistema stesso (inchiostro attribuito al
 // layer sbagliato, posizioni diverse lette come colore). Si registra a parte
 // per sapere quanto sbaglia la revisione, e per correggerla
-export const VERDETTI = ['stile', 'contenuto', 'buco-tgen', 'mancanza', 'motore', 'misura'];
-const SILENZIANO = new Set(['contenuto', 'buco-tgen', 'motore', 'misura']);
+// `voluto`: una regressione o un layer sparito che e' l'effetto di una
+// correzione fatta apposta (un layer tolto perche' TGen non lo disegna)
+export const VERDETTI = ['stile', 'contenuto', 'buco-tgen', 'mancanza', 'motore', 'misura', 'voluto'];
+const SILENZIANO = new Set(['contenuto', 'buco-tgen', 'motore', 'misura', 'voluto']);
 // tolleranze oltre cui le misure "sono cambiate"
 const TOLLERANZA = {dE: 5, presenza: 0.15, diffusione: 0.15};
 // e quelle che non sono differenze semplici: il rapporto dei simboli si

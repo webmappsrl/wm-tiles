@@ -35,6 +35,10 @@ describe('registro', () => {
     const reg = registra({}, {id: 'z12:station-icon:simboli', verdetto: 'misura', motivo: 'inchiostro di etichette vicine', giro: 'g', misure: {rapporto: 0.23}});
     expect(stato(d('z12:station-icon:simboli', {rapporto: 0.25}), reg)).toBe('giudicata');
   });
+  it('voluto: un cambiamento fatto apposta (un layer tolto) silenzia la regressione', () => {
+    const reg = registra({}, {id: 'z13:water-outline:sparito', verdetto: 'voluto', motivo: 'tolto: TGen non disegna il bordo', giro: 'g', misure: {nTilePrima: 14}});
+    expect(stato(d('z13:water-outline:sparito', {nTilePrima: 14}), reg)).toBe('giudicata');
+  });
   it('rifiuta un verdetto sconosciuto', () => {
     expect(() => registra({}, {id: 'x', verdetto: 'boh', motivo: '', giro: 'a', misure: {}})).toThrow();
   });

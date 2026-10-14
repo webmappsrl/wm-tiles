@@ -135,7 +135,7 @@ node tools/oltre-z16.mjs 16 17 18 19      # oltre il riferimento non deve sparir
 node tools/colore-per-classe.mjs mediana osm transportation "p.class === 'primary'" 12/2207/1587  # colore di TGen per classe
 node tools/tgen-copertura.mjs            # layer di TGen senza alcun layer locale (esce 1 se ce ne sono)
 node tools/revisione.mjs --giro <nome> [--zoom 5-16] [--per-livello 60] [--confronta <giro>]  # revisione: esce 1 se restano difformita'
-node tools/revisione-verdetto.mjs <giro> <id> <stile|contenuto|buco-tgen|mancanza|motore|misura> "<motivo>"
+node tools/revisione-verdetto.mjs <giro> <id> <stile|contenuto|buco-tgen|mancanza|motore|misura|voluto> "<motivo>"
 node tools/revisione-pagina.mjs <giro>   # rigenera la pagina del giro con i verdetti di oggi
 node tools/revisione.mjs --giro collaudo --zoom 13-15 --per-livello 20 --senza track [--ignora track]  # il sistema deve vedere il difetto
 ```

@@ -643,14 +643,14 @@
   },
   "z14:lake-label:simboli": {
     "verdetto": "misura",
-    "motivo": "gli esempi (14/8662/5976, 14/8670/5977) non contengono nomi di laghi: l'inchiostro viene da nomi di boschi e riserve vicini, gia' in z14:wood-label e park-label",
-    "giro": "prova3",
+    "motivo": "rapporto quasi invariato (10,6 -> 10,3): l'inchiostro nella zona viene da nomi vicini (boschi, riserve), nessun nome di lago negli esempi",
+    "giro": "prod1",
     "misure": {
-      "rapporto": 10.62012012012012,
-      "diffusione": 0.6666666666666666,
+      "rapporto": 10.344844844844845,
+      "diffusione": 1,
       "nTile": 3
     },
-    "data": "2026-10-12"
+    "data": "2026-10-14"
   },
   "z12:wood-label:simboli": {
     "verdetto": "stile",
@@ -662,5 +662,237 @@
       "nTile": 3
     },
     "data": "2026-10-12"
+  },
+  "z15:hiking-line-t:sparito": {
+    "verdetto": "voluto",
+    "motivo": "sentieri solo CAI rilevati come hiking_trails: le relazioni non CAI non si disegnano piu'",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 4
+    },
+    "data": "2026-10-14"
+  },
+  "z16:hiking-line-t:sparito": {
+    "verdetto": "voluto",
+    "motivo": "sentieri solo CAI rilevati come hiking_trails",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 1
+    },
+    "data": "2026-10-14"
+  },
+  "z16:hiking-line:sparito": {
+    "verdetto": "voluto",
+    "motivo": "sentieri solo CAI rilevati: nelle tile del campione a z16 non ne restano di E/EE",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 1
+    },
+    "data": "2026-10-14"
+  },
+  "z12:road-fill-secondary:regressione": {
+    "verdetto": "misura",
+    "motivo": "il colore coincide (TGen 246,250,192, locale 247,250,190): lo scarto mediano per tile sale perche' il bordo nuovo, piu' scuro come nel 2018, sporca i pixel della linea sottile",
+    "giro": "prod1",
+    "misure": {
+      "dE": 5.227502482605627,
+      "dEPrima": 1.5093007901150295,
+      "presenza": 0.06703397612488522,
+      "presenzaPrima": 0.06787540678754068,
+      "nTile": 16
+    },
+    "data": "2026-10-14"
+  },
+  "z12:road-fill-motorway:regressione": {
+    "verdetto": "misura",
+    "motivo": "una sola tile; il colore dell'autostrada non e' cambiato: effetto del bordo nuovo vicino",
+    "giro": "prod1",
+    "misure": {
+      "dE": 7.997854548568855,
+      "dEPrima": 4.687471088933186,
+      "presenza": 0.11045130641330166,
+      "presenzaPrima": 0.10926365795724466,
+      "nTile": 1
+    },
+    "data": "2026-10-14"
+  },
+  "z12:boundary:regressione": {
+    "verdetto": "misura",
+    "motivo": "due tile sole, presenza invariata (0,33); il confine non e' cambiato: effetto del bordo nuovo delle strade sotto",
+    "giro": "prod1",
+    "misure": {
+      "dE": 22.43266405213919,
+      "dEPrima": 13.312037281707452,
+      "presenza": 0.32199861207494795,
+      "presenzaPrima": 0.3331020124913255,
+      "nTile": 2
+    },
+    "data": "2026-10-14"
+  },
+  "z15:waterway-label:regressione": {
+    "verdetto": "stile",
+    "motivo": "una tile: i nomi dei corsi d'acqua lungo la linea continuano a mancare nei PNG, come in z15:waterway-label-stream",
+    "giro": "prod1",
+    "misure": {
+      "rapporto": 0.028037383177570093,
+      "rapportoPrima": 0.14018691588785046,
+      "nTile": 1
+    },
+    "data": "2026-10-14"
+  },
+  "z9:water-outline:sparito": {
+    "verdetto": "voluto",
+    "motivo": "tolto il 12/10/2026: TGen non disegna il bordo degli specchi d'acqua",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 1
+    },
+    "data": "2026-10-14"
+  },
+  "z10:water-outline:sparito": {
+    "verdetto": "voluto",
+    "motivo": "tolto il 12/10/2026: TGen non disegna il bordo degli specchi d'acqua",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 7
+    },
+    "data": "2026-10-14"
+  },
+  "z11:water-outline:sparito": {
+    "verdetto": "voluto",
+    "motivo": "tolto il 12/10/2026: TGen non disegna il bordo degli specchi d'acqua",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 18
+    },
+    "data": "2026-10-14"
+  },
+  "z12:water-outline:sparito": {
+    "verdetto": "voluto",
+    "motivo": "tolto il 12/10/2026: TGen non disegna il bordo degli specchi d'acqua",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 19
+    },
+    "data": "2026-10-14"
+  },
+  "z13:water-outline:sparito": {
+    "verdetto": "voluto",
+    "motivo": "tolto il 12/10/2026: TGen non disegna il bordo degli specchi d'acqua",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 18
+    },
+    "data": "2026-10-14"
+  },
+  "z14:water-outline:sparito": {
+    "verdetto": "voluto",
+    "motivo": "tolto il 12/10/2026: TGen non disegna il bordo degli specchi d'acqua",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 8
+    },
+    "data": "2026-10-14"
+  },
+  "z15:water-outline:sparito": {
+    "verdetto": "voluto",
+    "motivo": "tolto il 12/10/2026: TGen non disegna il bordo degli specchi d'acqua",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 4
+    },
+    "data": "2026-10-14"
+  },
+  "z16:water-outline:sparito": {
+    "verdetto": "voluto",
+    "motivo": "tolto il 12/10/2026: TGen non disegna il bordo degli specchi d'acqua",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 4
+    },
+    "data": "2026-10-14"
+  },
+  "z9:waterway-river:sparito": {
+    "verdetto": "voluto",
+    "motivo": "fino a z12 i fiumi li disegna waterway-river-lz (tutti i waterway=river dal PBF, come water-lines-low-zoom)",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 1
+    },
+    "data": "2026-10-14"
+  },
+  "z10:waterway-river:sparito": {
+    "verdetto": "voluto",
+    "motivo": "fino a z12 i fiumi li disegna waterway-river-lz (tutti i waterway=river dal PBF, come water-lines-low-zoom)",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 10
+    },
+    "data": "2026-10-14"
+  },
+  "z11:waterway-river:sparito": {
+    "verdetto": "voluto",
+    "motivo": "fino a z12 i fiumi li disegna waterway-river-lz (tutti i waterway=river dal PBF, come water-lines-low-zoom)",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 19
+    },
+    "data": "2026-10-14"
+  },
+  "z12:waterway-river:sparito": {
+    "verdetto": "voluto",
+    "motivo": "fino a z12 i fiumi li disegna waterway-river-lz (tutti i waterway=river dal PBF, come water-lines-low-zoom)",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 15
+    },
+    "data": "2026-10-14"
+  },
+  "z13:road-ref:sparito": {
+    "verdetto": "voluto",
+    "motivo": "nei PNG 2025 di TGen non c'e' nessun cartellino da z13: tolti il 12/10/2026",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 12
+    },
+    "data": "2026-10-14"
+  },
+  "z14:road-ref:sparito": {
+    "verdetto": "voluto",
+    "motivo": "nei PNG 2025 di TGen non c'e' nessun cartellino da z13: tolti il 12/10/2026",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 17
+    },
+    "data": "2026-10-14"
+  },
+  "z15:road-ref:sparito": {
+    "verdetto": "voluto",
+    "motivo": "nei PNG 2025 di TGen non c'e' nessun cartellino da z13: tolti il 12/10/2026",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 8
+    },
+    "data": "2026-10-14"
+  },
+  "z16:road-ref:sparito": {
+    "verdetto": "voluto",
+    "motivo": "nei PNG 2025 di TGen non c'e' nessun cartellino da z13: tolti il 12/10/2026",
+    "giro": "prod1",
+    "misure": {
+      "nTilePrima": 2
+    },
+    "data": "2026-10-14"
+  },
+  "z14:building-label:simboli": {
+    "verdetto": "misura",
+    "motivo": "gli esempi non contengono nomi di edifici: l'inchiostro viene da nomi vicini (cime, boschi, Lago di Catallargo); da segnare a parte: i nomi di laghi piccoli (Lago di Catallargo) e di boschi/aree (Pineta Serra la Nave, Bosco e Area archeologica) che TGen a z14 non scrive, gia' in z14:wood-label",
+    "giro": "prod1",
+    "misure": {
+      "rapporto": 1.226764205803769,
+      "diffusione": 0.625,
+      "nTile": 8
+    },
+    "data": "2026-10-14"
   }
 }
