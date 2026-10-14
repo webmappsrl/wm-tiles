@@ -6543,6 +6543,29 @@
                 "get",
                 "zpx"
               ],
+              6
+            ],
+            15,
+            [
+              "<=",
+              [
+                "get",
+                "zpx"
+              ],
+              7
+            ],
+            12,
+            10
+          ],
+          8,
+          [
+            "case",
+            [
+              "<=",
+              [
+                "get",
+                "zpx"
+              ],
               7
             ],
             15,
@@ -6741,7 +6764,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 8
+      "minzoom": 7
     },
     {
       "id": "ferry-label",
