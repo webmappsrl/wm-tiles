@@ -9240,7 +9240,11 @@
           "Noto Sans Regular"
         ],
         "text-rotation-alignment": "map",
-        "text-padding": 0,
+        "text-padding": [
+          "-",
+          0,
+          4
+        ],
         "text-size": [
           "get",
           "s"
@@ -9285,7 +9289,11 @@
           "Noto Sans Regular"
         ],
         "text-rotation-alignment": "map",
-        "text-padding": 0,
+        "text-padding": [
+          "-",
+          0,
+          4
+        ],
         "text-size": [
           "get",
           "s"
@@ -9330,7 +9338,11 @@
           "Noto Sans Regular"
         ],
         "text-rotation-alignment": "map",
-        "text-padding": 0,
+        "text-padding": [
+          "-",
+          0,
+          4
+        ],
         "text-size": [
           "get",
           "s"
@@ -9375,7 +9387,11 @@
           "Noto Sans Regular"
         ],
         "text-rotation-alignment": "map",
-        "text-padding": 0,
+        "text-padding": [
+          "-",
+          0,
+          4
+        ],
         "text-size": [
           "get",
           "s"
@@ -9420,7 +9436,11 @@
           "Noto Sans Regular"
         ],
         "text-rotation-alignment": "map",
-        "text-padding": 0,
+        "text-padding": [
+          "-",
+          0,
+          4
+        ],
         "text-size": [
           "get",
           "s"
@@ -9465,7 +9485,11 @@
           "Noto Sans Regular"
         ],
         "text-rotation-alignment": "map",
-        "text-padding": 0,
+        "text-padding": [
+          "-",
+          0,
+          4
+        ],
         "text-size": [
           "get",
           "s"

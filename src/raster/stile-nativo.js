@@ -104,6 +104,10 @@ export function adattaStile(stileOl) {
       if (l.layout['text-field'] !== undefined) {
         l.layout['text-size'] ??= 16;
         l.layout['text-padding'] ??= 2;
+        // padding negativo (nomi delle strade): serve a OpenLayers, che misura
+        // un testo ruotato col suo riquadro orizzontale; maplibre-native ruota il
+        // riquadro e non ne ha bisogno
+        if (Array.isArray(l.layout['text-padding']) && l.layout['text-padding'][0] === '-') l.layout['text-padding'] = 0;
       }
       if (l.layout['symbol-placement'] === 'line') l.layout['symbol-spacing'] ??= 250;
       const testoSuLinea = l.layout['symbol-placement'] === 'line'

@@ -709,10 +709,13 @@ Verificate sul campo, ognuna e' costata un ciclo di debug:
 - **Un testo ruotato occupa nel declutter il suo riquadro orizzontale.** Due
   nomi di vie parallele e vicine si urtano dove Mapnik, che misura glifo per
   glifo, li scrive entrambi: e' il residuo che resta anche coi punti calcolati.
-  Non si aggira dallo stile: in ol-mapbox-style 11 il testo non ha
-  `text-allow-overlap` (`stylefunction.js` ha solo `getIconDeclutterMode`), e
-  mettere il nome su un tratto di linea lungo quanto il testo, per avere il
-  controllo glifo per glifo, non ha recuperato nessuna via (14/10/2026).
+  In ol-mapbox-style 11 il testo non ha `text-allow-overlap` (c'e' solo
+  `getIconDeclutterMode`), e un tratto di linea lungo quanto il testo non ha
+  recuperato nessuna via. Funziona un `text-padding` NEGATIVO, che restringe il
+  riquadro: -4 px sui nomi delle strade (da 11 a 13 vie su 17 di TGen in
+  15/17331/11949). Lo Style Spec vieta i negativi, quindi e' scritto come
+  espressione (`["-", 0, 4]`: il validatore controlla il tipo, non il valore) e
+  `stile-nativo.js` lo azzera per maplibre-native.
 - **Niente `["zoom"]` nei filtri.** ol-mapbox-style li valuta con lo stesso
   livello di scarto delle espressioni, ma `scalaZoom` corregge solo `paint` e
   `layout`: `[">=", ["zoom"], 16]` scattava a z17, cioe' mai. `build-style`

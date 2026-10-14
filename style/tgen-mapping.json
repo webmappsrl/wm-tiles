@@ -269,7 +269,8 @@
         16
       ],
       "nota": "Statali e provinciali (motorway, trunk, primary, secondary) da z13: 8/9/10 px, nero, alone del riempimento.",
-      "notaPosizione": "Dal 14/10/2026 punti ruotati dall'archivio nomistrade (build-nomi-strade.sh): una via per volta ogni 300 px dove la linea e' abbastanza dritta, come Mapnik. Lungo la linea OpenLayers ne scriveva meno."
+      "notaPosizione": "Dal 14/10/2026 punti ruotati dall'archivio nomistrade (build-nomi-strade.sh): una via per volta ogni 300 px dove la linea e' abbastanza dritta, come Mapnik. Lungo la linea OpenLayers ne scriveva meno.",
+      "notaPadding": "text-padding [\"-\", 0, 4], cioe' -4 px: OpenLayers mette nel declutter il riquadro orizzontale di un testo ruotato, e due vie parallele a 20 px si escludevano (Via Savona, Via Milano, Via Perugia a 15/17331/11949, presenti in TGen). Scritto come espressione perche' lo Style Spec vieta i numeri negativi ma non controlla il valore di un'espressione; stile-nativo.js lo azzera per maplibre-native."
     },
     "road-ref": {
       "tgen": null,
