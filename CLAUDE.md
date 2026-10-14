@@ -723,8 +723,10 @@ Verificate sul campo, ognuna e' costata un ciclo di debug:
   (`--collisioni`): 1,02, 15 vie su 17 in 15/17331/11949. Unire i tratti della
   stessa via fa comparire nomi che TGen non scrive e sovrapposizioni (1,14): no.
   I due nomi che mancano ("Via Istria", "Via Perugia") sono vie lunghe 21 e 37
-  px a z15, piu' corte del loro nome: Mapnik le scrive comunque sbordando, una
-  scelta che dipende dal suo algoritmo di posa, non dallo stile (14/10/2026).
+  px a z15 nel nostro OSM, piu' corte del loro nome. Dare il nome anche alle
+  vie corte porta l'inchiostro a 1,91 di TGen (1,63 oltre il 45% del nome):
+  TGen in generale non le nomina, quindi quelle due sono contenuto (la loro
+  geometria nel suo database), non una regola da imitare (14/10/2026).
 - **Niente `["zoom"]` nei filtri.** ol-mapbox-style li valuta con lo stesso
   livello di scarto delle espressioni, ma `scalaZoom` corregge solo `paint` e
   `layout`: `[">=", ["zoom"], 16]` scattava a z17, cioe' mai. `build-style`
