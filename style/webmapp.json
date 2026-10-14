@@ -9176,13 +9176,13 @@
     {
       "id": "road-label-path",
       "type": "symbol",
-      "source": "openmaptiles",
-      "source-layer": "transportation_name",
+      "source": "nomistrade",
+      "source-layer": "nomi_strade",
       "filter": [
         "in",
         [
           "get",
-          "class"
+          "g"
         ],
         [
           "literal",
@@ -9192,20 +9192,24 @@
         ]
       ],
       "layout": {
-        "symbol-placement": "line",
         "text-field": [
           "get",
-          "name"
+          "t"
         ],
         "text-font": [
           "Noto Sans Regular"
         ],
         "text-rotation-alignment": "map",
         "text-padding": 1,
-        "symbol-spacing": 150,
-        "text-max-angle": 40,
-        "text-keep-upright": true,
-        "text-size": 9
+        "text-size": [
+          "get",
+          "s"
+        ],
+        "text-rotate": [
+          "get",
+          "r"
+        ],
+        "text-max-width": 100
       },
       "paint": {
         "text-color": "#222222",
@@ -9217,13 +9221,13 @@
     {
       "id": "road-label-track",
       "type": "symbol",
-      "source": "openmaptiles",
-      "source-layer": "transportation_name",
+      "source": "nomistrade",
+      "source-layer": "nomi_strade",
       "filter": [
         "in",
         [
           "get",
-          "class"
+          "g"
         ],
         [
           "literal",
@@ -9233,28 +9237,24 @@
         ]
       ],
       "layout": {
-        "symbol-placement": "line",
         "text-field": [
           "get",
-          "name"
+          "t"
         ],
         "text-font": [
           "Noto Sans Regular"
         ],
         "text-rotation-alignment": "map",
         "text-padding": 1,
-        "symbol-spacing": 150,
-        "text-max-angle": 40,
-        "text-keep-upright": true,
         "text-size": [
-          "step",
-          [
-            "zoom"
-          ],
-          8,
-          15,
-          9
-        ]
+          "get",
+          "s"
+        ],
+        "text-rotate": [
+          "get",
+          "r"
+        ],
+        "text-max-width": 100
       },
       "paint": {
         "text-color": "#222222",
@@ -9266,13 +9266,13 @@
     {
       "id": "road-label-service",
       "type": "symbol",
-      "source": "openmaptiles",
-      "source-layer": "transportation_name",
+      "source": "nomistrade",
+      "source-layer": "nomi_strade",
       "filter": [
         "in",
         [
           "get",
-          "class"
+          "g"
         ],
         [
           "literal",
@@ -9282,20 +9282,24 @@
         ]
       ],
       "layout": {
-        "symbol-placement": "line",
         "text-field": [
           "get",
-          "name"
+          "t"
         ],
         "text-font": [
           "Noto Sans Regular"
         ],
         "text-rotation-alignment": "map",
         "text-padding": 1,
-        "symbol-spacing": 150,
-        "text-max-angle": 40,
-        "text-keep-upright": true,
-        "text-size": 9
+        "text-size": [
+          "get",
+          "s"
+        ],
+        "text-rotate": [
+          "get",
+          "r"
+        ],
+        "text-max-width": 100
       },
       "paint": {
         "text-color": "#000000",
@@ -9307,13 +9311,13 @@
     {
       "id": "road-label-minor",
       "type": "symbol",
-      "source": "openmaptiles",
-      "source-layer": "transportation_name",
+      "source": "nomistrade",
+      "source-layer": "nomi_strade",
       "filter": [
         "in",
         [
           "get",
-          "class"
+          "g"
         ],
         [
           "literal",
@@ -9323,28 +9327,24 @@
         ]
       ],
       "layout": {
-        "symbol-placement": "line",
         "text-field": [
           "get",
-          "name"
+          "t"
         ],
         "text-font": [
           "Noto Sans Regular"
         ],
         "text-rotation-alignment": "map",
         "text-padding": 1,
-        "symbol-spacing": 150,
-        "text-max-angle": 40,
-        "text-keep-upright": true,
         "text-size": [
-          "step",
-          [
-            "zoom"
-          ],
-          8,
-          15,
-          9
-        ]
+          "get",
+          "s"
+        ],
+        "text-rotate": [
+          "get",
+          "r"
+        ],
+        "text-max-width": 100
       },
       "paint": {
         "text-color": "#000000",
@@ -9356,13 +9356,13 @@
     {
       "id": "road-label-tertiary",
       "type": "symbol",
-      "source": "openmaptiles",
-      "source-layer": "transportation_name",
+      "source": "nomistrade",
+      "source-layer": "nomi_strade",
       "filter": [
         "in",
         [
           "get",
-          "class"
+          "g"
         ],
         [
           "literal",
@@ -9372,20 +9372,24 @@
         ]
       ],
       "layout": {
-        "symbol-placement": "line",
         "text-field": [
           "get",
-          "name"
+          "t"
         ],
         "text-font": [
           "Noto Sans Regular"
         ],
         "text-rotation-alignment": "map",
         "text-padding": 1,
-        "symbol-spacing": 150,
-        "text-max-angle": 40,
-        "text-keep-upright": true,
-        "text-size": 9
+        "text-size": [
+          "get",
+          "s"
+        ],
+        "text-rotate": [
+          "get",
+          "r"
+        ],
+        "text-max-width": 100
       },
       "paint": {
         "text-color": "#000000",
@@ -9397,61 +9401,52 @@
     {
       "id": "road-label",
       "type": "symbol",
-      "source": "openmaptiles",
-      "source-layer": "transportation_name",
+      "source": "nomistrade",
+      "source-layer": "nomi_strade",
       "filter": [
         "in",
         [
           "get",
-          "class"
+          "g"
         ],
         [
           "literal",
           [
-            "motorway",
-            "trunk",
-            "primary",
-            "secondary"
+            "major"
           ]
         ]
       ],
       "layout": {
-        "symbol-placement": "line",
         "text-field": [
           "get",
-          "name"
+          "t"
         ],
         "text-font": [
           "Noto Sans Regular"
         ],
         "text-rotation-alignment": "map",
         "text-padding": 1,
-        "symbol-spacing": 150,
-        "text-max-angle": 40,
-        "text-keep-upright": true,
         "text-size": [
-          "step",
-          [
-            "zoom"
-          ],
-          8,
-          13,
-          9,
-          14,
-          10
-        ]
+          "get",
+          "s"
+        ],
+        "text-rotate": [
+          "get",
+          "r"
+        ],
+        "text-max-width": 100
       },
       "paint": {
         "text-color": "#000000",
         "text-halo-color": [
-          "match",
+          "case",
           [
-            "get",
-            "class"
-          ],
-          [
-            "motorway",
-            "trunk"
+            "==",
+            [
+              "get",
+              "mt"
+            ],
+            1
           ],
           "#ffeaaa",
           "#ffffff"

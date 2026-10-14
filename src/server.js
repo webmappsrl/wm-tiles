@@ -33,7 +33,7 @@ const ATTRIBUTION_LC = '© ESA WorldCover 2021';
 const ATTRIBUTION_WM = '© Webmapp';
 const ATTRIBUTION_IGM = '© IGM — DBSN';
 const LEGACY_TILE_URL = 'https://api.webmapp.it/tiles/{z}/{x}/{y}.png';
-export const ARCHIVES = ['osm', 'hillshade', 'contours', 'hiking', 'toponimi', 'rifugi', 'landcover', 'osmpoi', 'clc', 'roadslz', 'igm', 'power', 'parchi', 'extra', 'amenity', 'quote'];
+export const ARCHIVES = ['osm', 'hillshade', 'contours', 'hiking', 'toponimi', 'rifugi', 'landcover', 'osmpoi', 'clc', 'roadslz', 'igm', 'power', 'parchi', 'extra', 'amenity', 'quote', 'nomistrade'];
 
 function log(level, msg, fields = {}) {
   const line = JSON.stringify({ts: new Date().toISOString(), level, msg, ...fields});
@@ -198,6 +198,16 @@ function buildStyle(manifest, resolved, version, base) {
       tiles: [`${base}/t/${version}/${resolved.setId}/extra/{z}/{x}/{y}.pbf`],
       minzoom: 10,
       maxzoom: 14,
+      attribution: ATTRIBUTION,
+    },
+    // I nomi delle strade come punti ruotati posizionati come Mapnik, una via OSM
+    // per volta ogni 300 px (pipeline/build-nomi-strade.sh), da z13.
+    nomistrade: {
+      type: 'vector',
+      tileSize: 256,
+      tiles: [`${base}/t/${version}/${resolved.setId}/nomistrade/{z}/{x}/{y}.pbf`],
+      minzoom: 13,
+      maxzoom: 16,
       attribution: ATTRIBUTION,
     },
     // Linee elettriche, tralicci e pali: OpenMapTiles non li porta, TGen li

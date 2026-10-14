@@ -114,6 +114,7 @@ avvia passo_log "$STAGE/parchi.pmtiles" bash pipeline/build-parchi.sh "$PBF" $OW
 avvia passo_log "$STAGE/osmpoi.pmtiles" bash pipeline/build-osmpoi.sh "$PBF" $OW $OS $OE $ON "$STAGE/osmpoi.pmtiles" 11 14
 avvia passo_log "$STAGE/hiking.pmtiles" bash pipeline/build-hiking-full.sh "$PBF" $OW $OS $OE $ON "$STAGE/hiking.pmtiles" 10 14
 avvia passo_log "$STAGE/power.pmtiles" bash pipeline/build-power.sh "$PBF" $OW $OS $OE $ON "$STAGE/power.pmtiles"
+avvia passo_log "$STAGE/nomistrade.pmtiles" bash pipeline/build-nomi-strade.sh "$PBF" $OW $OS $OE $ON "$STAGE/nomistrade.pmtiles"
 aspetta
 fase "1. OpenStreetMap: fatto in $(durata $T0)"
 

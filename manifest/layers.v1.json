@@ -76,7 +76,8 @@
         "transportation_name",
         "aeroway",
         "roadslz",
-        "frecce"
+        "frecce",
+        "nomi_strade"
       ],
       "class": "public",
       "attributes": [

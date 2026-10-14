@@ -268,7 +268,8 @@
         13,
         16
       ],
-      "nota": "Statali e provinciali (motorway, trunk, primary, secondary) da z13: 8/9/10 px, nero, alone del riempimento."
+      "nota": "Statali e provinciali (motorway, trunk, primary, secondary) da z13: 8/9/10 px, nero, alone del riempimento.",
+      "notaPosizione": "Dal 14/10/2026 punti ruotati dall'archivio nomistrade (build-nomi-strade.sh): una via per volta ogni 300 px dove la linea e' abbastanza dritta, come Mapnik. Lungo la linea OpenLayers ne scriveva meno."
     },
     "road-ref": {
       "tgen": null,
@@ -653,7 +654,8 @@
         14,
         16
       ],
-      "nota": "roads.mss: tertiary da z14, 9 px."
+      "nota": "roads.mss: tertiary da z14, 9 px.",
+      "notaPosizione": "Dal 14/10/2026 punti ruotati dall'archivio nomistrade (build-nomi-strade.sh): una via per volta ogni 300 px dove la linea e' abbastanza dritta, come Mapnik. Lungo la linea OpenLayers ne scriveva meno."
     },
     "road-label-minor": {
       "tgen": null,
@@ -662,7 +664,8 @@
         15,
         16
       ],
-      "nota": "roads.mss: residential, unclassified, road, living_street, pedestrian da z15, 8/9 px."
+      "nota": "roads.mss: residential, unclassified, road, living_street, pedestrian da z15, 8/9 px.",
+      "notaPosizione": "Dal 14/10/2026 punti ruotati dall'archivio nomistrade (build-nomi-strade.sh): una via per volta ogni 300 px dove la linea e' abbastanza dritta, come Mapnik. Lungo la linea OpenLayers ne scriveva meno."
     },
     "road-label-service": {
       "tgen": null,
@@ -671,7 +674,8 @@
         16,
         16
       ],
-      "nota": "roads.mss: service da z16, 9 px."
+      "nota": "roads.mss: service da z16, 9 px.",
+      "notaPosizione": "Dal 14/10/2026 punti ruotati dall'archivio nomistrade (build-nomi-strade.sh): una via per volta ogni 300 px dove la linea e' abbastanza dritta, come Mapnik. Lungo la linea OpenLayers ne scriveva meno."
     },
     "road-label-track": {
       "tgen": null,
@@ -683,7 +687,8 @@
       "copre": [
         "paths-text-name"
       ],
-      "nota": "roads.mss, #paths-text-name: track da z15, #222, 8/9 px, alone @standard-halo-fill."
+      "nota": "roads.mss, #paths-text-name: track da z15, #222, 8/9 px, alone @standard-halo-fill.",
+      "notaPosizione": "Dal 14/10/2026 punti ruotati dall'archivio nomistrade (build-nomi-strade.sh): una via per volta ogni 300 px dove la linea e' abbastanza dritta, come Mapnik. Lungo la linea OpenLayers ne scriveva meno."
     },
     "road-label-path": {
       "tgen": null,
@@ -692,7 +697,8 @@
         16,
         16
       ],
-      "nota": "roads.mss, #paths-text-name: path, footway, cycleway, bridleway, steps da z16, #222, 9 px."
+      "nota": "roads.mss, #paths-text-name: path, footway, cycleway, bridleway, steps da z16, #222, 9 px.",
+      "notaPosizione": "Dal 14/10/2026 punti ruotati dall'archivio nomistrade (build-nomi-strade.sh): una via per volta ogni 300 px dove la linea e' abbastanza dritta, come Mapnik. Lungo la linea OpenLayers ne scriveva meno."
     },
     "hiking-line-t": {
       "tgen": "hiking_trails"

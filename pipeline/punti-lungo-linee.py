@@ -36,11 +36,19 @@ ap.add_argument('--dy', type=float, default=0)
 ap.add_argument('--angolo', type=float, default=30)
 ap.add_argument('--filtro', default='True')
 ap.add_argument('--campi', default='')
+# larghezze vere dei caratteri (style/glifi-larghezze.json e sigla del font): senza,
+# 0,6 em a carattere e la linea lunga 1,2 volte il testo, che scartava le vie
+# urbane corte dove Mapnik il nome lo scrive
+ap.add_argument('--glifi', nargs=2, metavar=('JSON', 'FONT'))
 a = ap.parse_args()
 Z0, Z1 = map(int, a.zoom.split('-'))
 FILTRO = compile(a.filtro, 'filtro', 'eval')
 CAMPI = [c for c in a.campi.split(',') if c]
 R = 6378137.0
+GLIFI = None
+if a.glifi:
+    _g = json.load(open(a.glifi[0]))
+    GLIFI = (_g['font'][a.glifi[1]], _g['corpo'])
 MONDO = 2 * math.pi * R
 
 
@@ -114,10 +122,16 @@ with open(a.ingresso) as fin, open(a.uscita, 'w') as fout:
             n_linee += 1
             for z in range(Z0, Z1 + 1):
                 px = MONDO / (256 * 2 ** z)
-                # lunghezza del testo: 0,6 em per carattere, +1 px di spaziatura
-                lun = (0.6 * a.dimensione + 1) * len(testo) * px
+                if GLIFI:
+                    tab, corpo = GLIFI
+                    lun = sum(tab.get(str(ord(ch)), 13) for ch in testo) * a.dimensione / corpo * px
+                    margine = 1.0
+                else:
+                    # lunghezza del testo: 0,6 em per carattere, +1 px di spaziatura
+                    lun = (0.6 * a.dimensione + 1) * len(testo) * px
+                    margine = 1.2
                 passo = a.spaziatura * px
-                if tot < lun * 1.2:
+                if tot < lun * margine:
                     continue
                 d = min(passo / 2, tot / 2)
                 while d < tot:
