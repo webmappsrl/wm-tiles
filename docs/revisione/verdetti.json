@@ -201,15 +201,15 @@
     "data": "2026-10-12"
   },
   "z16:waterway-label-stream:simboli": {
-    "verdetto": "stile",
-    "motivo": "TGen scrive i nomi lungo i fossi (Fosso Borgognano in 16/34731/24067), il locale non ne scrive nessuno (rapporto 0): da capire se manca il dato o se e' il posizionamento di maplibre-native. Nello stesso dossier mancano nel locale le icone dei guadi (16/34662/23847)",
-    "giro": "prova",
+    "verdetto": "motore",
+    "motivo": "nomi dei fossi gia' come punti posizionati come Mapnik (nomi_acque): restano differenze di posizione e di dato",
+    "giro": "italia1",
     "misure": {
-      "rapporto": 0,
-      "diffusione": 0.8,
-      "nTile": 5
+      "rapporto": 1.4851601528063474,
+      "diffusione": 0.6666666666666666,
+      "nTile": 3
     },
-    "data": "2026-10-12"
+    "data": "2026-10-14"
   },
   "z15:contour-label:simboli": {
     "verdetto": "stile",
@@ -366,15 +366,15 @@
     "data": "2026-10-12"
   },
   "z12:residuo:#b0d0f0": {
-    "verdetto": "contenuto",
-    "motivo": "i corsi d'acqua che TGen disegna e il locale no oggi in OSM sono stream, non river (Fiume Pietrarossa, Fiume Margherito in 11/1106/794; Torrente Sterza in 11/1084/748): nel 2018 erano river. I river di oggi il locale li disegna gia' (verificato su 11/1085/748: c'erano anche prima di estrarre i fiumi dal PBF). Correzione del verdetto 'mancanza' del mattino",
-    "giro": "prova3",
+    "verdetto": "stile",
+    "motivo": "i canali a z12 (water-lines, [waterway = 'canal'][zoom >= 12]): il locale aveva solo i fiumi; layer waterway-canal-z12 (14/10/2026). Il fiume in Sardegna (12/2154/1551) oggi e' stream: contenuto",
+    "giro": "italia1",
     "misure": {
-      "diffusione": 0.16666666666666666,
-      "nTile": 30,
-      "pixel": 602
+      "diffusione": 0.13333333333333333,
+      "nTile": 60,
+      "pixel": 1130
     },
-    "data": "2026-10-12"
+    "data": "2026-10-14"
   },
   "z11:residuo:#d0b090": {
     "verdetto": "stile",
@@ -1287,6 +1287,127 @@
         182,
         186
       ]
+    },
+    "data": "2026-10-14"
+  },
+  "z8:residuo:#b0b0b0": {
+    "verdetto": "stile",
+    "motivo": "TGen scrive i nomi dei parchi gia' a z8 (Gargano, Pollino, Triglav, Hohe Tauern): park-label da z8 (14/10/2026). Le ferrovie misurate per nucleo grigio sono uguali (124-131 contro 118-129)",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.11290322580645161,
+      "nTile": 62,
+      "pixel": 936
+    },
+    "data": "2026-10-14"
+  },
+  "z9:residuo:#d0d0d0": {
+    "verdetto": "stile",
+    "motivo": "nomi di parchi, paesi e regioni: corretti il 14/10/2026 (parchi da z8, a capo come Mapnik, regioni dal poligono)",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.23333333333333334,
+      "nTile": 60,
+      "pixel": 2484
+    },
+    "data": "2026-10-14"
+  },
+  "z10:residuo:#d0d0d0": {
+    "verdetto": "stile",
+    "motivo": "nomi di aree a z10 che i PNG del 2018 non hanno (Bonifica...): ora solo le isole sotto z13 (build-testi.py, misurato su 137 nomi in 2.576 tile)",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.11666666666666667,
+      "nTile": 60,
+      "pixel": 4621
+    },
+    "data": "2026-10-14"
+  },
+  "z15:residuo:#909090": {
+    "verdetto": "motore",
+    "motivo": "quote delle curve in posizioni diverse: i punti sono calcolati come Mapnik ma OpenLayers scarta quelli il cui riquadro orizzontale urta un altro testo",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.2,
+      "nTile": 60,
+      "pixel": 770
+    },
+    "data": "2026-10-14"
+  },
+  "z15:residuo:#b0b0b0": {
+    "verdetto": "stile",
+    "motivo": "15/17111/11656: in Svizzera la quota valeva 0 (niente rilievo ne' curve, fascia nera al confine): Copernicus sotto TINITALY (14/10/2026). Parco dei Colli Euganei ripetuto in ogni tile: ora punto unico",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.11666666666666667,
+      "nTile": 60,
+      "pixel": 514
+    },
+    "data": "2026-10-14"
+  },
+  "z15:residuo:#d0d0d0": {
+    "verdetto": "stile",
+    "motivo": "come #b0b0b0: rilievo assente fuori dall'Italia e nomi di aree ripetuti per tile, corretti il 14/10/2026",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.11666666666666667,
+      "nTile": 60,
+      "pixel": 2311
+    },
+    "data": "2026-10-14"
+  },
+  "z16:residuo:#b0b0b0": {
+    "verdetto": "stile",
+    "motivo": "Passo Mondelli (16/34223/23314): parete nera lungo il confine perche' TINITALY vale 0 fuori dall'Italia; Copernicus sotto TINITALY (14/10/2026)",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.3,
+      "nTile": 60,
+      "pixel": 2513
+    },
+    "data": "2026-10-14"
+  },
+  "z16:residuo:#909090": {
+    "verdetto": "stile",
+    "motivo": "quote spurie (100, 300, 400) lungo il confine nato dal DEM a 0 fuori dall'Italia, e quote in posizioni diverse; corretto il DEM il 14/10/2026",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.18333333333333332,
+      "nTile": 60,
+      "pixel": 973
+    },
+    "data": "2026-10-14"
+  },
+  "z16:residuo:#d0d0d0": {
+    "verdetto": "stile",
+    "motivo": "rilievo fuori dall'Italia e nomi a capo (cime, localita'): corretti il 14/10/2026",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.15,
+      "nTile": 60,
+      "pixel": 1253
+    },
+    "data": "2026-10-14"
+  },
+  "z16:road-label-tertiary:simboli": {
+    "verdetto": "stile",
+    "motivo": "nomi delle strade lungo la linea in posizioni fisse: ora punti calcolati come Mapnik, una via OSM ogni 300 px (archivio nomistrade, 14/10/2026)",
+    "giro": "italia1",
+    "misure": {
+      "rapporto": 0.8403027811640632,
+      "diffusione": 0.625,
+      "nTile": 8
+    },
+    "data": "2026-10-14"
+  },
+  "z16:road-label-track:simboli": {
+    "verdetto": "stile",
+    "motivo": "come road-label-tertiary: punti calcolati come Mapnik (nomistrade)",
+    "giro": "italia1",
+    "misure": {
+      "rapporto": 1.3935294597017358,
+      "diffusione": 0.6666666666666666,
+      "nTile": 3
     },
     "data": "2026-10-14"
   }
