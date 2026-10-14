@@ -527,6 +527,60 @@
       }
     },
     {
+      "id": "waterway-canal-z12",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "waterway",
+      "filter": [
+        "==",
+        [
+          "get",
+          "class"
+        ],
+        "canal"
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": [
+          "step",
+          [
+            "zoom"
+          ],
+          "#acd4ea",
+          13,
+          "#dce7f7"
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          9,
+          0.7,
+          10,
+          1.2,
+          11,
+          1.6,
+          13,
+          2,
+          14,
+          3,
+          15,
+          5,
+          16,
+          6,
+          17,
+          8
+        ]
+      }
+    },
+    {
       "id": "waterway-river",
       "type": "line",
       "source": "openmaptiles",

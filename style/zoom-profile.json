@@ -18,6 +18,7 @@
     "breakwater",
     "building-igm",
     "road-casing-major-tunnel",
+    "waterway-canal-z12",
     "waterway-river",
     "waterway-river-lz",
     "waterway-stream",
@@ -445,6 +446,7 @@
         "breakwater-fill",
         "breakwater",
         "road-casing-major-tunnel",
+        "waterway-canal-z12",
         "waterway-river-lz",
         "pier-poly",
         "pier-line",
@@ -1392,7 +1394,8 @@
     "city-label": "livelli (PNG)",
     "hut-icon": "livelli (PNG)",
     "hut-label": "livelli (PNG)",
-    "shelter-icon": "livelli (PNG)"
+    "shelter-icon": "livelli (PNG)",
+    "waterway-canal-z12": "livelli (PNG)"
   },
   "clcSemantica": {
     "111": "fondogiallo",

@@ -1530,6 +1530,62 @@
       "minzoom": 11
     },
     {
+      "id": "waterway-canal-z12",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "waterway",
+      "filter": [
+        "==",
+        [
+          "get",
+          "class"
+        ],
+        "canal"
+      ],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": [
+          "step",
+          [
+            "zoom"
+          ],
+          "#acd4ea",
+          12,
+          "#dce7f7"
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          8,
+          0.7,
+          9,
+          1.2,
+          10,
+          1.6,
+          12,
+          2,
+          13,
+          3,
+          14,
+          5,
+          15,
+          6,
+          16,
+          8
+        ]
+      },
+      "minzoom": 11,
+      "maxzoom": 12
+    },
+    {
       "id": "waterway-river",
       "type": "line",
       "source": "openmaptiles",

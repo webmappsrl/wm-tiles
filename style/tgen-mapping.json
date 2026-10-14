@@ -1274,6 +1274,14 @@
       "copre": [
         "amenity-points"
       ]
+    },
+    "waterway-canal-z12": {
+      "tgen": null,
+      "livelli": [
+        12,
+        12
+      ],
+      "nota": "water-lines del .mml da z12 con [waterway = 'canal'][zoom >= 12] in water.mss: a z12 il locale aveva solo i fiumi (waterway-river-lz), e nei PNG i canali della Lomellina c'erano (12/2145/1469, giro italia1). Da z13 li disegna waterway-river."
     }
   }
 }
