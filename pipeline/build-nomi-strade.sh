@@ -41,7 +41,16 @@ for riga in open(sys.argv[1]):
         p["g"] = G[h]
         p["mt"] = 1 if h in ("motorway", "trunk") else 0
         print(json.dumps(f, ensure_ascii=False))
-' "$WORK/vie.geojsonl" > "$WORK/vie-g.geojsonl"
+' "$WORK/vie.geojsonl" > "$WORK/vie-o.geojsonl"
+# nell'ordine di roads-text-name: z_order DESC, length(name) DESC, name DESC (nei
+# giri gia' separati per classe resta il nome): con --collisioni chi viene prima
+# vince, e Mapnik prova prima i nomi lunghi
+python3 -I -c '
+import json, sys
+r = [l for l in open(sys.argv[1])]
+r.sort(key=lambda l: (lambda n: (-len(n), [-ord(c) for c in n]))(json.loads(l)["properties"]["name"]))
+sys.stdout.write("".join(r))
+' "$WORK/vie-o.geojsonl" > "$WORK/vie-g.geojsonl"
 
 # Ogni giro evita le etichette gia' scritte dai giri prima (--evita) e dalle
 # precedenti dello stesso giro, col riquadro ridotto di 6 px come lo stile.

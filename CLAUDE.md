@@ -728,8 +728,8 @@ Verificate sul campo, ognuna e' costata un ciclo di debug:
   TGen in generale non le nomina. Verificato su TGen (SELECT su
   planet_osm_line, 14/10/2026): "Via Istria" li' e' lunga 41 px a z15 contro i 29
   del nostro OSM, e il nome ne occupa 35, quindi e' contenuto; "Via Perugia" e'
-  lunga 51 px anche da noi, ci sta, e la perde negli urti con le vie accanto
-  (compare senza `--collisioni`, che pero' ne fa perdere altre: motore).
+  lunga 51 px anche da noi e compare piazzando le vie nell'ordine di
+  roads-text-name (prima i nomi lunghi): 16 vie su 17, inchiostro 1,03.
 - **Niente `["zoom"]` nei filtri.** ol-mapbox-style li valuta con lo stesso
   livello di scarto delle espressioni, ma `scalaZoom` corregge solo `paint` e
   `layout`: `[">=", ["zoom"], 16]` scattava a z17, cioe' mai. `build-style`
