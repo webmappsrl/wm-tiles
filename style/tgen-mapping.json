@@ -117,10 +117,10 @@
     },
     "park-label": {
       "tgen": null,
-      "nota": "z10-z12 dai PNG del 2018: nome in #8f8491 (@admin-boundaries_txt), corsivo 10 px, a capo largo, con la stessa soglia way_pixels > 3000 (Migliarino-San Rossore compare a z10, i Monti Livornesi a z11). La soglia e' nel dato (pipeline/parchi-soglia.py); il nome e' un punto nel baricentro della parte piu' grande (pipeline/label-points.py). Da z13 il nome sta lungo il confine: park-label-line.",
+      "nota": "z9-z12 dai PNG del 2018 (a z9 il Delta del Po e Fanes-Sennes-Braies, giro italia1): nome in #8f8491 (@admin-boundaries_txt), corsivo 10 px, a capo largo, con la stessa soglia way_pixels > 3000 (Migliarino-San Rossore compare a z10, i Monti Livornesi a z11). La soglia e' nel dato (pipeline/parchi-soglia.py); il nome e' un punto nel baricentro della parte piu' grande (pipeline/label-points.py). Da z13 il nome sta lungo il confine: park-label-line.",
       "ordine": "nature-reserve-text",
       "livelli": [
-        10,
+        9,
         12
       ],
       "copre": [

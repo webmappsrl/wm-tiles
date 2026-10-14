@@ -6543,6 +6543,29 @@
                 "get",
                 "zpx"
               ],
+              7
+            ],
+            15,
+            [
+              "<=",
+              [
+                "get",
+                "zpx"
+              ],
+              8
+            ],
+            12,
+            10
+          ],
+          9,
+          [
+            "case",
+            [
+              "<=",
+              [
+                "get",
+                "zpx"
+              ],
               8
             ],
             15,
@@ -6626,7 +6649,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 9,
+      "minzoom": 8,
       "maxzoom": 12
     },
     {
@@ -10648,8 +10671,108 @@
       "source-layer": "citta",
       "layout": {
         "text-field": [
-          "get",
-          "name"
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "case",
+            [
+              "==",
+              [
+                "get",
+                "category"
+              ],
+              2
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w45"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ],
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w50"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w40"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ]
+          ],
+          8,
+          [
+            "case",
+            [
+              "==",
+              [
+                "get",
+                "category"
+              ],
+              2
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w45"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w50"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ]
+          ],
+          10,
+          [
+            "coalesce",
+            [
+              "get",
+              "w50"
+            ],
+            [
+              "get",
+              "name"
+            ]
+          ]
         ],
         "text-font": [
           "Noto Sans Regular"
@@ -10797,7 +10920,7 @@
             15
           ]
         ],
-        "text-max-width": 5,
+        "text-max-width": 100,
         "text-line-height": 1.05
       },
       "paint": {
@@ -10822,8 +10945,111 @@
       ],
       "layout": {
         "text-field": [
-          "get",
-          "name"
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "case",
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w27"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w30"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ]
+          ],
+          4,
+          [
+            "case",
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w41"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w30"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ]
+          ],
+          5,
+          [
+            "case",
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w50"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w30"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ]
+          ]
         ],
         "text-font": [
           "Noto Sans Regular"
@@ -10899,7 +11125,7 @@
             ]
           ]
         ],
-        "text-max-width": 5,
+        "text-max-width": 100,
         "text-line-height": 1.05
       },
       "paint": {

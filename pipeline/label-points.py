@@ -227,4 +227,5 @@ def main():
     print(f'   {count} punti per le etichette', file=sys.stderr)
 
 
-main()
+if __name__ == '__main__':
+    main()

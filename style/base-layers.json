@@ -6180,6 +6180,29 @@
                 "get",
                 "zpx"
               ],
+              7
+            ],
+            15,
+            [
+              "<=",
+              [
+                "get",
+                "zpx"
+              ],
+              8
+            ],
+            12,
+            10
+          ],
+          10,
+          [
+            "case",
+            [
+              "<=",
+              [
+                "get",
+                "zpx"
+              ],
               8
             ],
             15,
@@ -10373,8 +10396,111 @@
       ],
       "layout": {
         "text-field": [
-          "get",
-          "name"
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "case",
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w27"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w30"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ]
+          ],
+          5,
+          [
+            "case",
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w41"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w30"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ]
+          ],
+          6,
+          [
+            "case",
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w50"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w30"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ]
+          ]
         ],
         "text-font": [
           "Noto Sans Regular"
@@ -10450,7 +10576,7 @@
             ]
           ]
         ],
-        "text-max-width": 5,
+        "text-max-width": 100,
         "text-line-height": 1.05
       },
       "paint": {
@@ -10466,8 +10592,108 @@
       "source-layer": "citta",
       "layout": {
         "text-field": [
-          "get",
-          "name"
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "case",
+            [
+              "==",
+              [
+                "get",
+                "category"
+              ],
+              2
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w45"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ],
+            [
+              ">=",
+              [
+                "get",
+                "score"
+              ],
+              400000
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w50"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w40"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ]
+          ],
+          9,
+          [
+            "case",
+            [
+              "==",
+              [
+                "get",
+                "category"
+              ],
+              2
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w45"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "w50"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ]
+          ],
+          11,
+          [
+            "coalesce",
+            [
+              "get",
+              "w50"
+            ],
+            [
+              "get",
+              "name"
+            ]
+          ]
         ],
         "text-font": [
           "Noto Sans Regular"
@@ -10615,7 +10841,7 @@
             15
           ]
         ],
-        "text-max-width": 5,
+        "text-max-width": 100,
         "text-line-height": 1.05
       },
       "paint": {

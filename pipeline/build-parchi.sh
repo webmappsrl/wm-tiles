@@ -101,14 +101,24 @@ jq -c 'select(.properties.capital != "yes")
 # dir = 0, con dir = round(ascii(md5(osm_id::text)) / 55) sugli interi di PostgreSQL
 # (placenames-medium del .mml): sopra se l'md5 comincia per 7-9 o a-f. OpenLayers non
 # prova alternative, quindi si scrive la prima scelta (Zadar, Split, Potenza sopra)
+# Il nome a capo come Mapnik, che va a capo DOPO la parola che supera la larghezza
+# (OpenLayers prima: "Alba / Adriatica", "Ascoli / Piceno" a z9, TGen su una riga).
+# La larghezza in em cambia per classe e livello (placenames.mss): 2,7 / 3 / 4 / 4,1 /
+# 4,5 / 5 em, una variante per ognuna (w27...w50) e lo stile sceglie quella del livello.
 python3 -I -c '
-import hashlib, json, sys
+import hashlib, importlib.util, json, sys
+spec = importlib.util.spec_from_file_location("lp", sys.argv[2])
+lp = importlib.util.module_from_spec(spec); spec.loader.exec_module(lp)
+glifi = json.load(open(sys.argv[3]))
+larghezze = {"corpo": glifi["corpo"], "table": glifi["font"]["R"]}
 for riga in open(sys.argv[1]):
     f = json.loads(riga)
     p = f["properties"]
     p["dir"] = ord(hashlib.md5(str(p.pop("osm_id")).encode()).hexdigest()[0]) // 55
+    for em in (2.7, 3, 4, 4.1, 4.5, 5):
+        p["w%d" % round(em * 10)] = lp.wrap_like_mapnik(p["name"], larghezze, em)
     print(json.dumps(f, ensure_ascii=False))
-' "$WORK/citta-o.geojsonl" > "$WORK/citta-z.geojsonl"
+' "$WORK/citta-o.geojsonl" pipeline/label-points.py style/glifi-larghezze.json > "$WORK/citta-z.geojsonl"
 # l'ordine conta: a parita' di layer OpenLayers da' la precedenza alla feature che viene
 # prima nella tile, e TGen piazza i nomi in ORDER BY score DESC (vedi --preserve-input-order)
 echo "   $(wc -l < "$WORK/citta-z.geojsonl" | tr -d ' ') citta' e paesi"
