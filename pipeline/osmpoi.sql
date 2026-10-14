@@ -3,6 +3,8 @@
 -- autostradali (in TGen `#junctions`, da z11) e le localita' (`place=locality`
 -- e `farm`, che il layer `place` di OpenMapTiles scarta e TGen scrive da z15
 -- in `placenames-small`).
+-- Dal 14/10/2026 tutte le classi di placenames-small: i nomi vanno spezzati
+-- come Mapnik nel dato, e quelli di OpenMapTiles non si possono toccare.
 --
 -- Il nome serve solo a cio' che si scrive e basta. Per le icone TGen non lo
 -- chiede (amenity-points non filtra sul nome): rifugi, bivacchi, ripari, selle,
@@ -31,10 +33,11 @@ WHERE (other_tags IS NOT NULL
   OR (name IS NOT NULL
   AND other_tags IS NOT NULL
   AND (
-    hstore_get_value(other_tags, 'natural') = 'peak'
+    hstore_get_value(other_tags, 'natural') IN ('peak','volcano')
     OR hstore_get_value(other_tags, 'tourism') IN ('viewpoint','picnic_site')
     OR hstore_get_value(other_tags, 'amenity') = 'drinking_water'
     OR hstore_get_value(other_tags, 'mountain_pass') = 'yes'
   ))
-  OR (name IS NOT NULL AND place IN ('locality','farm'))
+  OR (name IS NOT NULL AND place IN ('village','hamlet','suburb','quarter','neighbourhood',
+                                     'locality','isolated_dwelling','farm'))
   OR (highway = 'motorway_junction' AND (name IS NOT NULL OR ref IS NOT NULL))

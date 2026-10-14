@@ -318,16 +318,12 @@
       "notaCapitale": "fino a z7 il nome sta sotto il simbolo della capitale (ShieldSymbolizer di capital-names con dy 6-7): centrato lo copriva"
     },
     "place-village": {
-      "tgen": "placenames-small"
+      "tgen": "placenames-small",
+      "nota": "placenames-small: villaggi e quartieri da osmpoi, col nome spezzato a 5 em come Mapnik (w50) e nell'ordine della query di TGen (classe, nome piu' lungo)."
     },
     "place-minor": {
       "tgen": null,
-      "nota": "placenames.mss, #placenames-small::hamlet (hamlet, locality, neighbourhood, isolated_dwelling, farm): da z15 (10 px #222), 12 px #777 da z16. Soglie lette a mano: il selettore del .mml copre anche i paesi da z12.",
-      "ordine": "placenames-small"
-    },
-    "place-minor-osm": {
-      "tgen": null,
-      "nota": "Come place-minor, sulle localita' (place=locality e farm) che il layer `place` di OpenMapTiles scarta e TGen scrive da z15 in #placenames-small::hamlet: vengono da osmpoi (11/10/2026). Senza, nomi come 'Al Castagno' sul Monte Pisano mancavano ovunque.",
+      "nota": "placenames.mss, #placenames-small::hamlet (hamlet, locality, neighbourhood, isolated_dwelling, farm): da z15 (10 px #222), 12 px #777 da z16. Soglie lette a mano: il selettore del .mml copre anche i paesi da z12. Dal 14/10/2026 tutte le classi vengono da osmpoi (anche locality e farm, che OpenMapTiles scarta), col nome gia' spezzato come Mapnik (w45 a z15, w50 a z16).",
       "ordine": "placenames-small"
     },
     "mountain-peak-icon": {
@@ -337,7 +333,7 @@
     },
     "mountain-peak-label": {
       "tgen": null,
-      "nota": "regole senza id in amenity-points.mss: soglie lette a mano dal .mss",
+      "nota": "text-point di project.xml (natural_peak, natural_volcano da z13): 10 px #5c491d, a capo a 3 em, dy 7. Il testo lo compone build-osmpoi.sh come la query di TGen (nome, a capo, quota con spazio non divisibile e m) spezzato come Mapnik, e le cime sono in ordine di quota (score): dall'archivio osmpoi, non da OpenMapTiles.",
       "ordine": "text-point",
       "copre": [
         "text-point"
@@ -545,7 +541,7 @@
     },
     "place-quarter": {
       "tgen": null,
-      "nota": "placenames.mss, #placenames-small::quarter: da z14 (11 px #222, 12 px #777 da z15, 14 px da z16). Il selettore del .mml (placenames-small) copre anche i paesi da z12: le soglie sono lette a mano dalle condizioni su place.",
+      "nota": "placenames.mss, #placenames-small::quarter: da z14 (11 px #222, 12 px #777 da z15, 14 px da z16). Il selettore del .mml (placenames-small) copre anche i paesi da z12: le soglie sono lette a mano dalle condizioni su place. Da osmpoi, nome spezzato a 5 em come Mapnik (w50).",
       "ordine": "placenames-small"
     },
     "aerodrome-icon-z10": {

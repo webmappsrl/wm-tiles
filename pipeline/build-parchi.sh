@@ -62,7 +62,9 @@ docker run --rm -v "$PWD":/w -v "$WORK":/out \
         WHERE (natural = 'wood' OR landuse = 'forest') AND name IS NOT NULL AND building IS NULL"
 echo "   $(wc -l < "$WORK/boschi.geojsonl" | tr -d ' ') boschi"
 python3 -I pipeline/parchi-soglia.py "$WORK/boschi.geojsonl" "$WORK/boschi-a.geojsonl" 8 14
-python3 -I pipeline/label-points.py "$WORK/boschi-a.geojsonl" "$WORK/boschi-z.geojsonl"
+# a capo come Mapnik: text-poly va a capo a 3 em per i boschi (30/36/45 px a 10/12/15 px)
+python3 -I pipeline/label-points.py "$WORK/boschi-a.geojsonl" "$WORK/boschi-z.geojsonl" \
+  --wrap style/glifi-larghezze.json I 3
 
 # I nomi di laghi e bacini: water.mss li scrive con la stessa soglia
 # (natural_water, natural_bay, landuse_reservoir, landuse_basin). OpenMapTiles
@@ -77,7 +79,9 @@ docker run --rm -v "$PWD":/w -v "$WORK":/out \
 echo "   $(wc -l < "$WORK/acque.geojsonl" | tr -d ' ') acque"
 # da z4: text-poly-low-zoom ha minzoom 0 (il Golfo di Gaeta a z7)
 python3 -I pipeline/parchi-soglia.py "$WORK/acque.geojsonl" "$WORK/acque-a.geojsonl" 4 14
-python3 -I pipeline/label-points.py "$WORK/acque-a.geojsonl" "$WORK/acque-z.geojsonl"
+# laghi e golfi a capo come Mapnik, a 2,5 / 3,1 / 3,9 / 5 em secondo la dimensione (water.mss)
+python3 -I pipeline/label-points.py "$WORK/acque-a.geojsonl" "$WORK/acque-z.geojsonl" \
+  --variants style/glifi-larghezze.json I 2.5,3.1,3.9,5
 
 # Citta' e paesi come placenames-medium: punteggio = popolazione (100.000 per una citta'
 # senza, 1.000 per un paese) raddoppiata per i capoluoghi di regione (capital=4); la capitale

@@ -12,7 +12,9 @@ WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
 
 GDAL="ghcr.io/osgeo/gdal:ubuntu-small-latest"
 ogr() {  # ogr <out.geojsonl> <file sql>
+  # osmconf-con-source.ini: GDAL di serie scarta `ele`, e le cime restavano senza quota
   docker run --rm -v "$PWD":/w -v "$WORK":/out --entrypoint ogr2ogr "$GDAL" \
+    --config OSM_CONFIG_FILE /w/pipeline/osmconf-con-source.ini \
     -f GeoJSONSeq "/out/$1" "/w/$PBF" -spat "$W" "$S" "$E" "$N" \
     -lco COORDINATE_PRECISION=6 -sql "@/w/pipeline/$2"
 }
@@ -45,13 +47,57 @@ jq -c '(.properties |= (
  ))
  | .tippecanoe = {minzoom: (if .properties.kind == "motorway_junction" then 11
                            elif .properties.kind == "alpine_hut" or .properties.kind == "wilderness_hut" then 13
+                           elif .properties.kind == "peak" or .properties.kind == "volcano" then 13
+                           elif .properties.kind == "village" or .properties.kind == "suburb" then 12
                            else 14 end)}
  ' "$WORK/poi.geojsonl" > "$WORK/poi2.geojsonl"
-mv "$WORK/poi2.geojsonl" "$WORK/poi.geojsonl"
+# Le localita' a capo come Mapnik e nell'ordine di placenames-small.
+# Il nome delle cime come lo compone TGen (text-point del .mml): nome, a capo, la
+# quota arrotondata con uno spazio non divisibile prima di "m"; spezzato a 3 em
+# come Mapnik, che va a capo DOPO la parola che supera la larghezza ("La
+# Montagnola / dell'Elmo / 852 m", OpenLayers "La / Montagnola / ..."). Le cime
+# in ordine di quota: TGen le piazza per `score` = quota, e a parita' di layer
+# OpenLayers premia la feature che viene prima (--preserve-input-order).
+python3 -I -c '
+import importlib.util, json, re, sys
+spec = importlib.util.spec_from_file_location("lp", sys.argv[2])
+lp = importlib.util.module_from_spec(spec); spec.loader.exec_module(lp)
+glifi = json.load(open(sys.argv[3]))
+larghezze = {"corpo": glifi["corpo"], "table": glifi["font"]["R"]}
+# placenames-small: ORDER BY classe, length(name) DESC, name
+CLASSI = ["suburb", "village", "hamlet", "quarter", "neighbourhood", "locality", "isolated_dwelling", "farm"]
+righe = []
+for riga in open(sys.argv[1]):
+    f = json.loads(riga)
+    p = f["properties"]
+    quota = None
+    if p.get("kind") in CLASSI and p.get("name"):
+        # a capo come Mapnik: 4,5 em per frazioni e localita a z15, 5 em per il resto
+        p["w45"] = lp.wrap_like_mapnik(p["name"], larghezze, 4.5)
+        p["w50"] = lp.wrap_like_mapnik(p["name"], larghezze, 5)
+        righe.append(((1, CLASSI.index(p["kind"]), -len(p["name"]), p["name"]), json.dumps(f, ensure_ascii=False) + "\n"))
+        continue
+    if p.get("kind") in ("peak", "volcano"):
+        e = str(p.get("ele") or "").strip()
+        if re.fullmatch(r"-?\d{1,4}(\.\d+)?", e):
+            quota = float(e)
+        if p.get("name"):
+            t = lp.wrap_like_mapnik(p["name"], larghezze, 3)
+            if quota is not None:
+                t += "\n" + str(round(quota)).replace("-", "\u2212") + "\u00a0m"
+            p["t"] = t
+    if p.get("kind") in ("peak", "volcano"):
+        chiave = (0, -(quota if quota is not None else -1e9), 0, "")
+    else:
+        chiave = (2, 0, 0, "")
+    righe.append((chiave, riga if "t" not in p else json.dumps(f, ensure_ascii=False) + "\n"))
+righe.sort(key=lambda r: r[0])
+sys.stdout.write("".join(r[1] for r in righe))
+' "$WORK/poi2.geojsonl" pipeline/label-points.py style/glifi-larghezze.json > "$WORK/poi.geojsonl"
 
 echo "== tiles z${ZMIN}-${ZMAX}"
 tippecanoe -t "${TMPDIR:-/tmp}" -o "$WORK/osmpoi.mbtiles" -l osmpoi \
-  -Z "$ZMIN" -z "$ZMAX" -r1 --drop-densest-as-needed --force -q \
+  -Z "$ZMIN" -z "$ZMAX" -r1 --drop-densest-as-needed --preserve-input-order --force -q \
   "$WORK/poi.geojsonl"
 pmtiles convert "$WORK/osmpoi.mbtiles" "$OUT"
 ls -la "$OUT" | awk '{printf "== fatto: %s (%.1f MB)\n", $9, $5/1048576}'

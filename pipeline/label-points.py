@@ -24,6 +24,7 @@ mezza mappa. `--extract` scarta le aree che toccano il bordo dell'estratto OSM:
 sono tagliate, e il loro baricentro non e' quello di TGen (la Francia in Provenza).
 
 Uso: python3 label-points.py <in.geojsonl> <out.geojsonl> [--wrap <glifi.json> <R|I|B> <em>]
+       [--variants <glifi.json> <R|I|B> <em,em,...>]
        [--window <min_px> <max_px> <zmin> <zmax>] [--extract W,S,E,N]
 """
 import heapq
@@ -171,12 +172,18 @@ def main():
     src, dst = sys.argv[1], sys.argv[2]
     args = sys.argv[3:]
     widths = window = extract = None
+    variants = []
     while args:
         opt = args.pop(0)
         if opt == '--wrap':
             glyphs = json.load(open(args.pop(0)))
             widths = {'corpo': glyphs['corpo'], 'table': glyphs['font'][args.pop(0)]}
             em = float(args.pop(0))
+        elif opt == '--variants':
+            # una proprieta' per larghezza (w25, w31...): lo stile sceglie quella del livello
+            glyphs = json.load(open(args.pop(0)))
+            widths = {'corpo': glyphs['corpo'], 'table': glyphs['font'][args.pop(0)]}
+            variants = [float(v) for v in args.pop(0).split(',')]
         elif opt == '--window':
             window = [float(args.pop(0)), float(args.pop(0)), int(args.pop(0)), int(args.pop(0))]
         elif opt == '--extract':
@@ -220,7 +227,11 @@ def main():
             plane = [[(x * k, y) for x, y in ring[:-1]] for ring in part]
             px, py = interior_point(plane)
             if widths and ft['properties'].get('name'):
-                ft['properties']['name'] = wrap_like_mapnik(ft['properties']['name'], widths, em)
+                name = ft['properties']['name']
+                for v in variants:
+                    ft['properties']['w%d' % round(v * 10)] = wrap_like_mapnik(name, widths, v)
+                if not variants:
+                    ft['properties']['name'] = wrap_like_mapnik(name, widths, em)
             ft['geometry'] = {'type': 'Point', 'coordinates': [round(px / k, 7), round(py, 7)]}
             fout.write(json.dumps(ft, ensure_ascii=False) + '\n')
             count += 1
