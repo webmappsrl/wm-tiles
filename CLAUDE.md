@@ -709,6 +709,10 @@ Verificate sul campo, ognuna e' costata un ciclo di debug:
 - **Un testo ruotato occupa nel declutter il suo riquadro orizzontale.** Due
   nomi di vie parallele e vicine si urtano dove Mapnik, che misura glifo per
   glifo, li scrive entrambi: e' il residuo che resta anche coi punti calcolati.
+  Non si aggira dallo stile: in ol-mapbox-style 11 il testo non ha
+  `text-allow-overlap` (`stylefunction.js` ha solo `getIconDeclutterMode`), e
+  mettere il nome su un tratto di linea lungo quanto il testo, per avere il
+  controllo glifo per glifo, non ha recuperato nessuna via (14/10/2026).
 - **Niente `["zoom"]` nei filtri.** ol-mapbox-style li valuta con lo stesso
   livello di scarto delle espressioni, ma `scalaZoom` corregge solo `paint` e
   `layout`: `[">=", ["zoom"], 16]` scattava a z17, cioe' mai. `build-style`
