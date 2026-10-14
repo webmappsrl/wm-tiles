@@ -117,11 +117,11 @@
     },
     "park-label": {
       "tgen": null,
-      "nota": "z9-z12 dai PNG del 2018 (a z9 il Delta del Po e Fanes-Sennes-Braies, giro italia1): nome in #8f8491 (@admin-boundaries_txt), corsivo 10 px, a capo largo, con la stessa soglia way_pixels > 3000 (Migliarino-San Rossore compare a z10, i Monti Livornesi a z11). La soglia e' nel dato (pipeline/parchi-soglia.py); il nome e' un punto nel baricentro della parte piu' grande (pipeline/label-points.py). Da z13 il nome sta lungo il confine: park-label-line.",
+      "nota": "z9-z12 dai PNG del 2018 (a z9 il Delta del Po e Fanes-Sennes-Braies, giro italia1): nome in #8f8491 (@admin-boundaries_txt), corsivo 10 px, a capo largo, con la stessa soglia way_pixels > 3000 (Migliarino-San Rossore compare a z10, i Monti Livornesi a z11). La soglia e' nel dato (pipeline/parchi-soglia.py); il nome e' un punto nel baricentro della parte piu' grande (pipeline/label-points.py). Da z13 la regola e' text-poly di project.xml (boundary_national_park e leisure_nature_reserve: #4b7c37, 10/12/15 px oltre 3000/12000/48000 px, a capo a 3 em), la stessa soglia; in piu' il nome lungo il confine (park-label-line). A z14 il locale ne scriveva uno per tile perche' OpenLayers etichettava ogni pezzo dell'area: ora e' un punto solo.",
       "ordine": "nature-reserve-text",
       "livelli": [
         9,
-        12
+        16
       ],
       "copre": [
         "nature-reserve-text"
