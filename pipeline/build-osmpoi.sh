@@ -77,9 +77,11 @@ for riga in open(sys.argv[1]):
         p["w50"] = lp.wrap_like_mapnik(p["name"], larghezze, 5)
         righe.append(((1, CLASSI.index(p["kind"]), -len(p["name"]), p["name"]), json.dumps(f, ensure_ascii=False) + "\n"))
         continue
-    if p.get("kind") in ("peak", "volcano"):
+    # la quota la aggiunge TGen a cime, vulcani, selle, rifugi alpini e ripari;
+    # grotte e bivacchi hanno solo il nome. Tutti a capo a 3 em.
+    if p.get("kind") in ("peak", "volcano", "saddle", "alpine_hut", "shelter", "wilderness_hut", "cave_entrance"):
         e = str(p.get("ele") or "").strip()
-        if re.fullmatch(r"-?\d{1,4}(\.\d+)?", e):
+        if p.get("kind") in ("peak", "volcano", "saddle", "alpine_hut", "shelter") and re.fullmatch(r"-?\d{1,4}(\.\d+)?", e):
             quota = float(e)
         if p.get("name"):
             t = lp.wrap_like_mapnik(p["name"], larghezze, 3)

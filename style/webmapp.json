@@ -7000,34 +7000,10 @@
       "source-layer": "osmpoi",
       "layout": {
         "text-field": [
-          "case",
+          "coalesce",
           [
-            "all",
-            [
-              "has",
-              "ele"
-            ],
-            [
-              "!=",
-              [
-                "get",
-                "ele"
-              ],
-              ""
-            ]
-          ],
-          [
-            "concat",
-            [
-              "get",
-              "name"
-            ],
-            " ",
-            [
-              "get",
-              "ele"
-            ],
-            " m"
+            "get",
+            "t"
           ],
           [
             "get",
@@ -7061,7 +7037,7 @@
             ]
           ]
         ],
-        "text-max-width": 7,
+        "text-max-width": 100,
         "text-padding": 2,
         "symbol-sort-key": 6,
         "text-line-height": 1.05
@@ -7245,8 +7221,25 @@
       "source": "osmpoi",
       "source-layer": "osmpoi",
       "filter": [
-        "has",
-        "t"
+        "all",
+        [
+          "has",
+          "t"
+        ],
+        [
+          "in",
+          [
+            "get",
+            "kind"
+          ],
+          [
+            "literal",
+            [
+              "peak",
+              "volcano"
+            ]
+          ]
+        ]
       ],
       "layout": {
         "text-field": [
@@ -10689,8 +10682,15 @@
       ],
       "layout": {
         "text-field": [
-          "get",
-          "name"
+          "coalesce",
+          [
+            "get",
+            "t"
+          ],
+          [
+            "get",
+            "name"
+          ]
         ],
         "text-font": [
           "Noto Sans Regular"
@@ -10701,7 +10701,7 @@
           0,
           0.6
         ],
-        "text-max-width": 3,
+        "text-max-width": 100,
         "text-line-height": 1.05
       },
       "paint": {
