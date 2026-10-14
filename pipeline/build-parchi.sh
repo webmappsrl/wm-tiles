@@ -14,10 +14,18 @@ set -euo pipefail
 PBF="${1:?}"; W="${2:?}"; S="${3:?}"; E="${4:?}"; N="${5:?}"; OUT="${6:?}"
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
 
+# Le cinque estrazioni leggono solo cio' che serve: sull'Italia intera (6 GB) ogni
+# passata di ogr2ogr sul PBF completo superava i dieci minuti
+echo "== filtro il PBF"
+osmium tags-filter "$PBF" -o "$WORK/filtrato.osm.pbf" --overwrite \
+  nwr/boundary=national_park,administrative nwr/leisure=nature_reserve \
+  nwr/natural=wood,water,bay nwr/landuse=forest,reservoir,basin n/place=city,town
+ls -la "$WORK/filtrato.osm.pbf" | awk '{printf "   %.0f MB\n", $5/1048576}'
+
 echo "== estraggo parchi e riserve"
 docker run --rm -v "$PWD":/w -v "$WORK":/out \
   --entrypoint ogr2ogr ghcr.io/osgeo/gdal:ubuntu-small-latest \
-  -f GeoJSONSeq "/out/parchi.geojsonl" "/w/$PBF" \
+  -f GeoJSONSeq "/out/parchi.geojsonl" /out/filtrato.osm.pbf \
   -spat "$W" "$S" "$E" "$N" -lco COORDINATE_PRECISION=6 \
   -sql "SELECT name, boundary, leisure FROM multipolygons \
         WHERE (boundary = 'national_park' OR leisure = 'nature_reserve') AND building IS NULL"
@@ -48,7 +56,7 @@ done
 echo "== estraggo i boschi con nome"
 docker run --rm -v "$PWD":/w -v "$WORK":/out \
   --entrypoint ogr2ogr ghcr.io/osgeo/gdal:ubuntu-small-latest \
-  -f GeoJSONSeq "/out/boschi.geojsonl" "/w/$PBF" \
+  -f GeoJSONSeq "/out/boschi.geojsonl" /out/filtrato.osm.pbf \
   -spat "$W" "$S" "$E" "$N" -lco COORDINATE_PRECISION=6 \
   -sql "SELECT name FROM multipolygons \
         WHERE (natural = 'wood' OR landuse = 'forest') AND name IS NOT NULL AND building IS NULL"
@@ -62,7 +70,7 @@ python3 -I pipeline/label-points.py "$WORK/boschi-a.geojsonl" "$WORK/boschi-z.ge
 echo "== estraggo le acque con nome"
 docker run --rm -v "$PWD":/w -v "$WORK":/out \
   --entrypoint ogr2ogr ghcr.io/osgeo/gdal:ubuntu-small-latest \
-  -f GeoJSONSeq "/out/acque.geojsonl" "/w/$PBF" \
+  -f GeoJSONSeq "/out/acque.geojsonl" /out/filtrato.osm.pbf \
   -spat "$W" "$S" "$E" "$N" -lco COORDINATE_PRECISION=6 \
   -sql "SELECT name FROM multipolygons \
         WHERE (natural IN ('water', 'bay') OR landuse IN ('reservoir', 'basin')) AND name IS NOT NULL"
@@ -79,7 +87,7 @@ python3 -I pipeline/label-points.py "$WORK/acque-a.geojsonl" "$WORK/acque-z.geoj
 echo "== estraggo citta' e paesi"
 docker run --rm -v "$PWD":/w -v "$WORK":/out \
   --entrypoint ogr2ogr ghcr.io/osgeo/gdal:ubuntu-small-latest \
-  -f GeoJSONSeq "/out/citta.geojsonl" "/w/$PBF" \
+  -f GeoJSONSeq "/out/citta.geojsonl" /out/filtrato.osm.pbf \
   -spat "$W" "$S" "$E" "$N" -lco COORDINATE_PRECISION=6 \
   -sql "SELECT osm_id, name, place, hstore_get_value(other_tags, 'population') AS population,
                hstore_get_value(other_tags, 'capital') AS capital
@@ -132,7 +140,7 @@ echo "   $(wc -l < "$WORK/citta-z.geojsonl" | tr -d ' ') citta' e paesi"
 echo "== estraggo nazioni e regioni"
 docker run --rm -v "$PWD":/w -v "$WORK":/out \
   --entrypoint ogr2ogr ghcr.io/osgeo/gdal:ubuntu-small-latest \
-  -f GeoJSONSeq "/out/admin.geojsonl" "/w/$PBF" \
+  -f GeoJSONSeq "/out/admin.geojsonl" /out/filtrato.osm.pbf \
   -spat "$W" "$S" "$E" "$N" -lco COORDINATE_PRECISION=6 \
   -sql "SELECT name, admin_level FROM multipolygons \
         WHERE boundary = 'administrative' AND admin_level IN ('2', '4') AND name IS NOT NULL"
