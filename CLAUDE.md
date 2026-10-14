@@ -712,14 +712,14 @@ Verificate sul campo, ognuna e' costata un ciclo di debug:
   In ol-mapbox-style 11 il testo non ha `text-allow-overlap` (c'e' solo
   `getIconDeclutterMode`), e un tratto di linea lungo quanto il testo non ha
   recuperato nessuna via. Funziona un `text-padding` NEGATIVO, che restringe il
-  riquadro: -4 px sui nomi delle strade (da 11 a 13 vie su 17 di TGen in
-  15/17331/11949). Lo Style Spec vieta i negativi, quindi e' scritto come
+  riquadro: -6 px sui nomi delle strade (14 vie su 17 di TGen in
+  15/17331/11949, senza sovrapposizioni). Lo Style Spec vieta i negativi, quindi e' scritto come
   espressione (`["-", 0, 4]`: il validatore controlla il tipo, non il valore) e
   `stile-nativo.js` lo azzera per maplibre-native.
   Misurati poi sull'inchiostro nero di 10 tile urbane z15-z16 di Pisa (TGen =
-  1): cosi' 0,90; scegliendo nel dato le posizioni che non urtano, come fa
-  Mapnik, 0,85; con una distanza minima fra nomi uguali 0,83. Il resto dello
-  scarto e' il riquadro orizzontale del declutter di OpenLayers (14/10/2026).
+  1): padding -4 0,90, -6 1,00, -8 e -10 1,02; scegliendo nel dato le
+  posizioni che non urtano, come fa Mapnik, 0,85; con una distanza minima fra
+  nomi uguali 0,83. Si usa -6 (14/10/2026).
 - **Niente `["zoom"]` nei filtri.** ol-mapbox-style li valuta con lo stesso
   livello di scarto delle espressioni, ma `scalaZoom` corregge solo `paint` e
   `layout`: `[">=", ["zoom"], 16]` scattava a z17, cioe' mai. `build-style`
