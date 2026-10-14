@@ -187,6 +187,7 @@ tippecanoe -o "$WORK/cl_hr.mbtiles" --force -q -l contour -Z14 -z15 --no-feature
 tile-join -o "$WORK/contours.mbtiles" --force -q --no-tile-size-limit \
   "$WORK/cl_lr.mbtiles" "$WORK/cl_mr.mbtiles" "$WORK/cl_hr.mbtiles"
 pmtiles convert "$WORK/contours.mbtiles" "$WORK/contours.pmtiles"
+bash pipeline/build-quote.sh "$WORK/cl_hr.geojsonl" "$WORK/quote.pmtiles"
 
 fi
 
@@ -218,4 +219,5 @@ if [ ! -e data/archives/dem/contours-prototipo.pmtiles ]; then
   mv data/archives/dem/contours.pmtiles data/archives/dem/contours-prototipo.pmtiles
 fi
 cp "$WORK/contours.pmtiles" data/archives/dem/contours.pmtiles
+cp "$WORK/quote.pmtiles" data/archives/dem/quote.pmtiles
 echo "== fatto: versione $V in $(durata), DEM $(find data/dem/terrain -name '*.png' | wc -l | tr -d ' ') tile. Riavvia il server."

@@ -274,6 +274,11 @@ for riga in sys.stdin:
   pmtiles convert "$CL/contours.mbtiles" "$CL/contours.pmtiles"
   segna "$CL/contours.pmtiles"
 fi
+if ! fatto "$CL/quote.pmtiles"; then
+  fase "4. quote delle curve come punti (build-quote.sh)"
+  bash pipeline/build-quote.sh "$CL/cl_hr.geojsonl" "$CL/quote.pmtiles"
+  segna "$CL/quote.pmtiles"
+fi
 
 # ---------------------------------------------------------------------------
 # 5. Pubblicazione: versione nuova, DEM e curve al loro posto
@@ -301,4 +306,5 @@ mv "$DEM/terrain" data/dem/terrain
 rm -f data/dem/terrain/.z*
 if [ -e data/archives/dem/contours.pmtiles ]; then mv data/archives/dem/contours.pmtiles "data/archives/dem/contours-prima-di-$V.pmtiles"; fi
 cp "$CL/contours.pmtiles" data/archives/dem/contours.pmtiles
+cp "$CL/quote.pmtiles" data/archives/dem/quote.pmtiles
 fase "fatto: versione $V in $(durata $T0), DEM $(find data/dem/terrain -name '*.png' | wc -l | tr -d ' ') tile. Riavvia il server; i file di lavoro restano in $WORK"

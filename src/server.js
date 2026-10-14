@@ -33,7 +33,7 @@ const ATTRIBUTION_LC = '© ESA WorldCover 2021';
 const ATTRIBUTION_WM = '© Webmapp';
 const ATTRIBUTION_IGM = '© IGM — DBSN';
 const LEGACY_TILE_URL = 'https://api.webmapp.it/tiles/{z}/{x}/{y}.png';
-export const ARCHIVES = ['osm', 'hillshade', 'contours', 'hiking', 'toponimi', 'rifugi', 'landcover', 'osmpoi', 'clc', 'roadslz', 'igm', 'power', 'parchi', 'extra', 'amenity'];
+export const ARCHIVES = ['osm', 'hillshade', 'contours', 'hiking', 'toponimi', 'rifugi', 'landcover', 'osmpoi', 'clc', 'roadslz', 'igm', 'power', 'parchi', 'extra', 'amenity', 'quote'];
 
 function log(level, msg, fields = {}) {
   const line = JSON.stringify({ts: new Date().toISOString(), level, msg, ...fields});
@@ -297,6 +297,17 @@ function buildStyle(manifest, resolved, version, base) {
       // L'archivio arriva a z15: dichiarando 14 si usavano tile z14
       // sovraingrandite e le curve risultavano meno fitte del riferimento.
       maxzoom: 15,
+      attribution: ATTRIBUTION_DEM,
+    },
+    // Le quote delle curve di livello come punti ruotati, posizionati come
+    // Mapnik (pipeline/punti-lungo-linee.py): lungo le linee OpenLayers ne
+    // piazzava una su cinque. Archivio a parte perche' arriva a z16, le curve a z15.
+    quote: {
+      type: 'vector',
+      tileSize: 256,
+      tiles: [`${base}/t/dem-v${curveVer()}/${resolved.setId}/quote/{z}/{x}/{y}.pbf`],
+      minzoom: 14,
+      maxzoom: 16,
       attribution: ATTRIBUTION_DEM,
     },
     openmaptiles: {

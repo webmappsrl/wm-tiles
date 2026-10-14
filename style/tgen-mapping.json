@@ -66,7 +66,8 @@
       "tgen": [
         "cl_hr_labels",
         "cl_hr_subd_labels"
-      ]
+      ],
+      "notaPunti": "punti ruotati posizionati come Mapnik (pipeline/punti-lungo-linee.py): lungo le linee OpenLayers ne piazzava pochissimi (13/10/2026). La soglia di livello e' nel dato"
     },
     "military-hatch": {
       "tgen": "landuse-overlay",
@@ -276,7 +277,8 @@
       "nota": "cartellini z10-z12 (roads.mss riga 2556): autostrade da z10, superstrade e primarie da z11, secondarie da z12"
     },
     "waterway-label": {
-      "tgen": "water-lines-text"
+      "tgen": "water-lines-text",
+      "notaPunti": "punti ruotati posizionati come Mapnik (pipeline/punti-lungo-linee.py): lungo le linee OpenLayers ne piazzava pochissimi (13/10/2026). La soglia di livello e' nel dato"
     },
     "water-name": {
       "tgen": null,
@@ -693,7 +695,8 @@
         15,
         16
       ],
-      "nota": "water.mss, #water-lines-text: stream, drain e ditch da z15, stesso testo (10 px, text-spacing 600, text-dy 8). Fino all'11/10/2026 il filtro prendeva solo stream: i fossi e i botri tagliati `drain` in OSM (sul Monte Pisano quasi tutti) restavano senza nome."
+      "nota": "water.mss, #water-lines-text: stream, drain e ditch da z15, stesso testo (10 px, text-spacing 600, text-dy 8). Fino all'11/10/2026 il filtro prendeva solo stream: i fossi e i botri tagliati `drain` in OSM (sul Monte Pisano quasi tutti) restavano senza nome.",
+      "notaPunti": "punti ruotati posizionati come Mapnik (pipeline/punti-lungo-linee.py): lungo le linee OpenLayers ne piazzava pochissimi (13/10/2026). La soglia di livello e' nel dato"
     },
     "aeroway-taxiway": {
       "tgen": "aeroways"

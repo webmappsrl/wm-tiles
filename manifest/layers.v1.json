@@ -133,7 +133,8 @@
         "poi",
         "aerodrome_label",
         "amenity",
-        "testi"
+        "testi",
+        "nomi_acque"
       ],
       "class": "public",
       "attributes": [
@@ -152,7 +153,8 @@
         "en": "Contour lines"
       },
       "layers": [
-        "contour"
+        "contour",
+        "quote"
       ],
       "class": "public",
       "attributes": [

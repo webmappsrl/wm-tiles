@@ -6293,95 +6293,29 @@
     {
       "id": "contour-label",
       "type": "symbol",
-      "source": "contours",
-      "source-layer": "contour",
-      "filter": [
-        "all",
-        [
-          "in",
-          [
-            "get",
-            "type"
-          ],
-          [
-            "literal",
-            [
-              "cp",
-              "cp10",
-              "cp25",
-              "cp50",
-              "cp100"
-            ]
-          ]
-        ],
-        [
-          ">",
-          [
-            "to-number",
-            [
-              "get",
-              "quota"
-            ]
-          ],
-          0
-        ]
-      ],
+      "source": "quote",
+      "source-layer": "quote",
       "layout": {
-        "symbol-placement": "line",
         "text-field": [
-          "to-string",
-          [
-            "get",
-            "quota"
-          ]
+          "get",
+          "t"
         ],
         "text-font": [
           "Noto Sans Regular"
         ],
         "text-size": [
-          "step",
-          [
-            "zoom"
-          ],
-          8,
-          14,
-          9
+          "get",
+          "s"
         ],
         "text-letter-spacing": 0.1,
-        "text-offset": [
-          "step",
-          [
-            "zoom"
-          ],
-          [
-            "literal",
-            [
-              0,
-              -0.25
-            ]
-          ],
-          14,
-          [
-            "literal",
-            [
-              0,
-              -0.33
-            ]
-          ]
-        ],
         "text-rotation-alignment": "map",
-        "symbol-spacing": [
-          "step",
-          [
-            "zoom"
-          ],
-          300,
-          14,
-          150
+        "text-padding": 1,
+        "symbol-sort-key": 10,
+        "text-rotate": [
+          "get",
+          "r"
         ],
-        "text-max-angle": 35,
-        "text-padding": 6,
-        "symbol-sort-key": 10
+        "text-max-width": 100
       },
       "paint": {
         "text-color": "rgba(0,0,0,0.6)"
@@ -6721,49 +6655,42 @@
     {
       "id": "waterway-label-stream",
       "type": "symbol",
-      "source": "openmaptiles",
-      "source-layer": "waterway",
+      "source": "amenity",
+      "source-layer": "nomi_acque",
       "filter": [
-        "all",
+        "in",
         [
-          "has",
-          "name"
+          "get",
+          "c"
         ],
         [
-          "in",
+          "literal",
           [
-            "get",
-            "class"
-          ],
-          [
-            "literal",
-            [
-              "stream",
-              "drain",
-              "ditch"
-            ]
+            "stream",
+            "drain",
+            "ditch"
           ]
         ]
       ],
       "layout": {
-        "symbol-placement": "line",
         "text-field": [
           "get",
-          "name"
+          "t"
         ],
         "text-font": [
           "Noto Sans Italic"
         ],
-        "text-size": 10,
-        "text-letter-spacing": 0.1,
+        "text-size": [
+          "get",
+          "s"
+        ],
+        "text-rotate": [
+          "get",
+          "r"
+        ],
         "text-rotation-alignment": "map",
-        "text-keep-upright": true,
-        "text-max-angle": 30,
-        "symbol-spacing": 300,
-        "text-offset": [
-          0,
-          0.8
-        ]
+        "text-padding": 1,
+        "text-max-width": 100
       },
       "paint": {
         "text-color": "#679bce",
@@ -6775,52 +6702,41 @@
     {
       "id": "waterway-label",
       "type": "symbol",
-      "source": "openmaptiles",
-      "source-layer": "waterway",
+      "source": "amenity",
+      "source-layer": "nomi_acque",
       "filter": [
-        "all",
+        "in",
         [
-          "has",
-          "name"
+          "get",
+          "c"
         ],
         [
-          "in",
+          "literal",
           [
-            "get",
-            "class"
-          ],
-          [
-            "literal",
-            [
-              "river",
-              "canal"
-            ]
+            "river",
+            "canal"
           ]
         ]
       ],
       "layout": {
-        "symbol-placement": "line",
         "text-field": [
           "get",
-          "name"
+          "t"
         ],
         "text-font": [
           "Noto Sans Italic"
         ],
         "text-size": [
-          "step",
-          [
-            "zoom"
-          ],
-          10,
-          13,
-          12
+          "get",
+          "s"
         ],
-        "text-letter-spacing": 0.1,
+        "text-rotate": [
+          "get",
+          "r"
+        ],
         "text-rotation-alignment": "map",
-        "text-keep-upright": true,
-        "text-max-angle": 30,
-        "symbol-spacing": 200
+        "text-padding": 1,
+        "text-max-width": 100
       },
       "paint": {
         "text-color": "#679bce",
