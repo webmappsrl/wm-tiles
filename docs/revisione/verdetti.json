@@ -291,25 +291,25 @@
   },
   "z15:hiking-line:stile": {
     "verdetto": "stile",
-    "motivo": "TGen disegna solo i sentieri CAI rilevati: hiking_trails in project.mml filtra cai_scale IS NOT NULL AND source LIKE '%survey:CAI%'; build-hiking-full.sh prende tutte le route=hiking. Stessa causa di z14:hiking-line-t e z16:hiking-ref",
-    "giro": "prova3",
+    "motivo": "risolti i tracciati (solo CAI); resta il colore: TGen disegna i sentieri E/EE in comp-op multiply (#e5372f al 60% in project.xml, hiking_trails), quindi piu' scuri sui boschi; il locale li disegna in modo normale (#b82e23 al 60%): TGen 152,87,83, locale 177,92,82",
+    "giro": "prod1",
     "misure": {
-      "dE": 10.138336770045935,
-      "presenza": 0.3796376186367558,
+      "dE": 10.4096231671278,
+      "presenza": 0.376940133037694,
       "diffusione": 1,
       "nTile": 4,
       "tgen": [
-        153,
+        152,
         87,
         83
       ],
       "locale": [
-        176,
-        94,
-        84
+        177,
+        92,
+        82
       ]
     },
-    "data": "2026-10-12"
+    "data": "2026-10-14"
   },
   "z15:hiking-line-t:stile": {
     "verdetto": "stile",
