@@ -787,7 +787,7 @@
         "admin-high-zoom",
         "necountries"
       ],
-      "nota": "admin.mss: larghezze, tratteggi (in pixel, qui divisi per la larghezza) e opacita' per livello amministrativo; lilla in darken da z13, verde nei PNG del 2018."
+      "nota": "admin.mss: larghezze, tratteggi (in pixel, qui divisi per la larghezza) e opacita' per livello amministrativo; lilla in darken da z13, verde nei PNG del 2018. Il verde misurato sul mare nei PNG (giro italia1, 14/10/2026): 132,178,162 da z7 a z10 e 122,170,144 a z11-z12 sull'acqua 172,212,234, cioe' lo stesso colore #487f36 al 40% e al 50% (gli scarti dall'acqua stanno 1 a 1,25 su tutti e tre i canali). Prima #55933b al 40%: piu' chiaro di 5-16 punti."
     },
     "boundary-l6": {
       "tgen": null,

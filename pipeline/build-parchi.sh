@@ -80,7 +80,7 @@ docker run --rm -v "$PWD":/w -v "$WORK":/out \
   --entrypoint ogr2ogr ghcr.io/osgeo/gdal:ubuntu-small-latest \
   -f GeoJSONSeq "/out/citta.geojsonl" "/w/$PBF" \
   -spat "$W" "$S" "$E" "$N" -lco COORDINATE_PRECISION=6 \
-  -sql "SELECT name, place, hstore_get_value(other_tags, 'population') AS population,
+  -sql "SELECT osm_id, name, place, hstore_get_value(other_tags, 'population') AS population,
                hstore_get_value(other_tags, 'capital') AS capital
         FROM points WHERE place IN ('city', 'town') AND name IS NOT NULL"
 jq -c 'select(.properties.capital != "yes")
@@ -89,13 +89,25 @@ jq -c 'select(.properties.capital != "yes")
   | (if $ha then ($p.population | tonumber) elif $p.place == "city" then 100000 else 1000 end) as $pop
   | ($pop * (if $p.capital == "4" then 2 else 1 end)) as $score
   | (if $p.place == "city" then 1 else 2 end) as $cat
-  | .properties = {name: $p.name, category: $cat, score: $score}
+  | .properties = {name: $p.name, category: $cat, score: $score, osm_id: $p.osm_id}
   | .tippecanoe = (if $cat == 2 then {minzoom: 9, maxzoom: 15}
                    elif $score >= 3000000 then {minzoom: 4, maxzoom: 13}
                    elif $score >= 400000 then {minzoom: 5, maxzoom: 13}
                    elif $score >= 70000 then {minzoom: 6, maxzoom: 14}
                    else {minzoom: 7, maxzoom: 14} end)' "$WORK/citta.geojsonl" \
-  | jq -sc 'sort_by(-.properties.score)[]' > "$WORK/citta-z.geojsonl"
+  | jq -sc 'sort_by(-.properties.score)[]' > "$WORK/citta-o.geojsonl"
+# Da che parte del pallino va il nome: TGen prova 'N,S,E,W' se dir = 1, 'S,N,E,W' se
+# dir = 0, con dir = round(ascii(md5(osm_id::text)) / 55) sugli interi di PostgreSQL
+# (placenames-medium del .mml): sopra se l'md5 comincia per 7-9 o a-f. OpenLayers non
+# prova alternative, quindi si scrive la prima scelta (Zadar, Split, Potenza sopra)
+python3 -I -c '
+import hashlib, json, sys
+for riga in open(sys.argv[1]):
+    f = json.loads(riga)
+    p = f["properties"]
+    p["dir"] = ord(hashlib.md5(str(p.pop("osm_id")).encode()).hexdigest()[0]) // 55
+    print(json.dumps(f, ensure_ascii=False))
+' "$WORK/citta-o.geojsonl" > "$WORK/citta-z.geojsonl"
 # l'ordine conta: a parita' di layer OpenLayers da' la precedenza alla feature che viene
 # prima nella tile, e TGen piazza i nomi in ORDER BY score DESC (vedi --preserve-input-order)
 echo "   $(wc -l < "$WORK/citta-z.geojsonl" | tr -d ' ') citta' e paesi"

@@ -6006,11 +6006,21 @@
           [
             "zoom"
           ],
-          "#55933b",
+          "#487f36",
           12,
           "#c699d1"
         ],
-        "line-opacity": 0.4,
+        "line-opacity": [
+          "step",
+          [
+            "zoom"
+          ],
+          0.4,
+          10,
+          0.5,
+          12,
+          0.4
+        ],
         "line-width": [
           "step",
           [
@@ -11169,10 +11179,43 @@
             10
           ]
         ],
-        "text-anchor": "top",
+        "text-anchor": [
+          "case",
+          [
+            "==",
+            [
+              "get",
+              "dir"
+            ],
+            1
+          ],
+          "bottom",
+          "top"
+        ],
         "text-offset": [
-          0,
-          0.35
+          "case",
+          [
+            "==",
+            [
+              "get",
+              "dir"
+            ],
+            1
+          ],
+          [
+            "literal",
+            [
+              0,
+              -0.35
+            ]
+          ],
+          [
+            "literal",
+            [
+              0,
+              0.35
+            ]
+          ]
         ],
         "text-max-width": 5,
         "text-line-height": 1.05
