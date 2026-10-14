@@ -785,7 +785,8 @@
         "admin-mid-zoom",
         "admin-high-zoom"
       ],
-      "nota": "admin.mss: larghezze, tratteggi (in pixel, qui divisi per la larghezza) e opacita' per livello amministrativo; lilla in darken da z13, verde nei PNG del 2018."
+      "nota": "admin.mss: larghezze, tratteggi (in pixel, qui divisi per la larghezza) e opacita' per livello amministrativo; lilla in darken da z13, verde nei PNG del 2018.",
+      "notaColore": "fino a z12 #4b8955 invece del verde comune #55933b: misurato sui PNG del 2018 a z11 (colore-per-classe verde su 30 tile), scarto da +0 +5 -13 a -1 -1 -2 (14/10/2026)"
     },
     "boundary-l10": {
       "tgen": null,

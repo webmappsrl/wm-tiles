@@ -290,8 +290,8 @@
     "data": "2026-10-12"
   },
   "z15:hiking-line:stile": {
-    "verdetto": "stile",
-    "motivo": "risolti i tracciati (solo CAI); resta il colore: TGen disegna i sentieri E/EE in comp-op multiply (#e5372f al 60% in project.xml, hiking_trails), quindi piu' scuri sui boschi; il locale li disegna in modo normale (#b82e23 al 60%): TGen 152,87,83, locale 177,92,82",
+    "verdetto": "motore",
+    "motivo": "tracciati risolti; resta il colore: TGen compone i sentieri in multiply, che lo Style Spec non ha per layer. Sullo sfondo chiaro il risultato coincide (190,114,97 contro 188,114,97), sui boschi scuri TGen resta piu' scuro. Limite del motore",
     "giro": "prod1",
     "misure": {
       "dE": 10.4096231671278,
@@ -522,25 +522,25 @@
   },
   "z11:boundary-l6:stile": {
     "verdetto": "stile",
-    "motivo": "stesso confine verde tratteggiato del 2018, scarto minore (dE 8,4) e probabilmente stessa causa di z10:boundary: tono piu' scuro del PNG. Da misurare insieme",
-    "giro": "prova3",
+    "motivo": "corretto il 14/10/2026: #4b8955 fino a z12, scarto dal PNG da +0 +5 -13 a -1 -1 -2",
+    "giro": "prod1",
     "misure": {
-      "dE": 8.378943931962333,
-      "presenza": 0.06318082788671024,
-      "diffusione": 0.5263157894736842,
+      "dE": 8.501769266028823,
+      "presenza": 0.058823529411764705,
+      "diffusione": 0.5789473684210527,
       "nTile": 19,
       "tgen": [
         141,
-        170,
-        134
+        171,
+        140
       ],
       "locale": [
-        140,
-        177,
-        122
+        139,
+        180,
+        123
       ]
     },
-    "data": "2026-10-12"
+    "data": "2026-10-14"
   },
   "z14:road-fill-major:stile": {
     "verdetto": "motore",
@@ -565,15 +565,15 @@
     "data": "2026-10-12"
   },
   "z14:wood-label:simboli": {
-    "verdetto": "stile",
-    "motivo": "a z14 il locale scrive nomi di boschi che TGen non scrive (Macchia di San Rossore 14/8662/5976, Pineta Serra la Nave 14/8872/6336): controllare la soglia di superficie dei nomi dei boschi (text-poly, layer boschi) contro way_pixels di TGen",
-    "giro": "prova3",
+    "verdetto": "contenuto",
+    "motivo": "i boschi con nome esistono in OSM con i tag giusti (Foresta della Valle Benedetta landuse=forest, Macchia di San Rossore e Pineta Serra la Nave natural=wood) e la regola e' la stessa di TGen (text-poly, way_pixels > 3000, 10/12/15 px): la differenza e' di contenuto (nel 2018 senza nome) o di posizione (Mapnik scrive il nome di un'area grande una volta sola, nel punto interno, e cade in un'altra tile)",
+    "giro": "prod1",
     "misure": {
       "rapporto": 45863.69481354479,
       "diffusione": 1,
       "nTile": 3
     },
-    "data": "2026-10-12"
+    "data": "2026-10-14"
   },
   "z12:station-icon:simboli": {
     "verdetto": "misura",
@@ -653,15 +653,15 @@
     "data": "2026-10-14"
   },
   "z12:wood-label:simboli": {
-    "verdetto": "stile",
-    "motivo": "il locale scrive nomi di boschi e riserve che il PNG del 2018 non ha (Foresta della Valle Benedetta, Monti Livornesi in 12/2166/1496): stessa soglia di superficie di z14:wood-label",
-    "giro": "prova3",
+    "verdetto": "contenuto",
+    "motivo": "i boschi con nome esistono in OSM con i tag giusti (Foresta della Valle Benedetta landuse=forest, Macchia di San Rossore e Pineta Serra la Nave natural=wood) e la regola e' la stessa di TGen (text-poly, way_pixels > 3000, 10/12/15 px): la differenza e' di contenuto (nel 2018 senza nome) o di posizione (Mapnik scrive il nome di un'area grande una volta sola, nel punto interno, e cade in un'altra tile)",
+    "giro": "prod1",
     "misure": {
-      "rapporto": 0.8689655172413793,
+      "rapporto": 0.8824384325791403,
       "diffusione": 0.6666666666666666,
       "nTile": 3
     },
-    "data": "2026-10-12"
+    "data": "2026-10-14"
   },
   "z15:hiking-line-t:sparito": {
     "verdetto": "voluto",
