@@ -201,11 +201,19 @@ fase "3. DEM: TINITALY, un mosaico per zona UTM"
 # linea dritta (Valle d'Arnetola, fogli w48555/w48560, curvatura 9,7 volte la
 # normale; col mosaico per zona 2 volte, cioe' terreno). gdalbuildvrt scarta in
 # silenzio i file con un'altra proiezione: per questo un VRT per zona.
-docker run --rm -v "$PWD/$TG/tinitaly":/src:ro -v "$DEM":/work --entrypoint bash "$GDAL" -c "
+# Sotto TINITALY, che copre solo l'Italia, Copernicus GLO-30: fuori dal confine la
+# quota valeva 0, e lungo le Alpi l'ombra disegnava una parete nera e le curve si
+# addensavano con quote spurie (Passo Mondelli, 16/34223/23314, 14 ottobre 2026).
+# gdalwarp dipinge le sorgenti in ordine: zona_0_copernicus.vrt viene per prima e
+# TINITALY la copre dove ha dati (il suo nodata e' -9999).
+COP="data/dem-copernicus"
+bash pipeline/scarica-copernicus.sh $DW $DS $DE $DN "$COP"
+docker run --rm -v "$PWD/$TG/tinitaly":/src:ro -v "$PWD/$COP":/cop:ro -v "$DEM":/work --entrypoint bash "$GDAL" -c "
   set -euo pipefail; cd /work
   rm -f zona_*.txt zona_*.vrt
   for f in /src/*.tif; do echo \$f >> zona_\$(gdalsrsinfo -o epsg \$f | tr -dc 0-9).txt; done
   for l in zona_*.txt; do gdalbuildvrt -q -r cubicspline -input_file_list \$l \${l%.txt}.vrt; done
+  gdalbuildvrt -q -r cubicspline zona_0_copernicus.vrt /cop/*.tif
   wc -l zona_*.txt
 "
 for Z in $(seq $DEM_ZMIN $DEM_ZMAX); do
@@ -215,8 +223,8 @@ for Z in $(seq $DEM_ZMIN $DEM_ZMAX); do
   # Ogni livello dal mosaico in float, con cubicspline: la pendenza resta
   # continua e non c'e' reticolo (build-terrain-zoom.sh). Il float di z14 resta
   # per le curve di livello.
-  # /src: i VRT delle zone puntano ai fogli di TINITALY con quel percorso
-  docker run --rm -v "$DEM":/work -v "$PWD/$TG/tinitaly":/src:ro -v "$PWD/pipeline":/pipeline --entrypoint bash "$GDAL" -c "
+  # /src e /cop: i VRT puntano ai fogli con quei percorsi
+  docker run --rm -v "$DEM":/work -v "$PWD/$TG/tinitaly":/src:ro -v "$PWD/$COP":/cop:ro -v "$PWD/pipeline":/pipeline --entrypoint bash "$GDAL" -c "
     set -euo pipefail; cd /work
     gdalwarp -overwrite -q -t_srs EPSG:3857 -te_srs EPSG:4326 -te $DW $DS $DE $DN -tr $STEP $STEP \
       -r cubicspline -multi -wo NUM_THREADS=ALL_CPUS \
@@ -292,7 +300,8 @@ cat > "$STAGE/provenance.json" <<JSON
   "sources": [
     {"name": "Geofabrik, Europa ritagliata sull'Italia", "files": "$PBF"},
     {"name": "TGen, copia in sola lettura", "files": "$TG"},
-    {"name": "TINITALY 10 m, da TGen, quote fino a z$DEM_ZMAX"}
+    {"name": "TINITALY 10 m, da TGen, quote fino a z$DEM_ZMAX"},
+    {"name": "Copernicus GLO-30 fuori dall'Italia (copernicus-dem-30m su AWS)"}
   ],
   "createdAt": "$(date -u +%FT%TZ)"
 }

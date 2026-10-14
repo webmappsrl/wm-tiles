@@ -133,15 +133,25 @@
   },
   "z11:ferry:stile": {
     "verdetto": "contenuto",
-    "motivo": "le rotte dei traghetti da Livorno sono cambiate dal 2018: stesso tratteggio azzurro-viola da entrambe le parti, posizioni diverse (dossier 11/1082/748)",
-    "giro": "prova",
+    "motivo": "rotte dei traghetti diverse fra l'OSM di oggi e quello del 2018; colore e larghezza come TGen (#6666ff); il resto dello scarto e' il confine marittimo, corretto a parte",
+    "giro": "italia1",
     "misure": {
-      "dE": 55.02654089063541,
-      "presenza": 0.3739209450249886,
-      "diffusione": 1,
-      "nTile": 3
+      "dE": 11.421787497623122,
+      "presenza": 0.25829383886255924,
+      "diffusione": 0.6666666666666666,
+      "nTile": 15,
+      "tgen": [
+        134,
+        163,
+        242
+      ],
+      "locale": [
+        129,
+        144,
+        247
+      ]
     },
-    "data": "2026-10-12"
+    "data": "2026-10-14"
   },
   "z14:hiking-line-t:stile": {
     "verdetto": "stile",
@@ -258,14 +268,14 @@
   },
   "z14:park-label:simboli": {
     "verdetto": "stile",
-    "motivo": "a z14 il locale nomina aree protette e riserve che TGen non nomina (Macchia di San Rossore, Riserve del Bosco di San Bartolomeo, Valle dell'Anapo): controllare la soglia way_pixels > 3000 e i livelli zpx in parchi-soglia.py",
-    "giro": "prova",
+    "motivo": "OpenLayers scriveva il nome del parco in ogni tile; TGen lo scrive una volta nel baricentro (text-poly) e lungo il confine (nature-reserve-text: 10 px, dy -10, way_pixels > 192000). Corretti il 14/10/2026: punto nel baricentro e park-label-line",
+    "giro": "italia1",
     "misure": {
-      "rapporto": 2.8764044943820224,
-      "diffusione": 0.6666666666666666,
-      "nTile": 3
+      "rapporto": 65625,
+      "diffusione": 1,
+      "nTile": 5
     },
-    "data": "2026-10-12"
+    "data": "2026-10-14"
   },
   "z14:hiking-line:stile": {
     "verdetto": "stile",
@@ -389,15 +399,15 @@
     "data": "2026-10-12"
   },
   "z11:residuo:#f0f0d0": {
-    "verdetto": "stile",
-    "motivo": "a z11-z12 TGen scrive piu' cartellini del locale (SP52, SP60, SP11, SR439 assenti nel locale; road-ref-lz-primary a z12 rapporto 0,36): la distanza minima di 250 px (punti-cartellini.py) e' troppo larga rispetto ai PNG del 2018. Da misurare sui PNG la distanza fra cartellini uguali",
-    "giro": "prova3",
+    "verdetto": "motore",
+    "motivo": "posizione dei cartellini: i punti sono il centro della via a 125 px di distanza, Mapnik li mette dove trova posto; il numero e' simile. Il nome del Naturpark Rieserferner ripetuto e' corretto (punto unico)",
+    "giro": "italia1",
     "misure": {
       "diffusione": 0.16666666666666666,
-      "nTile": 30,
-      "pixel": 787
+      "nTile": 60,
+      "pixel": 1425
     },
-    "data": "2026-10-12"
+    "data": "2026-10-14"
   },
   "z12:residuo:#f0f0d0": {
     "verdetto": "stile",
@@ -456,25 +466,25 @@
   },
   "z12:park-band-a:stile": {
     "verdetto": "contenuto",
-    "motivo": "stesso tono e larghezza delle bande dove ci sono entrambe (Monterufoli, 12/2169/1501); lo scarto viene dai tracciati: l'elenco delle riserve del 2018 e' diverso da quello di oggi (Monti Livornesi solo nel locale, 12/2166/1496)",
-    "giro": "prova3",
+    "motivo": "la riserva di Palmarola oggi comprende il mare, il confine del parco lungo la SS621 e' cambiato: dati di OSM diversi dal 2018",
+    "giro": "italia1",
     "misure": {
-      "dE": 19.30836997348584,
-      "presenza": 0.5124463519313305,
-      "diffusione": 1,
-      "nTile": 3,
+      "dE": 14.186444096860923,
+      "presenza": 0.4837776085300838,
+      "diffusione": 0.6666666666666666,
+      "nTile": 6,
       "tgen": [
-        184,
-        155,
-        181
+        218,
+        203,
+        217
       ],
       "locale": [
-        183,
-        144,
-        188
+        182,
+        153,
+        190
       ]
     },
-    "data": "2026-10-12"
+    "data": "2026-10-14"
   },
   "z12:park-band-b:presenza": {
     "verdetto": "contenuto",
@@ -499,26 +509,26 @@
     "data": "2026-10-12"
   },
   "z10:boundary:stile": {
-    "verdetto": "motore",
-    "motivo": "in OpenLayers il confine marittimo a z10 e' giusto, un puntinato chiaro come TGen (verificato con tile-diff); solo maplibre-native lo rende verde scuro continuo: sulla costa frastagliata somma l'opacita' dei segmenti che si sovrappongono e il tratteggio si chiude. Lo stile e' corretto; il difetto resta nei PNG, da risolvere nel renderer nativo (es. semplificare la geometria)",
-    "giro": "prova3",
+    "verdetto": "stile",
+    "motivo": "confine nazionale e marittimo piu' chiaro di TGen: misurato sul mare 132,178,162 fino a z10 e 122,170,144 a z11-z12, cioe' #487f36 al 40% e al 50% (era #55933b al 40%); corretto il 14/10/2026. Resto: rotte dei traghetti e confini croati/bosniaci (contenuto)",
+    "giro": "italia1",
     "misure": {
-      "dE": 25.417073101728423,
-      "presenza": 0.1360544217687075,
+      "dE": 10.257828530987904,
+      "presenza": 0.05583756345177665,
       "diffusione": 0.6666666666666666,
-      "nTile": 3,
+      "nTile": 21,
       "tgen": [
-        161,
+        154,
         179,
         154
       ],
       "locale": [
-        105,
-        159,
-        97
+        145,
+        179,
+        118
       ]
     },
-    "data": "2026-10-12"
+    "data": "2026-10-14"
   },
   "z11:boundary-l6:stile": {
     "verdetto": "stile",
@@ -642,11 +652,11 @@
     "data": "2026-10-12"
   },
   "z14:lake-label:simboli": {
-    "verdetto": "misura",
-    "motivo": "rapporto quasi invariato (10,6 -> 10,3): l'inchiostro nella zona viene da nomi vicini (boschi, riserve), nessun nome di lago negli esempi",
-    "giro": "prod1",
+    "verdetto": "stile",
+    "motivo": "OpenLayers etichettava golfi e laghi in ogni tile in cui l'area cadeva (Golfo di Venezia, Golfo dell'Asinara a z14): ora un punto per area nel baricentro, come Mapnik (label-points.py, 14/10/2026)",
+    "giro": "italia1",
     "misure": {
-      "rapporto": 10.344844844844845,
+      "rapporto": 7392.007392007392,
       "diffusione": 1,
       "nTile": 3
     },
@@ -892,6 +902,391 @@
       "rapporto": 1.226764205803769,
       "diffusione": 0.625,
       "nTile": 8
+    },
+    "data": "2026-10-14"
+  },
+  "z7:boundary:stile": {
+    "verdetto": "stile",
+    "motivo": "confine nazionale e marittimo piu' chiaro di TGen: misurato sul mare 132,178,162 fino a z10 e 122,170,144 a z11-z12, cioe' #487f36 al 40% e al 50% (era #55933b al 40%); corretto il 14/10/2026. Resto: rotte dei traghetti e confini croati/bosniaci (contenuto)",
+    "giro": "italia1",
+    "misure": {
+      "dE": 10.34236458513363,
+      "presenza": 0.06727430555555555,
+      "diffusione": 0.6923076923076923,
+      "nTile": 13,
+      "tgen": [
+        180,
+        194,
+        171
+      ],
+      "locale": [
+        171,
+        190,
+        149
+      ]
+    },
+    "data": "2026-10-14"
+  },
+  "z8:boundary:stile": {
+    "verdetto": "stile",
+    "motivo": "confine nazionale e marittimo piu' chiaro di TGen: misurato sul mare 132,178,162 fino a z10 e 122,170,144 a z11-z12, cioe' #487f36 al 40% e al 50% (era #55933b al 40%); corretto il 14/10/2026. Resto: rotte dei traghetti e confini croati/bosniaci (contenuto)",
+    "giro": "italia1",
+    "misure": {
+      "dE": 12.50724154432993,
+      "presenza": 0.04985337243401759,
+      "diffusione": 0.7058823529411765,
+      "nTile": 51,
+      "tgen": [
+        172,
+        191,
+        169
+      ],
+      "locale": [
+        158,
+        187,
+        143
+      ]
+    },
+    "data": "2026-10-14"
+  },
+  "z9:boundary:stile": {
+    "verdetto": "stile",
+    "motivo": "confine nazionale e marittimo piu' chiaro di TGen: misurato sul mare 132,178,162 fino a z10 e 122,170,144 a z11-z12, cioe' #487f36 al 40% e al 50% (era #55933b al 40%); corretto il 14/10/2026. Resto: rotte dei traghetti e confini croati/bosniaci (contenuto)",
+    "giro": "italia1",
+    "misure": {
+      "dE": 14.23866697609816,
+      "presenza": 0.07749077490774908,
+      "diffusione": 0.7297297297297297,
+      "nTile": 37,
+      "tgen": [
+        153,
+        180,
+        158
+      ],
+      "locale": [
+        147,
+        180,
+        125
+      ]
+    },
+    "data": "2026-10-14"
+  },
+  "z11:boundary:stile": {
+    "verdetto": "stile",
+    "motivo": "confine nazionale e marittimo piu' chiaro di TGen: misurato sul mare 132,178,162 fino a z10 e 122,170,144 a z11-z12, cioe' #487f36 al 40% e al 50% (era #55933b al 40%); corretto il 14/10/2026. Resto: rotte dei traghetti e confini croati/bosniaci (contenuto)",
+    "giro": "italia1",
+    "misure": {
+      "dE": 13.106864293426929,
+      "presenza": 0.13557213930348258,
+      "diffusione": 0.6923076923076923,
+      "nTile": 13,
+      "tgen": [
+        132,
+        170,
+        143
+      ],
+      "locale": [
+        137,
+        179,
+        123
+      ]
+    },
+    "data": "2026-10-14"
+  },
+  "z8:ferry:stile": {
+    "verdetto": "contenuto",
+    "motivo": "rotte dei traghetti diverse fra l'OSM di oggi e quello del 2018; colore e larghezza come TGen (#6666ff); il resto dello scarto e' il confine marittimo, corretto a parte",
+    "giro": "italia1",
+    "misure": {
+      "dE": 23.8650414836746,
+      "presenza": 0.17324449000512557,
+      "diffusione": 0.8913043478260869,
+      "nTile": 46,
+      "tgen": [
+        159,
+        192,
+        238
+      ],
+      "locale": [
+        140,
+        162,
+        244
+      ]
+    },
+    "data": "2026-10-14"
+  },
+  "z9:ferry:stile": {
+    "verdetto": "contenuto",
+    "motivo": "rotte dei traghetti diverse fra l'OSM di oggi e quello del 2018; colore e larghezza come TGen (#6666ff); il resto dello scarto e' il confine marittimo, corretto a parte",
+    "giro": "italia1",
+    "misure": {
+      "dE": 31.99029670814789,
+      "presenza": 0.1869857890800299,
+      "diffusione": 0.967741935483871,
+      "nTile": 31,
+      "tgen": [
+        160,
+        192,
+        237
+      ],
+      "locale": [
+        140,
+        162,
+        244
+      ]
+    },
+    "data": "2026-10-14"
+  },
+  "z10:ferry:stile": {
+    "verdetto": "contenuto",
+    "motivo": "rotte dei traghetti diverse fra l'OSM di oggi e quello del 2018; colore e larghezza come TGen (#6666ff); il resto dello scarto e' il confine marittimo, corretto a parte",
+    "giro": "italia1",
+    "misure": {
+      "dE": 30.57494494570675,
+      "presenza": 0.15037593984962405,
+      "diffusione": 0.8888888888888888,
+      "nTile": 18,
+      "tgen": [
+        172,
+        212,
+        236
+      ],
+      "locale": [
+        144,
+        168,
+        242
+      ]
+    },
+    "data": "2026-10-14"
+  },
+  "z12:ferry:stile": {
+    "verdetto": "contenuto",
+    "motivo": "rotte dei traghetti diverse fra l'OSM di oggi e quello del 2018; colore e larghezza come TGen (#6666ff); il resto dello scarto e' il confine marittimo, corretto a parte",
+    "giro": "italia1",
+    "misure": {
+      "dE": 51.6919457539626,
+      "presenza": 0.26436781609195403,
+      "diffusione": 0.7,
+      "nTile": 10,
+      "tgen": [
+        172,
+        212,
+        234
+      ],
+      "locale": [
+        129,
+        145,
+        247
+      ]
+    },
+    "data": "2026-10-14"
+  },
+  "z8:residuo:#90b0f0": {
+    "verdetto": "contenuto",
+    "motivo": "rotte dei traghetti diverse (OSM di oggi)",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.25806451612903225,
+      "nTile": 62,
+      "pixel": 3345
+    },
+    "data": "2026-10-14"
+  },
+  "z9:residuo:#90b0f0": {
+    "verdetto": "contenuto",
+    "motivo": "rotte dei traghetti diverse (OSM di oggi)",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.2,
+      "nTile": 60,
+      "pixel": 2829
+    },
+    "data": "2026-10-14"
+  },
+  "z10:residuo:#90b0f0": {
+    "verdetto": "contenuto",
+    "motivo": "rotte dei traghetti diverse (OSM di oggi)",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.16666666666666666,
+      "nTile": 60,
+      "pixel": 1935
+    },
+    "data": "2026-10-14"
+  },
+  "z7:city-dot:simboli": {
+    "verdetto": "stile",
+    "motivo": "nome sopra o sotto il pallino: TGen prova N,S,E,W se dir=1 e S,N,E,W se dir=0 (md5 dell'osm_id, placenames-medium); ora dir e' nel dato (corretto 14/10/2026). Sibenik, Cosenza: contenuto",
+    "giro": "italia1",
+    "misure": {
+      "rapporto": 4.745646080451954,
+      "diffusione": 0.6666666666666666,
+      "nTile": 12
+    },
+    "data": "2026-10-14"
+  },
+  "z7:city-dot-label:simboli": {
+    "verdetto": "stile",
+    "motivo": "nome sopra o sotto il pallino: TGen prova N,S,E,W se dir=1 e S,N,E,W se dir=0 (md5 dell'osm_id, placenames-medium); ora dir e' nel dato (corretto 14/10/2026). Sibenik, Cosenza: contenuto",
+    "giro": "italia1",
+    "misure": {
+      "rapporto": 4.745646080451954,
+      "diffusione": 0.6666666666666666,
+      "nTile": 12
+    },
+    "data": "2026-10-14"
+  },
+  "z7:residuo:#d0f0f0": {
+    "verdetto": "stile",
+    "motivo": "Hrvatska: TGen nomina le nazioni dal poligono (mare territoriale compreso), il locale dal punto di OpenMapTiles; Golfo di Gaeta: laghi e golfi da z4 (text-poly-low-zoom). Corretti il 14/10/2026 (layer nomi_admin, acque da z4)",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.2857142857142857,
+      "nTile": 14,
+      "pixel": 409
+    },
+    "data": "2026-10-14"
+  },
+  "z9:residuo:#b0b0b0": {
+    "verdetto": "stile",
+    "motivo": "nomi dei parchi a z9 nei PNG (Delta del Po, Fanes-Sennes-Braies): park-label ora da z9; nomi dei paesi a capo come Mapnik (Ascoli Piceno, Alba Adriatica su una riga). Corretti il 14/10/2026",
+    "giro": "italia1",
+    "misure": {
+      "diffusione": 0.11666666666666667,
+      "nTile": 60,
+      "pixel": 574
+    },
+    "data": "2026-10-14"
+  },
+  "z14:contour-label:simboli": {
+    "verdetto": "contenuto",
+    "motivo": "sulle Alpi (14/8520/5872) TGen ha poche quote: il suo dato delle curve li' e' diverso; nelle altre tile lo scarto e' fatto di nomi di strade e parchi",
+    "giro": "italia1",
+    "misure": {
+      "rapporto": 9.329699141561388,
+      "diffusione": 0.8,
+      "nTile": 40
+    },
+    "data": "2026-10-14"
+  },
+  "z14:road-label:simboli": {
+    "verdetto": "motore",
+    "motivo": "TGen scrive piu' nomi di strade: Mapnik cerca posto lungo la linea, OpenLayers prova posizioni fisse e scarta i tratti curvi (come le quote prima dei punti calcolati)",
+    "giro": "italia1",
+    "misure": {
+      "rapporto": 2.146127880031921,
+      "diffusione": 0.6,
+      "nTile": 15
+    },
+    "data": "2026-10-14"
+  },
+  "z16:barrier-line:stile": {
+    "verdetto": "misura",
+    "motivo": "recinzioni e muri uguali; lo scarto viene da pochi pixel sotto curve, sentieri e nomi",
+    "giro": "italia1",
+    "misure": {
+      "dE": 9.16685559896482,
+      "presenza": 0,
+      "diffusione": 0.8,
+      "nTile": 5,
+      "tgen": [
+        159,
+        161,
+        155
+      ],
+      "locale": [
+        131,
+        132,
+        129
+      ]
+    },
+    "data": "2026-10-14"
+  },
+  "z15:mountain-peak-label:simboli": {
+    "verdetto": "stile",
+    "motivo": "a capo: Mapnik va a capo DOPO la parola che supera la larghezza, OpenLayers prima (La / Montagnola / dell'Elmo; Casa / Ternulle). Da correggere scrivendo il testo gia' spezzato nel dato, come per citta' e parchi. Cime senza nome solo nel locale: contenuto",
+    "giro": "italia1",
+    "misure": {
+      "rapporto": 0.20762408692324333,
+      "diffusione": 0.6,
+      "nTile": 5
+    },
+    "data": "2026-10-14"
+  },
+  "z15:mountain-peak-icon:simboli": {
+    "verdetto": "stile",
+    "motivo": "a capo: Mapnik va a capo DOPO la parola che supera la larghezza, OpenLayers prima (La / Montagnola / dell'Elmo; Casa / Ternulle). Da correggere scrivendo il testo gia' spezzato nel dato, come per citta' e parchi. Cime senza nome solo nel locale: contenuto",
+    "giro": "italia1",
+    "misure": {
+      "rapporto": 0.20762408692324333,
+      "diffusione": 0.6,
+      "nTile": 5
+    },
+    "data": "2026-10-14"
+  },
+  "z16:place-minor:simboli": {
+    "verdetto": "stile",
+    "motivo": "a capo: Mapnik va a capo DOPO la parola che supera la larghezza, OpenLayers prima (La / Montagnola / dell'Elmo; Casa / Ternulle). Da correggere scrivendo il testo gia' spezzato nel dato, come per citta' e parchi. Cime senza nome solo nel locale: contenuto",
+    "giro": "italia1",
+    "misure": {
+      "rapporto": 0.14285714285714285,
+      "diffusione": 0.6666666666666666,
+      "nTile": 3
+    },
+    "data": "2026-10-14"
+  },
+  "z16:place-minor-osm:simboli": {
+    "verdetto": "stile",
+    "motivo": "a capo: Mapnik va a capo DOPO la parola che supera la larghezza, OpenLayers prima (La / Montagnola / dell'Elmo; Casa / Ternulle). Da correggere scrivendo il testo gia' spezzato nel dato, come per citta' e parchi. Cime senza nome solo nel locale: contenuto",
+    "giro": "italia1",
+    "misure": {
+      "rapporto": 0,
+      "diffusione": 0.6666666666666666,
+      "nTile": 3
+    },
+    "data": "2026-10-14"
+  },
+  "z10:poi-name-italic:simboli": {
+    "verdetto": "stile",
+    "motivo": "a z10 il locale scrive nomi di aree (Bonifica della Valle del Mezzano, due volte) che i PNG del 2018 non hanno, e non scrive l'isola (Isola di Pantelleria): le regole di text-poly da project.xml valgono da z13; per z10-z12 vanno ricavate dai PNG",
+    "giro": "italia1",
+    "misure": {
+      "rapporto": 4.909090909090909,
+      "diffusione": 1,
+      "nTile": 3
+    },
+    "data": "2026-10-14"
+  },
+  "z13:park-label:simboli": {
+    "verdetto": "stile",
+    "motivo": "OpenLayers scriveva il nome del parco in ogni tile (Parco del Mincio, Delta del Po): ora un punto nel baricentro come text-poly di project.xml, piu' il nome lungo il confine. Corretto il 14/10/2026",
+    "giro": "italia1",
+    "misure": {
+      "rapporto": 39.87021765580641,
+      "diffusione": 0.75,
+      "nTile": 12
+    },
+    "data": "2026-10-14"
+  },
+  "z13:park-band-a:stile": {
+    "verdetto": "contenuto",
+    "motivo": "bande come project.xml (#55933b al 15%, 2 px offset -1 e 6 px offset -3); il confine del Delta del Po di oggi segue la costa, quello di TGen no",
+    "giro": "italia1",
+    "misure": {
+      "dE": 10.674203141254397,
+      "presenza": 0.03626943005181347,
+      "diffusione": 0.6666666666666666,
+      "nTile": 9,
+      "tgen": [
+        201,
+        195,
+        209
+      ],
+      "locale": [
+        183,
+        182,
+        186
+      ]
     },
     "data": "2026-10-14"
   }
