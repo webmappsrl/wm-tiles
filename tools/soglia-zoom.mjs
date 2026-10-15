@@ -11,7 +11,7 @@ for (let z = z0; z <= z1 + 1e-9; z += passo) {
   const p = await b.newPage({viewport: {width: 1200, height: 600}});
   const tgenZ = new Set(), vetZ = new Set();
   p.on('request', r => { const m = r.url().match(/webmapp\.it\/tiles\/(\d+)\//); if (m) tgenZ.add(+m[1]);
-    const v = r.url().match(/\/t\/[^/]+\/[^/]+\/osm\/(\d+)\//); if (v) vetZ.add(+v[1]); });
+    const v = r.url().match(/\/t\/[^/]+\/[^/]+\/[a-z]+\/(\d+)\//); if (v) vetZ.add(+v[1]); });
   await p.goto(`${BASE}/preview/?zoom=${z.toFixed(2)}&c=${lon},${lat}`);
   await p.waitForTimeout(7000);
   const box = async id => p.locator('#' + id).boundingBox();
@@ -22,7 +22,7 @@ for (let z = z0; z <= z1 + 1e-9; z += passo) {
   const px = (bx) => { const x = Math.round(bx.x + bx.width / 2), y = Math.round(bx.y + bx.height / 2); const i = (y * info.width + x) * 3; return [data[i], data[i + 1], data[i + 2]]; };
   const tipo = c => (c[2] > 240 && c[0] > 200 ? 'z13+' : c[0] < 190 ? 'z12-' : '?');
   const l = px(L), r = px(R);
-  console.log(`zoom ${z.toFixed(2)}  locale ${l} ${tipo(l)}  |  tgen ${r} ${tipo(r)}  tile TGen z=${[...tgenZ].sort().join(',')}  tile vettoriali z=${[...vetZ].sort().join(',')}`);
+  console.log(`zoom ${z.toFixed(2)}  locale ${l} ${tipo(l)}  |  tgen ${r} ${tipo(r)}  tile TGen z=${[...tgenZ].sort().join(',')}  tile vettoriali z max=${Math.max(...vetZ)}`);
   await p.close();
 }
 await b.close();
