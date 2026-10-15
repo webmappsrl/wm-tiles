@@ -331,7 +331,7 @@
               "#eff4e6"
             ]
           ],
-          12,
+          11.415,
           [
             "match",
             [
@@ -428,7 +428,7 @@
               "#ecf3e0"
             ]
           ],
-          13,
+          12.415,
           [
             "match",
             [
@@ -527,7 +527,7 @@
           ]
         ]
       },
-      "minzoom": 6
+      "minzoom": 5.415
     },
     {
       "id": "landcover-fill",
@@ -593,7 +593,7 @@
         ],
         "fill-antialias": true
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "clc-fill",
@@ -702,7 +702,7 @@
             "#acd4ea",
             "#f8f8eb"
           ],
-          12,
+          11.415,
           [
             "match",
             [
@@ -802,8 +802,8 @@
         ],
         "fill-antialias": true
       },
-      "minzoom": 6,
-      "maxzoom": 13
+      "minzoom": 5.415,
+      "maxzoom": 12.415
     },
     {
       "id": "contour",
@@ -817,7 +817,7 @@
             "zoom"
           ],
           "rgba(0,0,0,0.137)",
-          12,
+          11.415,
           "rgba(0,0,0,0.2)"
         ],
         "line-width": [
@@ -847,7 +847,7 @@
             1.2,
             0.6
           ],
-          14,
+          13.415,
           [
             "case",
             [
@@ -870,7 +870,7 @@
             1.4,
             0.8
           ],
-          15,
+          14.415,
           [
             "case",
             [
@@ -906,7 +906,7 @@
         ],
         0
       ],
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "water",
@@ -920,9 +920,9 @@
             "zoom"
           ],
           "#a6cce1",
-          6,
+          5.415,
           "#acd4ea",
-          12,
+          11.415,
           "#dce7f7"
         ]
       }
@@ -953,7 +953,7 @@
         "line-color": "#444444",
         "line-width": 2
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "barrier-dam-fill",
@@ -986,7 +986,7 @@
       "paint": {
         "fill-color": "#adadad"
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "marina-band-a",
@@ -1003,7 +1003,7 @@
         "line-width": 1,
         "line-offset": -0.5
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "breakwater-fill",
@@ -1037,7 +1037,7 @@
       "paint": {
         "fill-color": "#aaaaaa"
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "breakwater",
@@ -1076,13 +1076,13 @@
             "zoom"
           ],
           1,
-          12,
+          11.415,
           2,
-          15,
+          14.415,
           4
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "building-igm",
@@ -1096,11 +1096,11 @@
             "zoom"
           ],
           "#bd957f",
-          14,
+          13.415,
           "#c4a08c"
         ]
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "road-casing-major-tunnel",
@@ -1143,7 +1143,7 @@
             "zoom"
           ],
           "#8e8b84",
-          12,
+          11.415,
           "#797569"
         ],
         "line-width": [
@@ -1493,7 +1493,7 @@
               0.571
             ]
           ],
-          12,
+          11.415,
           [
             "literal",
             [
@@ -1501,7 +1501,7 @@
               0.333
             ]
           ],
-          13,
+          12.415,
           [
             "literal",
             [
@@ -1509,7 +1509,7 @@
               0.333
             ]
           ],
-          14,
+          13.415,
           [
             "literal",
             [
@@ -1517,7 +1517,7 @@
               0.2
             ]
           ],
-          15,
+          14.415,
           [
             "literal",
             [
@@ -1527,7 +1527,7 @@
           ]
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "waterway-canal-z12",
@@ -1553,7 +1553,7 @@
             "zoom"
           ],
           "#acd4ea",
-          12,
+          11.415,
           "#dce7f7"
         ],
         "line-width": [
@@ -1582,8 +1582,8 @@
           8
         ]
       },
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10.415,
+      "maxzoom": 11.415
     },
     {
       "id": "waterway-river",
@@ -1615,7 +1615,7 @@
             "zoom"
           ],
           "#acd4ea",
-          12,
+          11.415,
           "#dce7f7"
         ],
         "line-width": [
@@ -1644,7 +1644,7 @@
           8
         ]
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "waterway-river-lz",
@@ -1662,7 +1662,7 @@
             "zoom"
           ],
           "#acd4ea",
-          12,
+          11.415,
           "#dce7f7"
         ],
         "line-width": [
@@ -1691,8 +1691,8 @@
           8
         ]
       },
-      "minzoom": 7,
-      "maxzoom": 12
+      "minzoom": 6.415,
+      "maxzoom": 11.415
     },
     {
       "id": "waterway-stream",
@@ -1711,7 +1711,7 @@
             "zoom"
           ],
           2,
-          14,
+          13.415,
           3
         ]
       },
@@ -1741,7 +1741,7 @@
           1
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "waterway-stream-intermittent",
@@ -1760,7 +1760,7 @@
             "zoom"
           ],
           2,
-          14,
+          13.415,
           3
         ],
         "line-dasharray": [
@@ -1775,7 +1775,7 @@
               1.5
             ]
           ],
-          14,
+          13.415,
           [
             "literal",
             [
@@ -1811,7 +1811,7 @@
           1
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "barrier-weir",
@@ -1850,7 +1850,7 @@
           1
         ]
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "marina-band-b",
@@ -1867,7 +1867,7 @@
         "line-width": 3,
         "line-offset": -1.5
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "pier-poly",
@@ -1899,13 +1899,13 @@
             "zoom"
           ],
           "#fefceb",
-          12,
+          11.415,
           "#fcf8e9",
-          13,
+          12.415,
           "#fdf8ef"
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "pier-line",
@@ -1940,9 +1940,9 @@
             "zoom"
           ],
           "#fefceb",
-          12,
+          11.415,
           "#fcf8e9",
-          13,
+          12.415,
           "#fdf8ef"
         ],
         "line-width": [
@@ -1951,13 +1951,13 @@
             "zoom"
           ],
           0.5,
-          12,
+          11.415,
           1,
-          14,
+          13.415,
           2
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "bridge-area",
@@ -1985,7 +1985,7 @@
       "paint": {
         "fill-color": "#b8b8b8"
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "building",
@@ -1999,11 +1999,11 @@
             "zoom"
           ],
           "#bd957f",
-          14,
+          13.415,
           "#c4a08c"
         ]
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "road-casing-minor-tunnel",
@@ -2287,7 +2287,7 @@
               0.8
             ]
           ],
-          12,
+          11.415,
           [
             "literal",
             [
@@ -2295,7 +2295,7 @@
               0.5
             ]
           ],
-          13,
+          12.415,
           [
             "literal",
             [
@@ -2303,7 +2303,7 @@
               0.4
             ]
           ],
-          14,
+          13.415,
           [
             "literal",
             [
@@ -2311,7 +2311,7 @@
               0.222
             ]
           ],
-          15,
+          14.415,
           [
             "literal",
             [
@@ -2321,7 +2321,7 @@
           ]
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "road-casing-secondary-tunnel",
@@ -2357,7 +2357,7 @@
             "zoom"
           ],
           "#8e8b84",
-          12,
+          11.415,
           "#797569"
         ],
         "line-width": [
@@ -2397,7 +2397,7 @@
               0.571
             ]
           ],
-          12,
+          11.415,
           [
             "literal",
             [
@@ -2405,7 +2405,7 @@
               0.4
             ]
           ],
-          13,
+          12.415,
           [
             "literal",
             [
@@ -2413,7 +2413,7 @@
               0.4
             ]
           ],
-          14,
+          13.415,
           [
             "literal",
             [
@@ -2421,7 +2421,7 @@
               0.222
             ]
           ],
-          15,
+          14.415,
           [
             "literal",
             [
@@ -2431,7 +2431,7 @@
           ]
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "military-hatch",
@@ -2449,7 +2449,7 @@
       "paint": {
         "fill-pattern": "tg-military_red_hatch"
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "military-outline",
@@ -2473,7 +2473,7 @@
             "zoom"
           ],
           1,
-          14,
+          13.415,
           2
         ],
         "line-offset": [
@@ -2482,11 +2482,11 @@
             "zoom"
           ],
           -0.5,
-          14,
+          13.415,
           -1
         ]
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "landuse-park",
@@ -2505,7 +2505,7 @@
         ],
         "park"
       ],
-      "minzoom": 7
+      "minzoom": 6.415
     },
     {
       "id": "tourism-band-b",
@@ -2522,7 +2522,7 @@
         "line-width": 4,
         "line-offset": -2
       },
-      "minzoom": 9
+      "minzoom": 8.415
     },
     {
       "id": "tourism-band-a",
@@ -2539,7 +2539,7 @@
         "line-width": 1,
         "line-offset": -0.5
       },
-      "minzoom": 9
+      "minzoom": 8.415
     },
     {
       "id": "barrier-line",
@@ -2568,7 +2568,7 @@
         "line-color": "#444444",
         "line-width": 0.4
       },
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "barrier-embankment",
@@ -2587,7 +2587,7 @@
         "line-color": "#444444",
         "line-width": 0.4
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "barrier-citywall",
@@ -2606,7 +2606,7 @@
         "line-color": "#919191",
         "line-width": 1.5
       },
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "barrier-hedge",
@@ -2625,7 +2625,7 @@
         "line-color": "#aed1a0",
         "line-width": 3
       },
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "road-lowzoom-minor",
@@ -2673,8 +2673,8 @@
           0.3
         ]
       },
-      "minzoom": 9,
-      "maxzoom": 11
+      "minzoom": 8.415,
+      "maxzoom": 10.415
     },
     {
       "id": "road-lowzoom-casing",
@@ -2707,8 +2707,8 @@
         "line-width": 2.2,
         "line-opacity": 0.3
       },
-      "minzoom": 9,
-      "maxzoom": 11
+      "minzoom": 8.415,
+      "maxzoom": 10.415
     },
     {
       "id": "road-lowzoom-major",
@@ -2788,8 +2788,8 @@
           ]
         ]
       },
-      "minzoom": 8,
-      "maxzoom": 11
+      "minzoom": 7.415,
+      "maxzoom": 10.415
     },
     {
       "id": "ferry",
@@ -2812,7 +2812,7 @@
             "zoom"
           ],
           0.4,
-          10,
+          9.415,
           0.8
         ],
         "line-dasharray": [
@@ -2827,7 +2827,7 @@
               10
             ]
           ],
-          10,
+          9.415,
           [
             "literal",
             [
@@ -2837,7 +2837,7 @@
           ]
         ]
       },
-      "minzoom": 7
+      "minzoom": 6.415
     },
     {
       "id": "road-area-casing",
@@ -2883,7 +2883,7 @@
         ],
         "line-width": 1
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "road-casing-minor",
@@ -2941,7 +2941,7 @@
               "#bbbbbb"
             ]
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -3196,7 +3196,7 @@
           ]
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "road-casing-secondary",
@@ -3234,7 +3234,7 @@
             "rgba(0,0,0,0)",
             "#8e8b84"
           ],
-          11,
+          10.415,
           [
             "case",
             [
@@ -3248,7 +3248,7 @@
             "rgba(0,0,0,0)",
             "#99a741"
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -3298,7 +3298,7 @@
           27
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "road-casing-major",
@@ -3331,7 +3331,7 @@
             "zoom"
           ],
           "#ffffff",
-          11,
+          10.415,
           [
             "case",
             [
@@ -3345,7 +3345,7 @@
             "rgba(0,0,0,0)",
             "#af963a"
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -3710,11 +3710,11 @@
             "zoom"
           ],
           0.4,
-          11,
+          10.415,
           1
         ]
       },
-      "minzoom": 5
+      "minzoom": 4.415
     },
     {
       "id": "road-area-fill",
@@ -3762,7 +3762,7 @@
           "#dddde8"
         ]
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "road-area-platform",
@@ -3785,7 +3785,7 @@
       "paint": {
         "fill-color": "#bbbbbb"
       },
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "road-fill-minor",
@@ -3831,7 +3831,7 @@
             "#ffffff",
             "#bbbbbb"
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -3874,7 +3874,7 @@
               ]
             ]
           ],
-          13,
+          12.415,
           [
             "case",
             [
@@ -4149,7 +4149,7 @@
           ]
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "road-fill-secondary",
@@ -4187,7 +4187,7 @@
             "#ebd193",
             "#e7c87d"
           ],
-          11,
+          10.415,
           [
             "case",
             [
@@ -4201,7 +4201,7 @@
             "#fafcd6",
             "#f7fabe"
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -4242,7 +4242,7 @@
           25
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "road-fill-major",
@@ -4280,7 +4280,7 @@
             "#efdaa8",
             "#e7c87d"
           ],
-          11,
+          10.415,
           [
             "case",
             [
@@ -4294,7 +4294,7 @@
             "#f8ebcf",
             "#f2d9a2"
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -4343,7 +4343,7 @@
           25
         ]
       },
-      "minzoom": 7
+      "minzoom": 6.415
     },
     {
       "id": "road-fill-trunk",
@@ -4381,7 +4381,7 @@
             "#edbd94",
             "#e5a269"
           ],
-          11,
+          10.415,
           [
             "case",
             [
@@ -4395,7 +4395,7 @@
             "#f3d3b9",
             "#ecb78d"
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -4448,7 +4448,7 @@
           25
         ]
       },
-      "minzoom": 5
+      "minzoom": 4.415
     },
     {
       "id": "road-fill-motorway",
@@ -4486,7 +4486,7 @@
             "#e69d8b",
             "#dd7a61"
           ],
-          11,
+          10.415,
           [
             "case",
             [
@@ -4500,7 +4500,7 @@
             "#ecbbad",
             "#e29884"
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -4697,7 +4697,7 @@
           ]
         ]
       },
-      "minzoom": 5
+      "minzoom": 4.415
     },
     {
       "id": "track-casing",
@@ -4721,7 +4721,7 @@
         "line-opacity": 0.4,
         "line-width": 3.5
       },
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "track",
@@ -4744,9 +4744,9 @@
             "zoom"
           ],
           0.56,
-          12,
+          11.415,
           0.7,
-          14,
+          13.415,
           1.5
         ],
         "line-opacity": [
@@ -4755,7 +4755,7 @@
             "zoom"
           ],
           1,
-          12,
+          11.415,
           0.8
         ],
         "line-dasharray": [
@@ -4770,7 +4770,7 @@
               2
             ]
           ],
-          12,
+          11.415,
           [
             "literal",
             [
@@ -4778,7 +4778,7 @@
               4.6
             ]
           ],
-          14,
+          13.415,
           [
             "literal",
             [
@@ -4788,7 +4788,7 @@
           ]
         ]
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "path-casing",
@@ -4816,11 +4816,11 @@
             "zoom"
           ],
           3,
-          15,
+          14.415,
           3.3
         ]
       },
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "path",
@@ -4843,9 +4843,9 @@
             "zoom"
           ],
           0.7,
-          14,
+          13.415,
           1,
-          15,
+          14.415,
           1.3
         ],
         "line-dasharray": [
@@ -4860,7 +4860,7 @@
               5.9
             ]
           ],
-          14,
+          13.415,
           [
             "literal",
             [
@@ -4868,7 +4868,7 @@
               4.1
             ]
           ],
-          15,
+          14.415,
           [
             "literal",
             [
@@ -4882,7 +4882,7 @@
         "line-cap": "round",
         "line-join": "round"
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "turning-circle",
@@ -4904,14 +4904,14 @@
             "zoom"
           ],
           4,
-          15,
+          14.415,
           4.8
         ],
         "circle-color": "#ffffff",
         "circle-stroke-color": "#bbbbbb",
         "circle-stroke-width": 0.6
       },
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "railway-lz",
@@ -4966,12 +4966,12 @@
             "zoom"
           ],
           0.8,
-          11,
+          10.415,
           0.9
         ]
       },
-      "minzoom": 7,
-      "maxzoom": 12
+      "minzoom": 6.415,
+      "maxzoom": 11.415
     },
     {
       "id": "railway-lz-tunnel",
@@ -5023,7 +5023,7 @@
             "zoom"
           ],
           0.8,
-          11,
+          10.415,
           0.9
         ],
         "line-dasharray": [
@@ -5031,8 +5031,8 @@
           2.5
         ]
       },
-      "minzoom": 9,
-      "maxzoom": 12
+      "minzoom": 8.415,
+      "maxzoom": 11.415
     },
     {
       "id": "railway-tunnel",
@@ -5081,7 +5081,7 @@
           1.43
         ]
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "railway-spur-dark",
@@ -5140,7 +5140,7 @@
         "line-color": "#aaaaaa",
         "line-width": 2
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "railway-dark",
@@ -5191,7 +5191,7 @@
         "line-color": "#707070",
         "line-width": 3
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "railway-spur-light",
@@ -5256,7 +5256,7 @@
           1.25
         ]
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "railway-light",
@@ -5318,7 +5318,7 @@
               8
             ]
           ],
-          14,
+          13.415,
           [
             "literal",
             [
@@ -5330,7 +5330,7 @@
           ]
         ]
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "railway-narrow",
@@ -5370,9 +5370,9 @@
             "zoom"
           ],
           "#cccccc",
-          9,
+          8.415,
           "#aaaaaa",
-          12,
+          11.415,
           "#666666"
         ],
         "line-width": [
@@ -5381,11 +5381,11 @@
             "zoom"
           ],
           1,
-          12,
+          11.415,
           2
         ]
       },
-      "minzoom": 7
+      "minzoom": 6.415
     },
     {
       "id": "railway-tram",
@@ -5418,7 +5418,7 @@
             "zoom"
           ],
           "#6e6e6e",
-          12,
+          11.415,
           "#444444"
         ],
         "line-width": [
@@ -5427,13 +5427,13 @@
             "zoom"
           ],
           0.75,
-          13,
+          12.415,
           1,
-          14,
+          13.415,
           1.5
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "aerialway-line",
@@ -5468,7 +5468,7 @@
           1.4
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "aerialway-dash",
@@ -5506,7 +5506,7 @@
           6
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "hiking-line",
@@ -5525,9 +5525,9 @@
             "zoom"
           ],
           1,
-          14,
+          13.415,
           2,
-          15,
+          14.415,
           3
         ],
         "line-dasharray": [
@@ -5542,7 +5542,7 @@
               6
             ]
           ],
-          14,
+          13.415,
           [
             "literal",
             [
@@ -5550,7 +5550,7 @@
               3
             ]
           ],
-          15,
+          14.415,
           [
             "literal",
             [
@@ -5576,7 +5576,7 @@
           ]
         ]
       ],
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "hiking-line-t",
@@ -5616,13 +5616,13 @@
             "zoom"
           ],
           1,
-          14,
+          13.415,
           2,
-          15,
+          14.415,
           3
         ]
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "hiking-line-eea",
@@ -5656,9 +5656,9 @@
             "zoom"
           ],
           3,
-          14,
+          13.415,
           4,
-          15,
+          14.415,
           5
         ],
         "line-dasharray": [
@@ -5673,7 +5673,7 @@
               2.667
             ]
           ],
-          14,
+          13.415,
           [
             "literal",
             [
@@ -5681,7 +5681,7 @@
               3
             ]
           ],
-          15,
+          14.415,
           [
             "literal",
             [
@@ -5691,7 +5691,7 @@
           ]
         ]
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "guideway",
@@ -5709,13 +5709,13 @@
             "zoom"
           ],
           0.6,
-          11,
+          10.415,
           1,
-          12,
+          11.415,
           3
         ]
       },
-      "minzoom": 10
+      "minzoom": 9.415
     },
     {
       "id": "guideway-dash",
@@ -5730,7 +5730,7 @@
           12
         ]
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "aeroway-taxiway",
@@ -5763,19 +5763,19 @@
             "zoom"
           ],
           1,
-          11,
+          10.415,
           1,
-          12,
+          11.415,
           2,
-          13,
+          12.415,
           4,
-          14,
+          13.415,
           6,
-          15,
+          14.415,
           8
         ]
       },
-      "minzoom": 10
+      "minzoom": 9.415
     },
     {
       "id": "aeroway-runway",
@@ -5808,19 +5808,19 @@
             "zoom"
           ],
           2,
-          11,
+          10.415,
           4,
-          12,
+          11.415,
           6,
-          13,
+          12.415,
           12,
-          14,
+          13.415,
           18,
-          15,
+          14.415,
           24
         ]
       },
-      "minzoom": 10
+      "minzoom": 9.415
     },
     {
       "id": "boundary-l10",
@@ -5856,7 +5856,7 @@
             "zoom"
           ],
           "#55933b",
-          12,
+          11.415,
           "#c699d1"
         ],
         "line-opacity": 0.5,
@@ -5869,7 +5869,7 @@
           ]
         ]
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "boundary-l6",
@@ -5905,7 +5905,7 @@
             "zoom"
           ],
           "#4b8955",
-          12,
+          11.415,
           "#c699d1"
         ],
         "line-opacity": 0.5,
@@ -5920,7 +5920,7 @@
           ]
         ]
       },
-      "minzoom": 10
+      "minzoom": 9.415
     },
     {
       "id": "boundary",
@@ -5956,7 +5956,7 @@
             "zoom"
           ],
           "#55933b",
-          12,
+          11.415,
           "#c699d1"
         ],
         "line-opacity": 0.4,
@@ -5966,19 +5966,19 @@
             "zoom"
           ],
           0,
-          3,
+          2.415,
           0.4,
-          4,
+          3.415,
           0.5,
-          5,
+          4.415,
           0.6,
-          6,
+          5.415,
           1,
-          8,
+          7.415,
           1.8,
-          9,
+          8.415,
           2.5,
-          11,
+          10.415,
           3
         ],
         "line-dasharray": [
@@ -5993,7 +5993,7 @@
               0
             ]
           ],
-          6,
+          5.415,
           [
             "literal",
             [
@@ -6001,7 +6001,7 @@
               3
             ]
           ],
-          8,
+          7.415,
           [
             "literal",
             [
@@ -6009,7 +6009,7 @@
               1.667
             ]
           ],
-          9,
+          8.415,
           [
             "literal",
             [
@@ -6017,7 +6017,7 @@
               1.2
             ]
           ],
-          11,
+          10.415,
           [
             "literal",
             [
@@ -6027,7 +6027,7 @@
           ]
         ]
       },
-      "minzoom": 3
+      "minzoom": 2.415
     },
     {
       "id": "boundary-l2",
@@ -6063,7 +6063,7 @@
             "zoom"
           ],
           "#487f36",
-          12,
+          11.415,
           "#c699d1"
         ],
         "line-opacity": [
@@ -6072,9 +6072,9 @@
             "zoom"
           ],
           0.4,
-          10,
+          9.415,
           0.5,
-          12,
+          11.415,
           0.4
         ],
         "line-width": [
@@ -6083,19 +6083,19 @@
             "zoom"
           ],
           0.2,
-          1,
+          0.415,
           0.3,
-          2,
+          1.415,
           0.4,
-          3,
+          2.415,
           1.2,
-          4,
+          3.415,
           1.5,
-          5,
+          4.415,
           1.8,
-          6,
+          5.415,
           2,
-          9,
+          8.415,
           6
         ]
       },
@@ -6143,7 +6143,7 @@
             "zoom"
           ],
           "#55933b",
-          12,
+          11.415,
           "#c699d1"
         ],
         "line-width": 1.5,
@@ -6153,7 +6153,7 @@
           1.333
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "power-minorline",
@@ -6176,13 +6176,13 @@
             "zoom"
           ],
           0.3,
-          16,
+          15.415,
           0.4,
-          17,
+          16.415,
           0.5
         ]
       },
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "power-line",
@@ -6211,17 +6211,17 @@
             "zoom"
           ],
           0.5,
-          14,
+          13.415,
           0.6,
-          15,
+          14.415,
           0.7,
-          17,
+          16.415,
           1,
-          18,
+          17.415,
           1.2
         ]
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "park-band-b",
@@ -6239,7 +6239,7 @@
             "zoom"
           ],
           "#ae24c6",
-          12,
+          11.415,
           "#55933b"
         ],
         "line-opacity": 0.15,
@@ -6249,7 +6249,7 @@
             "zoom"
           ],
           4,
-          13,
+          12.415,
           6
         ],
         "line-offset": [
@@ -6258,11 +6258,11 @@
             "zoom"
           ],
           -2,
-          13,
+          12.415,
           -3
         ]
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "park-band-a",
@@ -6280,14 +6280,14 @@
             "zoom"
           ],
           "#ae24c6",
-          12,
+          11.415,
           "#55933b"
         ],
         "line-opacity": 0.15,
         "line-width": 2,
         "line-offset": -1
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "tree-row",
@@ -6302,7 +6302,7 @@
         "line-width": 2.5,
         "line-opacity": 0.3
       },
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "toponimi",
@@ -6354,7 +6354,7 @@
         "text-halo-color": "rgba(252,248,233,0.7)",
         "text-halo-width": 1.4
       },
-      "minzoom": 9
+      "minzoom": 8.415
     },
     {
       "id": "contour-label",
@@ -6386,7 +6386,7 @@
       "paint": {
         "text-color": "rgba(0,0,0,0.6)"
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "hiking-ref",
@@ -6422,7 +6422,7 @@
         "text-color": "#b82e23",
         "text-opacity": 0.7
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "level-crossing",
@@ -6444,11 +6444,11 @@
             "zoom"
           ],
           "level-crossing",
-          15,
+          14.415,
           "level-crossing2"
         ]
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "rail-crossing",
@@ -6470,11 +6470,11 @@
             "zoom"
           ],
           "level-crossing",
-          15,
+          14.415,
           "level-crossing2"
         ]
       },
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "cross-icon",
@@ -6492,7 +6492,7 @@
       "layout": {
         "icon-image": "cross"
       },
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "ford-icon",
@@ -6502,7 +6502,7 @@
       "layout": {
         "icon-image": "ford"
       },
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "park-label-line",
@@ -6534,7 +6534,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "park-label",
@@ -6581,7 +6581,7 @@
             12,
             10
           ],
-          8,
+          7.415,
           [
             "case",
             [
@@ -6604,7 +6604,7 @@
             12,
             10
           ],
-          9,
+          8.415,
           [
             "case",
             [
@@ -6627,7 +6627,7 @@
             12,
             10
           ],
-          10,
+          9.415,
           [
             "case",
             [
@@ -6650,7 +6650,7 @@
             12,
             10
           ],
-          11,
+          10.415,
           [
             "case",
             [
@@ -6673,7 +6673,7 @@
             12,
             10
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -6696,7 +6696,7 @@
             12,
             10
           ],
-          13,
+          12.415,
           [
             "case",
             [
@@ -6719,7 +6719,7 @@
             12,
             10
           ],
-          14,
+          13.415,
           [
             "case",
             [
@@ -6742,7 +6742,7 @@
             12,
             10
           ],
-          15,
+          14.415,
           [
             "case",
             [
@@ -6782,13 +6782,13 @@
             "zoom"
           ],
           "#8f8491",
-          12,
+          11.415,
           "#4b7c37"
         ],
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 7
+      "minzoom": 6.415
     },
     {
       "id": "ferry-label",
@@ -6822,7 +6822,7 @@
       "paint": {
         "text-color": "#6666ff"
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "waterway-label-stream",
@@ -6869,7 +6869,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "waterway-label",
@@ -6915,7 +6915,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "building-label",
@@ -6944,7 +6944,7 @@
             ],
             ""
           ],
-          14,
+          13.415,
           [
             "case",
             [
@@ -6961,7 +6961,7 @@
             ],
             ""
           ],
-          15,
+          14.415,
           [
             "case",
             [
@@ -6991,7 +6991,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "osmpoi-label",
@@ -7061,7 +7061,7 @@
           ]
         ]
       ],
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "osmpoi-label-spring",
@@ -7136,7 +7136,7 @@
           ]
         ]
       ],
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "rifugi-label",
@@ -7213,7 +7213,7 @@
         "text-halo-color": "#fcf8e9",
         "text-halo-width": 1.3
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "mountain-peak-label",
@@ -7265,7 +7265,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "poi-name",
@@ -7322,7 +7322,7 @@
           "h"
         ]
       },
-      "minzoom": 9
+      "minzoom": 8.415
     },
     {
       "id": "poi-name-bold",
@@ -7379,7 +7379,7 @@
           "h"
         ]
       },
-      "minzoom": 9
+      "minzoom": 8.415
     },
     {
       "id": "cliff-label",
@@ -7409,7 +7409,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "dam-label",
@@ -7463,7 +7463,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "water-name",
@@ -7497,7 +7497,7 @@
         ],
         "lake"
       ],
-      "minzoom": 10
+      "minzoom": 9.415
     },
     {
       "id": "lake-label",
@@ -7586,7 +7586,7 @@
               ]
             ]
           ],
-          4,
+          3.415,
           [
             "case",
             [
@@ -7658,7 +7658,7 @@
               ]
             ]
           ],
-          5,
+          4.415,
           [
             "case",
             [
@@ -7730,7 +7730,7 @@
               ]
             ]
           ],
-          6,
+          5.415,
           [
             "case",
             [
@@ -7802,7 +7802,7 @@
               ]
             ]
           ],
-          7,
+          6.415,
           [
             "case",
             [
@@ -7874,7 +7874,7 @@
               ]
             ]
           ],
-          8,
+          7.415,
           [
             "case",
             [
@@ -7946,7 +7946,7 @@
               ]
             ]
           ],
-          9,
+          8.415,
           [
             "case",
             [
@@ -8018,7 +8018,7 @@
               ]
             ]
           ],
-          10,
+          9.415,
           [
             "case",
             [
@@ -8090,7 +8090,7 @@
               ]
             ]
           ],
-          11,
+          10.415,
           [
             "case",
             [
@@ -8162,7 +8162,7 @@
               ]
             ]
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -8234,7 +8234,7 @@
               ]
             ]
           ],
-          13,
+          12.415,
           [
             "case",
             [
@@ -8306,7 +8306,7 @@
               ]
             ]
           ],
-          14,
+          13.415,
           [
             "case",
             [
@@ -8378,7 +8378,7 @@
               ]
             ]
           ],
-          15,
+          14.415,
           [
             "case",
             [
@@ -8490,7 +8490,7 @@
             12,
             10
           ],
-          4,
+          3.415,
           [
             "case",
             [
@@ -8522,7 +8522,7 @@
             12,
             10
           ],
-          5,
+          4.415,
           [
             "case",
             [
@@ -8554,7 +8554,7 @@
             12,
             10
           ],
-          6,
+          5.415,
           [
             "case",
             [
@@ -8586,7 +8586,7 @@
             12,
             10
           ],
-          7,
+          6.415,
           [
             "case",
             [
@@ -8618,7 +8618,7 @@
             12,
             10
           ],
-          8,
+          7.415,
           [
             "case",
             [
@@ -8650,7 +8650,7 @@
             12,
             10
           ],
-          9,
+          8.415,
           [
             "case",
             [
@@ -8682,7 +8682,7 @@
             12,
             10
           ],
-          10,
+          9.415,
           [
             "case",
             [
@@ -8714,7 +8714,7 @@
             12,
             10
           ],
-          11,
+          10.415,
           [
             "case",
             [
@@ -8746,7 +8746,7 @@
             12,
             10
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -8778,7 +8778,7 @@
             12,
             10
           ],
-          13,
+          12.415,
           [
             "case",
             [
@@ -8810,7 +8810,7 @@
             12,
             10
           ],
-          14,
+          13.415,
           [
             "case",
             [
@@ -8842,7 +8842,7 @@
             12,
             10
           ],
-          15,
+          14.415,
           [
             "case",
             [
@@ -8883,7 +8883,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 3
+      "minzoom": 2.415
     },
     {
       "id": "wood-label",
@@ -8930,7 +8930,7 @@
             12,
             10
           ],
-          8,
+          7.415,
           [
             "case",
             [
@@ -8953,7 +8953,7 @@
             12,
             10
           ],
-          9,
+          8.415,
           [
             "case",
             [
@@ -8976,7 +8976,7 @@
             12,
             10
           ],
-          10,
+          9.415,
           [
             "case",
             [
@@ -8999,7 +8999,7 @@
             12,
             10
           ],
-          11,
+          10.415,
           [
             "case",
             [
@@ -9022,7 +9022,7 @@
             12,
             10
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -9045,7 +9045,7 @@
             12,
             10
           ],
-          13,
+          12.415,
           [
             "case",
             [
@@ -9068,7 +9068,7 @@
             12,
             10
           ],
-          14,
+          13.415,
           [
             "case",
             [
@@ -9091,7 +9091,7 @@
             12,
             10
           ],
-          15,
+          14.415,
           [
             "case",
             [
@@ -9123,7 +9123,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 7
+      "minzoom": 6.415
     },
     {
       "id": "poi-name-italic",
@@ -9180,7 +9180,7 @@
           "h"
         ]
       },
-      "minzoom": 9
+      "minzoom": 8.415
     },
     {
       "id": "railway-label",
@@ -9211,7 +9211,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "road-label-path",
@@ -9260,7 +9260,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "road-label-track",
@@ -9309,7 +9309,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "road-label-service",
@@ -9358,7 +9358,7 @@
         "text-halo-color": "#ffffff",
         "text-halo-width": 1
       },
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "road-label-minor",
@@ -9407,7 +9407,7 @@
         "text-halo-color": "#ffffff",
         "text-halo-width": 1
       },
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "road-label-tertiary",
@@ -9456,7 +9456,7 @@
         "text-halo-color": "#ffffff",
         "text-halo-width": 1
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "road-label",
@@ -9517,7 +9517,7 @@
         ],
         "text-halo-width": 1
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "oneway-arrow",
@@ -9537,7 +9537,7 @@
         "icon-allow-overlap": true,
         "icon-ignore-placement": true
       },
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "plaza-label",
@@ -9566,7 +9566,7 @@
             ],
             ""
           ],
-          15,
+          14.415,
           [
             "case",
             [
@@ -9594,7 +9594,7 @@
       "paint": {
         "text-color": "#000000"
       },
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "bridge-label",
@@ -9623,7 +9623,7 @@
             ],
             ""
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -9640,7 +9640,7 @@
             ],
             ""
           ],
-          13,
+          12.415,
           [
             "case",
             [
@@ -9657,7 +9657,7 @@
             ],
             ""
           ],
-          14,
+          13.415,
           [
             "case",
             [
@@ -9674,7 +9674,7 @@
             ],
             ""
           ],
-          15,
+          14.415,
           [
             "case",
             [
@@ -9713,7 +9713,7 @@
             11,
             10
           ],
-          12,
+          11.415,
           [
             "case",
             [
@@ -9727,7 +9727,7 @@
             11,
             10
           ],
-          13,
+          12.415,
           [
             "case",
             [
@@ -9741,7 +9741,7 @@
             11,
             10
           ],
-          14,
+          13.415,
           [
             "case",
             [
@@ -9755,7 +9755,7 @@
             11,
             10
           ],
-          15,
+          14.415,
           [
             "case",
             [
@@ -9778,7 +9778,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "junction-label",
@@ -9807,7 +9807,7 @@
             ],
             ""
           ],
-          11,
+          10.415,
           [
             "case",
             [
@@ -9856,7 +9856,7 @@
             "zoom"
           ],
           10,
-          14,
+          13.415,
           11
         ],
         "text-max-width": 100,
@@ -9869,13 +9869,13 @@
             "zoom"
           ],
           "#960000",
-          12,
+          11.415,
           "rgb(109,109,109)"
         ],
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 10
+      "minzoom": 9.415
     },
     {
       "id": "road-ref-lz-secondary",
@@ -9977,8 +9977,8 @@
       "paint": {
         "text-color": "#3f3d39"
       },
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10.415,
+      "maxzoom": 11.415
     },
     {
       "id": "road-ref-lz-primary",
@@ -10086,8 +10086,8 @@
       "paint": {
         "text-color": "#3f3d39"
       },
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9.415,
+      "maxzoom": 11.415
     },
     {
       "id": "road-ref-lz-motorway",
@@ -10189,8 +10189,8 @@
       "paint": {
         "text-color": "#3f3d39"
       },
-      "minzoom": 9,
-      "maxzoom": 12
+      "minzoom": 8.415,
+      "maxzoom": 11.415
     },
     {
       "id": "power-pole",
@@ -10211,7 +10211,7 @@
         "icon-ignore-placement": true
       },
       "paint": {},
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "power-tower",
@@ -10233,7 +10233,7 @@
             "zoom"
           ],
           "power-tower-small",
-          14,
+          13.415,
           "power-tower"
         ],
         "icon-size": [
@@ -10242,16 +10242,16 @@
             "zoom"
           ],
           1,
-          14,
+          13.415,
           0.714,
-          16,
+          15.415,
           1
         ],
         "icon-allow-overlap": true,
         "icon-ignore-placement": true
       },
       "paint": {},
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "aerodrome-label-z10",
@@ -10299,8 +10299,8 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 9,
-      "maxzoom": 10
+      "minzoom": 8.415,
+      "maxzoom": 9.415
     },
     {
       "id": "aerodrome-label",
@@ -10329,8 +10329,8 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 10,
-      "maxzoom": 13
+      "minzoom": 9.415,
+      "maxzoom": 12.415
     },
     {
       "id": "aerodrome-icon-z10",
@@ -10361,8 +10361,8 @@
         "icon-allow-overlap": true,
         "icon-ignore-placement": true
       },
-      "minzoom": 9,
-      "maxzoom": 10
+      "minzoom": 8.415,
+      "maxzoom": 9.415
     },
     {
       "id": "aerodrome-icon",
@@ -10374,8 +10374,8 @@
         "icon-allow-overlap": true,
         "icon-ignore-placement": true
       },
-      "minzoom": 10,
-      "maxzoom": 13
+      "minzoom": 9.415,
+      "maxzoom": 12.415
     },
     {
       "id": "poi-icon",
@@ -10502,7 +10502,7 @@
           ]
         ]
       ],
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "osmpoi-icon",
@@ -10525,7 +10525,7 @@
         ],
         "saddle"
       ],
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "osmpoi-icon-cave",
@@ -10553,7 +10553,7 @@
           ]
         ]
       ],
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "rifugi-icon",
@@ -10590,7 +10590,7 @@
         "icon-ignore-placement": true
       },
       "paint": {},
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "mountain-peak-icon",
@@ -10619,7 +10619,7 @@
         "icon-ignore-placement": true
       },
       "paint": {},
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "bus-stop-icon",
@@ -10648,7 +10648,7 @@
       "layout": {
         "icon-image": "tg-bus_stop.12-3b8eb8"
       },
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "hut-icon",
@@ -10683,7 +10683,7 @@
         "icon-ignore-placement": true,
         "icon-allow-overlap": true
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "hut-label",
@@ -10733,7 +10733,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "shelter-icon",
@@ -10753,7 +10753,7 @@
         "icon-ignore-placement": true,
         "icon-allow-overlap": true
       },
-      "minzoom": 15
+      "minzoom": 14.415
     },
     {
       "id": "amenity-icon",
@@ -10777,7 +10777,7 @@
           1
         ]
       },
-      "minzoom": 9
+      "minzoom": 8.415
     },
     {
       "id": "station-label-halt",
@@ -10825,7 +10825,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1.5
       },
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "station-label",
@@ -10865,7 +10865,7 @@
             "zoom"
           ],
           10,
-          14,
+          13.415,
           11
         ],
         "text-anchor": "top",
@@ -10881,7 +10881,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1.5
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "station-icon-halt",
@@ -10915,13 +10915,13 @@
             "zoom"
           ],
           0.4444444444444444,
-          14,
+          13.415,
           0.6666666666666666
         ],
         "icon-ignore-placement": true,
         "icon-allow-overlap": true
       },
-      "minzoom": 12
+      "minzoom": 11.415
     },
     {
       "id": "station-icon",
@@ -10955,15 +10955,15 @@
             "zoom"
           ],
           0.4444444444444444,
-          12,
+          11.415,
           0.6666666666666666,
-          14,
+          13.415,
           1
         ],
         "icon-ignore-placement": true,
         "icon-allow-overlap": true
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "place-minor",
@@ -11004,7 +11004,7 @@
               "name"
             ]
           ],
-          15,
+          14.415,
           [
             "coalesce",
             [
@@ -11026,7 +11026,7 @@
             "zoom"
           ],
           10,
-          15,
+          14.415,
           12
         ],
         "text-max-width": 100,
@@ -11040,7 +11040,7 @@
             "zoom"
           ],
           "#222222",
-          15,
+          14.415,
           "#777777"
         ],
         "text-halo-color": [
@@ -11049,12 +11049,12 @@
             "zoom"
           ],
           "rgba(255,255,255,0.6)",
-          15,
+          14.415,
           "#ffffff"
         ],
         "text-halo-width": 1.5
       },
-      "minzoom": 14
+      "minzoom": 13.415
     },
     {
       "id": "place-quarter",
@@ -11115,7 +11115,7 @@
             "zoom"
           ],
           "#222222",
-          14,
+          13.415,
           "#777777"
         ],
         "text-halo-color": [
@@ -11124,12 +11124,12 @@
             "zoom"
           ],
           "rgba(255,255,255,0.6)",
-          13,
+          12.415,
           "#ffffff"
         ],
         "text-halo-width": 1.5
       },
-      "minzoom": 13
+      "minzoom": 12.415
     },
     {
       "id": "place-village",
@@ -11222,7 +11222,7 @@
             "zoom"
           ],
           "#222222",
-          13,
+          12.415,
           "#777777"
         ],
         "text-halo-color": [
@@ -11231,12 +11231,12 @@
             "zoom"
           ],
           "rgba(255,255,255,0.6)",
-          13,
+          12.415,
           "#ffffff"
         ],
         "text-halo-width": 1.5
       },
-      "minzoom": 11
+      "minzoom": 10.415
     },
     {
       "id": "state-label",
@@ -11265,7 +11265,7 @@
             "zoom"
           ],
           10,
-          6,
+          5.415,
           11
         ],
         "text-max-width": [
@@ -11274,7 +11274,7 @@
             "zoom"
           ],
           3,
-          6,
+          5.415,
           4.5
         ],
         "text-line-height": 1.1
@@ -11286,13 +11286,13 @@
             "zoom"
           ],
           "#526f46",
-          12,
+          11.415,
           "#b299b8"
         ],
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1.5
       },
-      "minzoom": 4
+      "minzoom": 3.415
     },
     {
       "id": "city-label",
@@ -11357,7 +11357,7 @@
               ]
             ]
           ],
-          8,
+          7.415,
           [
             "case",
             [
@@ -11391,7 +11391,7 @@
               ]
             ]
           ],
-          10,
+          9.415,
           [
             "coalesce",
             [
@@ -11434,7 +11434,7 @@
             13,
             10
           ],
-          8,
+          7.415,
           [
             "case",
             [
@@ -11457,7 +11457,7 @@
             13,
             12
           ],
-          9,
+          8.415,
           [
             "case",
             [
@@ -11480,7 +11480,7 @@
             14,
             13
           ],
-          10,
+          9.415,
           [
             "case",
             [
@@ -11503,7 +11503,7 @@
             15,
             14
           ],
-          11,
+          10.415,
           [
             "case",
             [
@@ -11526,7 +11526,7 @@
             15,
             14
           ],
-          13,
+          12.415,
           [
             "case",
             [
@@ -11558,7 +11558,7 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1.5
       },
-      "minzoom": 7
+      "minzoom": 6.415
     },
     {
       "id": "city-dot-label",
@@ -11612,7 +11612,7 @@
               ]
             ]
           ],
-          4,
+          3.415,
           [
             "case",
             [
@@ -11646,7 +11646,7 @@
               ]
             ]
           ],
-          5,
+          4.415,
           [
             "case",
             [
@@ -11702,7 +11702,7 @@
             11,
             10
           ],
-          5,
+          4.415,
           [
             "case",
             [
@@ -11763,8 +11763,8 @@
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1.5
       },
-      "minzoom": 3,
-      "maxzoom": 7
+      "minzoom": 2.415,
+      "maxzoom": 6.415
     },
     {
       "id": "city-dot",
@@ -11786,7 +11786,7 @@
             "zoom"
           ],
           "place-4",
-          5,
+          4.415,
           [
             "case",
             [
@@ -11800,7 +11800,7 @@
             "place-6",
             "place-4"
           ],
-          6,
+          5.415,
           [
             "case",
             [
@@ -11818,8 +11818,8 @@
         "icon-allow-overlap": true,
         "icon-ignore-placement": true
       },
-      "minzoom": 3,
-      "maxzoom": 7
+      "minzoom": 2.415,
+      "maxzoom": 6.415
     },
     {
       "id": "capital-dot",
@@ -11858,14 +11858,14 @@
             "zoom"
           ],
           "place-capital-6",
-          6,
+          5.415,
           "place-capital-8"
         ],
         "icon-allow-overlap": true,
         "icon-ignore-placement": true
       },
-      "minzoom": 3,
-      "maxzoom": 7
+      "minzoom": 2.415,
+      "maxzoom": 6.415
     },
     {
       "id": "place-city",
@@ -11967,7 +11967,7 @@
             "zoom"
           ],
           "top",
-          7,
+          6.415,
           "center"
         ],
         "text-offset": [
@@ -11982,7 +11982,7 @@
               0.5
             ]
           ],
-          7,
+          6.415,
           [
             "literal",
             [
@@ -11997,8 +11997,8 @@
         "text-halo-color": "#fcf8e9",
         "text-halo-width": 1.5
       },
-      "minzoom": 3,
-      "maxzoom": 15
+      "minzoom": 2.415,
+      "maxzoom": 14.415
     },
     {
       "id": "country-label",
@@ -12027,13 +12027,13 @@
             "zoom"
           ],
           10,
-          3,
+          2.415,
           11,
-          4,
+          3.415,
           12,
-          6,
+          5.415,
           13,
-          9,
+          8.415,
           14
         ],
         "text-max-width": 3.5,
@@ -12047,13 +12047,13 @@
             "zoom"
           ],
           "#365c25",
-          12,
+          11.415,
           "#a666b8"
         ],
         "text-halo-color": "rgba(255,255,255,0.6)",
         "text-halo-width": 1.5
       },
-      "minzoom": 2
+      "minzoom": 1.415
     },
     {
       "id": "spring-icon",
@@ -12076,7 +12076,7 @@
         ],
         "spring"
       ],
-      "minzoom": 13
+      "minzoom": 12.415
     }
   ]
 }

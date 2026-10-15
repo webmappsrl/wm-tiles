@@ -269,6 +269,30 @@ function posizionaOmbra() {
   }
 }
 
+/**
+ * Le tile vettoriali scelte come le tile raster di TGen: il livello con la
+ * risoluzione piu' vicina (`zDirection: 0`), cioe' N da N - 0,585. Di serie una
+ * VectorTile ha `zDirection: 1` e passa al livello N solo a N: fra 12,42 e 12,99
+ * TGen mostrava gia' z13 e il vettoriale ancora i dati di z12 (15 ottobre 2026).
+ * Gli stili seguono la stessa soglia (ANTICIPO in build-style.mjs). ol-mapbox-style
+ * crea le sorgenti da se', e alcuni layer arrivano dopo apply(): si sistemano
+ * subito e a ogni layer aggiunto. Lo stesso va fatto in map-core.
+ */
+function allineaLivelli(mappa) {
+  const sistema = l => {
+    const src = l.getSource?.();
+    if (src instanceof ol.source.VectorTile && src.zDirection !== 0) {
+      src.zDirection = 0;
+      src.changed();
+    }
+  };
+  mappa.getLayers().forEach(sistema);
+  if (!mappa.get('wm-allinea')) {
+    mappa.set('wm-allinea', true);
+    mappa.getLayers().on('add', e => sistema(e.element));
+  }
+}
+
 async function applyStyle() {
   el('err').textContent = '';
   el('err').style.display = 'none';
@@ -277,6 +301,7 @@ async function applyStyle() {
   try {
     // apply() costruisce i layer OpenLayers dallo style.json
     await window.olms.apply(left, styleUrl);
+    allineaLivelli(left);
     const built = left.getLayers().getArray().map(l => ({
       kind: l.constructor.name,
       source: l.getSource()?.constructor.name,
@@ -406,6 +431,7 @@ async function applicaSpenti() {
   shade = null;
   left.getLayers().clear();
   await window.olms.apply(left, st);
+  allineaLivelli(left);
   const hs = st.metadata?.['wm:hillshade'];
   if (hs && st.sources?.[hs.source]) {
     shade = hillshadeGpu(ol, st.sources[hs.source], hs.fasce ?? []);

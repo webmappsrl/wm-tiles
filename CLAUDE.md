@@ -185,6 +185,20 @@ vista z12 applica il valore dichiarato per z11. E' la stessa ragione per cui
 un colore noto (`road-fill-secondary`): con soglia 12 il colore compariva a
 z13. Vale per OGNI espressione dipendente dallo zoom, non solo per i colori.
 
+**I cambi di livello si fanno a N - 0,585, come i PNG di TGen** (15 ottobre
+2026). In OpenLayers una sorgente raster sceglie il livello con la risoluzione
+piu' vicina in valore assoluto (`linearFindNearest`): il pannello di TGen passa
+a z13 a 12,415. Il vettoriale passava a 13,00, sia lo stile sia le tile, e fra
+12,42 e 12,99 i due pannelli mostravano stili di livelli diversi ("il vettoriale
+cambia in ritardo", segnalato dall'utente). Ora `build-style.mjs` anticipa di
+0,585 (`ANTICIPO`) le soglie degli `step`, `minzoom` e `maxzoom` (non gli
+`interpolate`, continui); la preview mette `zDirection: 0` alle sorgenti
+vettoriali (`allineaLivelli`) e l'ombra sceglie la fascia con `livelloDi`.
+**map-core deve fare lo stesso con le sue sorgenti vettoriali**, altrimenti i
+dati di un livello arrivano in ritardo rispetto allo stile. I PNG non cambiano:
+`stile-nativo.js` riporta quelle soglie all'intero successivo, e ai livelli
+interi i PNG sono identici byte per byte. Misura: `tools/soglia-zoom.mjs`.
+
 **Misura sempre su tutta la scala** (`zoom-diff`), non su un livello: i
 parametri del riferimento cambiano per fascia e una correzione tarata su z10
 puo' peggiorare z13.

@@ -323,6 +323,15 @@ const elevazione = f => {
   return {sinEl: Math.sin(el), cosEl: Math.cos(el)};
 };
 
+/**
+ * Il livello di zoom che OpenLayers usa per le tile raster alla vista `zoom`:
+ * quello con la risoluzione piu' vicina in valore assoluto (`linearFindNearest`),
+ * cioe' il livello N da N - 0,585. E' il livello dei PNG di TGen nell'altro
+ * pannello e quello a cui cambiano gli stili del vettoriale (ANTICIPO in
+ * build-style.mjs): con Math.round l'ombra passava di fascia a N - 0,5.
+ */
+export const livelloDi = zoom => Math.floor(zoom + 0.585);
+
 export function hillshadeGpu(ol, sourceDef, fasce) {
   const primo = fasce[0] ?? {opacity: 0.25};
   const grigio = grigioIncidenza(primo);
@@ -355,7 +364,7 @@ export function hillshadeGpu(ol, sourceDef, fasce) {
   const passoDelDem = zoom => {
     const tg = layer.getSource().getTileGrid();
     const zMax = tg.getMaxZoom();
-    const z = Math.min(Math.max(Math.round(zoom), tg.getMinZoom()), zMax);
+    const z = Math.min(Math.max(livelloDi(zoom), tg.getMinZoom()), zMax);
     return tg.getResolution(z);
   };
 
@@ -369,7 +378,7 @@ export function hillshadeGpu(ol, sourceDef, fasce) {
     ?? (fasce.length && z < fasce[0].zmin ? fasce[0] : fasce.at(-1)) ?? primo;
 
   const aggiornaOpacita = zoom => {
-    const z = Math.round(zoom);
+    const z = livelloDi(zoom);
     const f = fasciaDi(z);
     if (layer.getOpacity() !== f.opacity) layer.setOpacity(f.opacity);
     const vert = f.vert ?? 1;
@@ -434,7 +443,7 @@ export function hillshadeGpu(ol, sourceDef, fasce) {
   });
 
   const aggiornaPendenza = zoom => {
-    const z = Math.round(zoom);
+    const z = livelloDi(zoom);
     const f = fasciaDi(z);
     const slope = f.slope ?? 0;
     const passoDem = passoDelDem(zoom);

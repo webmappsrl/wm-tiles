@@ -28,8 +28,24 @@ const prof = JSON.parse(readFileSync('style/zoom-profile.json', 'utf8'));
 const [Z0, Z1] = prof.zoomRange;
 
 /**
+ * Di quanto anticipare i cambi di livello per farli coincidere con quelli dei
+ * PNG di TGen. In OpenLayers una sorgente raster sceglie il livello la cui
+ * risoluzione e' piu' vicina in valore assoluto (`linearFindNearest`): passa al
+ * livello N a zoom N - 0,585, non a N. Misurato sul colore del mare (#acd4ea a
+ * z12, #dce7f7 da z13): TGen cambia fra 12,41 e 12,42, il vettoriale a 13,00,
+ * cioe' per tutta la fascia 12,42-12,99 i due pannelli avevano gli stili di due
+ * livelli diversi (15 ottobre 2026, segnalato dall'utente: "il vettoriale cambia
+ * in ritardo"). Le soglie discrete (`step`, `minzoom`, `maxzoom`) si anticipano
+ * di 1 - log2(4/3); le tile vettoriali le sceglie la stessa regola se la sorgente
+ * ha `zDirection: 0` (preview.js, e da fare in map-core).
+ */
+const ANTICIPO = 0.585;
+
+/**
  * Porta le soglie di zoom di `step`/`interpolate` da nominali a effettive,
- * togliendo un livello (vedi il commento dentro il ciclo dei layer).
+ * togliendo un livello (vedi il commento dentro il ciclo dei layer); gli `step`
+ * anche l'ANTICIPO. Gli `interpolate` no: sono continui e i valori tarati sono
+ * quelli ai livelli interi, dove maplibre-native disegna i PNG.
  */
 function scalaZoom(nodo) {
   if (Array.isArray(nodo)) {
@@ -39,9 +55,10 @@ function scalaZoom(nodo) {
     // step:        ["step", ["zoom"], default, s1, v1, s2, v2, ...]
     // interpolate: ["interpolate", tipo, ["zoom"], s1, v1, s2, v2, ...]
     const primo = 3;
+    const scarto = nodo[0] === 'step' ? 1 + ANTICIPO : 1;
     const out = nodo.slice(0, primo).map(scalaZoom);
     for (let i = primo; i < nodo.length; i += 2) {
-      out.push(typeof nodo[i] === 'number' ? nodo[i] - 1 : scalaZoom(nodo[i]));
+      out.push(typeof nodo[i] === 'number' ? +(nodo[i] - scarto).toFixed(3) : scalaZoom(nodo[i]));
       if (i + 1 < nodo.length) out.push(scalaZoom(nodo[i + 1]));
     }
     return out;
@@ -91,7 +108,7 @@ for (const id of prof.order) {
    * si vedeva affatto e la mappa mostrava ancora Corine. Nessun errore, e la
    * taratura della palette regionale non aveva alcun effetto.
    */
-  if (zmin > Z0) out.minzoom = zmin - 1;
+  if (zmin > Z0) out.minzoom = Math.max(0, +(zmin - 1 - ANTICIPO).toFixed(3));
   /**
    * `maxzoom` si emette SOLO se il layer si spegne prima della fine della
    * scala. Un layer visibile all'ultimo livello del profilo non ne riceve
@@ -103,7 +120,7 @@ for (const id of prof.order) {
    * mantengono l'ultimo valore) e per le fasce d'ombra (`fasce.at(-1)` in
    * hillshade.js). Verificato da `tools/oltre-z16.mjs`.
    */
-  if (zmax < Z1) out.maxzoom = zmax;
+  if (zmax < Z1) out.maxzoom = +(zmax - ANTICIPO).toFixed(3);
 
   /**
    * Lo stesso sfasamento vale DENTRO le espressioni.

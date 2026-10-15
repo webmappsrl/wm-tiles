@@ -43,11 +43,23 @@ export const suZoom = v => Array.isArray(v)
   && ((v[0] === 'step' && JSON.stringify(v[1]) === '["zoom"]')
     || (v[0] === 'interpolate' && JSON.stringify(v[2]) === '["zoom"]'));
 
-/** Le soglie di zoom di un'espressione salgono di `d`. */
+/**
+ * Arrotonda all'intero successivo una soglia anticipata per OpenLayers.
+ *
+ * build-style.mjs anticipa di 0,585 le soglie discrete, perche' in OpenLayers
+ * cambino livello insieme ai PNG di TGen (ANTICIPO). I PNG pero' si disegnano
+ * solo ai livelli interi, e maplibre-native valuta la dimensione del testo
+ * per tutta la tile: con la soglia a 12,415 "Macchia di Migliarino" a z13
+ * usciva piu' piccolo. All'intero successivo ogni livello intero resta com'era.
+ */
+const intero = z => (Number.isInteger(z) ? z : Math.ceil(+z.toFixed(6)));
+
+/** Le soglie di zoom di un'espressione salgono di `d` (quelle degli `step` all'intero). */
 export function sposta(v, d = 1) {
   if (!suZoom(v)) return v;
   // step: [step, input, out0, z1, out1, ...]; interpolate: [interpolate, tipo, input, z1, out1, ...]
-  return v.map((x, i) => (i >= 3 && i % 2 === 1 ? x + d : x));
+  const step = v[0] === 'step';
+  return v.map((x, i) => (i >= 3 && i % 2 === 1 ? (step ? intero(x + d) : x + d) : x));
 }
 
 /** Moltiplica per `f` il valore, o le uscite di un'espressione di zoom. */
@@ -90,8 +102,8 @@ export function adattaStile(stileOl) {
   const scala = 1 / PIXEL_RATIO;
   for (const l of stile.layers) {
     if (SUPERFICI.has(l.id)) (l.paint ??= {})['fill-antialias'] = false;
-    if (l.minzoom !== undefined) l.minzoom += 1;
-    if (l.maxzoom !== undefined) l.maxzoom += 1;
+    if (l.minzoom !== undefined) l.minzoom = intero(l.minzoom + 1);
+    if (l.maxzoom !== undefined) l.maxzoom = intero(l.maxzoom + 1);
     // anche i valori di default sono in pixel: vanno scritti per poterli raddoppiare
     if (l.type === 'line') (l.paint ??= {})['line-width'] ??= 1;
     if (l.type === 'circle') (l.paint ??= {})['circle-radius'] ??= 5;
