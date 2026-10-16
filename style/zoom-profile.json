@@ -95,6 +95,7 @@
     "level-crossing",
     "rail-crossing",
     "cross-icon",
+    "water-icon",
     "ford-icon",
     "park-label-line",
     "park-label",
@@ -920,6 +921,7 @@
         "level-crossing",
         "rail-crossing",
         "cross-icon",
+        "water-icon",
         "ford-icon",
         "park-label-line",
         "park-label",
@@ -1395,7 +1397,8 @@
     "hut-icon": "livelli (PNG)",
     "hut-label": "livelli (PNG)",
     "shelter-icon": "livelli (PNG)",
-    "waterway-canal-z12": "livelli (PNG)"
+    "waterway-canal-z12": "livelli (PNG)",
+    "water-icon": "livelli (PNG)"
   },
   "clcSemantica": {
     "111": "fondogiallo",
