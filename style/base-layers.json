@@ -7953,6 +7953,36 @@
       ]
     },
     {
+      "id": "water-icon",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "poi",
+      "layout": {
+        "icon-image": "drinking-water",
+        "icon-size": 1,
+        "icon-anchor": "center",
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": true
+      },
+      "paint": {},
+      "filter": [
+        "in",
+        [
+          "get",
+          "subclass"
+        ],
+        [
+          "literal",
+          [
+            "drinking_water",
+            "water_point",
+            "watering_place",
+            "fountain"
+          ]
+        ]
+      ]
+    },
+    {
       "id": "osmpoi-icon",
       "type": "symbol",
       "source": "osmpoi",
@@ -8225,7 +8255,8 @@
         [
           "literal",
           [
-            "spring"
+            "spring",
+            "drinking_water"
           ]
         ]
       ]
