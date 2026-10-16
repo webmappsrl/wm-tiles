@@ -62,11 +62,18 @@ systemctl restart wm-tiles
 
 echo "== Caddy"
 command -v caddy >/dev/null || apt-get install -y -qq caddy >/dev/null
+# i siti degli altri servizi della macchina (wm-routing) stanno in file propri,
+# importati qui: rilanciare questo script non li cancella. Il file vuoto evita
+# che l'import resti senza corrispondenze.
+mkdir -p /etc/caddy/siti
+[ -e /etc/caddy/siti/00-vuoto.caddy ] || echo "# segnaposto: i siti veri sono gli altri file *.caddy" > /etc/caddy/siti/00-vuoto.caddy
 # solo Let's Encrypt: di serie Caddy, se fallisce, ripiega su ZeroSSL
 cat > /etc/caddy/Caddyfile <<EOF
 {
 	acme_ca https://acme-v02.api.letsencrypt.org/directory
 }
+
+import /etc/caddy/siti/*.caddy
 
 $DOMINIO {
 	encode gzip
