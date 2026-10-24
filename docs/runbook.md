@@ -69,6 +69,11 @@ mandare `tiles.maphub.it` qui.
 
 ---
 
+Il routing escursionistico (`wm-routing`) gira sulla stessa macchina, dietro
+lo stesso Caddy: il suo sito sta in `/etc/caddy/siti/routing.caddy`, che il
+`Caddyfile` scritto da `pubblica-dominio.sh` importa. Preparazione ed esercizio
+sono nel runbook di wm-routing (`docs/runbook.md` di quel repo).
+
 ## Ripopolare da zero, dopo un clone
 
 `data/` sta fuori da git: un clone appena fatto non ha dati e la mappa è

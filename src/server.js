@@ -109,6 +109,19 @@ function resolveSet(manifest, setId, registry) {
  *
  * Vale anche per map-core: il connettore deve dichiararlo, o la mappa
  * dell'app mostrera' meno dettaglio delle tiles raster che sostituisce.
+ *
+ * **MapLibre GL JS fa il contrario: rifiuta il 256.** Una sorgente vettoriale
+ * che non sia a 512 gli fa lanciare *vector tile sources must have a tileSize
+ * of 512* e la mappa resta vuota; il controllo c'e' da v4 in poi. Con il suo
+ * default, 512, MapLibre chiede gia' il livello del riferimento raster, quindi
+ * la compensazione non gli serve: gli serve l'assenza del campo.
+ *
+ * I due non si conciliano, perche' sono due convenzioni diverse sullo stesso
+ * dato (le tile non cambiano). Il frontend di wm-tiles e' OpenLayers, quindi
+ * `/style.json` resta a 256 e nessun client esistente va toccato; chi usa
+ * MapLibre chiede `/style.json?tileSize=512`, che serve lo stesso stile con il
+ * campo tolto dalle sole sorgenti vettoriali. Il `raster-dem` del terrain resta
+ * a 256 in entrambi: li' il campo e' legittimo e MapLibre non lo contesta.
  */
 /** Data di modifica dell'indice dello sprite, per l'URL versionato. */
 /**
@@ -153,7 +166,7 @@ function demMaxZoom() {
   return max;
 }
 
-function buildStyle(manifest, resolved, version, base) {
+function buildStyle(manifest, resolved, version, base, renderer = 'openlayers') {
   const style = JSON.parse(readFileSync(STYLE_PATH, 'utf8'));
 
   style.sources = {
@@ -356,6 +369,15 @@ function buildStyle(manifest, resolved, version, base) {
     'wm:groups': manifest.groups,
   };
 
+  // Le sorgenti restano dichiarate a 256 una per una, dove si leggono accanto al
+  // resto: per MapLibre il campo si toglie qui, in un punto solo, invece di
+  // parametrizzare diciassette letterali.
+  if (renderer === 'maplibre') {
+    for (const sorgente of Object.values(style.sources)) {
+      if (sorgente.type === 'vector') delete sorgente.tileSize;
+    }
+  }
+
   return style;
 }
 
@@ -399,7 +421,7 @@ export function createApp() {
 
   app.get('/sets/:set', (req, res) => res.json(resolveSet(manifest, req.params.set, sets)));
 
-  app.get('/style.json', (req, res) => {
+  const serviStyle = renderer => (req, res) => {
     const version = currentVersion(ARCHIVE_DIR);
     if (!version) {
       res.status(503).json({error: 'nessun archivio pubblicato'});
@@ -417,8 +439,14 @@ export function createApp() {
     // alcun errore. Va rivalidato sempre; le tile, che sono immutabili per
     // costruzione, restano cacheabili per un anno.
     res.set({'Cache-Control': 'no-cache, must-revalidate', 'Access-Control-Allow-Origin': '*'});
-    res.json(buildStyle(manifest, resolved, version, base));
-  });
+    res.json(buildStyle(manifest, resolved, version, base, renderer));
+  };
+
+  // `/style.json` e' quello di OpenLayers: era cosi' prima che i due indirizzi
+  // esistessero, e i client che lo usano non devono accorgersi di niente.
+  app.get('/style.json', serviStyle('openlayers'));
+  app.get('/style-openlayers.json', serviStyle('openlayers'));
+  app.get('/style-maplibre.json', serviStyle('maplibre'));
 
   // Namespace riservato alle tiles verificate: la forma di URL e' fissata da ora.
   app.get('/p/:version/:set/:archive/:z/:x/:y.pbf', (_req, res) => {
