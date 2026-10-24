@@ -54,12 +54,21 @@ lavoro.
    ombreggiatura devono essere vettoriali o calcolati. L'unica eccezione e' il
    DEM come sorgente `raster-dem` (le tile codificano *quote*, non pixel di
    mappa) da cui il rilievo viene calcolato sulla GPU.
-3. **Il frontend e' OpenLayers.** MapLibre non sara' mai usato in produzione:
-   ogni soluzione lato client va verificata in OpenLayers. Vedi
-   "Trappole di ol-mapbox-style". Il vincolo riguarda il frontend, perche' le
-   app disegnano le mappe con OpenLayers (chiarito dall'utente l'11 ottobre
-   2026): il motore che produce i PNG lato server e' una scelta tecnica, oggi
+3. **Il frontend Webmapp e' OpenLayers.** Le app e la webapp disegnano le
+   mappe con OpenLayers (chiarito dall'utente l'11 ottobre 2026), quindi ogni
+   soluzione lato client va verificata li'. Vedi "Trappole di ol-mapbox-style".
+   Il motore che produce i PNG lato server e' invece una scelta tecnica, oggi
    maplibre-native (vedi "I PNG li disegna maplibre-native").
+
+   **Dal 24 ottobre 2026 wm-tiles ha un secondo consumatore: Walkiria, che usa
+   MapLibre** (web con MapLibre GL JS, mobile con MapLibre Native). E' un
+   progetto a se', con uno stack svincolato da quello Webmapp: non cambia
+   niente per le app, e non autorizza MapLibre nel frontend Webmapp, dove il
+   vincolo resta. In pratica wm-tiles serve due renderer, e dove le loro
+   convenzioni divergono li tiene separati invece di cercare un compromesso:
+   oggi succede sul tileSize delle sorgenti vettoriali, da cui
+   `/style-openlayers.json` e `/style-maplibre.json` (vedi il commento sullo
+   stile in `src/server.js`).
 4. Nessun commit senza conferma esplicita. Nessun ticket Orchestrator, nessuna
    stima.
 

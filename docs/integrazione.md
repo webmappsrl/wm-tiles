@@ -76,6 +76,27 @@ sequenceDiagram
   S-->>A: tile con SOLO i layer del set
 ```
 
+### Quale stile chiedere
+
+`wm-tiles` serve lo stesso stile in due forme, una per renderer:
+
+| Indirizzo | Per chi | Differenza |
+|---|---|---|
+| `/style.json` | come prima: è `/style-openlayers.json` | — |
+| `/style-openlayers.json` | OpenLayers, il frontend Webmapp | `tileSize: 256` su ogni sorgente vettoriale |
+| `/style-maplibre.json` | MapLibre GL JS e MapLibre Native | nessun `tileSize` sulle vettoriali |
+
+Le tile sono **le stesse**: identici gli URL, le sorgenti e i layer. Cambia solo
+ciò che lo stile dichiara, perché i due renderer contano i livelli di zoom in
+modo diverso. OpenLayers costruisce le sorgenti vettoriali su una griglia da
+512 px e a vista z13 chiederebbe le tile z12, un livello meno del riferimento
+raster: il 256 lo riallinea. MapLibre col suo default, 512, è già allineato, e
+rifiuta qualunque altro valore con *vector tile sources must have a tileSize of
+512* lasciando la mappa vuota. Il `raster-dem` del terrain resta a 256 in
+entrambi: lì il campo è legittimo.
+
+Il parametro `?set=` vale su tutti e tre gli indirizzi.
+
 Il `setId` è **deterministico**: gli stessi gruppi danno sempre lo stesso
 identificativo, da qualunque client. Non serve un registro condiviso né una
 chiamata di registrazione — l'app calcola l'hash e lo usa.
