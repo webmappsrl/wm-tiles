@@ -14,6 +14,7 @@ flowchart LR
   c["<b>Devo far girare<br/>o rigenerare</b>"] --> r["runbook.md"]
   d["<b>Devo integrare<br/>un'app</b>"] --> i["integrazione.md"]
   e["<b>Mi servono dati<br/>da TGen</b>"] --> m["import-da-tgen.md"]
+  f["<b>Devo chiedere una<br/>mappa da stampare</b>"] --> s["howto/stampa-mappe.md"]
 ```
 
 | documento | per chi |
@@ -23,6 +24,7 @@ flowchart LR
 | [**runbook.md**](runbook.md) | chi deve far girare il sistema o rigenerare dati |
 | [**integrazione.md**](integrazione.md) | chi integra webapp, app o `map-core` |
 | [**import-da-tgen.md**](import-da-tgen.md) | chi deve leggere dati da TGen |
+| [**howto/stampa-mappe.md**](howto/stampa-mappe.md) | chi scrive il consumatore del servizio di stampa (`POST /v1/print/map`): endpoint, token, errori, la finta per sviluppare senza il servizio |
 | [**stato.md**](stato.md) | **da dove riprendere**: stato, task aperti, decisioni in attesa |
 
 `CLAUDE.md`, nella radice del repo, raccoglie i vincoli del committente e le

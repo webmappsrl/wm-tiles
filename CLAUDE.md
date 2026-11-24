@@ -71,6 +71,12 @@ lavoro.
    stile in `src/server.js`).
 4. Nessun commit senza conferma esplicita. Nessun ticket Orchestrator, nessuna
    stima.
+5. **Non impostare `PRINT_TOKENS_PATH` nel processo che serve le tile.** Il
+   router di stampa si monta solo se quella variabile c'e' (`src/server.js`), ed
+   e' cosi' che il processo delle mappe interattive resta incapace di rendere
+   pagine: il rendering di stampa gira solo nel container di
+   `Dockerfile.print`. Montandolo sempre, come nella prima stesura, quel
+   processo era capace di rendere e lo fermava soltanto l'assenza di token.
 
 ## Come lavorare qui
 
@@ -206,7 +212,10 @@ vettoriali (`allineaLivelli`) e l'ombra sceglie la fascia con `livelloDi`.
 **map-core deve fare lo stesso con le sue sorgenti vettoriali**, altrimenti i
 dati di un livello arrivano in ritardo rispetto allo stile. I PNG non cambiano:
 `stile-nativo.js` riporta quelle soglie all'intero successivo, e ai livelli
-interi i PNG sono identici byte per byte. Misura: `tools/soglia-zoom.mjs`.
+interi i PNG coincidono entro il rumore misurato di maplibre-native (fino a 8
+pixel con delta 1 su una tile: `tools/png-identity.mjs`, che il CLAUDE.md diceva
+identici byte per byte finche' la misura del 23 novembre 2026 non l'ha smentito).
+Misura: `tools/soglia-zoom.mjs`.
 
 **Misura sempre su tutta la scala** (`zoom-diff`), non su un livello: i
 parametri del riferimento cambiano per fascia e una correzione tarata su z10
@@ -1077,3 +1086,7 @@ confine e produce tile incomplete sull'arco alpino.
 `docs/features/server-tiles-osm/` contiene `overview.md` (cosa cambia,
 requisiti, rischi), `plan.md` (i task) e `notes.md` (deviazioni e decisioni prese
 strada facendo). Le deviazioni dal piano vanno in `notes.md`.
+
+Quello che serve a chi **consuma** wm-tiles sta invece in `docs/`, indicizzato
+da `docs/README.md`. Per il servizio di stampa (`POST /v1/print/map`):
+`docs/howto/stampa-mappe.md`.

@@ -1,0 +1,25 @@
+{
+  "version": "20261012-1605",
+  "tiles": {
+    "14/8668/5972": {
+      "hash": "af67130ab99d310f4349f318ecd7aa5d5d57c67fce68113755dad41ab961493a",
+      "width": 256,
+      "height": 256
+    },
+    "15/17335/11944": {
+      "hash": "ef41698d28ab1205966ed70fedb359d8c4320bc819366c9c2aab7c3e10d02c62",
+      "width": 256,
+      "height": 256
+    },
+    "13/4334/2986": {
+      "hash": "f2a611975e6d59eec9287e489a5a7c4de6fe27839bffe1c57783e1aedfb93dd2",
+      "width": 256,
+      "height": 256
+    },
+    "16/34672/23888": {
+      "hash": "02a13003e3819ce69d77ba08c0e84d49af395233e50b6f12ee14ef6ad0cf57a2",
+      "width": 256,
+      "height": 256
+    }
+  }
+}

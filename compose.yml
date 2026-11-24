@@ -1,0 +1,114 @@
+# Il servizio di stampa come container a se' (oc:9011, R6), con i tetti in
+# NUMERO (R9) presi dalla misura del Task 1.
+#
+# Si lancia dalla radice del repo sul server:
+#   docker compose up -d --build print
+#
+# I TETTI, e da dove vengono.
+#  - memoria 3 GB. Un A4 a 300 dpi costa ~925 MB di picco di RSS (Task 1,
+#    `tools/page-cost.mjs`) e `MAX_SLOTS` e' 2: 1,85 GB sono i due rendering,
+#    il resto e' tutto cio' che i due slot NON contano — il runtime di Node, il
+#    contesto GL di Mesa, i buffer nativi di sharp e il PNG di uscita (9,2 MB
+#    per un A4, piu' le copie della codifica). Il tetto e' del CONTAINER, non
+#    di Node: `--max-old-space-size` non vede niente di tutto questo, quindi
+#    non e' il posto dove dichiararlo.
+#  - CPU 4. Due rendering insieme, ognuno con 2 thread di OpenGL in software
+#    (`LP_NUM_THREADS`): oltre, il rendering della stampa ruberebbe la macchina
+#    al server delle tile, che e' il servizio interattivo. Un A4 misura 3,3 s
+#    contro i 30 s del criterio, quindi il margine c'e'.
+#  - nessun core dump (`ulimits: core 0`, R11): un segfault del modulo nativo
+#    scriverebbe su disco la memoria del processo, con dentro le geometrie
+#    ricevute dagli shard. E' lo stesso provvedimento del `LimitCORE=0`
+#    dell'unita' systemd, nell'altro deployment.
+#
+# RETE. Di serie `host`, perche' il renderer legge stile, glifi, sprite, tile e
+# DEM dal server delle tile, che ascolta SOLO su 127.0.0.1:8080: dalla rete
+# bridge quell'indirizzo non si raggiunge, e aprire il server delle tile al
+# bridge sarebbe esporlo. Sul Mac Docker Desktop la rete host NON raggiunge il
+# loopback dell'host (verificato: connection refused), quindi per provare il
+# container in locale si passa dal bridge:
+#   PRINT_NETWORK=bridge PRINT_BASE_URL=http://host.docker.internal:8080 \
+#     docker compose run --rm print node tools/page-cost.mjs ...
+#
+# IL RICICLO PERIODICO del processo (R6) NON sta qui: compose non sa
+# schedulare. Lo fa un timer systemd installato da infra/pubblica-dominio.sh
+# (`wm-print-recycle.timer`, ogni 6 ore), che e' dove stanno gia' le altre
+# unita' di questo host.
+#
+# IL RIAVVIO E' MITE, e perche' lo sia servono TRE cose insieme: toglierne una
+# le toglie l'effetto senza dirlo.
+#  1. `init: true`, cosi' il processo 1 e' tini, che inoltra i segnali;
+#  2. node figlio DIRETTO di tini (Dockerfile.print: Xvfb parte in background e
+#     poi si fa `exec node`, invece di `exec xvfb-run`). Con lo script di
+#     `xvfb-run` in mezzo, tini segnalava lui e node non riceveva niente;
+#  3. un gestore di SIGTERM che DRENA (`spegnimentoMite` in src/server.js):
+#     chiude l'ascolto e aspetta che `inFlight` torni a zero.
+# Senza le ultime due, `stop_grace_period` non faceva niente: `docker stop -t 20`
+# tornava in zero secondi e un `docker compose restart print` durava 3 s invece
+# dei 150 dichiarati, troncando i rendering in volo (misurato dalla review del
+# Task 10, e misurato di nuovo dopo la correzione). 150 s e' piu' del tempo
+# massimo di un rendering (120 s, `src/print/limits.js`) piu' il margine per
+# chiudere: oltre quel tetto arriva il SIGKILL del demone.
+services:
+  print:
+    build:
+      context: .
+      dockerfile: Dockerfile.print
+    # L'immagine porta un TAG, che il deploy mette uguale al SHA del commit
+    # (.github/workflows/print.yml). Senza, ogni `--build` sovrascriveva
+    # `:latest` e la versione precedente restava senza nome: se la nuova parte
+    # ma e' rotta, non c'e' niente a cui tornare se non un ID pescato a mano.
+    # Il tag deployato sta in `/srv/wm-print/.env`, che compose legge da solo, e
+    # quello di prima in `.env.precedente`: il ritorno indietro e' copiare il
+    # secondo sul primo e rifare `docker compose up -d print`.
+    # ATTENZIONE: `docker image prune` sull'host cancella le immagini vecchie e
+    # con loro la possibilita' di tornare indietro.
+    image: wm-tiles-print:${PRINT_TAG:-latest}
+    # senza, `xvfb-run` e' il processo 1 e resta in attesa di Xvfb per sempre,
+    # senza alcun errore
+    init: true
+    restart: unless-stopped
+    network_mode: ${PRINT_NETWORK:-host}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      # il server delle tile da cui leggere stile, glifi, sprite, tile e DEM:
+      # mai l'indirizzo pubblico, o pagheremmo ogni tile alla CDN
+      PRINT_BASE_URL: ${PRINT_BASE_URL:-http://127.0.0.1:8080}
+      # i token degli shard (R8): un file fuori dal repo, che e' pubblico.
+      # Senza, /v1/print/map risponde 401 a tutti — chiuso, non aperto.
+      PRINT_TOKENS_PATH: /etc/wm-tiles/print-tokens.json
+      HOST: 127.0.0.1
+      PORT: ${PRINT_PORT:-8081}
+      # i thread di OpenGL in software, per rendering
+      LP_NUM_THREADS: 2
+    volumes:
+      # il file dei token, dall'host. Il percorso di partenza si puo' cambiare
+      # (`PRINT_TOKENS_FILE`) per provare il container su una macchina che non
+      # ha /etc/wm-tiles: un bind mount verso un percorso inesistente fa nascere
+      # una CARTELLA con quel nome, e il servizio direbbe soltanto «nessun token»
+      - ${PRINT_TOKENS_FILE:-/etc/wm-tiles/print-tokens.json}:/etc/wm-tiles/print-tokens.json:ro
+    mem_limit: 3g
+    # senza, sotto pressione il kernel scambia invece di uccidere, e un leak del
+    # modulo nativo diventa una macchina lenta per tutti
+    memswap_limit: 3g
+    cpus: 4.0
+    ulimits:
+      core: 0
+    stop_grace_period: 150s
+    healthcheck:
+      # vivo e in ascolto. NON vede i rendering abbandonati: `inFlight` non e'
+      # esposto da nessuna rotta, e un controllo che rendesse davvero una pagina
+      # occuperebbe uno slot e ~925 MB. Il caso «pieno di rendering che non
+      # rientrano» si legge nei log (`print: slot pieni`, con `inFlight` e
+      # `freeSlots`) e lo cura il riciclo periodico.
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://127.0.0.1:${PRINT_PORT:-8081}/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "5"

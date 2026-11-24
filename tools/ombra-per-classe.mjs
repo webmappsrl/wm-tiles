@@ -116,7 +116,7 @@ async function preparaZona({z, x, y}) {
     }
   }
   const W = N + 2 * B;
-  const E = quoteVista(D, Wd, u0, v0, x0, y0, N, B, s);
+  const E = quoteVista(D, Wd, u0, v0, x0, y0, N, N, B, s);
   const passo = PIXEL_Z0 / 2 ** zd;
 
   // TGen montato sulla stessa griglia

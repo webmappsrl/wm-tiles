@@ -96,10 +96,17 @@ export function localizza(stile, base) {
   return s;
 }
 
-/** Copia dello stile pronta per maplibre-native a pixel ratio `PIXEL_RATIO`. */
-export function adattaStile(stileOl) {
+/**
+ * Copia dello stile pronta per maplibre-native a pixel ratio `PIXEL_RATIO`.
+ *
+ * `typeScale` (stampa) moltiplica le sole grandezze di `IN_PIXEL`, dopo il
+ * raddoppio: testi, aloni, tratti, icone. Non tocca `minzoom`, `maxzoom` ne' le
+ * soglie di `step`/`interpolate`: cambia quanto appare grande un elemento, non a
+ * che livello compare. Con 1 (default) il risultato e' quello dei PNG.
+ */
+export function adattaStile(stileOl, {typeScale = 1} = {}) {
   const stile = structuredClone(stileOl);
-  const scala = 1 / PIXEL_RATIO;
+  const scala = (1 / PIXEL_RATIO) * typeScale;
   for (const l of stile.layers) {
     if (SUPERFICI.has(l.id)) (l.paint ??= {})['fill-antialias'] = false;
     if (l.minzoom !== undefined) l.minzoom = intero(l.minzoom + 1);

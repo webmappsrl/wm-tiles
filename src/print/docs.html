@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>wm-tiles — servizio di stampa</title>
+<!--
+  La pagina di lettura dello schema. Redoc arriva da CDN e NON e' una dipendenza
+  del runtime: in `package.json` non entra niente per questa pagina, e se la rete
+  non c'e' resta `openapi.json`, che e' il documento vero.
+
+  Il documento si carica per percorso RELATIVO (`openapi.json`), quindi la pagina
+  funziona ovunque il router sia montato e qualunque sia l'host.
+-->
+<style>
+  body {margin: 0; font-family: system-ui, sans-serif;}
+  #avviso {display: none; padding: 1.5rem; line-height: 1.5;}
+  #avviso code {background: #f0f0f0; padding: 0 .2em;}
+</style>
+</head>
+<body>
+<div id="avviso">
+  <h1>Lo schema non si e' potuto rendere</h1>
+  <p>Questa pagina prende Redoc da una CDN pubblica e qui non si raggiunge.
+     Il documento vero resta <code><a href="openapi.json">openapi.json</a></code>:
+     e' quello contro cui il servizio valida davvero le richieste, e si legge
+     anche in un editor o con <code>redocly preview-docs</code>.</p>
+</div>
+<redoc spec-url="openapi.json" hide-download-button></redoc>
+<!-- Versione esatta e hash del bundle: con `redoc@2` la CDN cambierebbe il
+     frontend sotto i piedi senza che nessuno tocchi il repo, e senza `integrity`
+     un bundle sostituito girerebbe nella pagina che serve il nostro servizio.
+     L'hash si rifa' con:
+     curl -sS <src> | openssl dgst -sha384 -binary | openssl base64 -A -->
+<script src="https://cdn.jsdelivr.net/npm/redoc@2.1.5/bundles/redoc.standalone.js"
+        integrity="sha384-0GrsyTQc9Oqd8h+b2dbc4XdR2T/DYpy0tLNNstyx+LBMUyiBbcWPbEs9aRmUcaxD"
+        crossorigin="anonymous"
+        onerror="document.getElementById('avviso').style.display='block'"></script>
+</body>
+</html>
