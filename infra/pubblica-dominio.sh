@@ -63,17 +63,17 @@ Environment=HOST=127.0.0.1
 # Qui NON c'e' PRINT_TOKENS_PATH: la stampa e' il container di compose.yml
 # (oc:9011, R6), e questo processo non deve rendere pagine — altrimenti un
 # segfault del modulo nativo porterebbe giu' anche le tile.
-# Senza quella variabile `src/server.js` non monta nemmeno il router di stampa:
+# Senza quella variabile src/server.js non monta nemmeno il router di stampa:
 # /v1/print/map non esiste (404). E' la differenza con la versione precedente,
 # dove il router c'era sempre e mancava solo l'autenticazione: la review del
 # Task 10 ha avviato questo stesso processo con PRINT_TOKENS_PATH impostato e ha
 # ottenuto un PNG in-process. Resta vero che un drop-in systemd che impostasse
 # quella variabile sopravvive a un rilancio di questo script, che gestisce solo
-# `public-url.conf`: di la' pero' servirebbe anche un file di token, e Caddy
+# public-url.conf: di la' pero' servirebbe anche un file di token, e Caddy
 # manda /v1/print al container, non qui.
 # Nessun core dump (oc:9011, R11): un segfault del modulo nativo scriverebbe su
 # disco la memoria del processo, con dentro le geometrie ricevute dagli shard —
-# fra cui sentieri non pubblicati. E' il `ulimit -c 0` del servizio.
+# fra cui sentieri non pubblicati. E' il ulimit -c 0 del servizio.
 LimitCORE=0
 Restart=always
 RestartSec=3
@@ -181,8 +181,8 @@ $DOMINIO {
 	# tile: e' tutto il senso di R6. Qui c'e' solo l'instradamento e il tetto del
 	# corpo — Caddy 2.11.7 non ha il modulo rate_limit, quindi il limite al
 	# minuto resta nel servizio, per token (R8).
-	# Il percorso ESATTO oltre a quelli sotto: con il solo `/v1/print/*` un
-	# `POST /v1/print`, senza barra finale, scavalcava questo blocco e finiva al
+	# Il percorso ESATTO oltre a quelli sotto: con il solo /v1/print/* un
+	# POST /v1/print, senza barra finale, scavalcava questo blocco e finiva al
 	# server delle tile (provato con due backend veri). Oggi la' risponde 404,
 	# ma e' lo stesso processo che non deve mai ricevere richieste di stampa.
 	@print path /v1/print /v1/print/*

@@ -15,7 +15,7 @@
 FROM ubuntu:22.04 AS base
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      ca-certificates curl xz-utils xvfb xauth libglfw3 libuv1 libjpeg-turbo8 libicu70 \
+      ca-certificates curl xz-utils xvfb xauth x11-utils libglfw3 libuv1 libjpeg-turbo8 libicu70 \
       libopengl0 libcurl4 libpng16-16 libwebp7 libgl1-mesa-dri libglx-mesa0 libegl1 libgles2 \
       fontconfig fonts-dejavu-core \
     && rm -rf /var/lib/apt/lists/*
@@ -67,13 +67,27 @@ RUN printf '%s\n' \
   'ulimit -c 0 2>/dev/null || true' \
   'DISPLAY="${DISPLAY:-:99}"' \
   'export DISPLAY' \
+  'N="${DISPLAY#:}"' \
+  '# `docker compose restart` NON ricrea il container, quindi /tmp conserva il' \
+  '# lock e il socket della sessione precedente: Xvfb esce con "Server is already' \
+  '# active for display 99", node non apre il display, va in crash e' \
+  '# restart:unless-stopped ricomincia. Successo in produzione il 24 novembre' \
+  '# 2026, al primo giro del riciclo periodico: il container si dichiarava' \
+  '# healthy e rispondeva 502 a ogni pagina.' \
+  'rm -f "/tmp/.X${N}-lock" "/tmp/.X11-unix/X${N}"' \
   'Xvfb "$DISPLAY" -screen 0 1024x768x24 -nolisten tcp &' \
+  'XVFB=$!' \
   'i=0' \
-  'while [ ! -e "/tmp/.X11-unix/X${DISPLAY#:}" ]; do' \
+  '# Non basta che il socket esista: dopo un riavvio poteva essere quello vecchio,' \
+  '# e il controllo passava con Xvfb gia' "'" 'morto. Si guarda anche che il processo' \
+  '# sia vivo, e alla fine che il display risponda davvero.' \
+  'while [ ! -e "/tmp/.X11-unix/X${N}" ]; do' \
+  '  kill -0 "$XVFB" 2>/dev/null || { echo "Xvfb e'"'"' morto durante l'"'"'avvio su $DISPLAY" >&2; exit 1; }' \
   '  i=$((i + 1))' \
   '  [ "$i" -gt 50 ] && { echo "Xvfb non si avvia su $DISPLAY" >&2; exit 1; }' \
   '  sleep 0.1' \
   'done' \
+  'xdpyinfo -display "$DISPLAY" >/dev/null 2>&1 || { echo "il display $DISPLAY non risponde" >&2; exit 1; }' \
   '# exec: node diventa il figlio DIRETTO di tini, e riceve il SIGTERM' \
   'exec "$@"' \
   > /usr/local/bin/print-entrypoint && chmod +x /usr/local/bin/print-entrypoint

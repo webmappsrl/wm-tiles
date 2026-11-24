@@ -102,7 +102,13 @@ services:
       # occuperebbe uno slot e ~925 MB. Il caso «pieno di rendering che non
       # rientrano» si legge nei log (`print: slot pieni`, con `inFlight` e
       # `freeSlots`) e lo cura il riciclo periodico.
-      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://127.0.0.1:${PRINT_PORT:-8081}/health"]
+      # Il display SI' pero' lo guarda, e per un difetto vero: il 24 novembre 2026,
+      # al primo giro del riciclo, Xvfb non e' ripartito (lock di /tmp rimasto) e
+      # il container si e' dichiarato healthy per minuti mentre ogni pagina
+      # rispondeva 502 — il processo era vivo e in ascolto, semplicemente non
+      # aveva un display su cui disegnare. `xdpyinfo` costa millisecondi e non
+      # occupa slot, al contrario di un rendering di prova.
+      test: ["CMD-SHELL", "curl -fsS -o /dev/null http://127.0.0.1:${PRINT_PORT:-8081}/health && xdpyinfo -display ${DISPLAY:-:99} >/dev/null 2>&1"]
       interval: 30s
       timeout: 5s
       retries: 3
