@@ -20,9 +20,22 @@ BASE=$(osmium fileinfo -g header.option.osmosis_replication_base_url "$IN")
 SEQ=$(osmium fileinfo -g header.option.osmosis_replication_sequence_number "$IN")
 [ -n "$BASE" ] && [ -n "$SEQ" ] || { echo "!! $IN non dice da dove ripartire (osmosis_replication_*)" >&2; exit 1; }
 
-STATO=$(curl -sSf "$BASE/state.txt")
+# -L: l'indirizzo scritto nell'intestazione del PBF e' quello di quando il file
+# e' stato prodotto, e Geofabrik sposta i percorsi lasciando un rinvio
+# permanente (europe-updates -> europe/updates). Senza seguirlo si scarica la
+# pagina del rinvio invece dello stato, e piu' sotto invece delle modifiche.
+STATO=$(curl -sSfL "$BASE/state.txt")
 ULTIMO=$(echo "$STATO" | sed -n 's/^sequenceNumber=//p')
 QUANDO=$(echo "$STATO" | sed -n 's/^timestamp=//p' | tr -d '\\')
+# Senza questo controllo uno stato illeggibile non ferma niente: `ULTIMO` resta
+# vuoto, il confronto con `SEQ` fallisce, `seq` non produce nessun numero e lo
+# script esce dicendo di aver applicato zero modifiche. Da un cron, i dati
+# smetterebbero di aggiornarsi senza che nessuno se ne accorga.
+case "$ULTIMO" in
+  '' | *[!0-9]*)
+    echo "!! $BASE/state.txt non dice a che modifica e' Geofabrik: controllo non valido" >&2
+    exit 1 ;;
+esac
 echo "== $IN: modifica $SEQ, Geofabrik e' alla $ULTIMO ($QUANDO)"
 
 if [ "$SEQ" -ge "$ULTIMO" ]; then
@@ -35,7 +48,7 @@ WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
 for S in $(seq $((SEQ + 1)) "$ULTIMO"); do
   # Il percorso spezza il numero a gruppi di tre cifre: 3960 -> 000/003/960
   P=$(printf '%03d/%03d/%03d' $((S / 1000000)) $((S / 1000 % 1000)) $((S % 1000)))
-  curl -sSf --retry 3 -o "$WORK/$(printf '%09d' "$S").osc.gz" "$BASE/$P.osc.gz"
+  curl -sSfL --retry 3 -o "$WORK/$(printf '%09d' "$S").osc.gz" "$BASE/$P.osc.gz"
 done
 N=$(ls "$WORK"/*.osc.gz | wc -l | tr -d ' ')
 echo "== applico $N modifiche ($(du -ch "$WORK"/*.osc.gz | tail -1 | cut -f1))"
