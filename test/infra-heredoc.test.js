@@ -46,3 +46,37 @@ describe('gli heredoc degli script di infra non eseguono i propri commenti', () 
     });
   }
 });
+
+/**
+ * `Dockerfile.print` costruisce l'entrypoint con un `printf` di una ventina di
+ * stringhe quotate. Un apostrofo dentro una di quelle stringhe chiude la
+ * stringa e ne apre un'altra: il Dockerfile resta valido, l'immagine si
+ * costruisce, e il guasto esce solo all'avvio del container come
+ * «Unterminated quoted string» — con il container in loop di riavvio.
+ * Successo il 24 novembre 2026, in produzione, mentre si correggeva un altro
+ * difetto. Qui l'entrypoint si genera e se ne controlla la sintassi.
+ */
+describe('l\'entrypoint generato dentro Dockerfile.print e\' uno script valido', () => {
+  it('ha sintassi corretta per sh', () => {
+    const df = readFileSync(new URL('../Dockerfile.print', import.meta.url).pathname, 'utf8');
+    const m = df.match(/^RUN printf '%s\\n' \\\n([\s\S]*?)\n\s*> \/usr\/local\/bin\/print-entrypoint/m);
+    expect(m, 'il blocco che genera print-entrypoint non si trova piu\': aggiornare questo test').not.toBeNull();
+
+    // le righe sono stringhe shell quotate: le si rende senza eseguire nulla
+    const righe = m[1].split('\n').map(r => r.replace(/\s*\\$/, '').trim()).filter(Boolean);
+    const corpo = righe.map(r => {
+      // ogni riga e' una o piu' stringhe concatenate: '...' oppure "..."
+      const pezzi = r.match(/'[^']*'|"[^"]*"/g);
+      expect(pezzi, `riga non interpretabile come stringhe quotate: ${r}`).not.toBeNull();
+      // se la concatenazione non copre tutta la riga, dentro c'e' un apostrofo sfuggito
+      expect(pezzi.join('').length, `quoting rotto (apostrofo dentro una stringa?): ${r}`).toBe(r.length);
+      return pezzi.map(x => x.slice(1, -1)).join('');
+    }).join('\n');
+
+    expect(corpo.split('\n')[0]).toBe('#!/bin/sh');
+    expect(corpo).toMatch(/rm -f "\/tmp\/\.X\$\{N\}-lock"/);   // il lock stantio si rimuove
+    expect(corpo).toMatch(/kill -0 "\$XVFB"/);                  // Xvfb vivo, non solo il socket
+    expect(corpo).toMatch(/xdpyinfo/);                          // e il display risponde
+    expect(corpo).toMatch(/exec "\$@"/);                        // node figlio diretto di tini
+  });
+});
