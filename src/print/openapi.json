@@ -1,0 +1,306 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "wm-tiles — servizio di stampa",
+    "version": "1.0.0",
+    "summary": "Una mappa a risoluzione di stampa a partire dalle geometrie di un percorso.",
+    "description": "Questo documento **e' la validazione**, non una sua descrizione.\n`src/print/route.js` compila con Ajv lo schema `PrintMapRequest` che sta qui\ndentro e rifiuta con `400` tutto cio' che non lo rispetta: una regola scritta\nqui vale, una regola scritta solo in prosa non esiste. Il servizio finto\n(`src/print/fake.js`) condivide la stessa validazione, quindi uno shard puo'\nsvilupparci contro.\n\nI numeri (tetti, valori di serie, tempi) sono presi di qui anche dal codice\n(`src/print/limits.js` li legge da `x-wm-limits`): non ci sono due copie da\ntenere allineate.\n\n**Tre regole non sono esprimibili in JSON Schema** e le applica il codice subito\ndopo la validazione, con gli stessi `400`: sono elencate in\n`x-wm-regole-aggiuntive` con il numero che usano.\n\nLa guida in prosa, con le cose che sorprendono (la scala che esce\ndall'inquadratura, i due significati del `503`, il costo di una pagina), e'\n`docs/howto/stampa-mappe.md`.",
+    "license": {"name": "ISC"}
+  },
+  "servers": [
+    {"url": "https://{host}", "description": "il servizio di stampa: NON e' l'host delle tile, gira in un container a se'", "variables": {"host": {"default": "print.example.invalid", "description": "l'indirizzo lo da' chi gestisce l'host"}}},
+    {"url": "http://127.0.0.1:8099", "description": "la finta in locale (`node src/print/fake.js`)"}
+  ],
+  "tags": [{"name": "print", "description": "Pagine da stampare"}],
+  "x-wm-limits": {
+    "maxBodyBytes": 2097152,
+    "maxPixels": 12000000,
+    "maxSide": 6000,
+    "maxCoordinates": 100000,
+    "maxCoordDepth": 8,
+    "defaultPaddingMm": 8,
+    "maxSlots": 2,
+    "renderTimeoutMs": 120000,
+    "retryAfterSeconds": 30,
+    "retryAfterTimeoutSeconds": 60,
+    "defaultRpm": 30,
+    "rateWindowMs": 60000
+  },
+  "x-wm-regole-aggiuntive": [
+    {
+      "id": "coordinate",
+      "descrizione": "La somma delle coordinate di TUTTE le feature non puo' superare `x-wm-limits.maxCoordinates` (100.000). E' un totale sulla collection, che nessun vincolo di JSON Schema esprime: lo conta il codice e risponde `400` nominando `geometry`. E' anche il motivo per cui `GeometryCollection` si rifiuta — le sue geometrie stanno in `geometries` e il conto ne vedeva zero."
+    },
+    {
+      "id": "pagina",
+      "descrizione": "Il lato e il numero di pixel della pagina dipendono da `page.format`, `page.orientation` e `page.dpi` insieme: oltre `x-wm-limits.maxSide` (6.000 px) per lato o `x-wm-limits.maxPixels` (12 milioni) in tutto si risponde `400` chiedendo un dpi piu' basso. Un A4 a 300 dpi e' 2480 x 3508, cioe' 8,7 milioni di pixel."
+    },
+    {
+      "id": "inquadratura",
+      "descrizione": "L'inquadratura si calcola dalla `FeatureCollection`: un riquadro che attraversa l'antimeridiano si rifiuta con `400` invece di indovinare da che parte girare, e un `padding` che non lascia area utile sulla pagina (`padding * 2 >= lato corto`) pure."
+    }
+  ],
+  "paths": {
+    "/v1/print/map": {
+      "post": {
+        "operationId": "printMap",
+        "tags": ["print"],
+        "summary": "Rende una pagina da stampare",
+        "description": "Riceve le geometrie di un percorso e restituisce **un PNG a risoluzione di\nstampa**, gia' inquadrato su quelle geometrie, con barra di scala, freccia del\nnord e attribuzioni.\n\nNon e' un endpoint da chiamare dentro una richiesta web: una pagina A4 a 300 dpi\ncosta fra 3 e 5,2 secondi e circa 1 GB di memoria, e i rendering in parallelo\nsono `x-wm-limits.maxSlots` (2). Il consumatore previsto e' un job in coda.\n\n**La scala non si chiede**: esce dall'inquadratura e la dice l'header\n`x-wm-scale`.",
+        "security": [{"shardToken": []}],
+        "requestBody": {
+          "required": true,
+          "description": "Il corpo, al massimo `x-wm-limits.maxBodyBytes` byte (2 MiB): oltre e' `413`.",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/PrintMapRequest"},
+              "examples": {
+                "unaTraccia": {
+                  "summary": "Una traccia rossa su un A4 verticale a 300 dpi",
+                  "value": {
+                    "geometry": {
+                      "type": "FeatureCollection",
+                      "features": [
+                        {
+                          "type": "Feature",
+                          "properties": {"stroke": "#e2001a", "stroke-width": 4},
+                          "geometry": {"type": "LineString", "coordinates": [[10.5, 43.78], [10.52, 43.8], [10.55, 43.81]]}
+                        }
+                      ]
+                    },
+                    "page": {"format": "a4", "orientation": "portrait", "dpi": 300},
+                    "styleId": "webmapp",
+                    "mapInfo": true
+                  }
+                },
+                "senzaCorredo": {
+                  "summary": "A5 orizzontale, corredo solo negli header (lo compone il PDF)",
+                  "value": {
+                    "geometry": {
+                      "type": "FeatureCollection",
+                      "features": [
+                        {"type": "Feature", "properties": {}, "geometry": {"type": "Point", "coordinates": [10.5, 43.78]}}
+                      ]
+                    },
+                    "page": {"format": "a5", "orientation": "landscape", "dpi": 150},
+                    "mapInfo": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "La pagina. Il corredo e' SEMPRE negli header, anche con `mapInfo: false`.",
+            "headers": {
+              "Cache-Control": {"description": "`no-store`: le geometrie non restano in nessuna cache, nemmeno di un proxy.", "schema": {"type": "string", "const": "no-store"}},
+              "x-wm-scale": {"description": "La scala calcolata dall'inquadratura, da stampare sotto la mappa.", "schema": {"type": "string", "pattern": "^1:[0-9]+$"}, "example": "1:42736"},
+              "x-wm-dpi": {"description": "La densita' con cui e' stato reso il PNG.", "schema": {"type": "string", "pattern": "^[0-9]+$"}, "example": "300"},
+              "x-wm-attribution": {"description": "L'attribuzione obbligatoria, in BYTE UTF-8 (`©` e' C2 A9): in PHP si legge senza conversioni, passata per latin1 esce malformata.", "schema": {"type": "string"}, "example": "© OpenStreetMap · © Webmapp"}
+            },
+            "content": {"image/png": {"schema": {"type": "string", "format": "binary"}}}
+          },
+          "400": {
+            "description": "Richiesta non valida: non riprovare, e' un difetto del chiamante. **Il messaggio nomina il CAMPO, mai il suo contenuto** (R11: dagli shard arrivano anche tracce non pubblicate), quindi dalla risposta non si ricava quale coordinata fosse sbagliata.",
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}, "example": {"error": "page.dpi deve essere un intero fra 72 e 600"}}}
+          },
+          "401": {
+            "description": "Token mancante o sconosciuto: non riprovare. Un deploy senza il file dei token risponde cosi' a tutti — e' un endpoint chiuso, non aperto.",
+            "headers": {"WWW-Authenticate": {"schema": {"type": "string", "const": "Bearer"}}},
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}, "example": {"error": "token mancante o non valido"}}}
+          },
+          "413": {
+            "description": "Corpo oltre `x-wm-limits.maxBodyBytes`: non riprovare, semplifica la geometria.",
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+          },
+          "429": {
+            "description": "Troppe richieste per QUEL token (il limite e' per token, non per indirizzo). **Rispetta `Retry-After`.**",
+            "headers": {"Retry-After": {"description": "Secondi da aspettare: quanto manca alla fine della finestra del minuto.", "required": true, "schema": {"type": "integer", "minimum": 1}}},
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+          },
+          "502": {
+            "description": "Il rendering e' fallito. Riprovabile una volta; poi e' un guasto da segnalare. Il messaggio del renderer resta nei log, non nella risposta.",
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}, "example": {"error": "rendering fallito"}}}
+          },
+          "503": {
+            "description": "Servizio pieno. Sono DUE guasti diversi con la stessa risposta: «siamo carichi» (i due slot occupati) e «siamo rotti» (rendering abbandonati dopo la scadenza, che solo il riciclo del processo rimuove). Dal di fuori non si distinguono: **rispetta `Retry-After`** e metti un tetto ai tentativi.",
+            "headers": {"Retry-After": {"description": "Secondi da aspettare (`x-wm-limits.retryAfterSeconds`).", "required": true, "schema": {"type": "integer", "minimum": 1}}},
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}, "example": {"error": "tutti i rendering disponibili sono occupati"}}}
+          },
+          "504": {
+            "description": "Il rendering ha superato `x-wm-limits.renderTimeoutMs`. **Rispetta `Retry-After`**, che NON e' il tempo massimo: il rendering abbandonato e' ancora in volo e tornare subito trova il servizio al peggio.",
+            "headers": {"Retry-After": {"description": "Secondi da aspettare (`x-wm-limits.retryAfterTimeoutSeconds`).", "required": true, "schema": {"type": "integer", "minimum": 1}}},
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+          }
+        }
+      }
+    },
+    "/v1/print/openapi.json": {
+      "get": {
+        "operationId": "printOpenapi",
+        "tags": ["print"],
+        "summary": "Questo documento",
+        "description": "Lo schema servito dal servizio stesso, senza token: e' quello contro cui la rotta valida davvero, quindi la versione in esecuzione non puo' divergere dalla documentazione.",
+        "responses": {"200": {"description": "Il documento OpenAPI.", "content": {"application/json": {"schema": {"type": "object"}}}}}
+      }
+    },
+    "/v1/print/docs": {
+      "get": {
+        "operationId": "printDocs",
+        "tags": ["print"],
+        "summary": "La pagina di lettura dello schema",
+        "description": "Una pagina HTML che rende questo documento con Redoc preso da CDN. Niente pacchetto npm in piu' nel runtime: se la rete non c'e', resta `/v1/print/openapi.json`.",
+        "responses": {"200": {"description": "La pagina.", "content": {"text/html": {"schema": {"type": "string"}}}}}
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "printHealth",
+        "tags": ["print"],
+        "summary": "Controllo di salute",
+        "description": "Senza token. La finta risponde con in piu' `fake: true`, cosi' un test capisce di stare parlando con lei.",
+        "responses": {
+          "200": {
+            "description": "Il servizio risponde.",
+            "content": {"application/json": {"schema": {"type": "object", "properties": {"status": {"type": "string", "const": "ok"}, "fake": {"type": "boolean"}}, "required": ["status"]}, "example": {"status": "ok"}}}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "shardToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "x-wm-min-token-length": 24,
+        "description": "Un token per shard, in `Authorization: Bearer <token>` (lo schema si confronta senza guardare le maiuscole, RFC 9110). Lungo almeno `x-wm-min-token-length` caratteri. **Non c'e' nessun token in questo repo, nemmeno di esempio**: il repo e' pubblico, e un esempio plausibile prima o poi viene copiato da qualcuno che lo crede valido. Lo si chiede a chi gestisce l'host, dicendo per quale shard."
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "description": "Il corpo di ogni errore. Non contiene mai le geometrie ricevute, nemmeno un pezzo.",
+        "required": ["error"],
+        "additionalProperties": false,
+        "properties": {"error": {"type": "string", "description": "Il campo che non va, mai il valore arrivato."}}
+      },
+      "PrintMapRequest": {
+        "type": "object",
+        "description": "Il corpo di `POST /v1/print/map`. **Un campo non previsto e' un errore, non un campo ignorato**: uno shard che scrive `styleUrl` invece di `styleId` deve accorgersene subito, non ricevere una pagina con lo stile di serie. Nessun campo accetta un URL o un percorso: un indirizzo accettato qui sarebbe una richiesta verso la rete interna dell'host.",
+        "additionalProperties": false,
+        "required": ["geometry", "page"],
+        "properties": {
+          "geometry": {"$ref": "#/components/schemas/FeatureCollection"},
+          "page": {"$ref": "#/components/schemas/Page"},
+          "styleId": {
+            "type": "string",
+            "enum": ["webmapp"],
+            "default": "webmapp",
+            "description": "Lo stile, per NOME: e' una mappa chiusa risolta dal server, mai un indirizzo."
+          },
+          "set": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{12}$",
+            "description": "Il set di layer, le stesse 12 cifre esadecimali di `/style.json?set=`. Senza, il set di serie del server."
+          },
+          "padding": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Margine attorno all'inquadratura, in PIXEL della pagina. Senza, `x-wm-limits.defaultPaddingMm` millimetri di carta convertiti al dpi chiesto (a 300 dpi sono 94 px). Un valore che non lascia area utile e' un `400` (vedi `x-wm-regole-aggiuntive`)."
+          },
+          "maxZoom": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 19,
+            "default": 16,
+            "description": "Il livello oltre il quale non si ingrandisce, anche se la traccia e' corta. Non serve ad avere una scala fissa: la scala resta quella dell'inquadratura."
+          },
+          "mapInfo": {
+            "type": "boolean",
+            "default": true,
+            "description": "Barra di scala, nord e attribuzioni DISEGNATI sulla pagina. Con `false` la pagina e' mappa e basta, ma gli header `x-wm-*` ci sono comunque: serve a comporre il corredo nel font del PDF. Le attribuzioni restano obbligatorie per la licenza di OpenStreetMap."
+          }
+        }
+      },
+      "Page": {
+        "type": "object",
+        "description": "Il foglio. I lati dichiarati sono quelli verticali; `landscape` li scambia.",
+        "additionalProperties": false,
+        "required": ["format", "orientation", "dpi"],
+        "properties": {
+          "format": {"type": "string", "enum": ["a4", "a5"], "description": "A4 = 210 x 297 mm, A5 = 148 x 210 mm."},
+          "orientation": {"type": "string", "enum": ["portrait", "landscape"]},
+          "dpi": {"type": "integer", "minimum": 72, "maximum": 600, "description": "300 e' la risoluzione di stampa chiesta dal capitolato. Il tetto vero non e' questo ma il numero di pixel della pagina: vedi `x-wm-regole-aggiuntive`."}
+        }
+      },
+      "FeatureCollection": {
+        "type": "object",
+        "description": "Le geometrie da disegnare, che sono ANCHE l'inquadratura: la pagina si centra su di esse. Campi in piu' si ignorano (un `bbox` GeoJSON non e' un errore), ma non si leggono.",
+        "required": ["type", "features"],
+        "properties": {
+          "type": {"const": "FeatureCollection"},
+          "features": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 500,
+            "description": "Almeno una: senza geometrie non c'e' inquadratura da calcolare, e una pagina vuota sarebbe un errore silenzioso.",
+            "items": {"$ref": "#/components/schemas/Feature"}
+          }
+        }
+      },
+      "Feature": {
+        "type": "object",
+        "description": "Una feature GeoJSON. Il disegno viaggia nelle sue `properties`, non in un parametro del corpo.",
+        "required": ["type", "geometry"],
+        "properties": {
+          "type": {"const": "Feature"},
+          "geometry": {"$ref": "#/components/schemas/Geometry"},
+          "properties": {"$ref": "#/components/schemas/FeatureProperties"}
+        }
+      },
+      "FeatureProperties": {
+        "type": ["object", "null"],
+        "description": "Solo `stroke` e `stroke-width` (convenzione simplestyle-spec) arrivano al rendering: **tutto il resto viene buttato via** — nomi, id, descrizioni. Non e' una svista, e' R11: le tracce non pubblicate degli shard non devono entrare nel processo. Mandarli non e' un errore, ma non aspettarti che un `title` finisca sulla mappa.",
+        "properties": {
+          "stroke": {
+            "type": ["string", "null"],
+            "pattern": "^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$",
+            "description": "Solo esadecimale, `#rgb` o `#rrggbb`. Niente nomi di colore, niente `rgba()`, niente `url(...)`."
+          },
+          "stroke-width": {
+            "type": ["number", "null"],
+            "exclusiveMinimum": 0,
+            "maximum": 40,
+            "description": "Pixel css. Viene moltiplicato per il fattore di stampa, quindi `4` non sono 4 pixel sul PNG."
+          }
+        }
+      },
+      "Geometry": {
+        "type": "object",
+        "description": "Una delle sei geometrie semplici. **`GeometryCollection` si rifiuta con `400`**: se ne hai una, spacchettala in una feature per geometria. Le sue geometrie non stanno in `coordinates` ma in `geometries`, quindi il tetto delle coordinate non le contava — era il modo per aggirarlo.",
+        "required": ["type"],
+        "properties": {
+          "type": {"type": "string", "enum": ["Point", "MultiPoint", "LineString", "MultiLineString", "Polygon", "MultiPolygon"]},
+          "coordinates": {"$ref": "#/components/schemas/Coordinates"}
+        }
+      },
+      "Coordinates": {
+        "description": "Le coordinate, in gradi, `[lon, lat]`. Qui lo schema vincola SOLO la profondita' di annidamento, al massimo `x-wm-limits.maxCoordDepth` (8) livelli: la catena `CoordinatesDepth1` … `CoordinatesDepth8` e' lunga esattamente quel numero. Senza quel tetto una lista di 20.000 livelli faceva esplodere la ricorsione del conteggio. Che la forma sia quella giusta PER IL TIPO (un Point e' una posizione, una LineString una lista di posizioni) lo verifica il calcolo dell'inquadratura subito dopo, che rifiuta con `400` cio' che non sa leggere.",
+        "anyOf": [
+          {"$ref": "#/components/schemas/CoordinatesDepth1"},
+          {"not": {"type": "array"}}
+        ]
+      },
+      "CoordinatesDepth1": {"type": "array", "items": {"anyOf": [{"$ref": "#/components/schemas/CoordinatesDepth2"}, {"not": {"type": "array"}}]}},
+      "CoordinatesDepth2": {"type": "array", "items": {"anyOf": [{"$ref": "#/components/schemas/CoordinatesDepth3"}, {"not": {"type": "array"}}]}},
+      "CoordinatesDepth3": {"type": "array", "items": {"anyOf": [{"$ref": "#/components/schemas/CoordinatesDepth4"}, {"not": {"type": "array"}}]}},
+      "CoordinatesDepth4": {"type": "array", "items": {"anyOf": [{"$ref": "#/components/schemas/CoordinatesDepth5"}, {"not": {"type": "array"}}]}},
+      "CoordinatesDepth5": {"type": "array", "items": {"anyOf": [{"$ref": "#/components/schemas/CoordinatesDepth6"}, {"not": {"type": "array"}}]}},
+      "CoordinatesDepth6": {"type": "array", "items": {"anyOf": [{"$ref": "#/components/schemas/CoordinatesDepth7"}, {"not": {"type": "array"}}]}},
+      "CoordinatesDepth7": {"type": "array", "items": {"anyOf": [{"$ref": "#/components/schemas/CoordinatesDepth8"}, {"not": {"type": "array"}}]}},
+      "CoordinatesDepth8": {"type": "array", "items": {"not": {"type": "array"}}}
+    }
+  }
+}

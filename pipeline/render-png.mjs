@@ -38,7 +38,8 @@ import {mkdirSync, readFileSync, renameSync, writeFileSync} from 'node:fs';
 import {dirname, join} from 'node:path';
 import {parseZxy, raggruppa, tileInBbox, vistaMetatile} from '../src/raster/tiles.js';
 import {adattaStile, localizza, PIXEL_RATIO} from '../src/raster/stile-nativo.js';
-import {componi, decodificaTerrarium, fasciaDi, grigi, PIXEL_Z0, quoteVista} from '../src/raster/ombra.js';
+import {decodificaTerrarium, fasciaDi, grigi, PIXEL_Z0, quoteVista} from '../src/raster/ombra.js';
+import {createMaps, renderFrame} from '../src/print/render.js';
 
 const argv = process.argv.slice(2);
 const opz = (nome, def) => {
@@ -84,8 +85,6 @@ if (SOLO) for (const l of stile.layers) if (!SOLO.has(l.id)) (l.layout ??= {}).v
 // l'ombra sta sopra le superfici e sotto le curve di livello, come posizionaOmbra() della preview
 const iOmbra = stile.layers.findIndex(l => l.id.startsWith('contour'));
 if (iOmbra < 0) throw new Error('nessun layer contour: non so dove mettere l\'ombreggiatura');
-const sotto = {...stile, layers: stile.layers.slice(0, iOmbra)};
-const sopra = {...stile, layers: stile.layers.slice(iOmbra).filter(l => l.type !== 'background')};
 const fasce = stile.metadata?.['wm:hillshade']?.fasce ?? [];
 const terrain = stile.sources.terrain;
 const DEM_MIN = terrain?.minzoom ?? 8;
@@ -99,27 +98,7 @@ mbgl.on('message', m => {
   if (m.severity === 'ERROR') errori++;
   if (m.severity === 'WARNING' || m.severity === 'ERROR') console.error(`  maplibre ${m.severity}: ${m.text}`);
 });
-const vuoto = Buffer.alloc(0);
-// un errore di rete transitorio (connessione chiusa dal server) si riprova:
-// alla prima perdita il blocco intero non si disegnava e il processo cadeva
-const prendi = (url, prove = 3) => fetch(url).catch(e => (prove > 1
-  ? new Promise(ok => setTimeout(ok, 200)).then(() => prendi(url, prove - 1)) : Promise.reject(e)));
-const richiesta = (req, cb) => {
-  prendi(req.url).then(async r => {
-    // fuori copertura il server risponde 204 o 404: tile vuota, non errore
-    if (r.status === 204 || r.status === 404) return cb(null, {data: vuoto});
-    if (!r.ok) return cb(new Error(`${r.status} ${req.url}`));
-    cb(null, {data: Buffer.from(await r.arrayBuffer())});
-  }).catch(e => cb(e));
-};
-const nuovaMappa = s => {
-  const m = new mbgl.Map({request: richiesta, ratio: PIXEL_RATIO});
-  m.load(s);
-  return m;
-};
-const mSotto = nuovaMappa(sotto);
-const mSopra = nuovaMappa(sopra);
-const disegna = (m, vista) => new Promise((ok, ko) => m.render(vista, (e, b) => (e ? ko(e) : ok(b))));
+const mappe = createMaps(stile);
 
 // --- quote del DEM -----------------------------------------------------------------
 const cacheDem = new Map();
@@ -162,17 +141,17 @@ async function mosaicoDem(zd, u0, v0, Wd, Hd) {
 }
 
 /**
- * Quote della vista N x N con angolo (x0, y0) in pixel mondo a zoom z, piu' un
+ * Quote della vista width x height con angolo (x0, y0) in pixel mondo a zoom z, piu' un
  * bordo per la finestra della pendenza. Fino all'ultimo livello del DEM sono i
  * suoi punti, uno per pixel; oltre, interpolate fra i punti dell'ultimo livello.
  */
-async function quoteDellaVista(z, x0, y0, N) {
+async function quoteDellaVista(z, x0, y0, width, height) {
   const zd = Math.min(z, DEM_MAX), s = 2 ** (z - zd), B = 3 * s;
-  const u0 = Math.floor((x0 - B + 0.5) / s - 0.5), u1 = Math.floor((x0 + N + B - 0.5) / s - 0.5) + 1;
-  const v0 = Math.floor((y0 - B + 0.5) / s - 0.5), v1 = Math.floor((y0 + N + B - 0.5) / s - 0.5) + 1;
+  const u0 = Math.floor((x0 - B + 0.5) / s - 0.5), u1 = Math.floor((x0 + width + B - 0.5) / s - 0.5) + 1;
+  const v0 = Math.floor((y0 - B + 0.5) / s - 0.5), v1 = Math.floor((y0 + height + B - 0.5) / s - 0.5) + 1;
   const Wd = u1 - u0 + 1, Hd = v1 - v0 + 1;
   const D = await mosaicoDem(zd, u0, v0, Wd, Hd);
-  return {E: quoteVista(D, Wd, u0, v0, x0, y0, N, B, s), B, s, passo: PIXEL_Z0 / 2 ** zd};
+  return {E: quoteVista(D, Wd, u0, v0, x0, y0, width, height, B, s), B, s, passo: PIXEL_Z0 / 2 ** zd};
 }
 
 // --- i metatile ----------------------------------------------------------------------
@@ -185,16 +164,14 @@ try {
    try {
     const v = vistaMetatile(m, MARGINE);
     const N = v.pixel;
-    const vista = {zoom: m.z, center: [v.lon, v.lat], width: N / PIXEL_RATIO, height: N / PIXEL_RATIO, bearing: 0, pitch: 0};
-    const a = await disegna(mSotto, vista);
-    const b = await disegna(mSopra, vista);
-    let f = null, sh = null;
-    if (m.z >= DEM_MIN && terrain) {
-      f = fasciaDi(fasce, m.z);
-      const q = await quoteDellaVista(m.z, m.mx * m.lato * 256 - MARGINE, m.my * m.lato * 256 - MARGINE, N);
-      sh = grigi(q.E, N, q.B, q.passo, f, q.s);
-    }
-    const rgb = componi(a, b, sh, f, N);
+    // l'ombra la calcola il chiamante dagli stessi angoli interi del metatile: ricavarli dal centro darebbe resti
+    const shade = m.z >= DEM_MIN && terrain ? async () => {
+      const f = fasciaDi(fasce, m.z);
+      const q = await quoteDellaVista(m.z, m.mx * m.lato * 256 - MARGINE, m.my * m.lato * 256 - MARGINE, N, N);
+      return {f, sh: grigi(q.E, N, N, q.B, q.passo, f, q.s)};
+    } : null;
+    const rgb = await renderFrame({style: stile, center: [v.lon, v.lat], zoom: m.z, width: N, height: N,
+      ratio: PIXEL_RATIO, shade, maps: mappe});
     for (const t of m.tiles) {
       const png = await sharp(rgb, {raw: {width: N, height: N, channels: 3}}).extract(v.ritaglio(t)).png().toBuffer();
       const dest = join(OUT, String(t.z), String(t.x), `${t.y}.png`);
@@ -214,8 +191,7 @@ try {
    }
   }
 } finally {
-  mSotto.release();
-  mSopra.release();
+  mappe.release();
 }
 console.log(`  fatto: ${scritte} PNG in ${OUT}`);
 if (falliti) console.error(`  ${falliti} metatile non disegnati: i loro PNG mancano`);

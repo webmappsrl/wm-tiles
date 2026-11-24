@@ -12,6 +12,9 @@ import {
   listVersions,
   readProvenance,
 } from './archive/store.js';
+import {createLimits} from './print/limits.js';
+import {printRouter} from './print/route.js';
+import {loadTokens} from './print/tokens.js';
 import {filterLayers, layerNames} from './tiles/filter.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -448,6 +451,42 @@ export function createApp() {
   app.get('/style-openlayers.json', serviStyle('openlayers'));
   app.get('/style-maplibre.json', serviStyle('maplibre'));
 
+  // La mappa a formato pagina per la stampa (oc:9011): l'unica rotta in
+  // SCRITTURA del server. Il percorso porta un numero di versione perche'
+  // wm-tiles e gli shard che la chiamano si rilasciano in momenti diversi (R1).
+  // Il corpo si legge dentro al router, con il suo tetto: il resto del server
+  // non ha nessun parser, e non deve acquistarne uno.
+  //
+  // Il router si monta SOLO se `PRINT_TOKENS_PATH` e' impostato, e questo e' il
+  // modo in cui R6 — «il processo che serve le tile non rende pagine» — vale per
+  // COSTRUZIONE invece che per configurazione. Montandolo sempre, il processo
+  // delle tile era capace di rendere: la review del Task 10 ha avviato
+  // `src/server.js` con la variabile impostata e ha ottenuto un PNG in-process.
+  // Senza la variabile la rotta non esiste proprio (404), e un drop-in systemd
+  // che la impostasse di nascosto non basterebbe comunque a farla comparire
+  // senza anche un file di token.
+  // Con la variabile impostata ma senza il file (fuori dal repo, che e'
+  // pubblico) la rotta c'e' e risponde 401 a tutti: un deploy senza token e' un
+  // endpoint chiuso, non uno aperto.
+  const printTokensPath = process.env.PRINT_TOKENS_PATH;
+  if (printTokensPath) {
+    const printTokens = loadTokens(printTokensPath);
+    if (!printTokens.size) {
+      log('warn', 'print: nessun token', {tokensPath: printTokensPath, effect: '/v1/print/map risponde 401'});
+    }
+    // i tetti si tengono qui fuori perche' lo spegnimento mite deve poterli
+    // interrogare: `inFlight()` dice quanti rendering stanno ancora girando
+    const printLimits = createLimits();
+    app.locals.printLimits = printLimits;
+    app.use('/v1/print', printRouter({
+      tokens: printTokens,
+      limits: printLimits,
+      // il renderer legge stile, glifi, sprite, tile e DEM dal server stesso,
+      // mai dall'indirizzo pubblico: passando dalla CDN pagheremmo ogni tile
+      baseUrl: process.env.PRINT_BASE_URL ?? `http://127.0.0.1:${PORT}`,
+    }));
+  }
+
   // Namespace riservato alle tiles verificate: la forma di URL e' fissata da ora.
   app.get('/p/:version/:set/:archive/:z/:x/:y.pbf', (_req, res) => {
     res.status(501).json({error: 'verified namespace non implementato in questo ciclo'});
@@ -661,11 +700,67 @@ export function createApp() {
   return app;
 }
 
+/**
+ * Spegnimento mite (oc:9011, R6): smette di accettare richieste nuove e aspetta
+ * i rendering in volo.
+ *
+ * Serve perche' il container della stampa viene RICICLATO ogni sei ore
+ * (`wm-print-recycle.timer`) e un riciclo che capita in mezzo a un rendering non
+ * deve troncarlo. Il `stop_grace_period` di compose da solo non bastava: senza
+ * un gestore, SIGTERM uccide Node all'istante e la pagina a meta' si perde —
+ * `docker stop -t 20` tornava in zero secondi (review del Task 10).
+ *
+ * Due passi, in quest'ordine:
+ *  1. `server.close()` chiude l'ascolto, quindi niente connessioni nuove; le
+ *     richieste gia' aperte finiscono. `closeIdleConnections` serve perche'
+ *     altrimenti una connessione keep-alive senza richieste in corso tiene
+ *     aperto il server per sempre.
+ *  2. si aspetta che `inFlight` torni a zero. NON e' lo stesso di «nessuna
+ *     richiesta aperta»: alla scadenza di R16 una `render()` di maplibre-native
+ *     non si annulla e continua, e ucciderla a meta' e' esattamente cio' che
+ *     questo gestore deve evitare.
+ *
+ * Nessun tempo massimo qui dentro: il tetto e' il `stop_grace_period` del
+ * container (150 s), oltre il quale arriva il SIGKILL del demone. Un secondo
+ * segnale esce subito, cosi' chi ha fretta ha un modo di dirlo.
+ */
+export function spegnimentoMite(server, app, segnale, {esci = code => process.exit(code), log: scrivi = log} = {}) {
+  const limits = app?.locals?.printLimits;
+  const inVolo = () => (limits ? limits.inFlight() : 0);
+  scrivi('info', 'spegnimento: non accetto piu\' richieste', {segnale, inFlight: inVolo()});
+  server.close(() => {
+    const attendi = () => {
+      if (inVolo() > 0) {
+        setTimeout(attendi, 500);
+        return;
+      }
+      scrivi('info', 'spegnimento: nessun rendering in volo, esco', {segnale});
+      esci(0);
+    };
+    attendi();
+  });
+  // una connessione keep-alive inattiva terrebbe aperto il server all'infinito
+  server.closeIdleConnections?.();
+  return server;
+}
+
 const invokedDirectly = process.argv[1] && process.argv[1].endsWith('server.js');
 if (invokedDirectly) {
-  createApp().listen(PORT, HOST, () => {
+  const app = createApp();
+  const server = app.listen(PORT, HOST, () => {
     log('info', 'server in ascolto', {port: PORT, archiveDir: ARCHIVE_DIR});
     console.log(`\n  preview:  http://localhost:${PORT}/preview`);
     console.log(`  versione: http://localhost:${PORT}/version\n`);
   });
+  let spegnendo = false;
+  for (const segnale of ['SIGTERM', 'SIGINT']) {
+    process.on(segnale, () => {
+      if (spegnendo) {
+        log('warn', 'spegnimento: secondo segnale, esco subito', {segnale});
+        process.exit(1);
+      }
+      spegnendo = true;
+      spegnimentoMite(server, app, segnale);
+    });
+  }
 }

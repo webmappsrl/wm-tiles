@@ -1,0 +1,188 @@
+# Build e deploy del servizio di stampa (oc:9011, R12): da quando il rendering
+# e' un container e non piu' un'unita' systemd, il repo ha una build propria.
+#
+# Due lavori, con due scopi diversi:
+#  - `build` gira a ogni push e verifica che l'immagine si costruisca ancora. Il
+#    binario di maplibre-native 6.2.0 e' precompilato su Ubuntu 22.04 e cerca
+#    ICU 70: un cambio di base la' si vede solo provando, e `ldd` lo dice subito
+#    invece di lasciarlo scoprire al primo rendering in produzione. Qui dentro
+#    gira anche LA SUITE, nell'immagine: vedi il commento del passo.
+#  - `deploy` NON gira da solo: si lancia a mano (`workflow_dispatch`), e solo da
+#    `main`. Un push su main non deve riavviare un servizio in produzione senza
+#    che qualcuno lo abbia chiesto.
+#
+# Il repo e' PUBBLICO: indirizzo, utente, chiave e chiave d'host stanno nei
+# secret del repository (`PRINT_SSH_HOST`, `PRINT_SSH_USER`, `PRINT_SSH_KEY`,
+# `PRINT_SSH_KNOWN_HOSTS`), mai nei file. Senza, il lavoro di deploy fallisce
+# subito e lo dice: e' il fallimento sicuro. I secret passano solo da `env:`,
+# non per interpolazione dentro i comandi, cosi' non finiscono nei log; niente
+# `set -x`; e `pull_request` non espone i secret alle fork.
+name: print
+
+# nessun token di scrittura: questo workflow non scrive niente su GitHub
+permissions:
+  contents: read
+
+on:
+  push:
+    paths:
+      - 'Dockerfile.print'
+      - '.dockerignore'
+      - 'compose.yml'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'src/**'
+      - 'test/**'
+      - '.github/workflows/print.yml'
+  pull_request:
+    paths:
+      - 'Dockerfile.print'
+      - '.dockerignore'
+      - 'compose.yml'
+      - 'src/print/**'
+      - 'test/**'
+      - '.github/workflows/print.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Costruisci l'immagine
+        run: docker build -f Dockerfile.print -t wm-tiles-print:ci .
+      - name: Le librerie del modulo nativo ci sono
+        # senza questo controllo un cambio di base si scopre al primo rendering:
+        # `require` fallirebbe in produzione, non qui
+        run: |
+          docker run --rm --init wm-tiles-print:ci \
+            node -e "import('@maplibre/maplibre-gl-native').then(() => console.log('maplibre-native: si carica'))"
+      - name: I font del corredo ci sono, chiaro e NERETTO
+        # senza fontconfig e DejaVu la barra di scala e le attribuzioni escono a
+        # quadratini, e non lo segnala nessun errore. Si controllano ENTRAMBE le
+        # famiglie: la barra di scala e' `font-weight="bold"`, e un'immagine con
+        # il solo chiaro passava il controllo e perdeva le etichette della barra.
+        run: |
+          docker run --rm --init wm-tiles-print:ci sh -c \
+            'fc-match sans-serif | grep -qi dejavu && echo "font chiaro: DejaVu presente"
+             fc-match sans-serif:bold | grep -qi dejavu && echo "font neretto: DejaVu presente"'
+      - name: Costruisci l'immagine dei test
+        run: docker build --target test -f Dockerfile.print -t wm-tiles-print:ci-test .
+      - name: La suite gira DENTRO l'immagine
+        # Senza questo passo la regressione che il Task 10 ha corretto non era
+        # sorvegliata da nessuna parte: il fattore di larghezza del testo del
+        # corredo dipende dal font, e sul Mac `sans-serif` e' Helvetica mentre
+        # nell'immagine e' DejaVu Sans, il 14% piu' largo. Riportando il difetto
+        # nel sorgente, sul Mac passavano 35 test su 35 mentre nell'immagine
+        # l'ultima etichetta della barra di scala usciva dal suo riquadro
+        # (verificato in entrambi i versi, review del Task 10). `npm test` non
+        # girava in CI da nessuna parte.
+        #
+        # Tre file si escludono perche' chiedono cio' che l'immagine NON ha, non
+        # perche' falliscano: `data/` (gli archivi delle tile, 43 GB, che il
+        # container di stampa non monta per progetto — legge tutto via HTTP dal
+        # server delle tile) e un server acceso. Girano sul Mac, dove `data/` c'e'.
+        run: |
+          docker run --rm --init wm-tiles-print:ci-test npm test -- \
+            --exclude 'test/style-per-renderer.test.js' \
+            --exclude 'test/dem-versione.test.js' \
+            --exclude 'test/png-identity.test.js'
+
+  deploy:
+    # workflow_dispatch E da main: un dispatch si puo' lanciare da QUALUNQUE ref,
+    # e senza il secondo controllo chiunque possa lanciarlo manderebbe in
+    # produzione il SHA di un branch qualsiasi.
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Chiave e host
+        # La chiave d'host arriva da un SECRET, non da `ssh-keyscan`. Con il
+        # keyscan si accettava alla cieca qualunque chiave a ogni deploy (TOFU a
+        # ogni giro, per giunta con stderr buttato): un dirottamento del DNS al
+        # momento del deploy avrebbe ricevuto la chiave privata.
+        # Per ricavarla, una volta, da una macchina fidata:
+        #   ssh-keyscan -H <host> | tee /dev/stderr | pbcopy
+        run: |
+          : "${SSH_HOST:?manca il secret PRINT_SSH_HOST}"
+          : "${SSH_USER:?manca il secret PRINT_SSH_USER}"
+          : "${SSH_KEY:?manca il secret PRINT_SSH_KEY}"
+          : "${SSH_KNOWN_HOSTS:?manca il secret PRINT_SSH_KNOWN_HOSTS}"
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+        env:
+          SSH_HOST: ${{ secrets.PRINT_SSH_HOST }}
+          SSH_USER: ${{ secrets.PRINT_SSH_USER }}
+          SSH_KEY: ${{ secrets.PRINT_SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.PRINT_SSH_KNOWN_HOSTS }}
+      - name: Build e riavvio sull'host
+        # L'immagine si costruisce SULL'HOST invece di passare per un registry:
+        # e' come il repo costruisce gia' l'immagine del renderer dei PNG
+        # (pipeline/render-png-docker.sh), e la base pinnata la rende ripetibile.
+        #
+        # La copia del codice e' SEPARATA da /srv/wm-tiles, da cui gira il server
+        # delle tile: un checkout la' cambierebbe i file sotto un processo vivo —
+        # bash rilegge gli script per posizione, e il repo lo dice esplicitamente.
+        #
+        # L'immagine prende un TAG uguale al SHA: senza, ogni `--build`
+        # sovrascriveva `:latest` e la precedente restava senza nome, quindi se la
+        # nuova fosse partita rotta non ci sarebbe stato niente a cui tornare.
+        # Il tag sta in `/srv/wm-print/.env`, che compose legge da solo, e quello
+        # di prima resta in `.env.precedente`.
+        #
+        # Lo script remoto passa da `bash -s` invece che dalla riga di comando di
+        # ssh: `set -euo pipefail` e' bash, e su un host con `dash` come shell di
+        # login il deploy falliva con un errore opaco. Le `${{ }}` le sostituisce
+        # Actions prima che qualunque shell veda il testo.
+        run: |
+          ssh -i ~/.ssh/id_deploy "$SSH_USER@$SSH_HOST" bash -s <<'EOS'
+          set -euo pipefail
+          D=/srv/wm-print
+          SHA='${{ github.sha }}'
+          [ -d "$D/.git" ] || git clone --quiet 'https://github.com/${{ github.repository }}.git' "$D"
+          cd "$D"
+          git fetch --quiet origin
+          git checkout --quiet --detach "$SHA"
+          touch .env
+          cp .env .env.precedente
+          { grep -v '^PRINT_TAG=' .env.precedente || true; printf 'PRINT_TAG=%s\n' "$SHA"; } > .env.nuovo
+          mv .env.nuovo .env
+          docker compose up -d --build print
+          EOS
+        env:
+          SSH_HOST: ${{ secrets.PRINT_SSH_HOST }}
+          SSH_USER: ${{ secrets.PRINT_SSH_USER }}
+      - name: Il servizio risponde
+        # /health dice soltanto «vivo e in ascolto»: i rendering abbandonati non
+        # li vede (vedi il commento in compose.yml). Qui basta a dire che il
+        # deploy non ha lasciato il container morto.
+        #
+        # La porta si legge da `.env`, come fa compose: inchiodare 8081 qui
+        # faceva fallire il controllo su un host che avesse cambiato PRINT_PORT,
+        # con il servizio in realta' sano.
+        #
+        # Se non risponde, il passo stampa il comando per TORNARE INDIETRO. Non
+        # lo esegue da solo: un rollback automatico su un deploy che forse e'
+        # solo lento ad avviarsi e' peggio del guasto.
+        run: |
+          ssh -i ~/.ssh/id_deploy "$SSH_USER@$SSH_HOST" bash -s <<'EOS'
+          set -euo pipefail
+          D=/srv/wm-print
+          PORTA=$( (grep -E '^PRINT_PORT=' "$D/.env" || echo PRINT_PORT=8081) | tail -1 | cut -d= -f2 )
+          for i in $(seq 1 30); do
+            curl -fsS -o /dev/null "http://127.0.0.1:$PORTA/health" && exit 0
+            sleep 2
+          done
+          echo "!! /health non risponde sulla porta $PORTA"
+          docker compose -f "$D/compose.yml" logs --tail 50 print || true
+          echo "per tornare alla versione di prima, sull'host:"
+          echo "  cd $D && cp .env.precedente .env && docker compose up -d print"
+          exit 1
+          EOS
+        env:
+          SSH_HOST: ${{ secrets.PRINT_SSH_HOST }}
+          SSH_USER: ${{ secrets.PRINT_SSH_USER }}

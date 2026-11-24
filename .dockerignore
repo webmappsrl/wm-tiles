@@ -1,0 +1,15 @@
+# Cosa NON entra nel contesto di build (Dockerfile.print).
+#
+# Con BuildKit il contesto e' gia' piccolo (62 kB misurati), perche' manda solo
+# i file che le COPY chiedono. Ma con `DOCKER_BUILDKIT=0` — un Docker vecchio, o
+# un `docker build` lanciato a mano con quella variabile — il client impacchetta
+# e spedisce al demone la CARTELLA INTERA: qui dentro sono 43 GB di `data/`.
+# Questo file e' il tetto che non dipende dal motore di build.
+data/
+node_modules/
+.git/
+.github/
+.superpowers/
+docs/
+*.log
+.DS_Store

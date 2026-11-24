@@ -37,7 +37,7 @@ export const fasciaDi = (fasce, z) => fasce.find(x => z >= x.zmin && z <= x.zmax
   ?? (fasce.length && z < fasce[0].zmin ? fasce[0] : fasce.at(-1));
 
 /**
- * Grigi della luce e della pendenza (0-255) per una vista N x N.
+ * Grigi della luce e della pendenza (0-255) per una vista width x height.
  *
  * Oltre l'ultimo livello del DEM la vista e' piu' fine del dato: un punto del
  * DEM copre `s` x `s` pixel. Come in hillshade.js le quote si leggono
@@ -45,46 +45,48 @@ export const fasciaDi = (fasce, z) => fasce.find(x => z >= x.zmin && z <= x.zmax
  * del DEM, cioe' `s` pixel: dividere per il passo della vista farebbe crescere
  * il gradiente con l'ingrandimento fino a bande nere.
  *
- * @param {Float32Array} E   quote della vista con un bordo di `B` pixel per lato (lato W = N + 2B)
+ * @param {Float32Array} E   quote della vista con un bordo di `B` pixel per lato (larghezza width + 2B, altezza height + 2B)
  * @param {number} passo     metri per punto del DEM al livello usato
  * @param {object} f         il set del livello: vert, gamma, slope, sunAzimuth, sunElevation
  * @param {number} s         pixel della vista per punto del DEM (1 fino all'ultimo livello del DEM)
  */
-export function grigi(E, N, B, passo, f, s = 1) {
+export function grigi(E, width, height, B, passo, f, s = 1) {
   if (B < 3 * s) throw new Error(`servono ${3 * s} pixel di bordo per la pendenza`);
-  const W = N + 2 * B;
+  const W = width + 2 * B;   // passo di riga di E
+  // un chiamante che scambia width e height leggerebbe E con la geometria sbagliata, senza errori
+  if (E.length !== W * (height + 2 * B)) throw new Error(`E ha ${E.length} quote, attese ${W * (height + 2 * B)} (${W} x ${height + 2 * B}: width ${width}, height ${height}, bordo ${B})`);
   const vert = f.vert ?? 1, gamma = f.gamma ?? 1, slope = f.slope ?? 0;
   const el = ((f.sunElevation ?? 45) * Math.PI) / 180;
   // azimut geografico (0 = Nord, orario) -> angolo matematico (0 = Est, antiorario)
   const az = ((90 - (f.sunAzimuth ?? 315)) * Math.PI) / 180;
   const sEl = Math.sin(el), cEl = Math.cos(el);
-  const luce = new Float32Array(N * N);
-  const pend = slope > 0 ? new Float32Array(N * N) : null;
+  const luce = new Float32Array(width * height);
+  const pend = slope > 0 ? new Float32Array(width * height) : null;
   const e = (R, C) => E[R * W + C];
   // Horn: le DIFFERENZE fra la colonna sinistra e la destra, fra la riga sopra e la sotto
   const hornX = (R, C, P) => (e(R - P, C - P) - e(R - P, C + P)) + 2 * (e(R, C - P) - e(R, C + P)) + (e(R + P, C - P) - e(R + P, C + P));
   const hornY = (R, C, P) => (e(R - P, C - P) - e(R + P, C - P)) + 2 * (e(R - P, C) - e(R + P, C)) + (e(R - P, C + P) - e(R + P, C + P));
-  for (let r = 0; r < N; r++) {
-    for (let c = 0; c < N; c++) {
+  for (let r = 0; r < height; r++) {
+    for (let c = 0; c < width; c++) {
       const R = r + B, C = c + B;
       const dx = (vert * hornX(R, C, s)) / (8 * passo), dy = (vert * hornY(R, C, s)) / (8 * passo);
       const p = Math.atan(Math.hypot(dx, dy));
       const esposizione = Math.atan2(-dy, dx);
       const inc = Math.min(1, Math.max(0, sEl * Math.cos(p) + cEl * Math.sin(p) * Math.cos(az - esposizione)));
-      luce[r * N + c] = Math.round(255 * Math.pow(inc, gamma) * (1 - slope * Math.sin(p)));
+      luce[r * width + c] = Math.round(255 * Math.pow(inc, gamma) * (1 - slope * Math.sin(p)));
       if (pend) {
         const P = 3;
         const p3 = Math.atan(Math.hypot((vert * hornX(R, C, P * s)) / (8 * P * passo), (vert * hornY(R, C, P * s)) / (8 * P * passo)));
         // 0,35 e' la pendenza attorno a cui il contributo si annulla
-        pend[r * N + c] = Math.round(255 * Math.min(1, Math.max(0, 0.5 + slope * (0.35 - Math.sin(p3)))));
+        pend[r * width + c] = Math.round(255 * Math.min(1, Math.max(0, 0.5 + slope * (0.35 - Math.sin(p3)))));
       }
     }
   }
-  return {luce: sfoca(luce, N), pend: pend && sfoca(pend, N)};
+  return {luce: sfoca(luce, width, height), pend: pend && sfoca(pend, width, height)};
 }
 
 /**
- * Quote della vista N x N (con bordo B) dal mosaico del DEM a un livello piu'
+ * Quote della vista width x height (con bordo B) dal mosaico del DEM a un livello piu'
  * basso, interpolate fra i punti come fa la GPU con la texture delle quote
  * (`interpolate: true` in hillshade.js): l'interpolazione e' lecita perche'
  * le quote sono gia' decodificate in virgola mobile.
@@ -93,10 +95,10 @@ export function grigi(E, N, B, passo, f, s = 1) {
  * @param {number} x0, y0     angolo della vista in pixel mondo al livello della vista
  * @param {number} s          pixel della vista per punto del DEM
  */
-export function quoteVista(D, Wd, u0, v0, x0, y0, N, B, s) {
-  const W = N + 2 * B, E = new Float32Array(W * W);
+export function quoteVista(D, Wd, u0, v0, x0, y0, width, height, B, s) {
+  const W = width + 2 * B, H = height + 2 * B, E = new Float32Array(W * H);
   const Hd = D.length / Wd;
-  for (let r = 0; r < W; r++) {
+  for (let r = 0; r < H; r++) {
     // centro del pixel della vista, in punti del DEM (centri dei punti a +0,5)
     const v = (y0 - B + r + 0.5) / s - 0.5 - v0;
     const vi = Math.min(Hd - 2, Math.max(0, Math.floor(v))), fv = v - vi;
@@ -111,22 +113,23 @@ export function quoteVista(D, Wd, u0, v0, x0, y0, N, B, s) {
 }
 
 /** Blur gaussiano separabile con sigma 0,5 px, come `filter: blur(0.5px)`; valori 0-255. */
-export function sfoca(a, N) {
+export function sfoca(a, width, height) {
   const w = [0, 1, 2].map(d => Math.exp(-(d * d) / (2 * 0.25)));
   const somma = w[0] + 2 * (w[1] + w[2]);
   const [k0, k1, k2] = w.map(x => x / somma);
   const t = new Float32Array(a.length), o = new Float32Array(a.length);
-  const lim = i => Math.min(N - 1, Math.max(0, i));
-  for (let r = 0; r < N; r++) {
-    for (let c = 0; c < N; c++) {
-      const at = d => a[r * N + lim(c + d)];
-      t[r * N + c] = k0 * at(0) + k1 * (at(-1) + at(1)) + k2 * (at(-2) + at(2));
+  const limX = i => Math.min(width - 1, Math.max(0, i));
+  const limY = i => Math.min(height - 1, Math.max(0, i));
+  for (let r = 0; r < height; r++) {
+    for (let c = 0; c < width; c++) {
+      const at = d => a[r * width + limX(c + d)];
+      t[r * width + c] = k0 * at(0) + k1 * (at(-1) + at(1)) + k2 * (at(-2) + at(2));
     }
   }
-  for (let r = 0; r < N; r++) {
-    for (let c = 0; c < N; c++) {
-      const at = d => t[lim(r + d) * N + c];
-      o[r * N + c] = Math.round(k0 * at(0) + k1 * (at(-1) + at(1)) + k2 * (at(-2) + at(2)));
+  for (let r = 0; r < height; r++) {
+    for (let c = 0; c < width; c++) {
+      const at = d => t[limY(r + d) * width + c];
+      o[r * width + c] = Math.round(k0 * at(0) + k1 * (at(-1) + at(1)) + k2 * (at(-2) + at(2)));
     }
   }
   return o;
@@ -139,13 +142,13 @@ export function sfoca(a, N) {
  * @param {Buffer} sopra  RGBA premoltiplicato di tutto il resto (curve, strade, etichette...)
  * @param {object|null} sh  i grigi di `grigi()`, o null sotto il livello minimo del DEM
  * @param {object|null} f   il set del livello: opacity e blend (`multiply` o `normal`)
- * @returns {Buffer} RGB N x N
+ * @returns {Buffer} RGB width x height
  */
-export function componi(sotto, sopra, sh, f, N) {
-  const out = Buffer.alloc(N * N * 3);
+export function componi(sotto, sopra, sh, f, width, height) {
+  const out = Buffer.alloc(width * height * 3);
   const alfa = f?.opacity ?? 0;
   const molt = (f?.blend ?? 'multiply') === 'multiply';
-  for (let i = 0; i < N * N; i++) {
+  for (let i = 0; i < width * height; i++) {
     const ta = sopra[i * 4 + 3] / 255;
     for (let ch = 0; ch < 3; ch++) {
       let c = sotto[i * 4 + ch];

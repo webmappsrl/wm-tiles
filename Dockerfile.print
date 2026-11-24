@@ -1,0 +1,116 @@
+# Il servizio di stampa (oc:9011, R6/R12) in un container suo, separato da
+# quello che serve le tile: un segfault o un leak del modulo nativo qui non
+# tocca la mappa interattiva.
+#
+# Parte dalla stessa base di pipeline/render-png.Dockerfile — e per le stesse
+# ragioni: il binario precompilato di maplibre-native 6.2.0 e' costruito su
+# Ubuntu 22.04 e cerca ICU 70, quindi su un sistema piu' recente non si carica.
+# La versione e' PINNATA: cambiandola va ricontrollato con `ldd`.
+#
+# Due differenze dall'immagine del renderer dei PNG:
+#  1. il codice e' INCORPORATO, non montato: l'immagine e' l'unita' di deploy;
+#  2. ci sono fontconfig e i font DejaVu. Senza, il testo del corredo (barra di
+#     scala, attribuzioni, nord), che e' un SVG composto da sharp/librsvg, esce
+#     a QUADRATINI e non lo segnala nessun errore.
+FROM ubuntu:22.04 AS base
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      ca-certificates curl xz-utils xvfb xauth libglfw3 libuv1 libjpeg-turbo8 libicu70 \
+      libopengl0 libcurl4 libpng16-16 libwebp7 libgl1-mesa-dri libglx-mesa0 libegl1 libgles2 \
+      fontconfig fonts-dejavu-core \
+    && rm -rf /var/lib/apt/lists/*
+ARG NODE=20.18.1
+RUN ARCH=$(dpkg --print-architecture | sed 's/amd64/x64/') \
+    && curl -fsSL https://nodejs.org/dist/v$NODE/node-v$NODE-linux-$ARCH.tar.xz | tar -xJ -C /opt \
+    && ln -s /opt/node-v$NODE-linux-$ARCH/bin/node /usr/local/bin/node \
+    && ln -s /opt/node-v$NODE-linux-$ARCH/bin/npm /usr/local/bin/npm
+
+WORKDIR /srv/wm-tiles
+# prima le dipendenze, cosi' un cambio di codice non rifa' npm ci
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev --no-audit --no-fund
+
+# Il codice. NON entrano `data/`: il renderer legge stile, glifi, sprite, tile e
+# DEM dal server delle tile via HTTP (`PRINT_BASE_URL`, e `localizza` riscrive
+# ogni URL su quel server), quindi il container non ha alcun archivio.
+# `manifest/` e `style/` servono perche' createApp() li legge all'avvio.
+COPY src ./src
+COPY manifest ./manifest
+COPY style ./style
+COPY tools ./tools
+
+# Nessun core dump (R11): un segfault del modulo nativo scriverebbe su disco la
+# memoria del processo, con dentro le geometrie ricevute dagli shard — fra cui
+# sentieri non pubblicati. E' l'`ulimit -c 0` dell'unita' systemd, qui dentro.
+# Il tetto e' ANCHE in compose.yml (`ulimits: core`), che vale per il kernel
+# dell'host: questo copre chi lancia l'immagine con un `docker run` a mano.
+#
+# Xvfb serve perche' maplibre-native vuole un display e OpenGL gira in software
+# (Mesa llvmpipe): sul server non c'e' GPU. Il container va avviato con `--init`,
+# cosi' il processo 1 e' tini, che inoltra i segnali e raccoglie gli zombi.
+#
+# Xvfb si avvia IN BACKGROUND e poi si fa `exec node`, invece di `exec xvfb-run`.
+# La ragione e' il segnale: tini manda SIGTERM al suo figlio DIRETTO e basta. Con
+# `xvfb-run` in mezzo (che e' uno script di shell) il figlio diretto era lui, node
+# era il nipote, e il SIGTERM non arrivava mai: `docker stop` tornava in zero
+# secondi e un `docker compose restart` durava 3 s invece dei 150 s dichiarati,
+# troncando i rendering in volo. Misurato dalla review del Task 10.
+#
+# Il display e' fisso (`:99`) invece che scelto da `xvfb-run -a`: in un container
+# non c'e' nessun altro X con cui scontrarsi, e un numero fisso si legge nei log.
+# L'attesa e' sul SOCKET, non su `xdpyinfo`, che vorrebbe x11-utils: se dopo
+# cinque secondi non c'e', il container esce con un errore invece di avviare un
+# node che fallira' il primo rendering.
+RUN printf '%s\n' \
+  '#!/bin/sh' \
+  '# nessun core dump (oc:9011, R11)' \
+  'ulimit -c 0 2>/dev/null || true' \
+  'DISPLAY="${DISPLAY:-:99}"' \
+  'export DISPLAY' \
+  'Xvfb "$DISPLAY" -screen 0 1024x768x24 -nolisten tcp &' \
+  'i=0' \
+  'while [ ! -e "/tmp/.X11-unix/X${DISPLAY#:}" ]; do' \
+  '  i=$((i + 1))' \
+  '  [ "$i" -gt 50 ] && { echo "Xvfb non si avvia su $DISPLAY" >&2; exit 1; }' \
+  '  sleep 0.1' \
+  'done' \
+  '# exec: node diventa il figlio DIRETTO di tini, e riceve il SIGTERM' \
+  'exec "$@"' \
+  > /usr/local/bin/print-entrypoint && chmod +x /usr/local/bin/print-entrypoint
+
+ENV NODE_ENV=production \
+    HOST=127.0.0.1 \
+    PORT=8081
+ENTRYPOINT ["/usr/local/bin/print-entrypoint"]
+CMD ["node", "src/server.js"]
+
+# ---------------------------------------------------------------- lo stage di test
+#
+# La suite gira DENTRO questa immagine, non solo sul Mac: il fattore di larghezza
+# del testo del corredo (`map-info.js`) dipende dal font, e sul Mac `sans-serif`
+# e' Helvetica mentre qui e' DejaVu Sans, che e' il 14% piu' largo. Riportando il
+# difetto nel sorgente, sul Mac passavano 34 test su 34 mentre nel container
+# l'inchiostro sporgeva di 4,15 mm dal riquadro: senza questo stage la prossima
+# regressione del font tornerebbe invisibile (review del Task 10).
+#
+# E' uno stage a parte e NON e' l'ultimo, cosi' un `docker build` senza
+# `--target` continua a produrre l'immagine di produzione, senza i test e senza
+# le devDependencies. Si costruisce con `docker build --target test`.
+FROM base AS test
+# playwright e' una devDependency (serve agli strumenti di confronto, non alla
+# suite): senza questa variabile il suo postinstall scarica tre browser.
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+COPY vitest.config.js ./
+COPY test ./test
+COPY pipeline ./pipeline
+# `--include=dev` e' ESPLICITO perche' la base dichiara NODE_ENV=production, e
+# con quella npm salta le devDependencies anche senza `--omit=dev`: senza, lo
+# stage si costruiva senza vitest e il lavoro diceva soltanto «vitest: not found».
+RUN npm ci --include=dev --no-audit --no-fund
+CMD ["npm", "test"]
+
+# ------------------------------------------------------------- l'immagine finale
+#
+# Ultimo stage, quindi il bersaglio di serie di `docker build`: e' la base, senza
+# niente dei test.
+FROM base AS runtime

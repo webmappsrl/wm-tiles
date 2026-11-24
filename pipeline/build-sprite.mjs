@@ -1,6 +1,6 @@
 /**
  * Genera lo sprite (atlas PNG + indice JSON) per MapLibre dagli SVG in
- * style/sprite/svg, nelle varianti 1x e 2x.
+ * style/sprite/svg, nelle varianti 1x, 2x e 3x (la 3x serve alla stampa).
  *
  * Le icone Maki sono monocromatiche e senza attributo `fill`: il colore viene
  * iniettato qui secondo la categoria, perche' uno sprite non-SDF non e'
@@ -96,7 +96,7 @@ if (files.length === 0) {
   process.exit(1);
 }
 
-for (const ratio of [1, 2]) {
+for (const ratio of [1, 2, 3]) {
   const items = [];
   for (const [name, col] of Object.entries(SCUDI)) {
     for (const n of SCUDO_CARATTERI) {
